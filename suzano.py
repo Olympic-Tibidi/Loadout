@@ -70,11 +70,7 @@ def read_barcodes(frame):
             file.write("Recognized Barcode:" + barcode_info)
     return frame   
 
-base_path = os.path.dirname(__file__)
-excel_file_name = "Inventory.xlsx"
 
-# Construct the path to the Excel file
-excel_file_path = os.path.join(base_path,  excel_file_name)
 Inventory=pd.ExcelFile(excel_file_path)
 Inventory=Inventory.parse()
 tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
