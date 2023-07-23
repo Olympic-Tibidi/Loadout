@@ -252,7 +252,7 @@ with tab1:
         
                 
 with tab2:
-    Inventory=pd.ExcelFile(r"c:\Users\afsiny\Desktop\SUZANO_\Inventory.xlsx")
+    Inventory=pd.ExcelFile("Inventory.xlsx")
     Inventory=Inventory.parse()
     dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
     df=Inventory[Inventory["Terminal"]=="POLY"][["Unit_No","Terminal","Warehouse_In"]]
