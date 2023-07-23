@@ -21,14 +21,9 @@ pd.options.mode.chained_assignment = None  # default='warn'
 
 st. set_page_config(layout="wide")
 #path=r"c:\Users\AfsinY\Desktop\SUZANO_"
-inventory_file_url = 'https://github.com/Olympic-Tibidi/Loadout/blob/main/Inventory.xlsx'
+inventory_file_url = 'Inventory.xlsx'
 
-# Read the inventory data from GitHub
-try:
-    inventory_df = pd.read_excel(inventory_file_url)
-except Exception as e:
-    st.error(f"Error loading inventory data: {e}")
-    st.stop()
+
 
 
 
@@ -78,7 +73,7 @@ def read_barcodes(frame):
     return frame   
 
 
-Inventory=pd.ExcelFile(excel_file_path)
+Inventory=pd.ExcelFile('Inventory.xlsx')
 Inventory=Inventory.parse()
 tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
 
