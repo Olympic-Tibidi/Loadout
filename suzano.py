@@ -205,7 +205,7 @@ with tab1:
         #st.write(Inventory[Inventory["Unit_No"]==i])
             
         Inventory.to_excel('Inventory.xlsx', index=False)
-        with open(Suzano_EDI_{a}_{release_order_number}.txt', 'w') as f:
+        with open('Suzano_EDI_{a}_{release_order_number}.txt', 'w') as f:
             f.write(line1)
             f.write('\n')
             f.write(line2)
