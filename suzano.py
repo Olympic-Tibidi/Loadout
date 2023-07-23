@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime as dt
-from pyzbar.pyzbar import decode
+#from pyzbar.pyzbar import decode
 import pickle
 import cv2
 
@@ -301,66 +301,3 @@ with tab2:
             if date_filter:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
-with tab3:
-    st.markdown("**QR Code Reader**")
-    
-    #st.selectbox("SUBMIT FOR LOAD",[f"LOAD-{i}" for i in range(1,11)],key="for_capture")
-    
-
-    
-    coll1,coll2,coll3=st.columns([2,2,6])
-    with coll2:
-        clear_cache=st.button("CLEAR LOAD LIST")
-        if clear_cache:
-            st.session_state.captured_units=[]
-    with coll1:
-    
-        capture_button=st.button('CAPTURE LOAD')
-        
-        frame_placeholder = st.empty()
-        if capture_button:
-            qr_code_found=False
-            while not qr_code_found:
-                
-                capture = cv2.VideoCapture(0)
-                finds=0
-                while True:
-                    
-
-            # Read a frame from the camera
-                    ret, frame = capture.read()
-
-                    # Check if the frame was successfully captured
-                    if not ret:
-                        break
-
-                    # Process the frame for QR code detection
-                    process_frame(frame)
-                    frame_placeholder.image(frame, channels="BGR", caption="Camera Feed")
-                    try:
-                        if qr_code_found:
-                            finds+=1
-                    except:
-                        pass
-                       
-                    if finds>50:
-                        #print(f"UNIT NO :{data}")
-                        
-                        break
-                        st.success("CAPTURED")
-                    # Check for the 'q' key press to exit the loop
-                    if cv2.waitKey(1) & 0xFF == ord('q'):
-                        break
-
-                    # Release the camera and close all windows
-                    capture.release()
-                    cv2.destroyAllWindows()
-                    #st.text_area('', value=data, height=200,key="lala")
-                    #unit_numbers
-                try:
-                    st.header(f"UNIT NO: {data}")
-                    st.session_state.captured_units.append(data)
-                    
-                except:
-                    pass
-            st.write(list(set(st.session_state.captured_units)))
