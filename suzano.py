@@ -20,7 +20,7 @@ pd.set_option('display.max_columns', None)
 pd.options.mode.chained_assignment = None  # default='warn'
 
 st. set_page_config(layout="wide")
-path=r"c:\Users\AfsinY\Desktop\SUZANO_"
+#path=r"c:\Users\AfsinY\Desktop\SUZANO_"
 
 
 
@@ -70,7 +70,12 @@ def read_barcodes(frame):
             file.write("Recognized Barcode:" + barcode_info)
     return frame   
 
-Inventory=pd.ExcelFile(r"c:\Users\afsiny\Desktop\SUZANO_\Inventory.xlsx")
+base_path = os.path.dirname(__file__)
+excel_file_name = "Inventory.xlsx"
+
+# Construct the path to the Excel file
+excel_file_path = os.path.join(base_path,  excel_file_name)
+Inventory=pd.ExcelFile(excel_file_path)
 Inventory=Inventory.parse()
 tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
 
@@ -201,7 +206,7 @@ with tab1:
 #             #st.write("hi")
         #st.write(Inventory[Inventory["Unit_No"]==i])
             
-        Inventory.to_excel(r"c:\Users\afsiny\Desktop\SUZANO_\Inventory.xlsx", index=False)
+        Inventory.to_excel(excel_file_path, index=False)
         with open(fr'c:\Users\AfsinY\Desktop\SUZANO_\Suzano_EDI_{a}_{release_order_number}.txt', 'w') as f:
             f.write(line1)
             f.write('\n')
