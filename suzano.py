@@ -12,7 +12,7 @@ import seaborn as sns
 import datetime as dt
 #from pyzbar.pyzbar import decode
 import pickle
-import cv2
+#import cv2
 
 
 pd.set_option('display.max_rows', None)
