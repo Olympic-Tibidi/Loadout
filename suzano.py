@@ -204,8 +204,8 @@ with tab1:
 #             #st.write("hi")
         #st.write(Inventory[Inventory["Unit_No"]==i])
             
-        Inventory.to_excel(excel_file_path, index=False)
-        with open(fr'c:\Users\AfsinY\Desktop\SUZANO_\Suzano_EDI_{a}_{release_order_number}.txt', 'w') as f:
+        Inventory.to_excel('Inventory.xlsx', index=False)
+        with open(Suzano_EDI_{a}_{release_order_number}.txt', 'w') as f:
             f.write(line1)
             f.write('\n')
             f.write(line2)
@@ -238,7 +238,7 @@ with tab1:
         pass        
     if st.button('SAVE/DISPLAY EDI'):
         process()
-        with open(fr'c:\Users\AfsinY\Desktop\SUZANO_\Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+        with open(Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
             output_text = f.read()
         st.markdown("**EDI TEXT**")
         st.text_area('', value=output_text, height=600)
