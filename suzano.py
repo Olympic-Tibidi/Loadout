@@ -324,7 +324,8 @@ with tab3:
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-    if st.button('SAVE/DISPLAY EDI',key="lala"):
+    st.button('CAPTURE',key="lala")
+    while True:
         ret, frame = cap.read()
 
         if ret:
