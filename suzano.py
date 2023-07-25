@@ -70,7 +70,7 @@ def read_barcodes(frame):
             file.write("Recognized Barcode:" + barcode_info)
     return frame   
 
-Inventory=pd.ExcelFile(r"c:\Users\afsiny\Desktop\SUZANO_\Inventory.xlsx")
+Inventory=pd.ExcelFile("Inventory.xlsx")
 Inventory=Inventory.parse()
 tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
 
