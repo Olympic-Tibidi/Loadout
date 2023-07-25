@@ -201,8 +201,8 @@ with tab1:
 #             #st.write("hi")
         #st.write(Inventory[Inventory["Unit_No"]==i])
             
-        Inventory.to_excel(r"c:\Users\afsiny\Desktop\SUZANO_\Inventory.xlsx", index=False)
-        with open(fr'c:\Users\AfsinY\Desktop\SUZANO_\Suzano_EDI_{a}_{release_order_number}.txt', 'w') as f:
+        Inventory.to_excel(r"Inventory.xlsx", index=False)
+        with open(f'Suzano_EDI_{a}_{release_order_number}.txt', 'w') as f:
             f.write(line1)
             f.write('\n')
             f.write(line2)
@@ -235,7 +235,7 @@ with tab1:
         pass        
     if st.button('SAVE/DISPLAY EDI'):
         process()
-        with open(fr'c:\Users\AfsinY\Desktop\SUZANO_\Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+        with open(f'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
             output_text = f.read()
         st.markdown("**EDI TEXT**")
         st.text_area('', value=output_text, height=600)
@@ -249,7 +249,7 @@ with tab1:
         
                 
 with tab2:
-    Inventory=pd.ExcelFile(r"c:\Users\afsiny\Desktop\SUZANO_\Inventory.xlsx")
+    Inventory=pd.ExcelFile(r"Inventory.xlsx")
     Inventory=Inventory.parse()
     dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
     df=Inventory[Inventory["Terminal"]=="POLY"][["Unit_No","Terminal","Warehouse_In"]]
