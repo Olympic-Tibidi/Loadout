@@ -161,7 +161,7 @@ with tab1:
     
     #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
     def output():
-        with open(fr'c:\Users\AfsinY\Desktop\SUZANO_\Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+        with open(fr'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
             output_text = f.read()
         return output_text
     def process():
