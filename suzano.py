@@ -3,6 +3,8 @@ import streamlit.components.v1 as components
 import cv2
 import numpy as np
 
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 
 from camera_input_live import camera_input_live
 import pandas as pd
@@ -310,3 +312,34 @@ with tab2:
             if date_filter:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
+with tab3:
+    def authenticate_google_drive():
+    # Authenticate and create GoogleDrive instance
+        gauth = GoogleAuth()
+        gauth.LocalWebserverAuth()
+        drive = GoogleDrive(gauth)
+        return drive
+
+    def get_files_from_shared_folder(drive, shared_folder_id):
+        # Get the files from the shared folder
+        files = drive.ListFile({'q': f"'{shared_folder_id}' in parents and trashed=false"}).GetList()
+        return files
+    
+    def main():
+        st.title("Google Drive File Access")
+    
+        # Authenticate and create GoogleDrive instance
+        drive = authenticate_google_drive()
+    
+        # Provide the shared folder ID (you can find it in the Google Drive URL)
+        shared_folder_id = st.text_input("Enter Google Drive Shared Folder ID:")
+    
+        if shared_folder_id:
+            # Get the files from the shared folder
+            files = get_files_from_shared_folder(drive, shared_folder_id)
+    
+            # Display the file names
+            if files:
+                st.subheader("Files in the Shared Folder:")
+                for file in files:
+                    st.write(file['title'])
