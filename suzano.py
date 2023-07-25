@@ -317,14 +317,7 @@ with tab3:
 
     st.title("Barcode Scanner App")
 
-    # Start the video capture using the default camera (0) or specify a different camera index if needed
-    cap = cv2.VideoCapture(0)
-
-    # Set the frame width and height (adjust as needed)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-
-    st.button('CAPTURE',key="lala")
+   
     def read_barcodes_from_frame(frame):
         """
         Function to read barcodes from a video frame and return the decoded data.
