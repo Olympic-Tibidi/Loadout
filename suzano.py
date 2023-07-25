@@ -111,45 +111,29 @@ with tab1:
         eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
         sales_order_item=st.text_input("Sales Order Item (Material Code)")
     with col4:
-        loads = []
-        for i in range(10):
+            
+                
+            
             try:
-                value = st.text_input(f"Unit No : {i + 1}", value=st.session_state.captured_units[i])
-            except IndexError:
-                value = st.text_input(f"Unit No : {i + 1}")
-
-            loads.append(value)
-
-            # JavaScript to move to the next textbox when 8 digits are scanned
-            st.script(
-                f"""
-                const textBox{i} = document.querySelector('input[data-bk="{i}"]');
-                if (textBox{i}) {{
-                    textBox{i}.addEventListener("input", (event) => {{
-                        if (event.data && event.data.length === 1) {{
-                            if (event.inputType === "insertText") {{
-                                textBox{i}.value = textBox{i}.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                                if (textBox{i}.value.length === 8) {{
-                                    const nextTextBox = document.querySelector('input[data-bk="{i + 1}"]');
-                                    if (nextTextBox) {{
-                                        nextTextBox.focus();
-                                    }}
-                                }}
-                            }}
-                        }}
-                    }});
-                }}
-                """
-            )
-
-    # ... Your existing code ...
-
-# Save the captured_units in the session state after updating the loads list
-        st.session_state.captured_units = loads
-        
-        
-     
-       
+                load1=st.text_input("Unit No : 01",value=st.session_state.captured_units[0])
+            except:
+                load1=st.text_input("Unit No : 01")
+            try:
+                load2=st.text_input("Unit No : 02",value=st.session_state.captured_units[1])
+            except:
+                load2=st.text_input("Unit No : 02")
+            try:
+                load3=st.text_input("Unit No : 03",value=st.session_state.captured_units[2])
+            except:
+                load3=st.text_input("Unit No : 03")
+            try:
+                load4=st.text_input("Unit No : 04",value=st.session_state.captured_units[3])
+            except:
+                load4=st.text_input("Unit No : 04")
+            try:
+                load5=st.text_input("Unit No : 05",value=st.session_state.captured_units[4])
+            except:
+                load5=st.text_input("Unit No : 05")
     with col5:
         
         load6=st.text_input("Unit No : 06")
