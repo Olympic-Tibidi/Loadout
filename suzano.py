@@ -348,7 +348,6 @@ with tab3:
 
     # Release the video capture and close the OpenCV windows
     cap.release()
-    cv2.destroyAllWindows()
 
 
 #     st.markdown("**QR Code Reader**")
