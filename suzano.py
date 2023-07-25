@@ -311,121 +311,63 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
+        st.markdown("**QR Code Reader**")
+#     
+    st.selectbox("SUBMIT FOR LOAD",[f"LOAD-{i}" for i in range(1,11)],key="for_capture")
+#     
+# 
+#     
+    coll1,coll2,coll3=st.columns([2,2,6])
+    with coll2:
+        
+        clear_cache=st.button("CLEAR LOAD LIST")
+        if clear_cache:
+            st.session_state.captured_units=[]
+    with coll1:
+     
+        capture_button=st.button('CAPTURE LOAD')
+#         
+        frame_placeholder = st.empty()
+        if capture_button:
+            qr_code_found=False
+            while not qr_code_found:
+#                 
+                capture = cv2.VideoCapture(0)
+                finds=0
+                while True:
+#                     
+# 
+#             # Read a frame from the camera
+                    ret, frame = capture.read()
+# 
+#                     # Check if the frame was successfully captured
+                    if not ret:
+                        break
+# 
+#                     # Process the frame for QR code detection
+                    process_frame(frame)
+                    frame_placeholder.image(frame, channels="BGR", caption="Camera Feed")
+                    try:
+                        if qr_code_found:
+                            finds+=1
+                    except:
+                        pass
+#                        
+                    if finds>50:
+                        print(f"UNIT NO :{data}")
+#                         
+                        break
+                        st.success("CAPTURED")
+                     # Check for the 'q' key press to exit the loop
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        break
+# 
+#                     # Release the camera and close all windows
+                    capture.release()
+                    cv2.destroyAllWindows()
+                    st.text_area('', value=data, height=200,key="lala")
     
 
 
 
-    st.title("Barcode Scanner App")
-
    
-    def read_barcodes_from_frame(frame):
-        """
-        Function to read barcodes from a video frame and return the decoded data.
-        """
-        decoded_barcodes = pyzbar.decode(frame)
-        barcodes_data = []
-        for barcode in decoded_barcodes:
-            barcode_data = barcode.data.decode('utf-8')
-            barcodes_data.append(barcode_data)
-        return barcodes_data
-
-
-    st.title("Barcode Scanner App")
-
-    # Create a button to start barcode scanning
-    if st.button("Start Barcode Scanning"):
-        # Start the video capture using the default camera (0) or specify a different camera index if needed
-        cap = cv2.VideoCapture(0)
-
-        # Set the frame width and height (adjust as needed)
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-
-        while True:
-            ret, frame = cap.read()
-
-            if ret:
-                # Convert the frame to grayscale (required for barcode reading)
-                gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-                # Read barcodes from the frame
-                barcodes_data = read_barcodes_from_frame(gray_frame)
-
-                # Display the frame
-                st.image(frame, channels="BGR", caption="Barcode Scanner")
-
-                if barcodes_data:
-                    st.subheader("Decoded Barcodes:")
-                    for data in barcodes_data:
-                        st.write(data)
-
-                # Close the video capture when the 'Esc' key is pressed
-                if cv2.waitKey(1) == 27:
-                    break
-
-        # Release the video capture and close the OpenCV windows
-        cap.release()
-        cv2.destroyAllWindows()
-#     st.markdown("**QR Code Reader**")
-#     
-#     #st.selectbox("SUBMIT FOR LOAD",[f"LOAD-{i}" for i in range(1,11)],key="for_capture")
-#     
-# 
-#     
-#     coll1,coll2,coll3=st.columns([2,2,6])
-#     with coll2:
-#         clear_cache=st.button("CLEAR LOAD LIST")
-#         if clear_cache:
-#             st.session_state.captured_units=[]
-#     with coll1:
-#     
-#         capture_button=st.button('CAPTURE LOAD')
-#         
-#         frame_placeholder = st.empty()
-#         if capture_button:
-#             qr_code_found=False
-#             while not qr_code_found:
-#                 
-#                 capture = cv2.VideoCapture(0)
-#                 finds=0
-#                 while True:
-#                     
-# 
-#             # Read a frame from the camera
-#                     ret, frame = capture.read()
-# 
-#                     # Check if the frame was successfully captured
-#                     if not ret:
-#                         break
-# 
-#                     # Process the frame for QR code detection
-#                     process_frame(frame)
-#                     frame_placeholder.image(frame, channels="BGR", caption="Camera Feed")
-#                     try:
-#                         if qr_code_found:
-#                             finds+=1
-#                     except:
-#                         pass
-#                        
-#                     if finds>50:
-#                         #print(f"UNIT NO :{data}")
-#                         
-#                         break
-#                         st.success("CAPTURED")
-#                     # Check for the 'q' key press to exit the loop
-#                     if cv2.waitKey(1) & 0xFF == ord('q'):
-#                         break
-# 
-#                     # Release the camera and close all windows
-#                     capture.release()
-#                     cv2.destroyAllWindows()
-#                     #st.text_area('', value=data, height=200,key="lala")
-#                     #unit_numbers
-#                 try:
-#                     st.header(f"UNIT NO: {data}")
-#                     st.session_state.captured_units.append(data)
-#                     
-#                 except:
-#                     pass
-#             st.write(list(set(st.session_state.captured_units)))
-
