@@ -1,6 +1,10 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import cv2
+import numpy as np
 
+
+from camera_input_live import camera_input_live
 import pandas as pd
 import datetime
 from requests import get
@@ -12,7 +16,7 @@ import seaborn as sns
 import datetime as dt
 #from pyzbar.pyzbar import decode
 import pickle
-#import cv2
+
 
 
 pd.set_option('display.max_rows', None)
@@ -313,7 +317,27 @@ with tab2:
             if date_filter:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
-# with tab3:
+ with tab3:
+     "# Streamlit camera input live Demo"
+"## Try holding a qr code in front of your webcam"
+
+    image = camera_input_live()
+
+    if image is not None:
+        st.image(image)
+        bytes_data = image.getvalue()
+        cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+
+        detector = cv2.QRCodeDetector()
+    
+        data, bbox, straight_qrcode = detector.detectAndDecode(cv2_img)
+    
+        if data:
+            st.write("# Found QR code")
+            st.write(data)
+            with st.expander("Show details"):
+                st.write("BBox:", bbox)
+                st.write("Straight QR code:", straight_qrcode)
 #     st.markdown("**QR Code Reader**")
 #     
 #     #st.selectbox("SUBMIT FOR LOAD",[f"LOAD-{i}" for i in range(1,11)],key="for_capture")
