@@ -318,10 +318,9 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
+    
 
 
-     "# Streamlit camera input live Demo"
-"## Try holding a qr code in front of your webcam"
 
     image = camera_input_live()
 
