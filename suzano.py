@@ -351,7 +351,6 @@ with tab3:
     cv2.destroyAllWindows()
 
 
-Regenerate response
 #     st.markdown("**QR Code Reader**")
 #     
 #     #st.selectbox("SUBMIT FOR LOAD",[f"LOAD-{i}" for i in range(1,11)],key="for_capture")
