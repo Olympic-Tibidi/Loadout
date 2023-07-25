@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime as dt
-#from pyzbar.pyzbar import decode
+from pyzbar import pyzbar
 import pickle
 
 
@@ -27,7 +27,16 @@ st. set_page_config(layout="wide")
 path=r"c:\Users\AfsinY\Desktop\SUZANO_"
 
 
-
+def read_barcodes_from_image(image):
+    """
+    Function to read barcodes from an image and return the decoded data.
+    """
+    decoded_barcodes = pyzbar.decode(image)
+    barcodes_data = []
+    for barcode in decoded_barcodes:
+        barcode_data = barcode.data.decode('utf-8')
+        barcodes_data.append(barcode_data)
+    return barcodes_data
 
 def process_frame(frame):
     global qr_code_found, data
@@ -306,30 +315,43 @@ with tab3:
 
 
 
-    camera_id = 0
-    delay = 1
-    window_name = 'OpenCV Barcode'
-    
-    bd = cv2.barcode.BarcodeDetector()
-    cap = cv2.VideoCapture(camera_id)
-    
+    st.title("Barcode Scanner App")
+
+    # Start the video capture using the default camera (0) or specify a different camera index if needed
+    cap = cv2.VideoCapture(0)
+
+    # Set the frame width and height (adjust as needed)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
     while True:
         ret, frame = cap.read()
-    
+
         if ret:
-            ret_bc, decoded_info, _, points = bd.detectAndDecode(frame)
-            if ret_bc:
-                frame = cv2.polylines(frame, points.astype(int), True, (0, 255, 0), 3)
-                for s, p in zip(decoded_info, points):
-                    if s:
-                        print(s)
-                        frame = cv2.putText(frame, s, p[1].astype(int),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2, cv2.LINE_AA)
-            cv2.imshow(window_name, frame)
-    
-        if cv2.waitKey(delay) & 0xFF == ord('q'):
+            # Convert the frame to grayscale (required for barcode reading)
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+            # Read barcodes from the frame
+            barcodes_data = read_barcodes_from_frame(gray_frame)
+
+            # Display the frame
+            st.image(frame, channels="BGR", caption="Barcode Scanner")
+
+            if barcodes_data:
+                st.subheader("Decoded Barcodes:")
+                for data in barcodes_data:
+                    st.write(data)
+
+        # Close the video capture when the 'Esc' key is pressed
+        if cv2.waitKey(1) == 27:
             break
 
+    # Release the video capture and close the OpenCV windows
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+Regenerate response
 #     st.markdown("**QR Code Reader**")
 #     
 #     #st.selectbox("SUBMIT FOR LOAD",[f"LOAD-{i}" for i in range(1,11)],key="for_capture")
