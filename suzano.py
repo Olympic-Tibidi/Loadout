@@ -311,7 +311,7 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
-        st.markdown("**QR Code Reader**")
+    st.markdown("**QR Code Reader**")
 #     
     st.selectbox("SUBMIT FOR LOAD",[f"LOAD-{i}" for i in range(1,11)],key="for_capture")
 #     
