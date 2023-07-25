@@ -3,8 +3,14 @@ import streamlit.components.v1 as components
 import cv2
 import numpy as np
 
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
+import email, smtplib, ssl
+
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+
 
 from camera_input_live import camera_input_live
 import pandas as pd
@@ -248,8 +254,51 @@ with tab1:
         process()
         with open(f'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
             output_text = f.read()
-        st.markdown("**EDI TEXT**")
-        st.text_area('', value=output_text, height=600)
+        subject = "emaiol from the warehouse"
+        body = "This is an email with attachment sent from Python"
+        sender_email = "warehouseolympia@gmail.com"
+        receiver_email = "afsin1977@gmail.com"
+        password = input("warehouse98501")
+        
+        # Create a multipart message and set headers
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        message["To"] = receiver_email
+        message["Subject"] = subject
+        message["Bcc"] = receiver_email  # Recommended for mass emails
+        
+        # Add body to email
+        message.attach(MIMEText(body, "plain"))
+        
+        filename = "document.pdf"  # In same directory as script
+        
+        # Open PDF file in binary mode
+        with open(filename, "rb") as attachment:
+            # Add file as application/octet-stream
+            # Email client can usually download this automatically as attachment
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(attachment.read())
+        
+        # Encode file in ASCII characters to send by email    
+        encoders.encode_base64(part)
+        
+        # Add header as key/value pair to attachment part
+        part.add_header(
+            "Content-Disposition",
+            f"attachment; filename= {filename}",
+        )
+        
+        # Add attachment to message and convert message to string
+        message.attach(part)
+        text = message.as_string()
+        
+        # Log in to server using secure context and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, text)
+            st.markdown("**EDI TEXT**")
+            st.text_area('', value=output_text, height=600)
 
         
 
@@ -312,34 +361,3 @@ with tab2:
             if date_filter:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
-with tab3:
-    def authenticate_google_drive():
-    # Authenticate and create GoogleDrive instance
-        gauth = GoogleAuth()
-        gauth.LocalWebserverAuth()
-        drive = GoogleDrive(gauth)
-        return drive
-
-    def get_files_from_shared_folder(drive, shared_folder_id):
-        # Get the files from the shared folder
-        files = drive.ListFile({'q': f"'{shared_folder_id}' in parents and trashed=false"}).GetList()
-        return files
-    
-    def main():
-        st.title("Google Drive File Access")
-    
-        # Authenticate and create GoogleDrive instance
-        drive = authenticate_google_drive()
-    
-        # Provide the shared folder ID (you can find it in the Google Drive URL)
-        shared_folder_id = st.text_input("Enter Google Drive Shared Folder ID:")
-    
-        if shared_folder_id:
-            # Get the files from the shared folder
-            files = get_files_from_shared_folder(drive, shared_folder_id)
-    
-            # Display the file names
-            if files:
-                st.subheader("Files in the Shared Folder:")
-                for file in files:
-                    st.write(file['title'])
