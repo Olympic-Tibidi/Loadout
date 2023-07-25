@@ -6,3 +6,5 @@ Requests==2.31.0
 seaborn==0.12.2
 streamlit==1.24.1
 openpyxl
+streamlit-camera-input-live
+opencv-python-headless
