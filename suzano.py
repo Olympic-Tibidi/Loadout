@@ -326,17 +326,17 @@ with tab3:
 
     st.button('CAPTURE',key="lala")
     def read_barcodes_from_frame(frame):
-    """
-    Function to read barcodes from a video frame and return the decoded data.
-    """
-    decoded_barcodes = pyzbar.decode(frame)
-    barcodes_data = []
-    for barcode in decoded_barcodes:
-        barcode_data = barcode.data.decode('utf-8')
-        barcodes_data.append(barcode_data)
-    return barcodes_data
+        """
+        Function to read barcodes from a video frame and return the decoded data.
+        """
+        decoded_barcodes = pyzbar.decode(frame)
+        barcodes_data = []
+        for barcode in decoded_barcodes:
+            barcode_data = barcode.data.decode('utf-8')
+            barcodes_data.append(barcode_data)
+        return barcodes_data
 
-def main():
+
     st.title("Barcode Scanner App")
 
     # Create a button to start barcode scanning
