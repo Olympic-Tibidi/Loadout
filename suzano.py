@@ -343,8 +343,8 @@ with tab3:
                     st.write(data)
 
         # Close the video capture when the 'Esc' key is pressed
-        if cv2.waitKey(1) == 27:
-            break
+        #if cv2.waitKey(1) == 27:
+         #   break
 
     # Release the video capture and close the OpenCV windows
     cap.release()
