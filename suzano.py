@@ -313,16 +313,19 @@ with tab3:
         bytes_data = image.getvalue()
         cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
 
-        detector = cv2.barcode()
-    
-        data, bbox, straight_qrcode = detector.detectAndDecode(cv2_img)
+        
+        bd = cv2.barcode.BarcodeDetector()
+        #bd = cv2.barcode.BarcodeDetector('path/to/sr.prototxt', 'path/to/sr.caffemodel')
+
+        retval, data, decoded_type, points = bd.detectAndDecode(img)    
+        #data, bbox, straight_qrcode = detector.detectAndDecode(cv2_img)
     
         if data:
             st.write("# Found QR code")
             st.write(data)
             with st.expander("Show details"):
-                st.write("BBox:", bbox)
-                st.write("Straight QR code:", straight_qrcode)
+                #st.write("BBox:", bbox)
+                st.write("Straight QR code:", data)
 #     st.markdown("**QR Code Reader**")
 #     
 #     #st.selectbox("SUBMIT FOR LOAD",[f"LOAD-{i}" for i in range(1,11)],key="for_capture")
