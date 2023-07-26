@@ -1,6 +1,6 @@
 import streamlit as st
 import streamlit.components.v1 as components
-import cv2
+#import cv2
 import numpy as np
 
 
@@ -9,7 +9,7 @@ import numpy as np
 
 
 
-from camera_input_live import camera_input_live
+#from camera_input_live import camera_input_live
 import pandas as pd
 import datetime
 from requests import get
@@ -29,7 +29,7 @@ pd.set_option('display.max_columns', None)
 pd.options.mode.chained_assignment = None  # default='warn'
 
 st. set_page_config(layout="wide")
-path=r"c:\Users\AfsinY\Desktop\SUZANO_"
+
 
 
 def read_barcodes_from_image(image):
