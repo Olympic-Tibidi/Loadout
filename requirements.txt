@@ -8,3 +8,6 @@ streamlit==1.24.1
 openpyxl
 streamlit-camera-input-live
 pydrive==1.3.1
+email==1.0.0
+smtplib==2.1.0
+ssl==3.2.1
