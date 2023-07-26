@@ -32,63 +32,10 @@ st. set_page_config(layout="wide")
 
 
 
-def read_barcodes_from_image(image):
-    """
-    Function to read barcodes from an image and return the decoded data.
-    """
-    decoded_barcodes = pyzbar.decode(image)
-    barcodes_data = []
-    for barcode in decoded_barcodes:
-        barcode_data = barcode.data.decode('utf-8')
-        barcodes_data.append(barcode_data)
-    return barcodes_data
 
-def process_frame(frame):
-    global qr_code_found, data
-
-    # Convert the frame to grayscale
-    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    # Decode the QR codes in the frame
-    qr_codes =decode(gray_frame)
-
-    # Iterate through the detected QR codes
-    for qr_code in qr_codes:
-        # Extract the data and barcode type from the QR code
-        data = qr_code.data.decode('utf-8')
-        barcode_type = qr_code.type
-
-        # Print the results
-        #print(f"Data: {data}")
-        #print(f"Barcode Type: {barcode_type}")
-
-        # Draw a rectangle around the QR code
-        x, y, w, h = qr_code.rect
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        
-        # Set the flag to indicate a QR code is found
-        qr_code_found = True
-        break
-        
-    # Display the frame with the QR codes and rectangles
-    cv2.imshow('QR Code Reader', frame)
-def read_barcodes(frame):
-    barcodes = pyzbar.decode(frame)
-    for barcode in barcodes:
-        x, y , w, h = barcode.rect
-        #1
-        barcode_info = barcode.data.decode('utf-8')
-        cv2.rectangle(frame, (x, y),(x+w, y+h), (0, 255, 0), 2)
-        
-        #2
-        font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(frame, barcode_info, (x + 6, y - 6), font, 2.0, (255, 255, 255), 1)
-        #3
-        with open("barcode_result.txt", mode ='w') as file:
-            file.write("Recognized Barcode:" + barcode_info)
-    return frame   
 
 Inventory=pd.ExcelFile("Inventory.xlsx")
+Inventory=pd.read_feather("kirkenes.ftr")
 Inventory=Inventory.parse()
 tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
 
