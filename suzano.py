@@ -19,7 +19,7 @@ import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime as dt
-from pyzbar import pyzbar
+#from pyzbar import pyzbar
 import pickle
 
 
