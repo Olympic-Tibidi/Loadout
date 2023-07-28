@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 #import cv2
 import numpy as np
 from st_files_connection import FilesConnection
-
+import gcsfs
 
 
 
@@ -263,5 +263,18 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
-    conn = st.experimental_connection('gcs', type=FilesConnection)
-    df = conn.read("olym_suzano/Inventory.xlsx", input_format="csv", ttl=600)
+    fs = gcsfs.GCSFileSystem()
+
+    # GCS file path
+    file_path = "olym_suzano/Inventory.xlsx"
+    
+    # Read the xlsx file using pandas and gcsfs
+    try:
+        with fs.open(file_path) as file:
+            df = pd.read_excel(file)
+    
+        # Display the DataFrame in Streamlit
+        st.dataframe(df)
+    
+    except Exception as e:
+        st.error(f"Error: {e}")
