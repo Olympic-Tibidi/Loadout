@@ -261,3 +261,6 @@ with tab2:
             if date_filter:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
+with tab3:
+    conn = st.experimental_connection('gcs', type=FilesConnection)
+    df = conn.read("olym_suzano/Inventory.xlsx", input_format="xlsx", ttl=600)
