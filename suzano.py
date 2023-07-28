@@ -263,18 +263,9 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
-    fs = gcsfs.GCSFileSystem()
+    conn = st.experimental_connection('gcs', type=FilesConnection)
+    df = conn.read("streamlit-bucket/myfile.csv", input_format="csv", ttl=600)
 
-    # GCS file path
-    file_path = "olym_suzano/Inventory.xlsx"
+    # Print results.
     
-    # Read the xlsx file using pandas and gcsfs
-    try:
-        with fs.open(file_path) as file:
-            df = pd.read_excel(file)
-    
-        # Display the DataFrame in Streamlit
-        st.dataframe(df)
-    
-    except Exception as e:
-        st.error(f"Error: {e}")
+    st.write(df)
