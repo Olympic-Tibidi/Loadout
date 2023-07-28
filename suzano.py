@@ -35,7 +35,7 @@ st. set_page_config(layout="wide")
 
 
 Inventory=pd.ExcelFile("Inventory.xlsx")
-Inventory=pd.read_feather("kirkenes.ftr")
+#Inventory=pd.read_feather("kirkenes.ftr")
 Inventory=Inventory.parse()
 tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
 
