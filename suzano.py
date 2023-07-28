@@ -264,4 +264,4 @@ with tab2:
         st.table(filtered_zf)
 with tab3:
     conn = st.experimental_connection('gcs', type=FilesConnection)
-    df = conn.read("olym_suzano/Inventory.xlsx",  ttl=600)
+    df = conn.read("olym_suzano/Inventory.xlsx", format="xlsx", ttl=600)
