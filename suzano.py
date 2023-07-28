@@ -264,7 +264,7 @@ with tab2:
         st.table(filtered_zf)
 with tab3:
     conn = st.experimental_connection('gcs', type=FilesConnection)
-    df = conn.read("streamlit-bucket/myfile.csv", input_format="csv", ttl=600)
+    df = conn.read("olym_suzano/Inventory.csv", input_format="csv", ttl=600)
 
     # Print results.
     
