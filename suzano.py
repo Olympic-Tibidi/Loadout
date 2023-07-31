@@ -198,7 +198,7 @@ with tab1:
             f.write(end)
             
     try:
-        down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}')
+        down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
     except:
         pass        
     if st.button('SAVE/DISPLAY EDI'):
