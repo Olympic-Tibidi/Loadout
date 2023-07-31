@@ -271,6 +271,6 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
-    Inventory=pd.ExcelFile(r"T:\suzano\Inventory.xlsx")
+    Inventory=pd.ExcelFile(r"Inventory.xlsx")
     Inventory=Inventory.parse()
     st.write(Inventory)
