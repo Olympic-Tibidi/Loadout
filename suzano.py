@@ -202,8 +202,14 @@ with tab1:
         pass        
     if st.button('SAVE/DISPLAY EDI'):
         process()
-        with open(f'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+        with open('Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
             output_text = f.read()
+        st.markdown("**EDI TEXT**")
+        st.text_area('', value=output_text, height=600)
+        with open('Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+            file_content = f.read()
+            filename = f'Suzano_EDI_{a}_{release_order_number}'
+            st.write(filename)
       
 
         
