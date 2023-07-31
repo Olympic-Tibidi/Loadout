@@ -73,29 +73,33 @@ with tab1:
         eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
         sales_order_item=st.text_input("Sales Order Item (Material Code)")
     with col4:
+        
             
-                
-            
-            try:
-                load1=st.text_input("Unit No : 01",value=st.session_state.captured_units[0])
-            except:
-                load1=st.text_input("Unit No : 01")
-            try:
-                load2=st.text_input("Unit No : 02",value=st.session_state.captured_units[1])
-            except:
-                load2=st.text_input("Unit No : 02")
-            try:
-                load3=st.text_input("Unit No : 03",value=st.session_state.captured_units[2])
-            except:
-                load3=st.text_input("Unit No : 03")
-            try:
-                load4=st.text_input("Unit No : 04",value=st.session_state.captured_units[3])
-            except:
-                load4=st.text_input("Unit No : 04")
-            try:
-                load5=st.text_input("Unit No : 05",value=st.session_state.captured_units[4])
-            except:
-                load5=st.text_input("Unit No : 05")
+        
+        try:
+            load1=st.text_input("Unit No : 01",value=st.session_state.captured_units[0])
+        except:
+            load1=st.text_input("Unit No : 01")
+        try:
+            load2=st.text_input("Unit No : 02",value=st.session_state.captured_units[1])
+        except:
+            load2=st.text_input("Unit No : 02")
+        try:
+            load3=st.text_input("Unit No : 03",value=st.session_state.captured_units[2])
+        except:
+            load3=st.text_input("Unit No : 03")
+        try:
+            load4=st.text_input("Unit No : 04",value=st.session_state.captured_units[3])
+        except:
+            load4=st.text_input("Unit No : 04")
+        try:
+            load5=st.text_input("Unit No : 05",value=st.session_state.captured_units[4])
+        except:
+            load5=st.text_input("Unit No : 05")
+        
+        
+     
+       
     with col5:
         
         load6=st.text_input("Unit No : 06")
@@ -138,12 +142,12 @@ with tab1:
             #st.write(i)
             try:
                 
-                Inventory.loc[Inventory["Unit_No"]==i,"Terminal"]="ON TRUCK"
-                Inventory.loc[Inventory["Unit_No"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
-                Inventory.loc[Inventory["Unit_No"]==i,"Vehicle_Id"]=vehicle_id
-                Inventory.loc[Inventory["Unit_No"]==i,"Release_Order_Number"]=release_order_number
-                Inventory.loc[Inventory["Unit_No"]==i,"Carrier_Code"]=carrier_code
-                Inventory.loc[Inventory["Unit_No"]==i,"BL"]=bill_of_lading
+                Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
+                Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
+                Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
+                Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
+                Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
+                Inventory.loc[Inventory["Lot"]==i,"BL"]=str(bill_of_lading)
             except:
                 st.write("Check Unit Number,Unit Not In Inventory")
             #st.write(vehicle_id)
@@ -163,6 +167,7 @@ with tab1:
 #             #st.write("hi")
         #st.write(Inventory[Inventory["Unit_No"]==i])
             
+        
         Inventory.to_excel(r"Inventory.xlsx", index=False)
         with open(f'Suzano_EDI_{a}_{release_order_number}.txt', 'w') as f:
             f.write(line1)
@@ -212,9 +217,10 @@ with tab1:
 with tab2:
     Inventory=pd.ExcelFile(r"Inventory.xlsx")
     Inventory=Inventory.parse()
+    
     dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-    df=Inventory[Inventory["Terminal"]=="POLY"][["Unit_No","Terminal","Warehouse_In"]]
-    zf=Inventory[Inventory["Terminal"]=="ON TRUCK"][["Unit_No","Release_Order_Number","Carrier_Code","BL",
+    df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Location","Warehouse_In"]]
+    zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Release_Order_Number","Carrier_Code","BL",
                                                      "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
     with dab1:
         
@@ -233,16 +239,18 @@ with tab2:
             
         else:
             st.session_state.disabled=True
-        filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=min([i.date() for i in zf["Warehouse_Out"]]), max_value=None,disabled=st.session_state.disabled,key="filter_date")
-        zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("int")
+            #min_value=min([i.date() for i in zf["Warehouse_Out"]])
+        filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
+        #st.write(zf)
+        #zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("int")
         zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("str")
         filtered_zf=zf.copy()
         if date_filter:
             filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
             filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
-        BL_filter=st.selectbox("Filter By Bill Of Lading",["ALL BILL OF LADINGS"]+[str(int(i)) for i in filtered_zf["BL"].unique().tolist()])
-        vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(int(i)) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
-        carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(int(i)) for i in filtered_zf["Carrier_Code"].unique().tolist()])
+        BL_filter=st.selectbox("Filter By Bill Of Lading",["ALL BILL OF LADINGS"]+[str(i) for i in filtered_zf["BL"].unique().tolist()])
+        vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
+        carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(i) for i in filtered_zf["Carrier_Code"].unique().tolist()])
         
         col1,col2=st.columns([2,8])
         with col1:
@@ -263,9 +271,6 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
-    conn = st.experimental_connection('gcs', type=FilesConnection)
-    df = conn.read("olym_suzano/Inventory.csv", input_format="csv", ttl=600)
-
-    # Print results.
-    
-    st.write(df)
+    Inventory=pd.ExcelFile(r"T:\suzano\Inventory.xlsx")
+    Inventory=Inventory.parse()
+    st.write(Inventory)
