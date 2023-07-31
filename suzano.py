@@ -118,7 +118,8 @@ with tab1:
     
     #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
     def output():
-        with open(fr'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+        #with open(fr'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+        with open('placeholder.txt', 'r') as f:
             output_text = f.read()
         return output_text
     def process():
@@ -169,7 +170,7 @@ with tab1:
             
         
         Inventory.to_excel(r"Inventory.xlsx", index=False)
-        with open(f'Suzano_EDI_{a}_{release_order_number}.txt', 'w') as f:
+        with open(f'placeholder.txt', 'w') as f:
             f.write(line1)
             f.write('\n')
             f.write(line2)
@@ -197,16 +198,16 @@ with tab1:
             f.write(end)
             
     try:
-        down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
+        down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name='placeholder.txt')
     except:
         pass        
     if st.button('SAVE/DISPLAY EDI'):
         process()
-        with open('Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+        with open('placeholder.txt', 'r') as f:
             output_text = f.read()
         st.markdown("**EDI TEXT**")
         st.text_area('', value=output_text, height=600)
-        with open('Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+        with open('placeholder.txt', 'r') as f:
             file_content = f.read()
             filename = f'Suzano_EDI_{a}_{release_order_number}'
             st.write(filename)
@@ -277,6 +278,6 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
-    Inventory=pd.ExcelFile(r"Inventory.xlsx")
+    Inventory=pd.ExcelFile("Inventory.xlsx")
     Inventory=Inventory.parse()
     st.write(Inventory)
