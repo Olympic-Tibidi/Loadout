@@ -127,50 +127,24 @@ with tab1:
             output_text = f.read()
         return output_text
     
-    def send_email_with_attachment(subject, body, sender, recipients, password, file_path):
+    def send_email_with_attachment(subject, body, sender, recipients, password, file_content):
         msg = MIMEMultipart()
         msg['Subject'] = subject
         msg['From'] = sender
         msg['To'] = ', '.join(recipients)
-
-        # Attach the text body to the message
+    
+        # Attach the body of the email as text
         msg.attach(MIMEText(body, 'plain'))
-
-        # Attach the file to the message
-        with open(file_path, "rb") as file:
-            part = MIMEApplication(file.read())
-            part.add_header('Content-Disposition', 'attachment', filename=file_path)
-            msg.attach(part)
-
+    
+        # Create a new MIME application object and set the file content as its payload
+        attachment = MIMEApplication(file_content)
+        attachment.add_header('Content-Disposition', 'attachment', filename='file.txt')
+        msg.attach(attachment)
+    
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
             smtp_server.login(sender, password)
             smtp_server.sendmail(sender, recipients, msg.as_string())
-        st.write("Message sent!")
-
-    def send_email_with_attachment(subject, body, sender, recipients, password, file_content):
-        msg = MIMEText(file_content, 'plain', 'utf-8') 
-        msg['Subject'] = subject
-        msg['From'] = sender
-        msg['To'] = ', '.join(recipients)
-
-        # Attach the file content directly as the email body
-        msg.attach(MIMEText(file_content))
-
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
-            smtp_server.login(sender, password)
-            smtp_server.sendmail(sender, recipients, msg.as_string())
-        st.write("Message sent!")
-        
-    def update_github_excel(file_path, content):
-    # Replace 'YOUR_GITHUB_TOKEN' with your actual GitHub token
-        g = Github("YOUR_GITHUB_TOKEN")
-        repo = g.get_repo("your-username/your-repo-name")
-
-        # Fetch the Excel file
-        file = repo.get_contents(file_path)
-
-        # Update the file content
-        repo.update_file(file_path, "Update inventory data", content, file.sha)
+        print("Message sent!")
 
     def process():
         line1="1HDR:"+a+b+terminal_code
