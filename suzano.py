@@ -222,7 +222,7 @@ with tab1:
 #                 f.write('\n')
 #                 f.write(loadl10)
 #                 f.write('\n')
-#                 f.write(end)
+            f.write(end)
             
     try:
         down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}')
