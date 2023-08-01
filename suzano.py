@@ -4,9 +4,12 @@ import streamlit.components.v1 as components
 import numpy as np
 from st_files_connection import FilesConnection
 import gcsfs
+from github import Github
 
-
-
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 
 
 
@@ -123,6 +126,40 @@ with tab1:
         with open('placeholder.txt', 'r') as f:
             output_text = f.read()
         return output_text
+    
+    def send_email_with_attachment(subject, body, sender, recipients, password, file_path):
+        msg = MIMEMultipart()
+        msg['Subject'] = subject
+        msg['From'] = sender
+        msg['To'] = ', '.join(recipients)
+
+        # Attach the text body to the message
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Attach the file to the message
+        with open(file_path, "rb") as file:
+            part = MIMEApplication(file.read())
+            part.add_header('Content-Disposition', 'attachment', filename=file_path)
+            msg.attach(part)
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
+            smtp_server.login(sender, password)
+            smtp_server.sendmail(sender, recipients, msg.as_string())
+        st.write("Message sent!")
+
+    
+    
+    def update_github_excel(file_path, content):
+    # Replace 'YOUR_GITHUB_TOKEN' with your actual GitHub token
+        g = Github("YOUR_GITHUB_TOKEN")
+        repo = g.get_repo("your-username/your-repo-name")
+
+        # Fetch the Excel file
+        file = repo.get_contents(file_path)
+
+        # Update the file content
+        repo.update_file(file_path, "Update inventory data", content, file.sha)
+
     def process():
         line1="1HDR:"+a+b+terminal_code
         tsn="01" if transport_sequential_number=="TRUCK" else "02"
@@ -192,8 +229,7 @@ with tab1:
 #             #st.write("hi")
         #st.write(Inventory[Inventory["Unit_No"]==i])
             
-        
-        Inventory.to_excel(r"Inventory.xlsx", index=False)
+        #        Inventory.to_excel(r"Inventory.xlsx", index=False)
         with open(f'placeholder.txt', 'w') as f:
             f.write(line1)
             f.write('\n')
@@ -238,7 +274,17 @@ with tab1:
             file_content = f.read()
             filename = f'Suzano_EDI_{a}_{release_order_number}'
             st.write(filename)
-      
+            subject = f'Suzano_EDI_{a}_{release_order_number}'
+            body = file_content
+            sender = "warehouseoly@gmail.com"
+            recipients = ["afsin1977@gmail.com", "afsiny@portolympia.com"]
+            password = "xjvxkmzbpotzeuuv"
+
+            file_path =f  # Replace with the actual file path
+
+
+            send_email_with_attachment(subject, body, sender, recipients, password, file_path)
+
 
         
 
