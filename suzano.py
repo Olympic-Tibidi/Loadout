@@ -127,7 +127,7 @@ with tab1:
             output_text = f.read()
         return output_text
     
-    def send_email_with_attachment(subject, body, sender, recipients, password, file_content):
+    def send_email_with_attachment(subject, body, sender, recipients, password, file_path):
         msg = MIMEMultipart()
         msg['Subject'] = subject
         msg['From'] = sender
@@ -136,8 +136,9 @@ with tab1:
         # Attach the body of the email as text
         msg.attach(MIMEText(body, 'plain'))
     
-        # Create a new MIME application object and set the file content as its payload
-        attachment = MIMEApplication(file_content)
+        # Read the file content and attach it as a text file
+        with open(file_path, 'r') as f:
+            attachment = MIMEText(f.read())
         attachment.add_header('Content-Disposition', 'attachment', filename='file.txt')
         msg.attach(attachment)
     
@@ -145,6 +146,7 @@ with tab1:
             smtp_server.login(sender, password)
             smtp_server.sendmail(sender, recipients, msg.as_string())
         print("Message sent!")
+
 
     def process():
         line1="1HDR:"+a+b+terminal_code
@@ -254,22 +256,27 @@ with tab1:
         process()
         with open('placeholder.txt', 'r') as f:
             output_text = f.read()
-            st.markdown("**EDI TEXT**")
-            st.text_area('', value=output_text, height=600)
-        
-            file_content = f.read()
-            filename = f'Suzano_EDI_{a}_{release_order_number}'
-            st.write(filename)
-            subject = f'Suzano_EDI_{a}_{release_order_number}'
-            body = output_text
-            sender = "warehouseoly@gmail.com"
-            recipients = ["afsin1977@gmail.com", "afsiny@portolympia.com"]
-            password = "xjvxkmzbpotzeuuv"
+        st.markdown("**EDI TEXT**")
+        st.text_area('', value=output_text, height=600)
+    
+        file_content = f.read()
+        filename = f'Suzano_EDI_{a}_{release_order_number}'
+        st.write(filename)
+        subject = f'Suzano_EDI_{a}_{release_order_number}'
+        body = output_text
+        sender = "warehouseoly@gmail.com"
+        recipients = ["afsin1977@gmail.com", "afsiny@portolympia.com"]
+        password = "xjvxkmzbpotzeuuv"
 
-              # Replace with the actual file path
+          # Replace with the actual file path
 
 
-            send_email_with_attachment(subject, body, sender, recipients, password, file_content)
+        with open('temp_file.txt', 'w') as f:
+            f.write(file_content)
+
+        file_path = 'temp_file.txt'  # Use the path of the temporary file
+
+        send_email_with_attachment(subject, body, sender, recipients, password, file_path)
 
 
         
