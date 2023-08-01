@@ -35,9 +35,7 @@ st. set_page_config(layout="wide")
 
 
 
-Inventory=pd.ExcelFile("Inventory.xlsx")
-#Inventory=pd.read_feather("kirkenes.ftr")
-Inventory=Inventory.parse()
+
 tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
 
 
@@ -54,7 +52,7 @@ with tab1:
         file_date=st.date_input("File Date",datetime.datetime.today(),key="file_dates")
         if file_date not in st.session_state:
             st.session_state.file_date=file_date
-        file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7))
+        file_time = st.time_input('FileTime', datetime.datetime.now())
         terminal_code=st.text_input("Terminal Code","OLYM")
         release_order_number=st.text_input("Release Order Number (FROM SUZANO)")
         
@@ -108,8 +106,10 @@ with tab1:
         load9=st.text_input("Unit No : 09")
         load10=st.text_input("Unit No : 10")
         
-    loads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
-    
+    gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
+    for i in gloads:
+        if i:
+            loads.append(i)
                       
     a=datetime.datetime.strftime(file_date,"%Y%m%d")
     
@@ -127,22 +127,34 @@ with tab1:
         tsn="01" if transport_sequential_number=="TRUCK" else "02"
         tt="0001" if transport_type=="TRUCK" else "0002"
         line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+bill_of_lading+" "*(50-len(bill_of_lading))+c
-        loadl1="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load1+" "*(10-len(load1))+"0"*16+str(quantity*100)
-        loadl2="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load2+" "*(10-len(load2))+"0"*16+str(quantity*100)
-        loadl3="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load3+" "*(10-len(load3))+"0"*16+str(quantity*100)
-        loadl4="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load4+" "*(10-len(load4))+"0"*16+str(quantity*100)
-        loadl5="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load5+" "*(10-len(load5))+"0"*16+str(quantity*100)
-        loadl6="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load6+" "*(10-len(load6))+"0"*16+str(quantity*100)
-        loadl7="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load7+" "*(10-len(load7))+"0"*16+str(quantity*100)
-        loadl8="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load8+" "*(10-len(load8))+"0"*16+str(quantity*100)
-        loadl9="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load9+" "*(10-len(load9))+"0"*16+str(quantity*100)
-        loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load10+" "*(10-len(load10))+"0"*16+str(quantity*100)
+        if load1:
+            loadl1="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load1+" "*(10-len(load1))+"0"*16+str(quantity*100)
+        if load2:
+            loadl2="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load2+" "*(10-len(load2))+"0"*16+str(quantity*100)
+        if load3:
+            loadl3="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load3+" "*(10-len(load3))+"0"*16+str(quantity*100)
+        if load4:
+            loadl4="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load4+" "*(10-len(load4))+"0"*16+str(quantity*100)
+        if load5:
+            loadl5="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load5+" "*(10-len(load5))+"0"*16+str(quantity*100)
+        if load6:
+            loadl6="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load6+" "*(10-len(load6))+"0"*16+str(quantity*100)
+        if load7:
+            loadl7="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load7+" "*(10-len(load7))+"0"*16+str(quantity*100)
+        if load8:
+           loadl8="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load8+" "*(10-len(load8))+"0"*16+str(quantity*100)
+        if load9:
+            loadl9="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load9+" "*(10-len(load9))+"0"*16+str(quantity*100)
+        if load10:
+            loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load10+" "*(10-len(load10))+"0"*16+str(quantity*100)
         end="9TRL:0013"
         
         for i in loads:
             #st.write(i)
             try:
-                
+                Inventory=pd.ExcelFile("Inventory.xlsx")
+                #Inventory=pd.read_feather("kirkenes.ftr")
+                Inventory=Inventory.parse()
                 Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
                 Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
                 Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
@@ -198,7 +210,7 @@ with tab1:
             f.write(end)
             
     try:
-        down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
+        down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}')
     except:
         pass        
     if st.button('SAVE/DISPLAY EDI'):
