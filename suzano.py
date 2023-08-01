@@ -116,7 +116,7 @@ with tab1:
     
     b=file_time.strftime("%H%M%S")
     c=datetime.datetime.strftime(eta_date,"%Y%m%d")
-    yukler={"load1":f"{loadl1}","load2":"loadl2","load3":"loadl3","load4":"loadl4","load5":"loadl5","load6":"loadl6","load7":"loadl7","load8":"loadl8","load9":"loadl9","load10":"loadl10"}
+    
     #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
     def output():
         #with open(fr'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
@@ -200,9 +200,9 @@ with tab1:
             f.write(line2)
             f.write('\n')
             
-            for i in loads:
+            for i in loadls:
                 
-                f.write(yukler[i])
+                f.write(i)
                 f.write('\n')
 #                 f.write(loadl2)
 #                 f.write('\n')
