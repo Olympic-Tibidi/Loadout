@@ -261,7 +261,7 @@ with tab1:
             filename = f'Suzano_EDI_{a}_{release_order_number}'
             st.write(filename)
             subject = f'Suzano_EDI_{a}_{release_order_number}'
-            body = file_content
+            body = output_text
             sender = "warehouseoly@gmail.com"
             recipients = ["afsin1977@gmail.com", "afsiny@portolympia.com"]
             password = "xjvxkmzbpotzeuuv"
