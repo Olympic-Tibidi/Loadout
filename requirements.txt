@@ -7,4 +7,4 @@ streamlit==1.24.1
 openpyxl
 gcsfs
 git+https://github.com/streamlit/files-connection
-
+smtplib
