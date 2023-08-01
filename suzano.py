@@ -266,7 +266,8 @@ with tab1:
         subject = f'Suzano_EDI_{a}_{release_order_number}'
         body = f"EDI for Release Order Number {release_order_number} is attached."
         sender = "warehouseoly@gmail.com"
-        recipients = ["afsin1977@gmail.com","alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+        #recipients = ["afsin1977@gmail.com","alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+        recipients = ["afsiny@portolympia.com"]
         password = "xjvxkmzbpotzeuuv"
 
           # Replace with the actual file path
