@@ -107,7 +107,7 @@ with tab1:
         load10=st.text_input("Unit No : 10")
         
     gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
-    loada=[]
+    loads=[]
     for i in gloads:
         if i:
             loads.append(i)
