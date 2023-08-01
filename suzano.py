@@ -4,12 +4,9 @@ import streamlit.components.v1 as components
 import numpy as np
 from st_files_connection import FilesConnection
 import gcsfs
-#from github import Github
+from github import Github
 
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.application import MIMEApplication
+
 
 
 
@@ -147,8 +144,20 @@ with tab1:
             smtp_server.sendmail(sender, recipients, msg.as_string())
         st.write("Message sent!")
 
-    
-    
+    def send_email_with_attachment(subject, body, sender, recipients, password, file_content):
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = sender
+        msg['To'] = ', '.join(recipients)
+
+        # Attach the file content directly as the email body
+        msg.attach(MIMEText(file_content))
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
+            smtp_server.login(sender, password)
+            smtp_server.sendmail(sender, recipients, msg.as_string())
+        st.write("Message sent!")
+        
     def update_github_excel(file_path, content):
     # Replace 'YOUR_GITHUB_TOKEN' with your actual GitHub token
         g = Github("YOUR_GITHUB_TOKEN")
@@ -268,9 +277,9 @@ with tab1:
         process()
         with open('placeholder.txt', 'r') as f:
             output_text = f.read()
-        st.markdown("**EDI TEXT**")
-        st.text_area('', value=output_text, height=600)
-        with open('placeholder.txt', 'r') as f:
+            st.markdown("**EDI TEXT**")
+            st.text_area('', value=output_text, height=600)
+        
             file_content = f.read()
             filename = f'Suzano_EDI_{a}_{release_order_number}'
             st.write(filename)
@@ -280,10 +289,10 @@ with tab1:
             recipients = ["afsin1977@gmail.com", "afsiny@portolympia.com"]
             password = "xjvxkmzbpotzeuuv"
 
-            file_path =f  # Replace with the actual file path
+              # Replace with the actual file path
 
 
-            send_email_with_attachment(subject, body, sender, recipients, password, file_path)
+            send_email_with_attachment(subject, body, sender, recipients, password, file_content)
 
 
         
