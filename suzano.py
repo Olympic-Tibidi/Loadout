@@ -107,7 +107,7 @@ with tab1:
         load10=st.text_input("Unit No : 10")
         
     gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
-    loads=[]
+    loada=[]
     for i in gloads:
         if i:
             loads.append(i)
@@ -116,7 +116,7 @@ with tab1:
     
     b=file_time.strftime("%H%M%S")
     c=datetime.datetime.strftime(eta_date,"%Y%m%d")
-    
+    yukler={"load1":f"{loadl1}","load2":"loadl2","load3":"loadl3","load4":"loadl4","load5":"loadl5","load6":"loadl6","load7":"loadl7","load8":"loadl8","load9":"loadl9","load10":"loadl10"}
     #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
     def output():
         #with open(fr'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
@@ -187,28 +187,31 @@ with tab1:
             f.write(line1)
             f.write('\n')
             f.write(line2)
-            f.write('\n') 
-            f.write(loadl1)
             f.write('\n')
-            f.write(loadl2)
-            f.write('\n')
-            f.write(loadl3)
-            f.write('\n')
-            f.write(loadl4)
-            f.write('\n')
-            f.write(loadl5)
-            f.write('\n')
-            f.write(loadl6)
-            f.write('\n')
-            f.write(loadl7)
-            f.write('\n')
-            f.write(loadl8)
-            f.write('\n')
-            f.write(loadl9)
-            f.write('\n')
-            f.write(loadl10)
-            f.write('\n')
-            f.write(end)
+            
+            for i in loads:
+                
+                f.write(yukler[i])
+                f.write('\n')
+#                 f.write(loadl2)
+#                 f.write('\n')
+#                 f.write(loadl3)
+#                 f.write('\n')
+#                 f.write(loadl4)
+#                 f.write('\n')
+#                 f.write(loadl5)
+#                 f.write('\n')
+#                 f.write(loadl6)
+#                 f.write('\n')
+#                 f.write(loadl7)
+#                 f.write('\n')
+#                 f.write(loadl8)
+#                 f.write('\n')
+#                 f.write(loadl9)
+#                 f.write('\n')
+#                 f.write(loadl10)
+#                 f.write('\n')
+#                 f.write(end)
             
     try:
         down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}')
