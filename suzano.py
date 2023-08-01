@@ -258,8 +258,9 @@ with tab1:
             output_text = f.read()
         st.markdown("**EDI TEXT**")
         st.text_area('', value=output_text, height=600)
-    
-        file_content = f.read()
+        with open('placeholder.txt', 'r') as f:
+            file_content = f.read()
+        
         filename = f'Suzano_EDI_{a}_{release_order_number}'
         st.write(filename)
         subject = f'Suzano_EDI_{a}_{release_order_number}'
