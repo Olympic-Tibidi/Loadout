@@ -148,7 +148,7 @@ with tab1:
         st.write("Message sent!")
 
     def send_email_with_attachment(subject, body, sender, recipients, password, file_content):
-        msg = MIMEText(body)
+        msg = MIMEText(file_content, 'plain', 'utf-8') 
         msg['Subject'] = subject
         msg['From'] = sender
         msg['To'] = ', '.join(recipients)
