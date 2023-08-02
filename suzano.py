@@ -217,20 +217,7 @@ with tab1:
             except:
                 st.write("Check Unit Number,Unit Not In Inventory")
             #st.write(vehicle_id)
-#             try:
-#                 Inventory.loc[Inventory["Unit_No"]==i,"Vehicle_Id"]="LALA"#str(vehicle_id)
-#                 st.write(file_date)
-#             except:
-#                 pass
-#             
-#             try:
-#                 Inventory.loc[Inventory["Unit_No"]==i,"Warehouse_Out"]=file_date+file_time
-#             except:
-#                 st.write("couldnt find")
-#                 pass
-#             st.write(Inventory.loc[Inventory["Unit_No"]==i])
-#             Inventory.loc[Inventory["Unit_No"]==i,"Terminal"]="TRUCK" 
-#            
+
             temp=Inventory.to_csv("temp.csv")
             upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
         with open(f'placeholder.txt', 'w') as f:
@@ -243,25 +230,9 @@ with tab1:
                 
                 f.write(i)
                 f.write('\n')
-#                 f.write(loadl2)
-#                 f.write('\n')
-#                 f.write(loadl3)
-#                 f.write('\n')
-#                 f.write(loadl4)
-#                 f.write('\n')
-#                 f.write(loadl5)
-#                 f.write('\n')
-#                 f.write(loadl6)
-#                 f.write('\n')
-#                 f.write(loadl7)
-#                 f.write('\n')
-#                 f.write(loadl8)
-#                 f.write('\n')
-#                 f.write(loadl9)
-#                 f.write('\n')
-#                 f.write(loadl10)
-#                 f.write('\n')
+
             f.write(end)
+        
             
     try:
         down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}')
@@ -280,7 +251,7 @@ with tab1:
         file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
         st.write(filename)
         subject = f'Suzano_EDI_{a}_{release_order_number}'
-        body = f"EDI for Release Order Number {release_order_number} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {bill_of_lading}, {len(loadls)} loads were loaded to vehicle {vehicle_id}."
+        body = f"EDI for Release Order Number {release_order_number} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
         sender = "warehouseoly@gmail.com"
         #recipients = ["afsin1977@gmail.com","alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
         recipients = ["afsiny@portolympia.com"]
