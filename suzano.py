@@ -335,6 +335,7 @@ with tab2:
         #st.write(zf)
         #zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("int")
         zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("str")
+        zf["Warehouse_Out"]=zf["Warehouse_Out"].astype("datetime")
         filtered_zf=zf.copy()
         if date_filter:
             filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
