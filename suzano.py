@@ -300,8 +300,8 @@ with tab1:
         
                 
 with tab2:
-    Inventory=pd.ExcelFile(r"Inventory.xlsx")
-    Inventory=Inventory.parse()
+    Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+    
     
     dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
     df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Location","Warehouse_In"]]
