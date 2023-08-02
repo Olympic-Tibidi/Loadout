@@ -141,7 +141,7 @@ with tab1:
         # Read the file content and attach it as a text file
         with open(file_path, 'r') as f:
             attachment = MIMEText(f.read())
-        attachment.add_header('Content-Disposition', 'attachment', filename='file.txt')
+        attachment.add_header('Content-Disposition', 'attachment', filename=file_name)
         msg.attach(attachment)
     
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
@@ -295,7 +295,7 @@ with tab1:
         file_path = 'temp_file.txt'  # Use the path of the temporary file
 
         send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
-        upload_cs_file("olym_suzano", 'temp_file.txt',f"file_name") 
+        upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
 
         
 
