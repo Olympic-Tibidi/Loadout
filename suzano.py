@@ -195,13 +195,11 @@ with tab1:
             loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load10+" "*(10-len(load10))+"0"*16+str(quantity*100)
             loadls.append(loadl10)
         end="9TRL:0013"
-        
+        Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
         for i in loads:
             #st.write(i)
             try:
-                Inventory=pd.ExcelFile("Inventory.xlsx")
-                #Inventory=pd.read_feather("kirkenes.ftr")
-                Inventory=Inventory.parse()
+                  
                 Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
                 Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
                 Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
