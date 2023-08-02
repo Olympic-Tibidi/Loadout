@@ -280,7 +280,7 @@ with tab1:
         file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
         st.write(filename)
         subject = f'Suzano_EDI_{a}_{release_order_number}'
-        body = f"EDI for Release Order Number {release_order_number} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {bill_of_lading}, {len(loadls) loads were loaded."
+        body = f"EDI for Release Order Number {release_order_number} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {bill_of_lading}, {len(loadls)} loads were loaded."
         sender = "warehouseoly@gmail.com"
         #recipients = ["afsin1977@gmail.com","alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
         recipients = ["afsiny@portolympia.com"]
