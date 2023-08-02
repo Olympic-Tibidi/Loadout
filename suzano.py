@@ -9,7 +9,9 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 import smtplib
 
-
+from google.cloud import storage
+import os
+import io
 
 
 
@@ -146,7 +148,15 @@ with tab1:
             smtp_server.login(sender, password)
             smtp_server.sendmail(sender, recipients, msg.as_string())
         print("Message sent!")
-
+    
+    def gcp_csv_to_df(bucket_name, source_file_name):
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob("Inventory.csv")
+        data = blob.download_as_bytes()
+        df = pd.read_csv(io.BytesIO(data))
+        print(f'Pulled down file from bucket {bucket_name}, file name: {source_file_name}')
+        return df
 
     def process():
         line1="1HDR:"+a+b+terminal_code
@@ -346,6 +356,5 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
-    Inventory=pd.ExcelFile("Inventory.xlsx")
-    Inventory=Inventory.parse()
-    st.write(Inventory)
+    df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+    st.write(df)
