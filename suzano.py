@@ -157,7 +157,15 @@ with tab1:
         df = pd.read_csv(io.BytesIO(data))
         print(f'Pulled down file from bucket {bucket_name}, file name: {source_file_name}')
         return df
+    def upload_cs_file(bucket_name, source_file_name, destination_file_name): 
+        storage_client = storage.Client()
+    
+        bucket = storage_client.bucket(bucket_name)
+    
+        blob = bucket.blob(destination_file_name)
+        blob.upload_from_filename(source_file_name)
 
+    return True
     def process():
         line1="1HDR:"+a+b+terminal_code
         tsn="01" if transport_sequential_number=="TRUCK" else "02"
@@ -224,8 +232,8 @@ with tab1:
 #             Inventory.loc[Inventory["Unit_No"]==i,"Terminal"]="TRUCK" 
 #             #st.write("hi")
         #st.write(Inventory[Inventory["Unit_No"]==i])
-            
-        #        Inventory.to_excel(r"Inventory.xlsx", index=False)
+              temp=Inventory.to_csv("Inventory.csv")
+              upload_cs_file("olym_suzano", "Inventory.csv")): 
         with open(f'placeholder.txt', 'w') as f:
             f.write(line1)
             f.write('\n')
