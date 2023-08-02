@@ -356,5 +356,5 @@ with tab2:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
         st.table(filtered_zf)
 with tab3:
-    df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-    st.write(df)
+    gcp_csv_to_df("olym_suzano", "Inventory.csv")
+    
