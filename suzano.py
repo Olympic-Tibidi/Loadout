@@ -230,10 +230,9 @@ with tab1:
 #                 pass
 #             st.write(Inventory.loc[Inventory["Unit_No"]==i])
 #             Inventory.loc[Inventory["Unit_No"]==i,"Terminal"]="TRUCK" 
-#             #st.write("hi")
-        #st.write(Inventory[Inventory["Unit_No"]==i])
-              temp=Inventory.to_csv("Inventory.csv")
-              upload_cs_file("olym_suzano", "Inventory.csv")): 
+#            
+            temp=Inventory.to_csv("Inventory.csv")
+            upload_cs_file("olym_suzano", "Inventory.csv")): 
         with open(f'placeholder.txt', 'w') as f:
             f.write(line1)
             f.write('\n')
