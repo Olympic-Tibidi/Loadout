@@ -129,7 +129,7 @@ with tab1:
             output_text = f.read()
         return output_text
     
-    def send_email_with_attachment(subject, body, sender, recipients, password, file_path):
+    def send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name):
         msg = MIMEMultipart()
         msg['Subject'] = subject
         msg['From'] = sender
@@ -277,6 +277,7 @@ with tab1:
             file_content = f.read()
         
         filename = f'Suzano_EDI_{a}_{release_order_number}'
+        file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
         st.write(filename)
         subject = f'Suzano_EDI_{a}_{release_order_number}'
         body = f"EDI for Release Order Number {release_order_number} is attached."
@@ -293,8 +294,8 @@ with tab1:
 
         file_path = 'temp_file.txt'  # Use the path of the temporary file
 
-        send_email_with_attachment(subject, body, sender, recipients, password, file_path)
-
+        send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
+        upload_cs_file("olym_suzano", 'temp_file.txt',f"file_name") 
 
         
 
