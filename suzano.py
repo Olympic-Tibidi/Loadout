@@ -36,7 +36,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 
 st. set_page_config(layout="wide")
 
-
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
 
 
