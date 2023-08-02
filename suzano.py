@@ -232,7 +232,7 @@ with tab1:
 #             Inventory.loc[Inventory["Unit_No"]==i,"Terminal"]="TRUCK" 
 #            
             temp=Inventory.to_csv("Inventory.csv")
-            upload_cs_file("olym_suzano", "Inventory.csv") 
+            upload_cs_file("olym_suzano", temp,"Inventory.csv") 
         with open(f'placeholder.txt', 'w') as f:
             f.write(line1)
             f.write('\n')
