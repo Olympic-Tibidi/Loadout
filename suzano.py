@@ -164,8 +164,8 @@ with tab1:
     
         blob = bucket.blob(destination_file_name)
         blob.upload_from_filename(source_file_name)
-
-    return True
+        return True
+        
     def process():
         line1="1HDR:"+a+b+terminal_code
         tsn="01" if transport_sequential_number=="TRUCK" else "02"
