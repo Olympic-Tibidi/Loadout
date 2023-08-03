@@ -74,7 +74,7 @@ def check_password():
             st.error("😕 User not known or password incorrect")
         return False
     else:
-        username=st.text_input("Username", on_change=password_entered, key="username")
+        username=st.text_input("Username",key="username")
         # Password correct.
         if username == "afsin":
             role = "afsin"
