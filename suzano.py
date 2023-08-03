@@ -87,7 +87,7 @@ def check_password():
         else:
             role = "guest"  # For users with unknown roles or unauthorized access
     
-        return username,role
+        return True,username,role
         
 
 def authenticate_user(username, password):
@@ -710,18 +710,19 @@ def show_customer_layout():
                     
     
     
-a,b=check_password()
-                   
-if a == 'afsin':
-    show_gate_layout()
-elif a == 'gatehouse':
-    show_gate_layout()
-elif a == 'warehouse':
-    show_clerk_layout()
-elif a == 'suzano':
-    show_customer_layout()
-else:
-    st.error("Unauthorized access!")
+ok,a,b=check_password()
+if ok:
+                       
+    if a == 'afsin':
+        show_gate_layout()
+    elif a == 'gatehouse':
+        show_gate_layout()
+    elif a == 'warehouse':
+        show_clerk_layout()
+    elif a == 'suzano':
+        show_customer_layout()
+    else:
+        st.error("Unauthorized access!")
 
     
     
