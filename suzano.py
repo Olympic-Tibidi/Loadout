@@ -79,7 +79,7 @@ if check_password():
     
     if user=="afsin" or  user=="gatehouse":
         
-        st.write(user,upper())
+        st.write(user.upper())
         tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
         
         
