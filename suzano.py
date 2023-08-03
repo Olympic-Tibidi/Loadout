@@ -83,7 +83,7 @@ def authenticate_user(username, password):
         # Example: Determine the user's role based on their username.
         if username == "afsin":
             role = "afsin"
-        eliif username == "gatehouse":
+        elif username == "gatehouse":
             role = "gatehouse"
         elif username == "warehouse":
             role = "clerk"
