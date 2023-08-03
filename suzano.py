@@ -77,7 +77,7 @@ def check_password():
 if check_password():
     user=st.session_state["current_user"]
     st.write(user)
-    if user=="afsin" or if user=="gatehouse":
+    if user=="afsin" or  user=="gatehouse":
         
 
         tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
