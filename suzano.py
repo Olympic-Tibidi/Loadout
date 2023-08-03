@@ -714,17 +714,18 @@ def show_customer_layout():
     
 ok,a,b=check_password()
 if ok:
+    show_gate_layout()
                        
-    if a == 'afsin':
-        show_gate_layout()
-    elif a == 'gatehouse':
-        show_gate_layout()
-    elif a == 'warehouse':
-        show_clerk_layout()
-    elif a == 'suzano':
-        show_customer_layout()
-    else:
-        st.error("Unauthorized access!")
+    #if a == 'afsin':
+   #     show_gate_layout()
+   # elif a == 'gatehouse':
+   #     show_gate_layout()
+  #  elif a == 'warehouse':
+ #       show_clerk_layout()
+ #   elif a == 'suzano':
+ #       show_customer_layout()
+ #   else:
+ #       st.error("Unauthorized access!")
 
     
     
