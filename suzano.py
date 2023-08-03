@@ -39,7 +39,7 @@ st. set_page_config(layout="wide")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
 def check_password():
-    """Returns `True` if the user had a correct password."""
+    """Returns a tuple (is_authenticated, username, role)."""
 
     def password_entered():
         """Checks whether a password entered by the user is correct."""
@@ -52,6 +52,19 @@ def check_password():
             del st.session_state["password"]  # don't store username + password
             st.session_state["current_user"] = st.session_state["username"]
             del st.session_state["username"]
+            # Determine the role based on the entered username
+            username = st.session_state["current_user"]
+            if username == "afsin":
+                role = "afsin"
+            elif username == "gatehouse":
+                role = "gatehouse"
+            elif username == "warehouse":
+                role = "clerk"
+            elif username == "suzano":
+                role = "suzano"
+            else:
+                role = "guest"  # For users with unknown roles or unauthorized access
+            st.session_state["role"] = role
         else:
             st.session_state["password_correct"] = False
             st.session_state["form_submitted"] = True
@@ -63,7 +76,7 @@ def check_password():
             "Password", type="password", on_change=password_entered, key="password"
         )
         st.session_state["form_submitted"] = False
-        return False
+        return False, None, None
     elif not st.session_state["password_correct"]:
         # Password not correct, show input + error only if form is submitted.
         st.text_input("Username", on_change=password_entered, key="username")
@@ -72,22 +85,11 @@ def check_password():
         )
         if st.session_state["form_submitted"]:
             st.error("😕 User not known or password incorrect")
-        return False
+        return False, None, None
     else:
-        username=st.text_input("Username",key="username")
         # Password correct.
-        if username == "afsin":
-            role = "afsin"
-        elif username == "gatehouse":
-            role = "gatehouse"
-        elif username == "warehouse":
-            role = "clerk"
-        elif username == "suzano":
-            role = "suzano"
-        else:
-            role = "guest"  # For users with unknown roles or unauthorized access
-    
-        return True,username,role
+        return True, st.session_state["current_user"], st.session_state["role"]
+
         
 
 def authenticate_user(username, password):
