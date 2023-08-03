@@ -37,6 +37,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 st. set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
+
 def check_password():
     """Returns `True` if the user had a correct password."""
 
@@ -73,8 +74,21 @@ def check_password():
             st.error("😕 User not known or password incorrect")
         return False
     else:
+        username=st.text_input("Username", on_change=password_entered, key="username")
         # Password correct.
-        return True
+        if username == "afsin":
+            role = "afsin"
+        elif username == "gatehouse":
+            role = "gatehouse"
+        elif username == "warehouse":
+            role = "clerk"
+        elif username == "suzano":
+            role = "suzano"
+        else:
+            role = "guest"  # For users with unknown roles or unauthorized access
+    
+        return {"username": username, "role": role}
+        
 
 def authenticate_user(username, password):
         # ... Your authentication logic here ...
@@ -696,40 +710,18 @@ def show_customer_layout():
                     
     
     
-if check_password():
-       
-    is_authenticated = False
-    user_info = None
-    if "user_info" not in st.session_state:
-        st.session_state.user_info = None
+user_info=check_password()
+                   
+if user_info['role'] == 'afsin':
+    show_gate_layout()
+if user_info['role'] == 'gatehouse':
+    show_gate_layout()
+elif user_info['role'] == 'warehouse':
+    show_clerk_layout()
+elif user_info['role'] == 'suzano':
+    show_customer_layout()
+else:
+    st.error("Unauthorized access!")
 
-    if st.session_state.user_info is None:
-        username = st.text_input("Uservcvcvname")
-        password = st.text_input("Password", type="password")
-        if st.button("Login"):
-            user_info = authenticate_user(username, password)
-            if user_info:
-                st.session_state.user_info = user_info
-                is_authenticated = True
-            else:
-                st.error("Invalid credentials. Please try again.")
-    else:
-        user_info = st.session_state.user_info
-        is_authenticated = True
-
-    if is_authenticated:
-        st.write(f"Welcome, {user_info['username']}!")
-        
-        if user_info['role'] == 'afsin':
-            show_afs_layout()
-        if user_info['role'] == 'gatehouse':
-            show_gate_layout()
-        elif user_info['role'] == 'warehouse':
-            show_clerk_layout()
-        elif user_info['role'] == 'suzano':
-            show_customer_layout()
-        else:
-            st.error("Unauthorized access!")
-    
     
     
