@@ -38,7 +38,7 @@ st. set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
-import streamlit as st
+
 
 def check_password():
     """Returns `True` if the user had a correct password."""
@@ -61,7 +61,7 @@ def check_password():
 
     if "password_correct" not in st.session_state:
         # First run, show inputs for username + password.
-        st.text_input("Username", on_change=password_entered, key="username")
+        st.text_input("Username", on_change=password_entered, key="username1")
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
@@ -78,8 +78,6 @@ def check_password():
         # Password correct.
         return True
 
-if check_password():
-    user = st.session_state["current_user"]
 
 
 if check_password():
