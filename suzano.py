@@ -72,7 +72,7 @@ def check_password():
     else:
         # Password correct.
         return True
-if check_password:
+if check_password():
     
 
 
