@@ -49,10 +49,11 @@ def check_password():
         ):
             st.session_state["password_correct"] = True
             del st.session_state["password"]  # don't store username + password
-            st.session_state["current_user"]=st.session_state["username"]
+            st.session_state["current_user"] = st.session_state["username"]
             del st.session_state["username"]
         else:
             st.session_state["password_correct"] = False
+            st.session_state["form_submitted"] = True
 
     if "password_correct" not in st.session_state:
         # First run, show inputs for username + password.
@@ -60,18 +61,21 @@ def check_password():
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
+        st.session_state["form_submitted"] = False
         return False
     elif not st.session_state["password_correct"]:
-        # Password not correct, show input + error.
+        # Password not correct, show input + error only if form is submitted.
         st.text_input("Username", on_change=password_entered, key="username")
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
-        st.error("😕 User not known or password incorrect")
+        if st.session_state["form_submitted"]:
+            st.error("😕 User not known or password incorrect")
         return False
     else:
         # Password correct.
         return True
+
 if check_password():
     
 
