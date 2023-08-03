@@ -40,53 +40,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
 
 
-def check_password():
-    """Returns `True` if the user had a correct password."""
-
-    def password_entered():
-        """Checks whether a password entered by the user is correct."""
-        entered_username = st.session_state["username"]
-        entered_password = st.session_state["password"]
-        passwords = st.secrets["passwords"]
-    
-        print(f"Entered Username: {entered_username}")
-        print(f"Entered Password: {entered_password}")
-        print(f"Stored Passwords: {passwords}")
-    
-        if entered_username in passwords and entered_password == passwords[entered_username]:
-            st.session_state["password_correct"] = True
-            st.session_state["current_user"] = entered_username
-            st.write("Login successful.")
-        else:
-            st.session_state["password_correct"] = False
-            st.write("Login failed.")
-
-    if "password_correct" not in st.session_state:
-        # First run, show inputs for username + password.
-        st.text_input("Username", key="username")
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
-        return False
-    elif not st.session_state["password_correct"]:
-        # Password not correct, show input + error.
-        st.text_input("Username",  key="username")
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
-        st.error("😕 User not known or password incorrect")
-        return False
-    else:
-        # Password correct.
-        return True
-
-# Access the secrets
-passwords = st.secrets["passwords"]
-
-
-# Print the secrets to verify if they are accessible
-st.write("Passwords:", passwords)
-
+user="a"
     
 if user :
     
