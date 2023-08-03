@@ -76,11 +76,61 @@ def check_password():
         # Password correct.
         return True
 
+def authenticate_user(username, password):
+        # ... Your authentication logic here ...
+    
+        # Assuming you can identify the user's role after authentication.
+        # Example: Determine the user's role based on their username.
+        if username == "gat_user":
+            role = "gat"
+        elif username == "clerk_user":
+            role = "clerk"
+        elif username == "customer_user":
+            role = "customer"
+        else:
+            role = "guest"  # For users with unknown roles or unauthorized access
+    
+        return {"username": username, "role": role}
+
 
 if check_password():
+    def authenticate_user(username, password):
+        # ... Your authentication logic here ...
     
+        # Assuming you can identify the user's role after authentication.
+        # Example: Determine the user's role based on their username.
+        if username == "gat_user":
+            role = "gat"
+        elif username == "clerk_user":
+            role = "clerk"
+        elif username == "customer_user":
+            role = "customer"
+        else:
+            role = "guest"  # For users with unknown roles or unauthorized access
+    
+        return {"username": username, "role": role}
 
+    is_authenticated = False
+    user_info = None
+    if "user_info" not in st.session_state:
+        st.session_state.user_info = None
 
+    if st.session_state.user_info is None:
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        if st.button("Login"):
+            user_info = authenticate_user(username, password)
+            if user_info:
+                st.session_state.user_info = user_info
+                is_authenticated = True
+            else:
+                st.error("Invalid credentials. Please try again.")
+    else:
+        user_info = st.session_state.user_info
+        is_authenticated = True
+
+    if is_authenticated:
+        st.write(f"Welcome, {user_info['username']}!")
 
     tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
     
