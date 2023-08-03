@@ -80,9 +80,17 @@ def check_password():
         # Password correct.
         return True
 
-if check_password():
-    user = st.session_state["current_user"]
+# Access the secrets
+passwords = st.secrets["passwords"]
+type = st.secrets["type"]
+project_id = st.secrets["project_id"]
+# Add other secrets as needed
 
+# Print the secrets to verify if they are accessible
+st.write("Passwords:", passwords)
+st.write("Type:", type)
+st.write("Project ID:", project_id)
+# Print other secrets as needed
     
     if user :
         
