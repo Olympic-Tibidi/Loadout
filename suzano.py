@@ -712,9 +712,21 @@ def show_customer_layout():
                     
     
     
-ok,a,b=check_password()
-if ok:
-    show_gate_layout()
+result=check_password()
+if result[0]:
+    username= result[1]
+    if username == 'afsin':
+        show_gate_layout()
+    elif username == 'gatehouse':
+        show_gate_layout()
+    elif username == 'warehouse':
+        show_clerk_layout()
+    elif username == 'suzano':
+        show_customer_layout()
+    else:
+        st.error("Unauthorized access!")
+else:
+    st.error("Authentication failed. Please try again.")
                        
     #if a == 'afsin':
    #     show_gate_layout()
