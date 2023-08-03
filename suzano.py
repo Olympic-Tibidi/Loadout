@@ -41,11 +41,9 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
 
 def check_password():
-    
     """Returns `True` if the user had a correct password."""
 
     def password_entered():
-        
         """Checks whether a password entered by the user is correct."""
         if (
             st.session_state["username"] in st.secrets["passwords"]
@@ -53,8 +51,7 @@ def check_password():
             == st.secrets["passwords"][st.session_state["username"]]
         ):
             st.session_state["password_correct"] = True
-            del st.session_state["password"]  # don't store username + password
-            del st.session_state["username"]
+            st.session_state["current_user"] = st.session_state["username"]
         else:
             st.session_state["password_correct"] = False
 
