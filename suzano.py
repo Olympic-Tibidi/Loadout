@@ -52,8 +52,10 @@ def check_password():
         ):
             st.session_state["password_correct"] = True
             st.session_state["current_user"] = st.session_state["username"]
+            st.write("this happened")
         else:
             st.session_state["password_correct"] = False
+            st.write("this happened actually")
 
     if "password_correct" not in st.session_state:
         # First run, show inputs for username + password.
