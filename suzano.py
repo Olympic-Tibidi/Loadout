@@ -694,16 +694,15 @@ def show_customer_layout():
                     
     
     
-
 if check_password():
-    
+       
     is_authenticated = False
     user_info = None
     if "user_info" not in st.session_state:
         st.session_state.user_info = None
 
     if st.session_state.user_info is None:
-        username = st.text_input("Username")
+        username = st.text_input("Uservcvcvname")
         password = st.text_input("Password", type="password")
         if st.button("Login"):
             user_info = authenticate_user(username, password)
