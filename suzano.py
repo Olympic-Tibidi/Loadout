@@ -38,18 +38,24 @@ st. set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
+import streamlit as st
+
 def check_password():
     """Returns `True` if the user had a correct password."""
 
     def password_entered():
         """Checks whether a password entered by the user is correct."""
-        if (
-            st.session_state["username"] in st.secrets["passwords"]
-            and st.session_state["password"]
-            == st.secrets["passwords"][st.session_state["username"]]
-        ):
+        entered_username = st.session_state["username"]
+        entered_password = st.session_state["password"]
+        passwords = st.secrets["passwords"]
+
+        print(f"Entered Username: {entered_username}")
+        print(f"Entered Password: {entered_password}")
+        print(f"Stored Passwords: {passwords}")
+
+        if entered_username in passwords and entered_password == passwords[entered_username]:
             st.session_state["password_correct"] = True
-            st.session_state["current_user"] = st.session_state["username"]
+            st.session_state["current_user"] = entered_username
         else:
             st.session_state["password_correct"] = False
 
@@ -71,6 +77,10 @@ def check_password():
     else:
         # Password correct.
         return True
+
+if check_password():
+    user = st.session_state["current_user"]
+
 
 if check_password():
     user=st.session_state["current_user"]
