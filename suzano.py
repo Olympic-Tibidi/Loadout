@@ -65,9 +65,9 @@ def check_password():
         return False
     elif not st.session_state["password_correct"]:
         # Password not correct, show input + error only if form is submitted.
-        st.text_input("Username", on_change=password_entered, key="username")
+        st.text_input("Username", key="username")
         st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
+            "Password", type="password", key="password"
         )
         if st.session_state["form_submitted"]:
             st.error("😕 User not known or password incorrect")
