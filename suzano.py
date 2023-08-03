@@ -45,7 +45,7 @@ def check_password():
 
     def password_entered():
         """Checks whether a password entered by the user is correct."""
-        entered_username = st.session_state.get("username", "")
+        entered_username = st.session_state.username_input
         entered_password = st.session_state.get("password", "")
         passwords = st.secrets["passwords"]
 
@@ -60,7 +60,7 @@ def check_password():
             st.session_state["password_correct"] = False
 
     if "password_correct" not in st.session_state:
-        st.session_state["username"] = ""
+        st.session_state["username_input"] = ""
         st.session_state["password"] = ""
         # First run, show inputs for username + password.
         st.text_input("Username", on_change=password_entered, key="username")
@@ -79,6 +79,9 @@ def check_password():
     else:
         # Password correct.
         return True
+
+if check_password():
+    user = st.session_state["current_user"]
 
 if check_password():
     user = st.session_state["current_user"]
