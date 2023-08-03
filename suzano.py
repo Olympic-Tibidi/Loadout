@@ -41,37 +41,35 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
 
 def check_password():
-    """Returns `True` if the user had a correct password."""
+    """Returns `True` if the user had the correct password."""
 
-    def password_entered(username):
+    def password_entered():
         """Checks whether a password entered by the user is correct."""
-        entered_password = st.session_state.get("password", "")
-        passwords = st.secrets["passwords"]
-
-        print(f"Entered Username: {username}")
-        print(f"Entered Password: {entered_password}")
-        print(f"Stored Passwords: {passwords}")
-
-        if username in passwords and entered_password == passwords[username]:
+        if st.session_state["password"] == st.secrets["password"]:
             st.session_state["password_correct"] = True
-            st.session_state["current_user"] = username
+            del st.session_state["password"]  # don't store password
         else:
             st.session_state["password_correct"] = False
 
     if "password_correct" not in st.session_state:
-        # First run, show inputs for username + password.
-        username_input = st.text_input("Username", key="username")
-        st.text_input("Password", type="password", on_change=lambda pwd: password_entered(username_input), key="password")
+        # First run, show input for password.
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
         return False
     elif not st.session_state["password_correct"]:
         # Password not correct, show input + error.
-        username_input = st.text_input("Username", key="username")
-        st.text_input("Password", type="password", on_change=lambda pwd: password_entered(username_input), key="password")
-        st.error("😕 User not known or password incorrect")
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
+        st.error("😕 Password incorrect")
         return False
     else:
         # Password correct.
         return True
+
+if check_password():
+    st.write("Here goes your normal Streamlit app...")
 
 if check_password():
     user = st.session_state["current_user"]
