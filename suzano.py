@@ -76,7 +76,7 @@ def check_password():
             "Password", type="password", on_change=password_entered, key="password"
         )
         st.session_state["form_submitted"] = False
-        return False, None, None
+        return 0, None, None
     elif not st.session_state["password_correct"]:
         # Password not correct, show input + error only if form is submitted.
         st.text_input("Username", on_change=password_entered, key="username")
@@ -85,10 +85,10 @@ def check_password():
         )
         if st.session_state["form_submitted"]:
             st.error("😕 User not known or password incorrect")
-        return False, None, None
+        return 0, None, None
     else:
         # Password correct.
-        return True, st.session_state["current_user"], st.session_state["role"]
+        return 1, st.session_state["current_user"], st.session_state["role"]
 
 
         
@@ -715,7 +715,7 @@ def show_customer_layout():
     
 ok, username, role = check_password()
 
-if ok:  # Check if authentication is successful (True)
+if ok==1:  # Check if authentication is successful (True)
     if role == "gatehouse":
         show_gate_layout()
     # Add other role-based layout calls here for different roles (e.g., show_clerk_layout, show_customer_layout, etc.)
