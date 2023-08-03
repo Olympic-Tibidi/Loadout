@@ -43,37 +43,30 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 def check_password():
     """Returns `True` if the user had a correct password."""
 
-    def password_entered():
+    def password_entered(username):
         """Checks whether a password entered by the user is correct."""
-        entered_username = st.session_state.username_input
         entered_password = st.session_state.get("password", "")
         passwords = st.secrets["passwords"]
 
-        print(f"Entered Username: {entered_username}")
+        print(f"Entered Username: {username}")
         print(f"Entered Password: {entered_password}")
         print(f"Stored Passwords: {passwords}")
 
-        if entered_username in passwords and entered_password == passwords[entered_username]:
+        if username in passwords and entered_password == passwords[username]:
             st.session_state["password_correct"] = True
-            st.session_state["current_user"] = entered_username
+            st.session_state["current_user"] = username
         else:
             st.session_state["password_correct"] = False
 
     if "password_correct" not in st.session_state:
-        st.session_state["username_input"] = ""
-        st.session_state["password"] = ""
         # First run, show inputs for username + password.
-        st.text_input("Username", on_change=password_entered, key="username")
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
+        username_input = st.text_input("Username", key="username")
+        st.text_input("Password", type="password", on_change=lambda pwd: password_entered(username_input), key="password")
         return False
     elif not st.session_state["password_correct"]:
         # Password not correct, show input + error.
-        st.text_input("Username", on_change=password_entered, key="username")
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
+        username_input = st.text_input("Username", key="username")
+        st.text_input("Password", type="password", on_change=lambda pwd: password_entered(username_input), key="password")
         st.error("😕 User not known or password incorrect")
         return False
     else:
@@ -83,13 +76,6 @@ def check_password():
 if check_password():
     user = st.session_state["current_user"]
 
-if check_password():
-    user = st.session_state["current_user"]
-
-
-
-if check_password():
-    user=st.session_state["current_user"]
     
     if user :
         
