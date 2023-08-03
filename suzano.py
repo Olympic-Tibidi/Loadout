@@ -81,12 +81,14 @@ def authenticate_user(username, password):
     
         # Assuming you can identify the user's role after authentication.
         # Example: Determine the user's role based on their username.
-        if username == "gat_user":
-            role = "gat"
-        elif username == "clerk_user":
+        if username == "afsin":
+            role = "afsin"
+        eliif username == "gatehouse":
+            role = "gatehouse"
+        elif username == "warehouse":
             role = "clerk"
-        elif username == "customer_user":
-            role = "customer"
+        elif username == "suzano":
+            role = "suzano"
         else:
             role = "guest"  # For users with unknown roles or unauthorized access
     
