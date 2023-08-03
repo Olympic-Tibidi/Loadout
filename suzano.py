@@ -90,6 +90,7 @@ def check_password():
         # Password correct.
         return True, st.session_state["current_user"], st.session_state["role"]
 
+
         
 
 def authenticate_user(username, password):
@@ -712,8 +713,14 @@ def show_customer_layout():
                     
     
     
-if check_password():
-    show_gate_layout()
+ok, username, role = check_password()
+
+if ok:  # Check if authentication is successful (True)
+    if role == "gatehouse":
+        show_gate_layout()
+    # Add other role-based layout calls here for different roles (e.g., show_clerk_layout, show_customer_layout, etc.)
+else:
+    st.error("Authentication failed. Please try again.")
 
                        
 
