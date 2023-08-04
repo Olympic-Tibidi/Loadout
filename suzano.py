@@ -110,10 +110,12 @@ if user :
             bls=new_df["B/L"].value_counts()
             wraps=[new_df[new_df["B/L"]==k]["Wrap"].unique()[0] for k in bls.keys()]
             wrap_dict={"ISU":"Unwrapped","ISP":"Wrapped"}
+            st.markdown(f"**VESSEL = {vessel} - VOYAGE = {voyage}**")
             st.markdown(f"**TOTAL UNITS = {len(new_df)}**")
-            #-{wrap_dict[wraps[i]}-{wraps[i]}
+            st.markdown(f"**TOTAL UNITS = {len(new_df)}**")
+            #-{wrap_dict[wraps[i]]}-{wraps[i]}
             for i in range(len(bls)):
-                st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]}**")
+                st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
             st.dataframe(new_df)
     with tab2:
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
