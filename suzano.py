@@ -56,18 +56,18 @@ if user :
         if uploaded_file is not None:
             # To read file as bytes:
             bytes_data = uploaded_file.getvalue()
-            st.write(bytes_data)
+            #st.write(bytes_data)
         
             # To convert to a string based IO:
             stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-            st.write(stringio)
+            #st.write(stringio)
         
             # To read file as string:
             string_data = stringio.read()
             #st.write(string_data)
         
             # Can be used wherever a "file-like" object is accepted:
-            temp = pd.read_csv(uploaded_file)
+            temp = pd.read_csv(uploaded_file,header=None)
             temp=temp[1:-1]
             df=pd.DataFrame(list(zip([i[5:] for i in temp[0]],[str(i)[13:15] for i in temp[7]],
                       [str(i)[20:28] for i in temp[7]])),columns=["Lot","Lot Qty","B/L"])
