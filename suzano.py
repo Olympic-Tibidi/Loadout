@@ -106,8 +106,9 @@ if user :
             new_df["Carrier_Code"]=""
             new_df["BL"]=""
             bls=new_df["B/L"].value_counts()
+            st.markdown(f"**TOTAL UNITS = {len(new_df)}**")
             for i in range(len(bls)):
-                st.write(f"{bls[i]} units of Bill of Lading {bls.keys()[i]}")
+                st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]}**")
             st.dataframe(new_df)
     with tab2:
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
