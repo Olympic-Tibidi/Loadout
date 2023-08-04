@@ -67,9 +67,45 @@ if user :
             st.write(string_data)
         
             # Can be used wherever a "file-like" object is accepted:
-            dataframe = pd.read_csv(uploaded_file)
-            st.write(dataframe)
-        
+            temp = pd.read_csv(uploaded_file)
+            temp=temp[1:-1]
+            df=pd.DataFrame(list(zip([i[5:] for i in temp[0]],[str(i)[13:15] for i in temp[7]],
+                      [str(i)[20:28] for i in temp[7]])),columns=["Lot","Lot Qty","B/L"])
+            df["Lot Qty"]=[int(int(i)/2) for i in df["Lot Qty"]]
+            df["Wrap"]=[i[:3] for i in temp[1]]
+            df["Vessel"]=[i[-12:] for i in temp[7]]
+            df["DryWeight"]=[int(i) for i in temp[8]]
+            df["ADMT"]=[int(i)/0.9/100000 for i in temp[8]]
+            new_list=[]
+            lotq=[]
+            bl=[]
+            wrap=[]
+            vessel=[]
+            DryWeight=[]
+            ADMT=[]
+            for i in df.index:
+                #print(df.loc[i,"Lot"])
+                for j in range(1,df.loc[i,"Lot Qty"]+1):
+                    #print(f"00{i}")
+                    if j<10:
+                        new_list.append(f"{df.loc[i,'Lot']}00{j}")
+                    else:
+                        new_list.append(f"{df.loc[i,'Lot']}0{j}")
+                    lotq.append(df.loc[i,"Lot Qty"])
+                    bl.append(str(df.loc[i,"B/L"]))
+                    wrap.append(df.loc[i,"Wrap"])
+                    vessel.append(df.loc[i,"Vessel"])
+                    DryWeight.append(df.loc[i,"DryWeight"])
+                    ADMT.append(df.loc[i,"ADMT"])
+            new_df=pd.DataFrame(list(zip(new_list,lotq,bl,wrap,vessel,DryWeight,ADMT)),columns=df.columns.to_list())
+            new_df["Location"]="OLYM"
+            new_df["Warehouse_In"]="8/24/2023"
+            new_df["Warehouse_Out"]=""
+            new_df["Vehicle_Id"]=""
+            new_df["Release_Order_Number"]=""
+            new_df["Carrier_Code"]=""
+            new_df["BL"]=""
+            st.dataframe(new_df)
     with tab2:
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
         with col1:
