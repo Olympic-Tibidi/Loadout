@@ -315,6 +315,7 @@ if user :
             if date_filter:
                 filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
                 filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+            dryweight_filter=st.selectbox("Filter By DryWeight",["ALL DRYWEIGHTS"]+[str(i) for i in filtered_zf["DryWeight"].unique().tolist()])
             BL_filter=st.selectbox("Filter By Bill Of Lading",["ALL BILL OF LADINGS"]+[str(i) for i in filtered_zf["BL"].unique().tolist()])
             vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
             carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(i) for i in filtered_zf["Carrier_Code"].unique().tolist()])
@@ -326,7 +327,8 @@ if user :
                 st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
             
             
-                    
+            if BL_filter!="ALL DRYWEIGHTS":
+                filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
             if BL_filter!="ALL BILL OF LADINGS":
                 filtered_zf=filtered_zf[filtered_zf["BL"]==BL_filter]
             if carrier_filter!="ALL CARRIERS":
