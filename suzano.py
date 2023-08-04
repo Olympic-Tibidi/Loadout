@@ -38,7 +38,48 @@ st. set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
+def output():
+    #with open(fr'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
+    with open('placeholder.txt', 'r') as f:
+        output_text = f.read()
+    return output_text
+        
+def send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name):
+    msg = MIMEMultipart()
+    msg['Subject'] = subject
+    msg['From'] = sender
+    msg['To'] = ', '.join(recipients)
 
+    # Attach the body of the email as text
+    msg.attach(MIMEText(body, 'plain'))
+
+    # Read the file content and attach it as a text file
+    with open(file_path, 'r') as f:
+        attachment = MIMEText(f.read())
+    attachment.add_header('Content-Disposition', 'attachment', filename=file_name)
+    msg.attach(attachment)
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
+        smtp_server.login(sender, password)
+        smtp_server.sendmail(sender, recipients, msg.as_string())
+    print("Message sent!")
+
+def gcp_csv_to_df(bucket_name, source_file_name):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob("Inventory.csv")
+    data = blob.download_as_bytes()
+    df = pd.read_csv(io.BytesIO(data))
+    print(f'Pulled down file from bucket {bucket_name}, file name: {source_file_name}')
+    return df
+def upload_cs_file(bucket_name, source_file_name, destination_file_name): 
+    storage_client = storage.Client()
+
+    bucket = storage_client.bucket(bucket_name)
+
+    blob = bucket.blob(destination_file_name)
+    blob.upload_from_filename(source_file_name)
+    return True
 
 user="AFSIN"
     
@@ -182,48 +223,7 @@ if user :
         c=datetime.datetime.strftime(eta_date,"%Y%m%d")
         
         #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
-        def output():
-            #with open(fr'Suzano_EDI_{a}_{release_order_number}.txt', 'r') as f:
-            with open('placeholder.txt', 'r') as f:
-                output_text = f.read()
-            return output_text
         
-        def send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name):
-            msg = MIMEMultipart()
-            msg['Subject'] = subject
-            msg['From'] = sender
-            msg['To'] = ', '.join(recipients)
-        
-            # Attach the body of the email as text
-            msg.attach(MIMEText(body, 'plain'))
-        
-            # Read the file content and attach it as a text file
-            with open(file_path, 'r') as f:
-                attachment = MIMEText(f.read())
-            attachment.add_header('Content-Disposition', 'attachment', filename=file_name)
-            msg.attach(attachment)
-        
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
-                smtp_server.login(sender, password)
-                smtp_server.sendmail(sender, recipients, msg.as_string())
-            print("Message sent!")
-        
-        def gcp_csv_to_df(bucket_name, source_file_name):
-            storage_client = storage.Client()
-            bucket = storage_client.bucket(bucket_name)
-            blob = bucket.blob("Inventory.csv")
-            data = blob.download_as_bytes()
-            df = pd.read_csv(io.BytesIO(data))
-            print(f'Pulled down file from bucket {bucket_name}, file name: {source_file_name}')
-            return df
-        def upload_cs_file(bucket_name, source_file_name, destination_file_name): 
-            storage_client = storage.Client()
-        
-            bucket = storage_client.bucket(bucket_name)
-        
-            blob = bucket.blob(destination_file_name)
-            blob.upload_from_filename(source_file_name)
-            return True
             
         def process():
             line1="1HDR:"+a+b+terminal_code
