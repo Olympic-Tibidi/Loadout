@@ -67,7 +67,7 @@ if user :
             st.write(string_data)
         
             # Can be used wherever a "file-like" object is accepted:
-            dataframe = pd.read_csv(uploaded_file).to_csv (r'try.csv', index=None)
+            dataframe = pd.read_csv(uploaded_file)
             st.write(dataframe)
         
     with tab2:
