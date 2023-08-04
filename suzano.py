@@ -285,8 +285,8 @@ if user :
         
         
         dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-        df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Location","Warehouse_In"]]
-        zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Release_Order_Number","Carrier_Code","BL",
+        df=Inventory[Inventory["Location"]=="OLYM"][["Lot","B/L","Vessel","DryWeight","ADMT","Location","Warehouse_In"]]
+        zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Vessel","DryWeight","ADMT","Release_Order_Number","Carrier_Code","BL",
                                                          "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
         with dab1:
             
