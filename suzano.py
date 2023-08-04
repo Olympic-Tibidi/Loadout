@@ -12,7 +12,7 @@ import smtplib
 from google.cloud import storage
 import os
 import io
-
+from io import StringIO
 
 
 #from camera_input_live import camera_input_live
@@ -40,7 +40,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
 
 
-user="a"
+user="AFSIN"
     
 if user :
     
@@ -51,7 +51,24 @@ if user :
     if 'captured_units' not in st.session_state:
         st.session_state.captured_units =[]
         
+    with tab1:
+        uploaded_file = st.file_uploader("Choose a file")
+        if uploaded_file is not None:
+            # To read file as bytes:
+            bytes_data = uploaded_file.getvalue()
+            st.write(bytes_data)
         
+            # To convert to a string based IO:
+            stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+            st.write(stringio)
+        
+            # To read file as string:
+            string_data = stringio.read()
+            st.write(string_data)
+        
+            # Can be used wherever a "file-like" object is accepted:
+            dataframe = pd.read_csv(uploaded_file).to_csv (r'try.csv', index=None)
+            st.write(dataframe)
         
     with tab2:
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
