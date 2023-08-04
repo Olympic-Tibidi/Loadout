@@ -69,7 +69,7 @@ if user :
             # Can be used wherever a "file-like" object is accepted:
             temp = pd.read_csv(uploaded_file,header=None)
             temp=temp[1:-1]
-            vessel=temp[5].unique()[0]
+            gemi=temp[5].unique()[0]
             voyage=int(temp[6].unique()[0])
             df=pd.DataFrame(list(zip([i[5:] for i in temp[0]],[str(i)[13:15] for i in temp[7]],
                       [str(i)[20:28] for i in temp[7]])),columns=["Lot","Lot Qty","B/L"])
@@ -110,10 +110,10 @@ if user :
             bls=new_df["B/L"].value_counts()
             wraps=[new_df[new_df["B/L"]==k]["Wrap"].unique()[0] for k in bls.keys()]
             wrap_dict={"ISU":"Unwrapped","ISP":"Wrapped"}
-            st.markdown(f"**VESSEL = {vessel} - VOYAGE = {voyage}**")
+            st.markdown(f"**VESSEL = {gemi} - VOYAGE = {voyage}**")
             st.markdown(f"**TOTAL UNITS = {len(new_df)}**")
-            st.markdown(f"**TOTAL UNITS = {len(new_df)}**")
-            #-{wrap_dict[wraps[i]]}-{wraps[i]}
+            
+           
             for i in range(len(bls)):
                 st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
             st.dataframe(new_df)
