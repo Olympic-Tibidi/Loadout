@@ -105,6 +105,9 @@ if user :
             new_df["Release_Order_Number"]=""
             new_df["Carrier_Code"]=""
             new_df["BL"]=""
+            bls=new_df["B/L"].value_counts()
+            for i in range(len(bls)):
+                st.write(f"{bls[0] units of Bill of Lading {bls.keys()[0]}")
             st.dataframe(new_df)
     with tab2:
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
