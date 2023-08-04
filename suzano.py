@@ -120,7 +120,8 @@ if user :
                     st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
             with col2:
                 if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
-                    pass
+                    temp=new_df.to_csv("temp.csv")
+                    upload_cs_file("olym_suzano", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
             st.dataframe(new_df)
     with tab2:
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
