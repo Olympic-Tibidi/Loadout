@@ -45,7 +45,7 @@ user="a"
 if user :
     
     st.write(user.upper())
-    tab1,tab2,tab3= st.tabs(["ENTER DATA","INVENTORY","CAPTURE"])
+    tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
     
     
     if 'captured_units' not in st.session_state:
@@ -53,7 +53,7 @@ if user :
         
         
         
-    with tab1:
+    with tab2:
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
         with col1:
         
@@ -80,7 +80,11 @@ if user :
             eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
             sales_order_item=st.text_input("Sales Order Item (Material Code)")
         with col4:
-            
+            load6=st.text_input("Unit No : 06")[:-3]
+            load7=st.text_input("Unit No : 07")[:-3]
+            load8=st.text_input("Unit No : 08")[:-3]
+            load9=st.text_input("Unit No : 09")[:-3]
+            load10=st.text_input("Unit No : 10")[:-3]
                 
             
             try:
@@ -280,7 +284,7 @@ if user :
     
             
                     
-    with tab2:
+    with tab3:
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
         
         
@@ -339,7 +343,7 @@ if user :
                 if date_filter:
                     st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
             st.table(filtered_zf)
-    with tab3:
+    with tab4:
         df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
         st.write(df)
         
