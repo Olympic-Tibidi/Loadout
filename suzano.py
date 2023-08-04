@@ -80,33 +80,14 @@ if user :
             eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
             sales_order_item=st.text_input("Sales Order Item (Material Code)")
         with col4:
-            load6=st.text_input("Unit No : 06")[:-3]
-            load7=st.text_input("Unit No : 07")[:-3]
-            load8=st.text_input("Unit No : 08")[:-3]
-            load9=st.text_input("Unit No : 09")[:-3]
-            load10=st.text_input("Unit No : 10")[:-3]
+            load1=st.text_input("Unit No : 01")[:-3]
+            load2=st.text_input("Unit No : 02")[:-3]
+            load3=st.text_input("Unit No : 03")[:-3]
+            load4=st.text_input("Unit No : 04")[:-3]
+            load5=st.text_input("Unit No : 05")[:-3]
                 
             
-            try:
-                load1=st.text_input("Unit No : 01",value=st.session_state.captured_units[0])
-            except:
-                load1=st.text_input("Unit No : 01")[:-3]
-            try:
-                load2=st.text_input("Unit No : 02",value=st.session_state.captured_units[1])
-            except:
-                load2=st.text_input("Unit No : 02")[:-3]
-            try:
-                load3=st.text_input("Unit No : 03",value=st.session_state.captured_units[2])
-            except:
-                load3=st.text_input("Unit No : 03")[:-3]
-            try:
-                load4=st.text_input("Unit No : 04",value=st.session_state.captured_units[3])
-            except:
-                load4=st.text_input("Unit No : 04")[:-3]
-            try:
-                load5=st.text_input("Unit No : 05",value=st.session_state.captured_units[4])
-            except:
-                load5=st.text_input("Unit No : 05")[:-3]
+            
             
             
          
