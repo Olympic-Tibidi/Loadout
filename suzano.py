@@ -64,7 +64,7 @@ if user :
         
             # To read file as string:
             string_data = stringio.read()
-            st.write(string_data)
+            #st.write(string_data)
         
             # Can be used wherever a "file-like" object is accepted:
             temp = pd.read_csv(uploaded_file)
