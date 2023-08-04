@@ -86,34 +86,34 @@ if user :
             try:
                 load1=st.text_input("Unit No : 01",value=st.session_state.captured_units[0])
             except:
-                load1=st.text_input("Unit No : 01")
+                load1=st.text_input("Unit No : 01")[:-3]
             try:
                 load2=st.text_input("Unit No : 02",value=st.session_state.captured_units[1])
             except:
-                load2=st.text_input("Unit No : 02")
+                load2=st.text_input("Unit No : 02")[:-3]
             try:
                 load3=st.text_input("Unit No : 03",value=st.session_state.captured_units[2])
             except:
-                load3=st.text_input("Unit No : 03")
+                load3=st.text_input("Unit No : 03")[:-3]
             try:
                 load4=st.text_input("Unit No : 04",value=st.session_state.captured_units[3])
             except:
-                load4=st.text_input("Unit No : 04")
+                load4=st.text_input("Unit No : 04")[:-3]
             try:
                 load5=st.text_input("Unit No : 05",value=st.session_state.captured_units[4])
             except:
-                load5=st.text_input("Unit No : 05")
+                load5=st.text_input("Unit No : 05")[:-3]
             
             
          
            
         with col5:
             
-            load6=st.text_input("Unit No : 06")
-            load7=st.text_input("Unit No : 07")
-            load8=st.text_input("Unit No : 08")
-            load9=st.text_input("Unit No : 09")
-            load10=st.text_input("Unit No : 10")
+            load6=st.text_input("Unit No : 06")[:-3]
+            load7=st.text_input("Unit No : 07")[:-3]
+            load8=st.text_input("Unit No : 08")[:-3]
+            load9=st.text_input("Unit No : 09")[:-3]
+            load10=st.text_input("Unit No : 10")[:-3]
             
         gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
         loads=[]
