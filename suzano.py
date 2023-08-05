@@ -94,12 +94,11 @@ user="AFSIN"
 if user :
     
     st.write(user.upper())
+    st.radio("What\'s your favorite movie genre",
+    ('Comedy', 'Drama', 'Documentary'))
     tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
     
-    
-    if 'captured_units' not in st.session_state:
-        st.session_state.captured_units =[]
-        
+                
     with tab1:
         uploaded_file = st.file_uploader("Choose a file")
         if uploaded_file is not None:
