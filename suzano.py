@@ -92,14 +92,16 @@ def list_cs_files(bucket_name):
 user="AFSIN"
     
 if user :
-    
+colu1,colu2=st.columns([2,8])
+with colu1:
     st.write(user.upper())
-    st.radio("What\'s your favorite movie genre",
-    ('Comedy', 'Drama', 'Documentary'))
-    tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
+    select=st.radio("SELECT FUNCTION",
+    ('ADMIN', 'LOADOUT', 'INVENTORY'))
+    #tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
     
-                
-    with tab1:
+with col2:
+    
+    if select=="ADMIN" :
         uploaded_file = st.file_uploader("Choose a file")
         if uploaded_file is not None:
             # To read file as bytes:
@@ -174,7 +176,7 @@ if user :
                   
                     st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
             st.dataframe(new_df)
-    with tab2:
+    if select=="LOADOUT" :
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
         with col1:
         
@@ -345,7 +347,7 @@ if user :
     
             
                     
-    with tab3:
+    if select=="INVENTORY" :
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
         
         
