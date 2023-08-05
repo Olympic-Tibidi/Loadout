@@ -80,6 +80,14 @@ def upload_cs_file(bucket_name, source_file_name, destination_file_name):
     blob = bucket.blob(destination_file_name)
     blob.upload_from_filename(source_file_name)
     return True
+# define function that list files in the bucket
+def list_cs_files(bucket_name): 
+    storage_client = storage.Client()
+
+    file_list = storage_client.list_blobs(bucket_name)
+    file_list = [file.name for file in file_list]
+
+    return file_list
 
 user="AFSIN"
     
@@ -161,8 +169,9 @@ if user :
                     st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
             with col2:
                 if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
+                    st.write(list_cs_files(olym_suzano))
                     temp=new_df.to_csv("temp.csv")
-                    upload_cs_file("olym_suzano/shipping_files/", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
+                    upload_cs_file("olym_suzano/shipping_files", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
                   
                     st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
             st.dataframe(new_df)
