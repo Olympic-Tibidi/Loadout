@@ -406,8 +406,8 @@ with colu2:
                 if date_filter:
                     st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
             st.table(filtered_zf)
-    with tab4:
-        df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-        st.write(df)
+    #with tab4:
+   #     df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+    #    st.write(df)
         
     
