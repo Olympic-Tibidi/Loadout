@@ -99,7 +99,7 @@ with colu1:
     ('ADMIN', 'LOADOUT', 'INVENTORY'))
     #tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
     
-with col2:
+with colu2:
     
     if select=="ADMIN" :
         uploaded_file = st.file_uploader("Choose a file")
