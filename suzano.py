@@ -95,7 +95,7 @@ user="AFSIN"
 colu1,colu2=st.columns([1,8])
 with colu1:
     st.write(user.upper())
-    select=st.radio("SELECT FUNCTION",
+    select=st.sidebar.radio("SELECT FUNCTION",
     ('ADMIN', 'LOADOUT', 'INVENTORY'))
     #tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
     
