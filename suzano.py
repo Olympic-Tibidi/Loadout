@@ -92,322 +92,321 @@ def list_cs_files(bucket_name):
 user="AFSIN"
     
 #if user :
-colu1,colu2=st.columns([1,8])
-with colu1:
-    st.write(user.upper())
-    select=st.sidebar.radio("SELECT FUNCTION",
+#colu1,colu2=st.columns([1,8])
+select=st.sidebar.radio("SELECT FUNCTION",
     ('ADMIN', 'LOADOUT', 'INVENTORY'))
+
     #tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
     
-with colu2:
+
     
-    if select=="ADMIN" :
-        uploaded_file = st.file_uploader("Choose a file")
-        if uploaded_file is not None:
-            # To read file as bytes:
-            bytes_data = uploaded_file.getvalue()
-            #st.write(bytes_data)
-        
-            # To convert to a string based IO:
-            stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-            #st.write(stringio)
-        
-            # To read file as string:
-            string_data = stringio.read()
-            #st.write(string_data)
-        
-            # Can be used wherever a "file-like" object is accepted:
-            temp = pd.read_csv(uploaded_file,header=None)
-            temp=temp[1:-1]
-            gemi=temp[5].unique()[0]
-            voyage=int(temp[6].unique()[0])
-            df=pd.DataFrame(list(zip([i[5:] for i in temp[0]],[str(i)[13:15] for i in temp[7]],
-                      [str(i)[20:28] for i in temp[7]])),columns=["Lot","Lot Qty","B/L"])
-            df["Lot Qty"]=[int(int(i)/2) for i in df["Lot Qty"]]
-            df["Wrap"]=[i[:3] for i in temp[1]]
-            df["Vessel"]=[i[-12:] for i in temp[7]]
-            df["DryWeight"]=[int(i) for i in temp[8]]
-            df["ADMT"]=[int(i)/0.9/100000 for i in temp[8]]
-            new_list=[]
-            lotq=[]
-            bl=[]
-            wrap=[]
-            vessel=[]
-            DryWeight=[]
-            ADMT=[]
-            for i in df.index:
-                #print(df.loc[i,"Lot"])
-                for j in range(1,df.loc[i,"Lot Qty"]+1):
-                    #print(f"00{i}")
-                    if j<10:
-                        new_list.append(f"{df.loc[i,'Lot']}00{j}")
-                    else:
-                        new_list.append(f"{df.loc[i,'Lot']}0{j}")
-                    lotq.append(df.loc[i,"Lot Qty"])
-                    bl.append(str(df.loc[i,"B/L"]))
-                    wrap.append(df.loc[i,"Wrap"])
-                    vessel.append(df.loc[i,"Vessel"])
-                    DryWeight.append(df.loc[i,"DryWeight"])
-                    ADMT.append(df.loc[i,"ADMT"])
-            new_df=pd.DataFrame(list(zip(new_list,lotq,bl,wrap,vessel,DryWeight,ADMT)),columns=df.columns.to_list())
-            new_df["Location"]="OLYM"
-            new_df["Warehouse_In"]="8/24/2023"
-            new_df["Warehouse_Out"]=""
-            new_df["Vehicle_Id"]=""
-            new_df["Release_Order_Number"]=""
-            new_df["Carrier_Code"]=""
-            new_df["BL"]=""
-            bls=new_df["B/L"].value_counts()
-            wraps=[new_df[new_df["B/L"]==k]["Wrap"].unique()[0] for k in bls.keys()]
-            wrap_dict={"ISU":"Unwrapped","ISP":"Wrapped"}
-            col1, col2= st.columns([2,2])
-            with col1:
-                st.markdown(f"**VESSEL = {gemi} - VOYAGE = {voyage}**")
-                st.markdown(f"**TOTAL UNITS = {len(new_df)}**")
-            
-           
-                for i in range(len(bls)):
-                    st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
-            with col2:
-                if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
-                    st.write(list_cs_files("olym_suzano"))
-                    temp=new_df.to_csv("temp.csv")
-                    upload_cs_file("olym_suzano", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
-                  
-                    st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
-            st.dataframe(new_df)
-    if select=="LOADOUT" :
-        col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
+if select=="ADMIN" :
+    uploaded_file = st.file_uploader("Choose a file")
+    if uploaded_file is not None:
+        # To read file as bytes:
+        bytes_data = uploaded_file.getvalue()
+        #st.write(bytes_data)
+    
+        # To convert to a string based IO:
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+        #st.write(stringio)
+    
+        # To read file as string:
+        string_data = stringio.read()
+        #st.write(string_data)
+    
+        # Can be used wherever a "file-like" object is accepted:
+        temp = pd.read_csv(uploaded_file,header=None)
+        temp=temp[1:-1]
+        gemi=temp[5].unique()[0]
+        voyage=int(temp[6].unique()[0])
+        df=pd.DataFrame(list(zip([i[5:] for i in temp[0]],[str(i)[13:15] for i in temp[7]],
+                  [str(i)[20:28] for i in temp[7]])),columns=["Lot","Lot Qty","B/L"])
+        df["Lot Qty"]=[int(int(i)/2) for i in df["Lot Qty"]]
+        df["Wrap"]=[i[:3] for i in temp[1]]
+        df["Vessel"]=[i[-12:] for i in temp[7]]
+        df["DryWeight"]=[int(i) for i in temp[8]]
+        df["ADMT"]=[int(i)/0.9/100000 for i in temp[8]]
+        new_list=[]
+        lotq=[]
+        bl=[]
+        wrap=[]
+        vessel=[]
+        DryWeight=[]
+        ADMT=[]
+        for i in df.index:
+            #print(df.loc[i,"Lot"])
+            for j in range(1,df.loc[i,"Lot Qty"]+1):
+                #print(f"00{i}")
+                if j<10:
+                    new_list.append(f"{df.loc[i,'Lot']}00{j}")
+                else:
+                    new_list.append(f"{df.loc[i,'Lot']}0{j}")
+                lotq.append(df.loc[i,"Lot Qty"])
+                bl.append(str(df.loc[i,"B/L"]))
+                wrap.append(df.loc[i,"Wrap"])
+                vessel.append(df.loc[i,"Vessel"])
+                DryWeight.append(df.loc[i,"DryWeight"])
+                ADMT.append(df.loc[i,"ADMT"])
+        new_df=pd.DataFrame(list(zip(new_list,lotq,bl,wrap,vessel,DryWeight,ADMT)),columns=df.columns.to_list())
+        new_df["Location"]="OLYM"
+        new_df["Warehouse_In"]="8/24/2023"
+        new_df["Warehouse_Out"]=""
+        new_df["Vehicle_Id"]=""
+        new_df["Release_Order_Number"]=""
+        new_df["Carrier_Code"]=""
+        new_df["BL"]=""
+        bls=new_df["B/L"].value_counts()
+        wraps=[new_df[new_df["B/L"]==k]["Wrap"].unique()[0] for k in bls.keys()]
+        wrap_dict={"ISU":"Unwrapped","ISP":"Wrapped"}
+        col1, col2= st.columns([2,2])
         with col1:
+            st.markdown(f"**VESSEL = {gemi} - VOYAGE = {voyage}**")
+            st.markdown(f"**TOTAL UNITS = {len(new_df)}**")
         
-    
-            file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates")
-            if file_date not in st.session_state:
-                st.session_state.file_date=file_date
-            file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7))
-            terminal_code=st.text_input("Terminal Code","OLYM")
-            release_order_number=st.text_input("Release Order Number (FROM SUZANO)")
-            
-            if release_order_number not in st.session_state:
-                st.session_state.release_order_number=release_order_number
-            delivery_date=st.date_input("Delivery Date",datetime.datetime.today(),key="delivery_date")
+       
+            for i in range(len(bls)):
+                st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
         with col2:
-            transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"])
-            transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"])
-            vehicle_id=st.text_input("Vehicle ID")
-            quantity=st.number_input("Quantity In Tons", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
-            frame_placeholder = st.empty()
-        with col3: 
-            carrier_code=st.text_input("Carrier Code")
-            bill_of_lading=st.text_input("Bill of Lading")
-            eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
-            sales_order_item=st.text_input("Sales Order Item (Material Code)")
-        with col4:
-            load1=st.text_input("Unit No : 01")[:-3]
-            load2=st.text_input("Unit No : 02")[:-3]
-            load3=st.text_input("Unit No : 03")[:-3]
-            load4=st.text_input("Unit No : 04")[:-3]
-            load5=st.text_input("Unit No : 05")[:-3]
-                
-            
-            
-            
-            
-         
-           
-        with col5:
-            
-            load6=st.text_input("Unit No : 06")[:-3]
-            load7=st.text_input("Unit No : 07")[:-3]
-            load8=st.text_input("Unit No : 08")[:-3]
-            load9=st.text_input("Unit No : 09")[:-3]
-            load10=st.text_input("Unit No : 10")[:-3]
-            
-        gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
-        loads=[]
-        for i in gloads:
-            if i:
-                loads.append(i)
-                          
-        a=datetime.datetime.strftime(file_date,"%Y%m%d")
+            if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
+                st.write(list_cs_files("olym_suzano"))
+                temp=new_df.to_csv("temp.csv")
+                upload_cs_file("olym_suzano", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
+              
+                st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
+        st.dataframe(new_df)
+if select=="LOADOUT" :
+    col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
+    with col1:
+    
+
+        file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates")
+        if file_date not in st.session_state:
+            st.session_state.file_date=file_date
+        file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7))
+        terminal_code=st.text_input("Terminal Code","OLYM")
+        release_order_number=st.text_input("Release Order Number (FROM SUZANO)")
         
-        b=file_time.strftime("%H%M%S")
-        c=datetime.datetime.strftime(eta_date,"%Y%m%d")
-        
-        #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
-        
+        if release_order_number not in st.session_state:
+            st.session_state.release_order_number=release_order_number
+        delivery_date=st.date_input("Delivery Date",datetime.datetime.today(),key="delivery_date")
+    with col2:
+        transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"])
+        transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"])
+        vehicle_id=st.text_input("Vehicle ID")
+        quantity=st.number_input("Quantity In Tons", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+        frame_placeholder = st.empty()
+    with col3: 
+        carrier_code=st.text_input("Carrier Code")
+        bill_of_lading=st.text_input("Bill of Lading")
+        eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
+        sales_order_item=st.text_input("Sales Order Item (Material Code)")
+    with col4:
+        load1=st.text_input("Unit No : 01")[:-3]
+        load2=st.text_input("Unit No : 02")[:-3]
+        load3=st.text_input("Unit No : 03")[:-3]
+        load4=st.text_input("Unit No : 04")[:-3]
+        load5=st.text_input("Unit No : 05")[:-3]
             
-        def process():
-            line1="1HDR:"+a+b+terminal_code
-            tsn="01" if transport_sequential_number=="TRUCK" else "02"
-            tt="0001" if transport_type=="TRUCK" else "0002"
-            line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+bill_of_lading+" "*(50-len(bill_of_lading))+c
-            loadls=[]
-            if load1:
-                loadl1="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load1+" "*(10-len(load1))+"0"*16+str(quantity*100)
-                loadls.append(loadl1)
-            if load2:
-                loadl2="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load2+" "*(10-len(load2))+"0"*16+str(quantity*100)
-                loadls.append(loadl2)
-            if load3:
-                loadl3="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load3+" "*(10-len(load3))+"0"*16+str(quantity*100)
-                loadls.append(loadl3)
-            if load4:
-                loadl4="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load4+" "*(10-len(load4))+"0"*16+str(quantity*100)
-                loadls.append(loadl4)
-            if load5:
-                loadl5="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load5+" "*(10-len(load5))+"0"*16+str(quantity*100)
-                loadls.append(loadl5)
-            if load6:
-                loadl6="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load6+" "*(10-len(load6))+"0"*16+str(quantity*100)
-                loadls.append(loadl6)
-            if load7:
-                loadl7="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load7+" "*(10-len(load7))+"0"*16+str(quantity*100)
-                loadls.append(loadl7)
-            if load8:
-               loadl8="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load8+" "*(10-len(load8))+"0"*16+str(quantity*100)
-               loadls.append(loadl8)
-            if load9:
-                loadl9="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load9+" "*(10-len(load9))+"0"*16+str(quantity*100)
-                loadls.append(loadl9)
-            if load10:
-                loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load10+" "*(10-len(load10))+"0"*16+str(quantity*100)
-                loadls.append(loadl10)
-            end="9TRL:0013"
-            Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-            for i in loads:
-                #st.write(i)
-                try:
+        
+        
+        
+        
+     
+       
+    with col5:
+        
+        load6=st.text_input("Unit No : 06")[:-3]
+        load7=st.text_input("Unit No : 07")[:-3]
+        load8=st.text_input("Unit No : 08")[:-3]
+        load9=st.text_input("Unit No : 09")[:-3]
+        load10=st.text_input("Unit No : 10")[:-3]
+        
+    gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
+    loads=[]
+    for i in gloads:
+        if i:
+            loads.append(i)
                       
-                    Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
-                    Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
-                    Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
-                    Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
-                    Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
-                    Inventory.loc[Inventory["Lot"]==i,"BL"]=str(bill_of_lading)
-                except:
-                    st.write("Check Unit Number,Unit Not In Inventory")
-                #st.write(vehicle_id)
+    a=datetime.datetime.strftime(file_date,"%Y%m%d")
     
-                temp=Inventory.to_csv("temp.csv")
-                upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
-            with open(f'placeholder.txt', 'w') as f:
-                f.write(line1)
-                f.write('\n')
-                f.write(line2)
-                f.write('\n')
-                
-                for i in loadls:
-                    
-                    f.write(i)
-                    f.write('\n')
+    b=file_time.strftime("%H%M%S")
+    c=datetime.datetime.strftime(eta_date,"%Y%m%d")
     
-                f.write(end)
-            
-                
-        try:
-            down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
-        except:
-            pass        
-        if st.button('SAVE/DISPLAY EDI'):
-            process()
-            with open('placeholder.txt', 'r') as f:
-                output_text = f.read()
-            st.markdown("**EDI TEXT**")
-            st.text_area('', value=output_text, height=600)
-            with open('placeholder.txt', 'r') as f:
-                file_content = f.read()
-            newline="\n"
-            filename = f'Suzano_EDI_{a}_{release_order_number}'
-            file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
-            st.write(filename)
-            subject = f'Suzano_EDI_{a}_{release_order_number}'
-            body = f"EDI for Release Order Number {release_order_number} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
-            sender = "warehouseoly@gmail.com"
-            #recipients = ["afsin1977@gmail.com","alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-            recipients = ["afsiny@portolympia.com"]
-            password = "xjvxkmzbpotzeuuv"
+    #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
     
-              # Replace with the actual file path
-    
-    
-            with open('temp_file.txt', 'w') as f:
-                f.write(file_content)
-    
-            file_path = 'temp_file.txt'  # Use the path of the temporary file
-    
-            send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
-            upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
-    
-            
-    
-            
-                
-    
-    
-            
-                    
-    if select=="INVENTORY" :
+        
+    def process():
+        line1="1HDR:"+a+b+terminal_code
+        tsn="01" if transport_sequential_number=="TRUCK" else "02"
+        tt="0001" if transport_type=="TRUCK" else "0002"
+        line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+bill_of_lading+" "*(50-len(bill_of_lading))+c
+        loadls=[]
+        if load1:
+            loadl1="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load1+" "*(10-len(load1))+"0"*16+str(quantity*100)
+            loadls.append(loadl1)
+        if load2:
+            loadl2="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load2+" "*(10-len(load2))+"0"*16+str(quantity*100)
+            loadls.append(loadl2)
+        if load3:
+            loadl3="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load3+" "*(10-len(load3))+"0"*16+str(quantity*100)
+            loadls.append(loadl3)
+        if load4:
+            loadl4="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load4+" "*(10-len(load4))+"0"*16+str(quantity*100)
+            loadls.append(loadl4)
+        if load5:
+            loadl5="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load5+" "*(10-len(load5))+"0"*16+str(quantity*100)
+            loadls.append(loadl5)
+        if load6:
+            loadl6="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load6+" "*(10-len(load6))+"0"*16+str(quantity*100)
+            loadls.append(loadl6)
+        if load7:
+            loadl7="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load7+" "*(10-len(load7))+"0"*16+str(quantity*100)
+            loadls.append(loadl7)
+        if load8:
+           loadl8="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load8+" "*(10-len(load8))+"0"*16+str(quantity*100)
+           loadls.append(loadl8)
+        if load9:
+            loadl9="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load9+" "*(10-len(load9))+"0"*16+str(quantity*100)
+            loadls.append(loadl9)
+        if load10:
+            loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load10+" "*(10-len(load10))+"0"*16+str(quantity*100)
+            loadls.append(loadl10)
+        end="9TRL:0013"
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-        
-        
-        dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-        df=Inventory[Inventory["Location"]=="OLYM"][["Lot","B/L","Vessel","DryWeight","ADMT","Location","Warehouse_In"]]
-        zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Vessel","DryWeight","ADMT","Release_Order_Number","Carrier_Code","BL",
-                                                         "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-        with dab1:
+        for i in loads:
+            #st.write(i)
+            try:
+                  
+                Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
+                Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
+                Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
+                Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
+                Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
+                Inventory.loc[Inventory["Lot"]==i,"BL"]=str(bill_of_lading)
+            except:
+                st.write("Check Unit Number,Unit Not In Inventory")
+            #st.write(vehicle_id)
+
+            temp=Inventory.to_csv("temp.csv")
+            upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
+        with open(f'placeholder.txt', 'w') as f:
+            f.write(line1)
+            f.write('\n')
+            f.write(line2)
+            f.write('\n')
             
-            st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-            st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-            st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-            st.table(df)
-        with dab2:
-            
-            date_filter=st.checkbox("CLICK FOR DATE FILTER")
-            if "disabled" not in st.session_state:
-                st.session_state.visibility = "visible"
-                st.session_state.disabled = True
-            if date_filter:
-                st.session_state.disabled=False
+            for i in loadls:
                 
-            else:
-                st.session_state.disabled=True
-                #min_value=min([i.date() for i in zf["Warehouse_Out"]])
-            filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
-            #st.write(zf)
-            #zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("int")
-            zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("str")
-            zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
-            filtered_zf=zf.copy()
-            if date_filter:
-                filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
-                filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
-            dryweight_filter=st.selectbox("Filter By DryWeight",["ALL DRYWEIGHTS"]+[str(i) for i in filtered_zf["DryWeight"].unique().tolist()])
-            BL_filter=st.selectbox("Filter By Bill Of Lading",["ALL BILL OF LADINGS"]+[str(i) for i in filtered_zf["BL"].unique().tolist()])
-            vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
-            carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(i) for i in filtered_zf["Carrier_Code"].unique().tolist()])
-            
-            col1,col2=st.columns([2,8])
-            with col1:
-                st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-                st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-                st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-            
-            
-            if BL_filter!="ALL DRYWEIGHTS":
-                filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
-            if BL_filter!="ALL BILL OF LADINGS":
-                filtered_zf=filtered_zf[filtered_zf["BL"]==BL_filter]
-            if carrier_filter!="ALL CARRIERS":
-                filtered_zf=filtered_zf[filtered_zf["Carrier_Code"]==carrier_filter]
-            if vehicle_filter!="ALL VEHICLES":
-                filtered_zf=filtered_zf[filtered_zf["Vehicle_Id"]==vehicle_filter]
-            with col2:
-                if date_filter:
-                    st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
-            st.table(filtered_zf)
-    #with tab4:
-   #     df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-    #    st.write(df)
+                f.write(i)
+                f.write('\n')
+
+            f.write(end)
         
+            
+    try:
+        down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
+    except:
+        pass        
+    if st.button('SAVE/DISPLAY EDI'):
+        process()
+        with open('placeholder.txt', 'r') as f:
+            output_text = f.read()
+        st.markdown("**EDI TEXT**")
+        st.text_area('', value=output_text, height=600)
+        with open('placeholder.txt', 'r') as f:
+            file_content = f.read()
+        newline="\n"
+        filename = f'Suzano_EDI_{a}_{release_order_number}'
+        file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
+        st.write(filename)
+        subject = f'Suzano_EDI_{a}_{release_order_number}'
+        body = f"EDI for Release Order Number {release_order_number} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
+        sender = "warehouseoly@gmail.com"
+        #recipients = ["afsin1977@gmail.com","alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+        recipients = ["afsiny@portolympia.com"]
+        password = "xjvxkmzbpotzeuuv"
+
+          # Replace with the actual file path
+
+
+        with open('temp_file.txt', 'w') as f:
+            f.write(file_content)
+
+        file_path = 'temp_file.txt'  # Use the path of the temporary file
+
+        send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
+        upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
+
+        
+
+        
+            
+
+
+        
+                
+if select=="INVENTORY" :
+    Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
     
+    
+    dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
+    df=Inventory[Inventory["Location"]=="OLYM"][["Lot","B/L","Vessel","DryWeight","ADMT","Location","Warehouse_In"]]
+    zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Vessel","DryWeight","ADMT","Release_Order_Number","Carrier_Code","BL",
+                                                     "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
+    with dab1:
+        
+        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+        st.table(df)
+    with dab2:
+        
+        date_filter=st.checkbox("CLICK FOR DATE FILTER")
+        if "disabled" not in st.session_state:
+            st.session_state.visibility = "visible"
+            st.session_state.disabled = True
+        if date_filter:
+            st.session_state.disabled=False
+            
+        else:
+            st.session_state.disabled=True
+            #min_value=min([i.date() for i in zf["Warehouse_Out"]])
+        filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
+        #st.write(zf)
+        #zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("int")
+        zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("str")
+        zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
+        filtered_zf=zf.copy()
+        if date_filter:
+            filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+            filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+        dryweight_filter=st.selectbox("Filter By DryWeight",["ALL DRYWEIGHTS"]+[str(i) for i in filtered_zf["DryWeight"].unique().tolist()])
+        BL_filter=st.selectbox("Filter By Bill Of Lading",["ALL BILL OF LADINGS"]+[str(i) for i in filtered_zf["BL"].unique().tolist()])
+        vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
+        carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(i) for i in filtered_zf["Carrier_Code"].unique().tolist()])
+        
+        col1,col2=st.columns([2,8])
+        with col1:
+            st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+            st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+            st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+        
+        
+        if BL_filter!="ALL DRYWEIGHTS":
+            filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
+        if BL_filter!="ALL BILL OF LADINGS":
+            filtered_zf=filtered_zf[filtered_zf["BL"]==BL_filter]
+        if carrier_filter!="ALL CARRIERS":
+            filtered_zf=filtered_zf[filtered_zf["Carrier_Code"]==carrier_filter]
+        if vehicle_filter!="ALL VEHICLES":
+            filtered_zf=filtered_zf[filtered_zf["Vehicle_Id"]==vehicle_filter]
+        with col2:
+            if date_filter:
+                st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+        st.table(filtered_zf)
+#with tab4:
+#     df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+#    st.write(df)
+    
+
