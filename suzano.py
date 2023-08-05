@@ -162,7 +162,8 @@ if user :
             with col2:
                 if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
                     temp=new_df.to_csv("temp.csv")
-                    upload_cs_file("olym_suzano", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
+                    upload_cs_file("olym_suzano/shipping_files", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
+                    st.write(f"Uploaded {{gemi}-{voyage}-shipping_file.csv} to database")
             st.dataframe(new_df)
     with tab2:
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
