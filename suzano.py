@@ -91,7 +91,7 @@ def list_cs_files(bucket_name):
 
 user="AFSIN"
     
-if user :
+#if user :
 colu1,colu2=st.columns([2,8])
 with colu1:
     st.write(user.upper())
