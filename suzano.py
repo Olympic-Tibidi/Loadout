@@ -169,7 +169,7 @@ if user :
                     st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
             with col2:
                 if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
-                    st.write(list_cs_files(olym_suzano))
+                    st.write(list_cs_files("olym_suzano"))
                     temp=new_df.to_csv("temp.csv")
                     upload_cs_file("olym_suzano/shipping_files", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
                   
