@@ -171,7 +171,7 @@ if user :
                 if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
                     st.write(list_cs_files("olym_suzano"))
                     temp=new_df.to_csv("temp.csv")
-                    upload_cs_file("olym_suzano/shipping_files", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
+                    upload_cs_file("olym_suzano", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
                   
                     st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
             st.dataframe(new_df)
