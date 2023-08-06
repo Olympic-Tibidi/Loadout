@@ -284,7 +284,7 @@ if select=="LOADOUT" :
             st.session_state.file_date=file_date
         file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7))
         terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
-        release_order_number=st.text_input("Release Order Number (FROM SUZANO)",st.session_state.release_order_number,,disabled=True,help="LALALA")
+        release_order_number=st.text_input("Release Order Number (FROM SUZANO)",st.session_state.release_order_number,disabled=True,help="LALALA")
         
         
         delivery_date=st.date_input("Delivery Date",datetime.datetime.today(),key="delivery_date")
