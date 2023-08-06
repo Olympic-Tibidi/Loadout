@@ -223,7 +223,7 @@ if select=="ADMIN" :
     with admin_tab2:
         
         st.markdown("RELEASE ORDERS")
-        release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE")
+        release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         if release_order_tab1:
             release_order_number=st.text_input("Release_Order_Number")
             transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
@@ -236,10 +236,10 @@ if select=="ADMIN" :
                 temp=store_release_order_data(release_order_number,transport_type,carrier_code,bill_of_lading,sales_order_item)
                 upload_cs_file("olym_suzano", 'temp',rf"release_orders/{gemi}-{voyage}-{release_order_number}.json") 
     # Store the JSON data in Google Cloud Storage with the release order number as the filename
-    storage_client = storage.Client()
-    bucket = storage_client.bucket("your_bucket_name")
-    blob = bucket.blob(f"{release_order_number}.json")
-    blob.upload_from_string(json_data)
+    #storage_client = storage.Client()
+    #bucket = storage_client.bucket("your_bucket_name")
+    #blob = bucket.blob(f"{release_order_number}.json")
+    # blob.upload_from_string(json_data)
 
 if select=="LOADOUT" :
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
