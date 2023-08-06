@@ -237,7 +237,8 @@ if select=="ADMIN" :
     with admin_tab2:
         
         st.markdown("RELEASE ORDERS") 
-        st.write(list_files_in_folder("olym_suzano", "release_orders"))
+        current_release_orders=list_files_in_folder("olym_suzano", "release_orders")[1:]
+        
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         with release_order_tab1:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
@@ -254,6 +255,8 @@ if select=="ADMIN" :
 
             create_release_order=st.button("Create Release Order")
             if create_release_order:
+                if rf"release_orders/{vessel}-{release_order_number}.json" in current_release_orders:
+                    st.write("THIS RELEASE ORDER ALREADY EXISTS. PLEASE USE (ADD TO RELEASE ORDER). IF YOU WANT TO OVERWRITE CONTINUE")
                 temp=store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
                 st.write(temp)
                 storage_client = storage.Client()
