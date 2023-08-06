@@ -124,7 +124,7 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,bill_o
         "bill_of_lading": bill_of_lading,
         "dryness":dryness,
         "quantity":quantity,
-        "tonnage"=tonnage,
+        "tonnage":tonnage,
         "transport_type": transport_type,
         "carrier_code": carrier_code,
         
