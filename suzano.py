@@ -203,6 +203,7 @@ if select=="ADMIN" :
                 requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
                 if st.button("LOAD SHIPPING FILE"):
                     requested_shipping_file=gcp_csv_to_df("olym_suzano", requested_file)
+                    st.write(requested_shipping_file.columns)
                     st.write(requested_shipping_file)
     with admin_tab2:
         st.markdown("RELEASE ORDERS")
