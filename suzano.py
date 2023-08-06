@@ -200,7 +200,10 @@ if select=="ADMIN" :
             with shipment_tab2:
                 folder_name = "olym_suzano/shipping_files"  # Replace this with the folder path you want to read
                 files_in_folder = list_files_in_folder("olym_suzano", "shipping_files")
-                st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder)
+                requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
+                if st.button("LOAD SHIPPING FILE"):
+                    requested_shipping_file=gcp_csv_to_df("olym_suzano", requested_file)
+                    st.write(pd.read_csv(requested_shipping_file,header=None))
     with admin_tab2:
         st.markdown("RELEASE ORDERS")
 if select=="LOADOUT" :
