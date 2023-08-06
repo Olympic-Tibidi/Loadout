@@ -129,6 +129,7 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,bill_o
         "carrier_code": carrier_code,
         
         
+        
     }
 
     # Convert the dictionary to JSON format
@@ -245,6 +246,7 @@ if select=="ADMIN" :
             dryness=st.text_input("Dryness")
             quantity=st.number_input("Quantity of Bales", min_value=1, max_value=300, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             tonnage=2*quantity
+            #queue=st.number_input("Place in Queue", min_value=1, max_value=20, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
             carrier_code=st.text_input("Carrier Code")            
             
@@ -258,9 +260,11 @@ if select=="ADMIN" :
                 blob = bucket.blob(rf"release_orders/{vessel}-{release_order_number}.json")
                 blob.upload_from_string(temp)
                 #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
+                
         with release_order_tab2:
             files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
-            requested_file=st.selectbox("RELEASE ORDERS IN DATABASE",files_in_folder[1:])
+            requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder[1:])
+            
             if st.button("DISPATCH TO WAREHOUSE"):
                 data=gcp_download("olym_suzano",fr"release_orders/{requested_file}")
                 release_order_json = json.loads(data)
@@ -275,11 +279,13 @@ if select=="ADMIN" :
                     st.session_state.bill_of_lading=release_order_json["bill_of_lading"]
                 if sales_order_item not in st.session_state:
                     st.session_state.sales_order_item=release_order_json["sales_order_item"]
+                if queue not in st.session_state:
+                    st.session_state.queue=release_order_json["queue"]
                 if dispatched not in st.session_state:
                     st.session_state.dispatched=release_order_json["release_order_number"]
    
 
-##########LOAD OUT  ##############
+##########  LOAD OUT  ##############
 
 
 
