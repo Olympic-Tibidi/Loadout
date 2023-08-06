@@ -192,8 +192,9 @@ if select=="ADMIN" :
                         st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
                 st.dataframe(new_df)
             with shipment_tab2:
-                files=list_cs_files_f("olym_suzano","shipping_files")
-                st.write(files[0])
+                folder_name = "olym_suzano/shipping_files"  # Replace this with the folder path you want to read
+                files_in_folder = list_cs_files_f("olym_suzano", "shipping_files)
+                st.write(files_in_folder)
     with admin_tab2:
         st.markdown("RELEASE ORDERS")
 if select=="LOADOUT" :
