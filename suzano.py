@@ -243,7 +243,8 @@ if select=="ADMIN" :
                 blob.upload_from_string(temp)
                 #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
         if release_order_tab2:
-            pass
+            files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
+            requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:]))
             
     # Store the JSON data in Google Cloud Storage with the release order number as the filename
     #
