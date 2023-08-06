@@ -185,14 +185,14 @@ if select=="ADMIN" :
                         st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
                 with col2:
                     if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
-                        st.write(list_cs_files("olym_suzano"))
+                        #st.write(list_cs_files("olym_suzano"))
                         temp=new_df.to_csv("temp.csv")
                         upload_cs_file("olym_suzano", 'temp.csv',rf"shipping_files/{gemi}-{voyage}-shipping_file.csv") 
                       
                         st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
                 st.dataframe(new_df)
             with shipment_tab2:
-                files=list_cs_files("olym_suzano","shipping_files")
+                files=list_cs_files_f("olym_suzano","shipping_files")
                 st.write(files[0])
     with admin_tab2:
         st.markdown("RELEASE ORDERS")
