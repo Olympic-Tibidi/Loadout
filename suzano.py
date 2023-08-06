@@ -235,6 +235,9 @@ if select=="ADMIN" :
             if create_release_order:
                 temp=store_release_order_data(release_order_number,transport_type,carrier_code,bill_of_lading,sales_order_item)
                 upload_cs_file("olym_suzano", 'temp',rf"release_orders/{gemi}-{voyage}-{release_order_number}.json") 
+        if release_order_tab2:
+            pass
+            
     # Store the JSON data in Google Cloud Storage with the release order number as the filename
     #storage_client = storage.Client()
     #bucket = storage_client.bucket("your_bucket_name")
