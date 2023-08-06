@@ -188,12 +188,11 @@ if select=="ADMIN" :
                         #st.write(list_cs_files("olym_suzano"))
                         temp=new_df.to_csv("temp.csv")
                         upload_cs_file("olym_suzano", 'temp.csv',rf"shipping_files/{gemi}-{voyage}-shipping_file.csv") 
-                      
                         st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
                 st.dataframe(new_df)
             with shipment_tab2:
                 folder_name = "olym_suzano/shipping_files"  # Replace this with the folder path you want to read
-                files_in_folder = list_cs_files_f("olym_suzano", "shipping_files)
+                files_in_folder = list_cs_files_f("olym_suzano", folder_name)
                 st.write(files_in_folder)
     with admin_tab2:
         st.markdown("RELEASE ORDERS")
