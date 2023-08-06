@@ -236,7 +236,8 @@ if select=="ADMIN" :
                     st.write(requested_shipping_file[["Lot","Lot Qty","B/L","Wrap","Vessel","DryWeight","ADMT","Location","Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code","BL"]])
     with admin_tab2:
         
-        st.markdown("RELEASE ORDERS")
+        st.markdown("RELEASE ORDERS") 
+        st.write(list_files_in_folder("olym_suzano", "release_orders")
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         with release_order_tab1:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
