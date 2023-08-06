@@ -98,7 +98,14 @@ def list_cs_files_f(bucket_name, folder_name):
     folder_files = [blob.name for blob in blobs if blob.name.startswith(folder_name)]
 
     return folder_files
+def list_files_in_folder_g(bucket_name, folder_name):
+    storage_client = storage.Client()
+    blobs = storage_client.list_blobs(bucket_name, prefix=folder_name)
 
+    # Extract only the filenames without the folder path
+    filenames = [blob.name.split("/")[-1] for blob in blobs if "/" in blob.name]
+
+    return filenames
 user="AFSIN"
     
 #if user :
@@ -192,7 +199,7 @@ if select=="ADMIN" :
                 st.dataframe(new_df)
             with shipment_tab2:
                 folder_name = "olym_suzano/shipping_files"  # Replace this with the folder path you want to read
-                files_in_folder = list_cs_files_f("olym_suzano", "shipping_files")
+                files_in_folder = list_cs_files_g("olym_suzano", folder_name)
                 st.write(files_in_folder)
     with admin_tab2:
         st.markdown("RELEASE ORDERS")
