@@ -235,7 +235,8 @@ if select=="ADMIN" :
             create_release_order=st.button("Create Release Order")
             if create_release_order:
                 temp=store_release_order_data(release_order_number,transport_type,carrier_code,bill_of_lading,sales_order_item)
-                upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
+                st.write(temp)
+                #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
         if release_order_tab2:
             pass
             
