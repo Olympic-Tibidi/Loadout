@@ -244,10 +244,16 @@ if select=="ADMIN" :
                 #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
         if release_order_tab2:
             files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
-            requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:]))
+            requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
             
     # Store the JSON data in Google Cloud Storage with the release order number as the filename
     #
+
+
+##########LOAD OUT  ##############
+
+
+
 
 if select=="LOADOUT" :
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
