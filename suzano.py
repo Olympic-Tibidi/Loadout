@@ -253,7 +253,7 @@ if select=="ADMIN" :
             files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
             requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
             if st.button("DISPATCH TO WAREHOUSE"):
-                data=gcp_download("olym_suzano",fr"shipping_files/{requested_file}")
+                data=gcp_download("olym_suzano",fr"release_orders/{requested_file}")
                 release_order_number = json.loads(data)
                 st.write(release_order_number)
             
