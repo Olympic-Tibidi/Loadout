@@ -246,7 +246,10 @@ if select=="ADMIN" :
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         with release_order_tab1:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
-            release_order_number=st.text_input("Release Order Number")
+            if st.radio("CHECK TO ADD TO EXISTING RELEASE ORDER"):
+                release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders")[1:]))
+            else:
+                release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
             bill_of_lading=st.text_input("Bill Of Lading")
             dryness=st.text_input("Dryness")
