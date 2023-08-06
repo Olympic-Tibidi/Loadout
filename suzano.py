@@ -114,16 +114,21 @@ def list_files_in_folder(bucket_name, folder_name):
 
     return filenames
 
-def store_release_order_data(release_order_number, transport_type, carrier_code, bill_of_lading, sales_order_item):
+def store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Create a dictionary to store the release order data
     release_order_data = {
         "vessel":vessel,
         "release_order_number": release_order_number,
+        "sales_order_item": sales_order_item,
+        "bill_of_lading": bill_of_lading,
+        "dryness":dryness,
+        "quantity":quantity,
+        "tonnage"=tonnage,
         "transport_type": transport_type,
         "carrier_code": carrier_code,
-        "bill_of_lading": bill_of_lading,
-        "sales_order_item": sales_order_item
+        
+        
     }
 
     # Convert the dictionary to JSON format
@@ -234,15 +239,19 @@ if select=="ADMIN" :
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         with release_order_tab1:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
-            release_order_number=st.text_input("Release_Order_Number")
-            transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
-            carrier_code=st.text_input("Carrier Code")
-            bill_of_lading=st.text_input("Bill Of Lading")
+            release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
+            bill_of_lading=st.text_input("Bill Of Lading")
+            dryness=st.text_input("Dryness")
+            quantity=st.number_input("Quantity of Bales", min_value=1, max_value=300, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+            tonnage=2*quantity
+            transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
+            carrier_code=st.text_input("Carrier Code")            
+            
 
             create_release_order=st.button("Create Release Order")
             if create_release_order:
-                temp=store_release_order_data(release_order_number,transport_type,carrier_code,bill_of_lading,sales_order_item)
+                temp=store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
                 st.write(temp)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket("olym_suzano")
