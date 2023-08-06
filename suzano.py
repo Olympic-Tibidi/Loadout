@@ -256,7 +256,17 @@ if select=="ADMIN" :
                 data=gcp_download("olym_suzano",fr"release_orders/{requested_file}")
                 release_order_number = json.loads(data)
                 st.write(release_order_number)
-            
+                if release_order_number not in st.session_state:
+                    st.session_state.release_order_number=release_order_number["release_order_number"]
+                if transport_type not in st.session_state:
+                    st.session_state.transport_type=release_order_number["transport_type"]
+                if carrier_code not in st.session_state:
+                    st.session_state.carrier_code=release_order_number["carrier_code"]
+                if bill_of_lading not in st.session_state:
+                    st.session_state.bill_of_lading=release_order_number["bill_of_lading"]
+                if sales_order_item not in st.session_state:
+                    st.session_state.sales_order_item=release_order_number["sales_order_item"]
+                    
    
 
 ##########LOAD OUT  ##############
@@ -273,23 +283,22 @@ if select=="LOADOUT" :
         if file_date not in st.session_state:
             st.session_state.file_date=file_date
         file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7))
-        terminal_code=st.text_input("Terminal Code","OLYM")
-        release_order_number=st.text_input("Release Order Number (FROM SUZANO)")
+        terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
+        release_order_number=st.text_input("Release Order Number (FROM SUZANO)",st.session_state.release_order_number,,disabled=True,help="LALALA")
         
-        if release_order_number not in st.session_state:
-            st.session_state.release_order_number=release_order_number
+        
         delivery_date=st.date_input("Delivery Date",datetime.datetime.today(),key="delivery_date")
     with col2:
-        transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"])
-        transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"])
+        transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],,disabled=True)
+        transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
         vehicle_id=st.text_input("Vehicle ID")
         quantity=st.number_input("Quantity In Tons", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
         frame_placeholder = st.empty()
     with col3: 
-        carrier_code=st.text_input("Carrier Code")
-        bill_of_lading=st.text_input("Bill of Lading")
+        carrier_code=st.text_input("Carrier Code",disabled=True)
+        bill_of_lading=st.text_input("Bill of Lading",disabled=True)
         eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
-        sales_order_item=st.text_input("Sales Order Item (Material Code)")
+        sales_order_item=st.text_input("Sales Order Item (Material Code)",disabled=True)
     with col4:
         load1=st.text_input("Unit No : 01")[:-3]
         load2=st.text_input("Unit No : 02")[:-3]
