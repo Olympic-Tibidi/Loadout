@@ -128,7 +128,7 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,bill_o
         "quantity":quantity,
         "tonnage":tonnage,
         "shipped":0,
-        "remaining"=quantity
+        "remaining":quantity
         
         
         }}
