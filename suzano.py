@@ -259,15 +259,17 @@ if select=="ADMIN" :
 
             create_release_order=st.button("Create Release Order")
             if create_release_order:
-                if rf"release_orders/{vessel}-{release_order_number}.json" in list_files_in_folder("olym_suzano", "release_orders")[1:]:
+                if rf"{vessel}-{release_order_number}.json" in list_files_in_folder("olym_suzano", "release_orders")[1:]:
                     st.write("THIS RELEASE ORDER ALREADY EXISTS. PLEASE USE (ADD TO RELEASE ORDER). IF YOU WANT TO OVERWRITE CONTINUE")
-                temp=store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
-                st.write(temp)
-                storage_client = storage.Client()
-                bucket = storage_client.bucket("olym_suzano")
-                blob = bucket.blob(rf"release_orders/{vessel}-{release_order_number}.json")
-                blob.upload_from_string(temp)
-                #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
+                else:
+                    
+                    temp=store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
+                    st.write(temp)
+                    storage_client = storage.Client()
+                    bucket = storage_client.bucket("olym_suzano")
+                    blob = bucket.blob(rf"release_orders/{vessel}-{release_order_number}.json")
+                    blob.upload_from_string(temp)
+                    #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
                 
         with release_order_tab2:
             files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
