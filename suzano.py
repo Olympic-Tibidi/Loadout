@@ -117,19 +117,19 @@ def list_files_in_folder(bucket_name, folder_name):
 def store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Create a dictionary to store the release order data
-    release_order_data = {
-        "vessel":vessel,
-        "release_order_number": release_order_number,
-        "sales_order_item": sales_order_item,
+    release_order_data = { vessel: {
+       
+        release_order_number:{
+        "sales_order_items": {
+        "sales_order_item":sales_order_item,
         "bill_of_lading": bill_of_lading,
         "dryness":dryness,
         "quantity":quantity,
         "tonnage":tonnage,
         "transport_type": transport_type,
-        "carrier_code": carrier_code,
-        
-        
-        
+        "carrier_code": carrier_code,}}
+               
+    }
     }
 
     # Convert the dictionary to JSON format
