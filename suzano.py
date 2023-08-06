@@ -242,7 +242,7 @@ if select=="ADMIN" :
         
         st.markdown("RELEASE ORDERS") 
         
-        st.write(f"CURRENT RELEASE ORDERS : {list_files_in_folder("olym_suzano", "release_orders")[1:]}")
+        st.write(f'CURRENT RELEASE ORDERS : {list_files_in_folder("olym_suzano", "release_orders")[1:]}')
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         with release_order_tab1:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
