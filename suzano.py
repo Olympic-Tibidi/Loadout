@@ -289,7 +289,7 @@ if select=="LOADOUT" :
         
         delivery_date=st.date_input("Delivery Date",datetime.datetime.today(),key="delivery_date")
     with col2:
-        transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],,disabled=True)
+        transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
         transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
         vehicle_id=st.text_input("Vehicle ID")
         quantity=st.number_input("Quantity In Tons", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
