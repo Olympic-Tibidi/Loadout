@@ -246,7 +246,8 @@ if select=="ADMIN" :
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         with release_order_tab1:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
-            if st.radio("CHECK TO ADD TO EXISTING RELEASE ORDER"):
+            edit=st.checkbox("CHECK TO ADD TO EXISTING RELEASE ORDER")
+            if edit:
                 release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders")[1:]))
             else:
                 release_order_number=st.text_input("Release Order Number")
@@ -262,7 +263,8 @@ if select=="ADMIN" :
 
             create_release_order=st.button("Create Release Order")
             if create_release_order:
-                if rf"{vessel}-{release_order_number}.json" in list_files_in_folder("olym_suzano", "release_orders")[1:]:
+                #if rf"{vessel}-{release_order_number}.json" in list_files_in_folder("olym_suzano", "release_orders")[1:]:
+                if edit:   
                     st.write("THIS RELEASE ORDER ALREADY EXISTS. PLEASE USE (ADD TO RELEASE ORDER). IF YOU WANT TO OVERWRITE CONTINUE")
                 else:
                     
