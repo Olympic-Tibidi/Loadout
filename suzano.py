@@ -106,6 +106,22 @@ def list_files_in_folder(bucket_name, folder_name):
     filenames = [blob.name.split("/")[-1] for blob in blobs if "/" in blob.name]
 
     return filenames
+
+def store_release_order_data(release_order_number, transport_type, carrier_code, bill_of_lading, sales_order_item):
+       
+    # Create a dictionary to store the release order data
+    release_order_data = {
+        "release_order_number": release_order_number,
+        "transport_type": transport_type,
+        "carrier_code": carrier_code,
+        "bill_of_lading": bill_of_lading,
+        "sales_order_item": sales_order_item
+    }
+
+    # Convert the dictionary to JSON format
+    json_data = json.dumps(release_order_data)
+    return json_data
+
 user="AFSIN"
     
 #if user :
@@ -205,7 +221,26 @@ if select=="ADMIN" :
                     requested_shipping_file=gcp_csv_to_df("olym_suzano", requested_file)
                     st.write(requested_shipping_file[["Lot","Lot Qty","B/L","Wrap","Vessel","DryWeight","ADMT","Location","Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code","BL"]])
     with admin_tab2:
+        
         st.markdown("RELEASE ORDERS")
+        release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE")
+        if release_order_tab1:
+            release_order_number=st.text_input("Release_Order_Number")
+            transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
+            carrier_code=st.text_input("Carrier Code")
+            bill_of_lading=st.text_input("Bill Of Lading")
+            sales_order_item=st.text_input("Sales Order Item")
+
+            create_release_order=st.button("Create Release Order")
+            if create_release_order:
+                temp=store_release_order_data(release_order_number,transport_type,carrier_code,bill_of_lading,sales_order_item)
+                upload_cs_file("olym_suzano", 'temp',rf"release_orders/{gemi}-{voyage}-{release_order_number}.json") 
+    # Store the JSON data in Google Cloud Storage with the release order number as the filename
+    storage_client = storage.Client()
+    bucket = storage_client.bucket("your_bucket_name")
+    blob = bucket.blob(f"{release_order_number}.json")
+    blob.upload_from_string(json_data)
+
 if select=="LOADOUT" :
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
     with col1:
