@@ -225,7 +225,7 @@ if select=="ADMIN" :
         
         st.markdown("RELEASE ORDERS")
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
-        if release_order_tab1:
+        with release_order_tab1:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
             release_order_number=st.text_input("Release_Order_Number")
             transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
@@ -242,13 +242,11 @@ if select=="ADMIN" :
                 blob = bucket.blob(rf"release_orders/{vessel}-{release_order_number}.json")
                 blob.upload_from_string(temp)
                 #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
-        if release_order_tab2:
+        with release_order_tab2:
             files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
             requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
             
-    # Store the JSON data in Google Cloud Storage with the release order number as the filename
-    #
-
+   
 
 ##########LOAD OUT  ##############
 
