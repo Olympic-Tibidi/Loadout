@@ -302,7 +302,7 @@ if select=="LOADOUT" :
         carrier_code=st.text_input("Carrier Code",st.session_state.carrier_code,disabled=True)
         bill_of_lading=st.text_input("Bill of Lading",st.session_state.bill_of_lading,disabled=True)
         eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
-        sales_order_item=st.text_input("Sales Order Item (Material Code)",disabled=True)
+        sales_order_item=st.text_input("Sales Order Item (Material Code)",st.session_state.sales_order_item,disabled=True)
     with col4:
         load1=st.text_input("Unit No : 01")[:-3]
         load2=st.text_input("Unit No : 02")[:-3]
