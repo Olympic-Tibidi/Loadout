@@ -200,7 +200,7 @@ if select=="ADMIN" :
             with shipment_tab2:
                 folder_name = "olym_suzano/shipping_files"  # Replace this with the folder path you want to read
                 files_in_folder = list_files_in_folder("olym_suzano", "shipping_files")
-                st.selectbox(files_in_folder)
+                st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder)
     with admin_tab2:
         st.markdown("RELEASE ORDERS")
 if select=="LOADOUT" :
