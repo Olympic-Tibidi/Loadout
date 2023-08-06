@@ -289,6 +289,10 @@ if select=="LOADOUT" :
         
         delivery_date=st.date_input("Delivery Date",datetime.datetime.today(),key="delivery_date")
     with col2:
+        if st.session_state.transport_type=="TRUCK":
+            medium="TRUCK"
+        else:
+            medium="RAIL"
         transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
         transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
         vehicle_id=st.text_input("Vehicle ID")
@@ -336,8 +340,9 @@ if select=="LOADOUT" :
         
     def process():
         line1="1HDR:"+a+b+terminal_code
-        tsn="01" if transport_sequential_number=="TRUCK" else "02"
-        tt="0001" if transport_type=="TRUCK" else "0002"
+        tsn="01" if medium=="TRUCK" else "02"
+        
+        tt="0001" if medium=="TRUCK" else "0002"
         line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+bill_of_lading+" "*(50-len(bill_of_lading))+c
         loadls=[]
         if load1:
