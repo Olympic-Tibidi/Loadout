@@ -111,6 +111,7 @@ def store_release_order_data(release_order_number, transport_type, carrier_code,
        
     # Create a dictionary to store the release order data
     release_order_data = {
+        "vessel":vessel,
         "release_order_number": release_order_number,
         "transport_type": transport_type,
         "carrier_code": carrier_code,
