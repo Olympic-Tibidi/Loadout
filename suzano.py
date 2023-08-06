@@ -64,6 +64,13 @@ def send_email_with_attachment(subject, body, sender, recipients, password, file
         smtp_server.sendmail(sender, recipients, msg.as_string())
     print("Message sent!")
 
+def gcp_download(bucket_name, source_file_name):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(source_file_name)
+    data = blob.download_as_text()
+    return data
+
 def gcp_csv_to_df(bucket_name, source_file_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
@@ -245,6 +252,10 @@ if select=="ADMIN" :
         with release_order_tab2:
             files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
             requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
+            if st.button("DISPATCH TO WAREHOUSE"):
+                data=gcp_download("olym_suzano",fr"shipping_files/{requested_file}")
+                release_order_number = json.loads(data)
+                st.write(release_order_number)
             
    
 
