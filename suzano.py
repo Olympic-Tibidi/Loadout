@@ -263,19 +263,20 @@ if select=="ADMIN" :
             requested_file=st.selectbox("RELEASE ORDERS IN DATABASE",files_in_folder[1:])
             if st.button("DISPATCH TO WAREHOUSE"):
                 data=gcp_download("olym_suzano",fr"release_orders/{requested_file}")
-                release_order_number = json.loads(data)
+                release_order_json = json.loads(data)
                 st.write(release_order_number)
                 if release_order_number not in st.session_state:
-                    st.session_state.release_order_number=release_order_number["release_order_number"]
+                    st.session_state.release_order_number=release_order_json["release_order_number"]
                 if transport_type not in st.session_state:
-                    st.session_state.transport_type=release_order_number["transport_type"]
+                    st.session_state.transport_type=release_order_json["transport_type"]
                 if carrier_code not in st.session_state:
-                    st.session_state.carrier_code=release_order_number["carrier_code"]
+                    st.session_state.carrier_code=release_order_json["carrier_code"]
                 if bill_of_lading not in st.session_state:
-                    st.session_state.bill_of_lading=release_order_number["bill_of_lading"]
+                    st.session_state.bill_of_lading=release_order_json["bill_of_lading"]
                 if sales_order_item not in st.session_state:
-                    st.session_state.sales_order_item=release_order_number["sales_order_item"]
-                    
+                    st.session_state.sales_order_item=release_order_json["sales_order_item"]
+                if dispatched not in st.session_state:
+                    st.session_state.dispatched=release_order_json["release_order_number"]
    
 
 ##########LOAD OUT  ##############
@@ -284,6 +285,8 @@ if select=="ADMIN" :
 
 
 if select=="LOADOUT" :
+
+    st.write(f"Current Release Order : {st.session_state.dispatched}")
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
     with col1:
     
