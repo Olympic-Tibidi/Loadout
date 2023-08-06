@@ -101,6 +101,10 @@ select=st.sidebar.radio("SELECT FUNCTION",
 
     
 if select=="ADMIN" :
+    admin_tab1,admin_tab2=st.tabs(["SHIPMENT FILES","RELEASE ORDERS"])
+    with admin_tab1:
+        st.markdown("SHIPMENT FILES")
+    
     uploaded_file = st.file_uploader("Choose a file")
     if uploaded_file is not None:
         # To read file as bytes:
@@ -175,6 +179,8 @@ if select=="ADMIN" :
               
                 st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
         st.dataframe(new_df)
+    with admin_tab2:
+        st.markdown("RELEASE ORDERS")
 if select=="LOADOUT" :
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
     with col1:
