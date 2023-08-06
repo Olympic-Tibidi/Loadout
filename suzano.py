@@ -225,7 +225,7 @@ if select=="ADMIN" :
         st.markdown("RELEASE ORDERS")
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         if release_order_tab1:
-            vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"]
+            vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
             release_order_number=st.text_input("Release_Order_Number")
             transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
             carrier_code=st.text_input("Carrier Code")
