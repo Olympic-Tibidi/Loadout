@@ -88,6 +88,16 @@ def list_cs_files(bucket_name):
     file_list = [file.name for file in file_list]
 
     return file_list
+def list_cs_files_f(bucket_name, folder_name):
+    storage_client = storage.Client()
+
+    # List all blobs in the bucket
+    blobs = storage_client.list_blobs(bucket_name)
+
+    # Filter blobs that are within the specified folder
+    folder_files = [blob.name for blob in blobs if blob.name.startswith(folder_name)]
+
+    return folder_files
 
 user="AFSIN"
     
@@ -177,12 +187,12 @@ if select=="ADMIN" :
                     if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
                         st.write(list_cs_files("olym_suzano"))
                         temp=new_df.to_csv("temp.csv")
-                        upload_cs_file("olym_suzano", 'temp.csv',f"{gemi}-{voyage}-shipping_file.csv") 
+                        upload_cs_file("olym_suzano", 'temp.csv',rf"shipping_files/{gemi}-{voyage}-shipping_file.csv") 
                       
                         st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
                 st.dataframe(new_df)
             with shipment_tab2:
-                files=list_cs_files("olym_suzano")
+                files=list_cs_files("olym_suzano","shipping_files")
                 st.write(files[0])
     with admin_tab2:
         st.markdown("RELEASE ORDERS")
