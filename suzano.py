@@ -299,8 +299,8 @@ if select=="LOADOUT" :
         quantity=st.number_input("Quantity In Tons", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
         frame_placeholder = st.empty()
     with col3: 
-        carrier_code=st.text_input("Carrier Code",disabled=True)
-        bill_of_lading=st.text_input("Bill of Lading",disabled=True)
+        carrier_code=st.text_input("Carrier Code",st.session_state.carrier_code,disabled=True)
+        bill_of_lading=st.text_input("Bill of Lading",,st.session_state.bill_of_lading,disabled=True)
         eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
         sales_order_item=st.text_input("Sales Order Item (Material Code)",disabled=True)
     with col4:
