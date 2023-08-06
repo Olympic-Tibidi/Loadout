@@ -251,7 +251,7 @@ if select=="ADMIN" :
                 #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
         with release_order_tab2:
             files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
-            requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
+            requested_file=st.selectbox("RELEASE ORDERS IN DATABASE",files_in_folder[1:])
             if st.button("DISPATCH TO WAREHOUSE"):
                 data=gcp_download("olym_suzano",fr"release_orders/{requested_file}")
                 release_order_number = json.loads(data)
