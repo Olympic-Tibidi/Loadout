@@ -225,6 +225,7 @@ if select=="ADMIN" :
         st.markdown("RELEASE ORDERS")
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         if release_order_tab1:
+            vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"]
             release_order_number=st.text_input("Release_Order_Number")
             transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
             carrier_code=st.text_input("Carrier Code")
@@ -234,7 +235,7 @@ if select=="ADMIN" :
             create_release_order=st.button("Create Release Order")
             if create_release_order:
                 temp=store_release_order_data(release_order_number,transport_type,carrier_code,bill_of_lading,sales_order_item)
-                upload_cs_file("olym_suzano", 'temp',rf"release_orders/{gemi}-{voyage}-{release_order_number}.json") 
+                upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
         if release_order_tab2:
             pass
             
