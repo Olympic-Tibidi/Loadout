@@ -312,7 +312,7 @@ if select=="ADMIN" :
             requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
             
             if st.button("DISPATCH TO WAREHOUSE"):
-                data=gcp_download("olym_suzano",fr"release_orders/{vessel}/{requested_file}")
+                data=gcp_download("olym_suzano",fr"release_orders/{vessel}/{requested_file}.json")
                 release_order_json = json.loads(data)
                 st.write(release_order_json)
                 st.write(release_order_number)
