@@ -354,8 +354,8 @@ if select=="ADMIN" :
                     remaining_text = f"Bales Remaining : {target[i]['remaining']} Bales - {2 * target[i]['remaining']} Metric Tons"
                 
                     # Add text lines to the container
-                    add_text_with_frame(a, border_color='blue')
-                    #add_text_with_frame(sales_order_item_text, border_color='blue')
+                    #add_text_with_frame(a, border_color='blue')
+                    add_text_with_frame(sales_order_item_text, border_color='blue')
                     st.write(total_quantity_text)
                     st.write(shipped_text)
                     st.write(remaining_text)
