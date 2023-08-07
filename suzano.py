@@ -319,63 +319,62 @@ if select=="ADMIN" :
                 number_of_sales_orders=len(target)
                 rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
             except:
-                pass
+                nofile=1
                 
             
 
                          
-                      
+             if nofile!=1:         
             
-            targets=[i for i in target]
-            with rel_col1:
-                
-                st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
-                st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Bales - {target[targets[0]]['tonnage']} Metric Tons")
-                st.write(f"        Bales Shipped : {target[targets[0]]['shipped']} Bales - {2*target[targets[0]]['shipped']} Metric Tons")
-                st.write(f"        Bales Remaining : {target[targets[0]]['remaining']} Bales - {2*target[targets[0]]['remaining']} Metric Tons")
-                
-            with rel_col2:
-                try:
-                
-                    st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                    st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
-                    st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Bales - {target[targets[1]]['tonnage']} Metric Tons")
-                    st.write(f"        Bales Shipped : {target[targets[1]]['shipped']} Bales - {2*target[targets[1]]['shipped']} Metric Tons")
-                    st.write(f"        Bales Remaining : {target[targets[1]]['remaining']} Bales - {2*target[targets[1]]['remaining']} Metric Tons")
+                targets=[i for i in target]
+                with rel_col1:
                     
+                    st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                    st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
+                    st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Bales - {target[targets[0]]['tonnage']} Metric Tons")
+                    st.write(f"        Bales Shipped : {target[targets[0]]['shipped']} Bales - {2*target[targets[0]]['shipped']} Metric Tons")
+                    st.write(f"        Bales Remaining : {target[targets[0]]['remaining']} Bales - {2*target[targets[0]]['remaining']} Metric Tons")
+                    
+                with rel_col2:
+                    try:
+                    
+                        st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                        st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
+                        st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Bales - {target[targets[1]]['tonnage']} Metric Tons")
+                        st.write(f"        Bales Shipped : {target[targets[1]]['shipped']} Bales - {2*target[targets[1]]['shipped']} Metric Tons")
+                        st.write(f"        Bales Remaining : {target[targets[1]]['remaining']} Bales - {2*target[targets[1]]['remaining']} Metric Tons")
                         
-                except:
-                    pass
-
-            with rel_col3:
-                try:
-                
-                    st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                    st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
-                    st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Bales - {target[targets[2]]['tonnage']} Metric Tons")
-                    st.write(f"        Bales Shipped : {target[targets[2]]['shipped']} Bales - {2*target[targets[2]]['shipped']} Metric Tons")
-                    st.write(f"        Bales Remaining : {target[targets[2]]['remaining']} Bales - {2*target[targets[2]]['remaining']} Metric Tons")
+                            
+                    except:
+                        pass
+    
+                with rel_col3:
+                    try:
                     
-                    
-                except:
-                    pass
+                        st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                        st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
+                        st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Bales - {target[targets[2]]['tonnage']} Metric Tons")
+                        st.write(f"        Bales Shipped : {target[targets[2]]['shipped']} Bales - {2*target[targets[2]]['shipped']} Metric Tons")
+                        st.write(f"        Bales Remaining : {target[targets[2]]['remaining']} Bales - {2*target[targets[2]]['remaining']} Metric Tons")
+                        
+                        
+                    except:
+                        pass
+    
+                hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
+                if st.button("DISPATCH TO WAREHOUSE",key="lala"):
+                        dispatched={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
+                                    "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
+                                        "release_order":requested_file,"sales_order":hangisi}
+                        json_data = json.dumps(dispatched)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"dispatched.json")
+                        blob.upload_from_string(json_data)
 
-            hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
-            if st.button("DISPATCH TO WAREHOUSE",key="lala"):
-                    dispatched={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
-                                "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
-                                    "release_order":requested_file,"sales_order":hangisi}
-                    json_data = json.dumps(dispatched)
-                    storage_client = storage.Client()
-                    bucket = storage_client.bucket("olym_suzano")
-                    blob = bucket.blob(rf"dispatched.json")
-                    blob.upload_from_string(json_data)
+            else:
+                st.write("NO RELEASE ORDERS IN DATABASE")
 
-
-            #st.write(release_order_json)
-            #st.write(requested_file)
-                
    
 
 ##########  LOAD OUT  ##############
