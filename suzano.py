@@ -113,7 +113,14 @@ def list_files_in_folder(bucket_name, folder_name):
     filenames = [blob.name.split("/")[-1] for blob in blobs if "/" in blob.name]
 
     return filenames
+def list_files_in_subfolder(bucket_name, folder_name):
+    storage_client = storage.Client()
+    blobs = storage_client.list_blobs(bucket_name, prefix=folder_name, delimiter='/')
 
+    # Extract only the filenames without the folder path
+    filenames = [blob.name.split('/')[-1] for blob in blobs]
+
+    return filenames
 def store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Create a dictionary to store the release order data
@@ -266,7 +273,7 @@ if select=="ADMIN" :
             edit=st.checkbox("CHECK TO ADD TO EXISTING RELEASE ORDER")
             if edit:
                 #release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders/{vessel}")))
-                release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_cs_files_f("olym_suzano", "release_orders/{vessel}")))
+                release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_subfolder("olym_suzano", "release_orders/{vessel}")))
             else:
                 release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
