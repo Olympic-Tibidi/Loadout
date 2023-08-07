@@ -342,7 +342,7 @@ if select=="ADMIN" :
                         padding: {padding};
                         border-radius: {border_radius};
                     """
-                    st.markdown(f"<div style='{style}'>{text}</div>", unsafe_allow_html=False)
+                    st.markdown(f"<div style='{style}'>{text}</div>", unsafe_allow_html=True)
                 
                 # Your loop to add a frame around all lines printed with 'i'
                 for i in target:
