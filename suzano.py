@@ -459,34 +459,34 @@ if select=="LOADOUT" :
         line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+bill_of_lading+" "*(50-len(bill_of_lading))+c
         loadls=[]
         if load1:
-            loadl1="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load1+" "*(10-len(load1))+"0"*16+str(quantity*100)
+            loadl1="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load1[:-3]+" "*(10-len(load1[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl1)
         if load2:
-            loadl2="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load2+" "*(10-len(load2))+"0"*16+str(quantity*100)
+            loadl2="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load2[:-3]+" "*(10-len(load2[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl2)
         if load3:
-            loadl3="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load3+" "*(10-len(load3))+"0"*16+str(quantity*100)
+            loadl3="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load3[:-3]+" "*(10-len(load3[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl3)
         if load4:
-            loadl4="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load4+" "*(10-len(load4))+"0"*16+str(quantity*100)
+            loadl4="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load4[:-3]+" "*(10-len(load4[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl4)
         if load5:
-            loadl5="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load5+" "*(10-len(load5))+"0"*16+str(quantity*100)
+            loadl5="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load5[:-3]+" "*(10-len(load5[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl5)
         if load6:
-            loadl6="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load6+" "*(10-len(load6))+"0"*16+str(quantity*100)
+            loadl6="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load6[:-3]+" "*(10-len(load6[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl6)
         if load7:
-            loadl7="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load7+" "*(10-len(load7))+"0"*16+str(quantity*100)
+            loadl7="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load7[:-3]+" "*(10-len(load7[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl7)
         if load8:
-           loadl8="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load8+" "*(10-len(load8))+"0"*16+str(quantity*100)
+           loadl8="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load8[:-3]+" "*(10-len(load8[:-3]))+"0"*16+str(quantity*100)
            loadls.append(loadl8)
         if load9:
-            loadl9="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load9+" "*(10-len(load9))+"0"*16+str(quantity*100)
+            loadl9="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load9[:-3]+" "*(10-len(load9[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl9)
         if load10:
-            loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load10+" "*(10-len(load10))+"0"*16+str(quantity*100)
+            loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+sales_order_item+a+tsn+load10[:-3]+" "*(10-len(load10[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl10)
         end="9TRL:0013"
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
