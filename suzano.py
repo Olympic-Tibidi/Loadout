@@ -312,11 +312,16 @@ if select=="ADMIN" :
             requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
             
             
-            data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
-            release_order_json = json.loads(data)
-            target=release_order_json[vessel][requested_file]
-            number_of_sales_orders=len(target)
-            rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
+            try:
+                data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
+                release_order_json = json.loads(data)
+                target=release_order_json[vessel][requested_file]
+                number_of_sales_orders=len(target)
+                rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
+            except:
+                pass
+                
+            
 
                          
                       
