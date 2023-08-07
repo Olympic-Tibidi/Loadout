@@ -315,6 +315,7 @@ if select=="ADMIN" :
                 data=gcp_download("olym_suzano",fr"release_orders/{vessel}/{requested_file}.json")
                 release_order_json = json.loads(data)
                 target=release_order_json[vessel][requested_file]
+                st.write(target)
                 number_of_sales_orders=len(target)
                 rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
 
@@ -322,6 +323,7 @@ if select=="ADMIN" :
                           
                 
                 for i in target:
+                
                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                     st.markdown(f"**:blue[Sales Order Item] : {i}**")
                     st.write(f"        Total Quantity-Tonnage : {target[i]['quantity']} Bales - {target[i]['tonnage']} Metric Tons")
