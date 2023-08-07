@@ -128,17 +128,34 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,bill_o
         "quantity":quantity,
         "tonnage":tonnage,
         "shipped":0,
-        "remaining":quantity
-        
-        
-        }}
-               
+        "remaining":quantity       
+        }}              
     }
     }
 
     # Convert the dictionary to JSON format
     json_data = json.dumps(release_order_data)
     return json_data
+
+def edit_release_order_data(file,vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
+       
+    # Edit the loaded current dictionary.
+    file[vessel][release_order_number[sales_order_item]["bill_of_lading"]= bill_of_lading
+    file[vessel][release_order_number[sales_order_item]["dryness"]= dryness
+    file[vessel][release_order_number[sales_order_item]["transport_type"]= transport_type
+    file[vessel][release_order_number[sales_order_item]["carrier_code"]= carrier_code
+    file[vessel][release_order_number[sales_order_item]["quantity"]= quantity
+    file[vessel][release_order_number[sales_order_item]["tonnage"]= tonnage
+    file[vessel][release_order_number[sales_order_item]["shipped"]= shipped
+    file[vessel][release_order_number[sales_order_item]["remaining"]= quantity
+    
+    
+       
+
+    # Convert the dictionary to JSON format
+    json_data = json.dumps(release_order_data)
+    return json_data
+
 
 user="AFSIN"
     
@@ -264,17 +281,20 @@ if select=="ADMIN" :
             create_release_order=st.button("Create Release Order")
             if create_release_order:
                 #if rf"{vessel}-{release_order_number}.json" in list_files_in_folder("olym_suzano", "release_orders")[1:]:
-                if edit:   
-                    st.write("THIS RELEASE ORDER ALREADY EXISTS. PLEASE USE (ADD TO RELEASE ORDER). IF YOU WANT TO OVERWRITE CONTINUE")
+                if edit: 
+                    temp=gcp_download("olym_suzano",fr "release_orders/{vessel}-{release_order_number}.json")
+                    to_edit=json.loads(data)
+                    temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
+                    st.write(f"ADDED sales order item {sales_order_item} to release order {release_order_number}!")
                 else:
                     
                     temp=store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
-                    st.write(temp)
-                    storage_client = storage.Client()
-                    bucket = storage_client.bucket("olym_suzano")
-                    blob = bucket.blob(rf"release_orders/{vessel}-{release_order_number}.json")
-                    blob.upload_from_string(temp)
-                    #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
+                    #st.write(temp)
+                storage_client = storage.Client()
+                bucket = storage_client.bucket("olym_suzano")
+                blob = bucket.blob(rf"release_orders/{vessel}-{release_order_number}.json")
+                blob.upload_from_string(temp)
+                #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}-{release_order_number}.json") 
                 
         with release_order_tab2:
             files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
