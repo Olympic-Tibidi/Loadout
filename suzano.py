@@ -505,7 +505,7 @@ if select=="LOADOUT" :
             loadls.append(loadl10)
         number_of_units=len(loadls)+3
         end_initial="0"*(4-len(str(number_of_units)))
-        end=f"9TRL:{end_initial}+number_of_units"
+        end=f"9TRL:{end_initial}+{number_of_units}"
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
         for i in loads:
             #st.write(i)
