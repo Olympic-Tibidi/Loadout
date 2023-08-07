@@ -320,7 +320,7 @@ if select=="ADMIN" :
                                 
                 for i in target:
                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                    st.markdown(f"    Sales Order Item : {i}")
+                    st.markdown(f"**:blue[Sales Order Item] : {i}**")
                     st.write(f"        Total Quantity-Tonnage : {target[i]['quantity']} Bales - {target[i]['tonnage']} Metric Tons")
                     st.write(f"        Bales Shipped : {target[i]['shipped']} Bales - {2*target[i]['shipped']} Metric Tons")
                     st.write(f"        Bales Remaining : {target[i]['remaining']} Bales - {2*target[i]['remaining']} Metric Tons")
