@@ -358,7 +358,7 @@ if select=="ADMIN" :
 
             hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
             if st.button("DISPATCH TO WAREHOUSE",key="lala"):
-                    dispatched={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%M-%d-%Y"),
+                    dispatched={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
                                 "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
                                     "release_order":requested_file,"sales_order":hangisi}
                     json_data = json.dumps(dispatched)
