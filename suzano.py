@@ -162,7 +162,7 @@ def edit_release_order_data(file,vessel,release_order_number,sales_order_item,bi
        
 
     # Convert the dictionary to JSON format
-    json_data = json.dumps(release_order_data)
+    json_data = json.dumps(file)
     return json_data
 
 
