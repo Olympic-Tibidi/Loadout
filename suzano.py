@@ -155,8 +155,8 @@ def edit_release_order_data(file,vessel,release_order_number,sales_order_item,bi
     file[vessel][release_order_number][sales_order_item]["carrier_code"]= carrier_code
     file[vessel][release_order_number][sales_order_item]["quantity"]= quantity
     file[vessel][release_order_number][sales_order_item]["tonnage"]= tonnage
-    file[vessel][release_order_number][sales_order_item]["shipped"]= shipped
-    file[vessel][release_order_number][sales_order_item]["remaining"]= quantity
+    #file[vessel][release_order_number][sales_order_item]["shipped"]= shipped
+    #file[vessel][release_order_number][sales_order_item]["remaining"]= quantity
     
     
        
