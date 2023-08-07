@@ -613,7 +613,8 @@ if select=="INVENTORY" :
             st.session_state.disabled=True
             #min_value=min([i.date() for i in zf["Warehouse_Out"]])
         filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
-        st.write(filter_date)
+        st.write(filter_date,type(filter_date))
+        st.write(zf.iloc[0,9])
         #st.write(zf)
         #zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("int")
         zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("str")
