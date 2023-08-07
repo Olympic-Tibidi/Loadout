@@ -380,11 +380,14 @@ if select=="ADMIN" :
 
 if select=="LOADOUT" :
 
+    bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
+    bill_mapping=json.loads(bill_mapping)
+
     current=gcp_download("olym_suzano","dispatched.json")
     current=json.loads(current)
     info=gcp_download("olym_suzano",rf"release_orders/{current['vessel']}/{current['release_order']}.json")
     info=json.loads(info)
-    st.write(info)
+    #st.write(info)
     st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
     st.markdown(rf'**Total Quantity : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["quantity"]}**')
     st.markdown(rf'**Shipped : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]}**')
@@ -422,6 +425,9 @@ if select=="LOADOUT" :
         sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
     with col4:
         load1=st.text_input("Unit No : 01")#[:-3]
+        if len(load1)==11:
+            if bill_mapping[load1]!=bill_of_lading:
+                st.write("WRONG UNIT, scan another one")
         load2=st.text_input("Unit No : 02")#[:-3]
         load3=st.text_input("Unit No : 03")#[:-3]
         load4=st.text_input("Unit No : 04")#[:-3]
@@ -456,6 +462,7 @@ if select=="LOADOUT" :
     
         
     def process():
+        
         line1="1HDR:"+a+b+terminal_code
         tsn="01" if medium=="TRUCK" else "02"
         
