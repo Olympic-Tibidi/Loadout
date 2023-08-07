@@ -391,6 +391,10 @@ if select=="LOADOUT" :
     st.markdown(rf'**Remaining : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]}**')
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
     vessel=current["vessel"]
+    if info[current["vessel"]][current["release_order"]][current["sales_order"]]["transport_type"]=="TRUCK":
+        medium="TRUCK"
+    else:
+        medium="RAIL"
     
     with col1:
     
