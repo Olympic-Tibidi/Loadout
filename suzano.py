@@ -503,7 +503,9 @@ if select=="LOADOUT" :
         if load10:
             loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load10[:-3]+" "*(10-len(load10[:-3]))+"0"*16+str(quantity*100)
             loadls.append(loadl10)
-        end="9TRL:0013"
+        number_of_units=len(loadls)+3
+        end_initial="0"*(4-len(str(number_of_units)))
+        end=f"9TRL:{end_initial}"
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
         for i in loads:
             #st.write(i)
