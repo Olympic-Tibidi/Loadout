@@ -263,7 +263,7 @@ if select=="ADMIN" :
                 requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
                 if st.button("LOAD SHIPPING FILE"):
                     requested_shipping_file=gcp_csv_to_df("olym_suzano", requested_file)
-                    st.write(requested_shipping_file[["Lot","Lot Qty","B/L","Wrap","Vessel","DryWeight","ADMT","Location","Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code","BL"]])
+                    st.write(requested_shipping_file[["Lot","Lot Qty","B/L","Wrap","Ocean B/L","DryWeight","ADMT","Location","Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code","BL"]])
     with admin_tab2:
         
         #st.markdown("RELEASE ORDERS") 
