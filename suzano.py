@@ -622,7 +622,7 @@ if select=="INVENTORY" :
         if date_filter:
             filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
             
-            filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==str(filter_date)]
+            filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
             st.write(filtered_zf)
         dryweight_filter=st.selectbox("Filter By DryWeight",["ALL DRYWEIGHTS"]+[str(i) for i in filtered_zf["DryWeight"].unique().tolist()])
         BL_filter=st.selectbox("Filter By Bill Of Lading",["ALL BILL OF LADINGS"]+[str(i) for i in filtered_zf["BL"].unique().tolist()])
