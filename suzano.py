@@ -311,7 +311,7 @@ if select=="ADMIN" :
             files_in_folder = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
             requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
             
-            
+            nofile=0
             try:
                 data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
                 release_order_json = json.loads(data)
