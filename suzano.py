@@ -614,7 +614,7 @@ if select=="INVENTORY" :
             #min_value=min([i.date() for i in zf["Warehouse_Out"]])
         filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
         st.write(filter_date,type(filter_date))
-        st.write(zf.iloc[0,9])
+        
         #st.write(zf)
         #zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("int")
         zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","BL","Vehicle_Id"]].astype("str")
@@ -624,6 +624,7 @@ if select=="INVENTORY" :
             filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
             
             filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+            st.write(filtered_zf.iloc[0,9])
             st.write(filtered_zf)
         dryweight_filter=st.selectbox("Filter By DryWeight",["ALL DRYWEIGHTS"]+[str(i) for i in filtered_zf["DryWeight"].unique().tolist()])
         BL_filter=st.selectbox("Filter By Bill Of Lading",["ALL BILL OF LADINGS"]+[str(i) for i in filtered_zf["BL"].unique().tolist()])
