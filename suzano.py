@@ -322,20 +322,58 @@ if select=="ADMIN" :
                              
                           
                 
-                for i in target:
-                
+                targets=[i for i in target]
+                with rel_col1:
+                    
                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                    st.markdown(f"**:blue[Sales Order Item] : {i}**")
-                    st.write(f"        Total Quantity-Tonnage : {target[i]['quantity']} Bales - {target[i]['tonnage']} Metric Tons")
-                    st.write(f"        Bales Shipped : {target[i]['shipped']} Bales - {2*target[i]['shipped']} Metric Tons")
-                    st.write(f"        Bales Remaining : {target[i]['remaining']} Bales - {2*target[i]['remaining']} Metric Tons")
-                    if st.button("DISPATCH TO WAREHOUSE",key=i):
-                        dispatched={"date":"","time":"","vessel":"","release_order":requested_file,"sales_order":i}
+                    st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
+                    st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Bales - {target[targets[0]]['tonnage']} Metric Tons")
+                    st.write(f"        Bales Shipped : {target[targets[0]]['shipped']} Bales - {2*target[targets[0]]['shipped']} Metric Tons")
+                    st.write(f"        Bales Remaining : {target[targets[0]]['remaining']} Bales - {2*target[targets[0]]['remaining']} Metric Tons")
+                    if st.button("DISPATCH TO WAREHOUSE",key=targets[0]):
+                        dispatched={"date":"","time":"","vessel":"","release_order":requested_file,"sales_order":targets[0]}
                         if dispatched not in st.session.state:
                             st.session_state.dispatched=dispatched
                     st.write("")
                     st.write("")
                     st.write("")
+
+                with rel_col2:
+                    try:
+                    
+                        st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                        st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
+                        st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Bales - {target[targets[1]]['tonnage']} Metric Tons")
+                        st.write(f"        Bales Shipped : {target[targets[1]]['shipped']} Bales - {2*target[targets[1]]['shipped']} Metric Tons")
+                        st.write(f"        Bales Remaining : {target[targets[1]]['remaining']} Bales - {2*target[targets[1]]['remaining']} Metric Tons")
+                        if st.button("DISPATCH TO WAREHOUSE",key=targets[1]):
+                            dispatched={"date":"","time":"","vessel":"","release_order":requested_file,"sales_order":targets[1]}
+                            if dispatched not in st.session.state:
+                                st.session_state.dispatched=dispatched
+                        st.write("")
+                        st.write("")
+                        st.write("")
+                    except:
+                        pass
+
+                with rel_col3:
+                    try:
+                    
+                        st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                        st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
+                        st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Bales - {target[targets[2]]['tonnage']} Metric Tons")
+                        st.write(f"        Bales Shipped : {target[targets[2]]['shipped']} Bales - {2*target[targets[2]]['shipped']} Metric Tons")
+                        st.write(f"        Bales Remaining : {target[targets[2]]['remaining']} Bales - {2*target[targets[2]]['remaining']} Metric Tons")
+                        if st.button("DISPATCH TO WAREHOUSE",key=targets[2]):
+                            dispatched={"date":"","time":"","vessel":"","release_order":requested_file,"sales_order":targets[1]}
+                            if dispatched not in st.session.state:
+                                st.session_state.dispatched=dispatched
+                        st.write("")
+                        st.write("")
+                        st.write("")
+                    except:
+                        pass
+                
                 #st.write(release_order_json)
                 #st.write(requested_file)
                 
