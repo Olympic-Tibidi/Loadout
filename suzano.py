@@ -639,7 +639,7 @@ if select=="INVENTORY" :
         
         
         if BL_filter!="ALL DRYWEIGHTS":
-            #st.write("it happened")
+            st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
         if BL_filter!="ALL BILL OF LADINGS":
             #st.write("it happened")
