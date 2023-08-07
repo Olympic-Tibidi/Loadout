@@ -311,11 +311,13 @@ if select=="ADMIN" :
             files_in_folder = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
             requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
             
-            if st.button("DISPATCH TO WAREHOUSE"):
+            if st.button("GET STATUS"):
                 data=gcp_download("olym_suzano",fr"release_orders/{vessel}/{requested_file}.json")
                 release_order_json = json.loads(data)
-                st.write(release_order_json)
-                st.write(release_order_number)
+                for i in release_order_json[vessel][requested_file]:
+                    st.write(i)
+                #st.write(release_order_json)
+                #st.write(requested_file)
                 
    
 
