@@ -316,8 +316,10 @@ if select=="ADMIN" :
                 release_order_json = json.loads(data)
                 for i in release_order_json[vessel][requested_file]:
                     st.markdown(f"Release Order Number : {requested_file}")
-                    st.markdown(f"Sales Order Item : {i}")
-                    st.write(f"Total Quantity-Tonnage : {quantity} Bales - {tonnage} Metric Tons")
+                    st.markdown(f"    Sales Order Item : {i}")
+                    st.write(f"        Total Quantity-Tonnage : {quantity} Bales - {tonnage} Metric Tons")
+                    st.write(f"        Bales Shipped : {shipped} Bales - {2*shipped} Metric Tons")
+                    st.write(f"        Bales Remaining : {quantity} Bales - {2*remaining} Metric Tons")
                 #st.write(release_order_json)
                 #st.write(requested_file)
                 
