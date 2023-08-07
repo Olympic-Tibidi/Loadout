@@ -308,8 +308,8 @@ if select=="ADMIN" :
                 
         with release_order_tab2:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
-            files_in_folder = list_files_in_subfolder("olym_suzano", rf"release_orders/{vessel}")
-            requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder[1:])
+            files_in_folder = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
+            requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
             
             if st.button("DISPATCH TO WAREHOUSE"):
                 data=gcp_download("olym_suzano",fr"release_orders/{requested_file}")
