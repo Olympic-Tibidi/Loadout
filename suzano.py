@@ -314,12 +314,13 @@ if select=="ADMIN" :
             if st.button("GET STATUS"):
                 data=gcp_download("olym_suzano",fr"release_orders/{vessel}/{requested_file}.json")
                 release_order_json = json.loads(data)
-                for i in release_order_json[vessel][requested_file]:
+                target=release_order_json[vessel][requested_file]
+                for i in target:
                     st.markdown(f"Release Order Number : {requested_file}")
                     st.markdown(f"    Sales Order Item : {i}")
-                    st.write(f"        Total Quantity-Tonnage : {quantity} Bales - {tonnage} Metric Tons")
-                    st.write(f"        Bales Shipped : {shipped} Bales - {2*shipped} Metric Tons")
-                    st.write(f"        Bales Remaining : {quantity} Bales - {2*remaining} Metric Tons")
+                    st.write(f"        Total Quantity-Tonnage : {target[i][quantity]} Bales - {target[i][tonnage]} Metric Tons")
+                    st.write(f"        Bales Shipped : {target[i][shipped]} Bales - {2*target[i][shipped]} Metric Tons")
+                    st.write(f"        Bales Remaining : {target[i][remaining]} Bales - {2*target[i][remaining]} Metric Tons")
                 #st.write(release_order_json)
                 #st.write(requested_file)
                 
