@@ -329,14 +329,7 @@ if select=="ADMIN" :
                     st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Bales - {target[targets[0]]['tonnage']} Metric Tons")
                     st.write(f"        Bales Shipped : {target[targets[0]]['shipped']} Bales - {2*target[targets[0]]['shipped']} Metric Tons")
                     st.write(f"        Bales Remaining : {target[targets[0]]['remaining']} Bales - {2*target[targets[0]]['remaining']} Metric Tons")
-                    if st.button("DISPATCH TO WAREHOUSE",key=targets[0]):
-                        dispatched={"vessel":vessel,"date":datetime.datetime.today()-datetime.timedelta(hours=7),"time":datetime.datetime.now()-datetime.timedelta(hours=7),
-                                        "release_order":requested_file,"sales_order":targets[1]}
-                        json_data = json.dumps(dispatched)
-                        storage_client = storage.Client()
-                        bucket = storage_client.bucket("olym_suzano")
-                        blob = bucket.blob(rf"dispatched.json")
-                        blob.upload_from_string(json_data)
+                    
                 with rel_col2:
                     try:
                     
@@ -345,14 +338,8 @@ if select=="ADMIN" :
                         st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Bales - {target[targets[1]]['tonnage']} Metric Tons")
                         st.write(f"        Bales Shipped : {target[targets[1]]['shipped']} Bales - {2*target[targets[1]]['shipped']} Metric Tons")
                         st.write(f"        Bales Remaining : {target[targets[1]]['remaining']} Bales - {2*target[targets[1]]['remaining']} Metric Tons")
-                        if st.button("DISPATCH TO WAREHOUSE",key=targets[1]):
-                            dispatched={"vessel":vessel,"date":datetime.datetime.today()-datetime.timedelta(hours=7),"time":datetime.datetime.now()-datetime.timedelta(hours=7),
-                                        "release_order":requested_file,"sales_order":targets[1]}
-                            json_data = json.dumps(dispatched)
-                            storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
-                            blob = bucket.blob(rf"dispatched.json")
-                            blob.upload_from_string(json_data)
+                        
+                            
                     except:
                         pass
 
@@ -364,19 +351,22 @@ if select=="ADMIN" :
                         st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Bales - {target[targets[2]]['tonnage']} Metric Tons")
                         st.write(f"        Bales Shipped : {target[targets[2]]['shipped']} Bales - {2*target[targets[2]]['shipped']} Metric Tons")
                         st.write(f"        Bales Remaining : {target[targets[2]]['remaining']} Bales - {2*target[targets[2]]['remaining']} Metric Tons")
-                        if st.button("DISPATCH TO WAREHOUSE",key=targets[2]):
-                            dispatched={"vessel":vessel,"date":datetime.datetime.today()-datetime.timedelta(hours=7),"time":datetime.datetime.now()-datetime.timedelta(hours=7),
-                                        "release_order":requested_file,"sales_order":targets[1]}
-                            json_data = json.dumps(dispatched)
-                            storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
-                            blob = bucket.blob(rf"dispatched.json")
-                            blob.upload_from_string(json_data)
-                            
+                        
                         
                     except:
                         pass
-                
+
+                hangisi=st.select("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
+                if st.button("DISPATCH TO WAREHOUSE",key="lala"):
+                        dispatched={"vessel":vessel,"date":datetime.datetime.today()-datetime.timedelta(hours=7),"time":datetime.datetime.now()-datetime.timedelta(hours=7),
+                                        "release_order":requested_file,"sales_order":hangisi]}
+                        json_data = json.dumps(dispatched)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"dispatched.json")
+                        blob.upload_from_string(json_data)
+
+
                 #st.write(release_order_json)
                 #st.write(requested_file)
                 
