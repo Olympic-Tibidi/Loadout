@@ -312,23 +312,11 @@ if select=="ADMIN" :
             requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
             
             if st.button("DISPATCH TO WAREHOUSE"):
-                data=gcp_download("olym_suzano",fr"release_orders/{requested_file}")
+                data=gcp_download("olym_suzano",fr"release_orders/{vessel}/{requested_file}")
                 release_order_json = json.loads(data)
+                st.write(release_order_json)
                 st.write(release_order_number)
-                if release_order_number not in st.session_state:
-                    st.session_state.release_order_number=release_order_json["release_order_number"]
-                if transport_type not in st.session_state:
-                    st.session_state.transport_type=release_order_json["transport_type"]
-                if carrier_code not in st.session_state:
-                    st.session_state.carrier_code=release_order_json["carrier_code"]
-                if bill_of_lading not in st.session_state:
-                    st.session_state.bill_of_lading=release_order_json["bill_of_lading"]
-                if sales_order_item not in st.session_state:
-                    st.session_state.sales_order_item=release_order_json["sales_order_item"]
-                if queue not in st.session_state:
-                    st.session_state.queue=release_order_json["queue"]
-                if dispatched not in st.session_state:
-                    st.session_state.dispatched=release_order_json["release_order_number"]
+                
    
 
 ##########  LOAD OUT  ##############
