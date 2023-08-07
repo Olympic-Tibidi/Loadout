@@ -147,6 +147,8 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,bill_o
 def edit_release_order_data(file,vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Edit the loaded current dictionary.
+    if sales_order_item not in file[vessel][release_order_number]:
+        file[vessel][release_order_number][sales_order_item]={}
     file[vessel][release_order_number][sales_order_item]["bill_of_lading"]= bill_of_lading
     file[vessel][release_order_number][sales_order_item]["dryness"]= dryness
     file[vessel][release_order_number][sales_order_item]["transport_type"]= transport_type
