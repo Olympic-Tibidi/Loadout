@@ -312,7 +312,7 @@ if select=="ADMIN" :
             requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
             
             if st.button("GET STATUS"):
-                data=gcp_download("olym_suzano",fr"release_orders/{vessel}/{requested_file}.json")
+                data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
                 release_order_json = json.loads(data)
                 target=release_order_json[vessel][requested_file]
                 number_of_sales_orders=len(target)
@@ -330,13 +330,13 @@ if select=="ADMIN" :
                     st.write(f"        Bales Shipped : {target[targets[0]]['shipped']} Bales - {2*target[targets[0]]['shipped']} Metric Tons")
                     st.write(f"        Bales Remaining : {target[targets[0]]['remaining']} Bales - {2*target[targets[0]]['remaining']} Metric Tons")
                     if st.button("DISPATCH TO WAREHOUSE",key=targets[0]):
-                        dispatched={"date":"","time":"","vessel":"","release_order":requested_file,"sales_order":targets[0]}
-                        if dispatched not in st.session.state:
-                            st.session_state.dispatched=dispatched
-                    st.write("")
-                    st.write("")
-                    st.write("")
-
+                        dispatched={"vessel":vessel,"date":datetime.datetime.today()-datetime.timedelta(hours=7),"time":datetime.datetime.now()-datetime.timedelta(hours=7),
+                                        "release_order":requested_file,"sales_order":targets[1]}
+                        json_data = json.dumps(dispatched)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"dispatched.json")
+                        blob.upload_from_string(json_data)
                 with rel_col2:
                     try:
                     
@@ -346,12 +346,13 @@ if select=="ADMIN" :
                         st.write(f"        Bales Shipped : {target[targets[1]]['shipped']} Bales - {2*target[targets[1]]['shipped']} Metric Tons")
                         st.write(f"        Bales Remaining : {target[targets[1]]['remaining']} Bales - {2*target[targets[1]]['remaining']} Metric Tons")
                         if st.button("DISPATCH TO WAREHOUSE",key=targets[1]):
-                            dispatched={"date":"","time":"","vessel":"","release_order":requested_file,"sales_order":targets[1]}
-                            if dispatched not in st.session.state:
-                                st.session_state.dispatched=dispatched
-                        st.write("")
-                        st.write("")
-                        st.write("")
+                            dispatched={"vessel":vessel,"date":datetime.datetime.today()-datetime.timedelta(hours=7),"time":datetime.datetime.now()-datetime.timedelta(hours=7),
+                                        "release_order":requested_file,"sales_order":targets[1]}
+                            json_data = json.dumps(dispatched)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"dispatched.json")
+                            blob.upload_from_string(json_data)
                     except:
                         pass
 
@@ -364,12 +365,15 @@ if select=="ADMIN" :
                         st.write(f"        Bales Shipped : {target[targets[2]]['shipped']} Bales - {2*target[targets[2]]['shipped']} Metric Tons")
                         st.write(f"        Bales Remaining : {target[targets[2]]['remaining']} Bales - {2*target[targets[2]]['remaining']} Metric Tons")
                         if st.button("DISPATCH TO WAREHOUSE",key=targets[2]):
-                            dispatched={"date":"","time":"","vessel":"","release_order":requested_file,"sales_order":targets[1]}
-                            if dispatched not in st.session.state:
-                                st.session_state.dispatched=dispatched
-                        st.write("")
-                        st.write("")
-                        st.write("")
+                            dispatched={"vessel":vessel,"date":datetime.datetime.today()-datetime.timedelta(hours=7),"time":datetime.datetime.now()-datetime.timedelta(hours=7),
+                                        "release_order":requested_file,"sales_order":targets[1]}
+                            json_data = json.dumps(dispatched)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"dispatched.json")
+                            blob.upload_from_string(json_data)
+                            
+                        
                     except:
                         pass
                 
@@ -385,7 +389,9 @@ if select=="ADMIN" :
 
 if select=="LOADOUT" :
 
-    st.write(f"Current Release Order : {st.session_state.dispatched}")
+    current=gcp_download("olym_suzano","dispatched.json")
+    current=json.loads(current)
+    st.markdown(rf'Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}')
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
     with col1:
     
