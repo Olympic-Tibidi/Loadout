@@ -257,15 +257,15 @@ if select=="ADMIN" :
                     st.write(requested_shipping_file[["Lot","Lot Qty","B/L","Wrap","Vessel","DryWeight","ADMT","Location","Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code","BL"]])
     with admin_tab2:
         
-        st.markdown("RELEASE ORDERS") 
+        #st.markdown("RELEASE ORDERS") 
         
-        st.write(f'CURRENT RELEASE ORDERS : {list_files_in_folder("olym_suzano", "release_orders")[1:]}')
+        #st.write(f'CURRENT RELEASE ORDERS : {list_files_in_folder("olym_suzano", "release_orders")[1:]}')
         release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
         with release_order_tab1:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
             edit=st.checkbox("CHECK TO ADD TO EXISTING RELEASE ORDER")
             if edit:
-                release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders")[1:]))
+                release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders\{vessel}")[1:]))
             else:
                 release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
@@ -297,7 +297,8 @@ if select=="ADMIN" :
                 #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}/{release_order_number}.json") 
                 
         with release_order_tab2:
-            files_in_folder = list_files_in_folder("olym_suzano", "release_orders")
+            vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
+            files_in_folder = list_files_in_folder("olym_suzano", rf"release_orders\{vessel}")
             requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder[1:])
             
             if st.button("DISPATCH TO WAREHOUSE"):
