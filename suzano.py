@@ -327,11 +327,13 @@ if select=="ADMIN" :
                     st.write(f"        Total Quantity-Tonnage : {target[i]['quantity']} Bales - {target[i]['tonnage']} Metric Tons")
                     st.write(f"        Bales Shipped : {target[i]['shipped']} Bales - {2*target[i]['shipped']} Metric Tons")
                     st.write(f"        Bales Remaining : {target[i]['remaining']} Bales - {2*target[i]['remaining']} Metric Tons")
-                    st.write("")
                     if st.button("DISPATCH TO WAREHOUSE",key=i):
                         dispatched={"date":"","time":"","vessel":"","release_order":requested_file,"sales_order":i}
                         if dispatched not in st.session.state:
                             st.session_state.dispatched=dispatched
+                    st.write("")
+                    st.write("")
+                    st.write("")
                 #st.write(release_order_json)
                 #st.write(requested_file)
                 
