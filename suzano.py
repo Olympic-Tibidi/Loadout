@@ -638,7 +638,7 @@ if select=="INVENTORY" :
             st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
         
         st.write(BL_filter)
-        if BL_filter!="ALL DRYWEIGHTS":
+        if dryweight_filter!="ALL DRYWEIGHTS":
             st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
         if BL_filter!="ALL BILL OF LADINGS":
