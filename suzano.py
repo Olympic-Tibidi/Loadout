@@ -140,14 +140,14 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,bill_o
 def edit_release_order_data(file,vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Edit the loaded current dictionary.
-    file[vessel][release_order_number[sales_order_item]["bill_of_lading"]= bill_of_lading
-    file[vessel][release_order_number[sales_order_item]["dryness"]= dryness
-    file[vessel][release_order_number[sales_order_item]["transport_type"]= transport_type
-    file[vessel][release_order_number[sales_order_item]["carrier_code"]= carrier_code
-    file[vessel][release_order_number[sales_order_item]["quantity"]= quantity
-    file[vessel][release_order_number[sales_order_item]["tonnage"]= tonnage
-    file[vessel][release_order_number[sales_order_item]["shipped"]= shipped
-    file[vessel][release_order_number[sales_order_item]["remaining"]= quantity
+    file[vessel][release_order_number][sales_order_item]["bill_of_lading"]= bill_of_lading
+    file[vessel][release_order_number][sales_order_item]["dryness"]= dryness
+    file[vessel][release_order_number][sales_order_item]["transport_type"]= transport_type
+    file[vessel][release_order_number][sales_order_item]["carrier_code"]= carrier_code
+    file[vessel][release_order_number][sales_order_item]["quantity"]= quantity
+    file[vessel][release_order_number][sales_order_item]["tonnage"]= tonnage
+    file[vessel][release_order_number][sales_order_item]["shipped"]= shipped
+    file[vessel][release_order_number][sales_order_item]["remaining"]= quantity
     
     
        
