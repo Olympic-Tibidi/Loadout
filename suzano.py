@@ -420,7 +420,7 @@ if select=="LOADOUT" :
         frame_placeholder = st.empty()
     with col3: 
         carrier_code=st.text_input("Carrier Code",info[current["vessel"]][current["release_order"]][current["sales_order"]]["carrier_code"],disabled=True)
-        bill_of_lading=st.text_input("Bill of Lading",info[current["vessel"]][current["release_order"]][current["sales_order"]]["bill_of_lading"],disabled=True)
+        bill_of_lading=st.text_input("Bill of Lading",info[current["vessel"]][current["release_order"]][current["sales_order"]]["bill_of_lading"],disabled=False)
         eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
         sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
     with col4:
