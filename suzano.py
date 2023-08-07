@@ -342,11 +342,11 @@ if select=="ADMIN" :
                         padding: {padding};
                         border-radius: {border_radius};
                     """
-                    st.markdown(f"<div style='{style}'>{text}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='{style}'>{text}</div>", unsafe_allow_html=False)
                 
                 # Your loop to add a frame around all lines printed with 'i'
                 for i in target:
-                    st.container()  # Create a new container for each 'i'
+                    a=st.container()  # Create a new container for each 'i'
                     release_order_number_text = f"**:blue[Release Order Number] : {requested_file}**"
                     sales_order_item_text = f"**:blue[Sales Order Item] : {i}**"
                     total_quantity_text = f"Total Quantity-Tonnage : {target[i]['quantity']} Bales - {target[i]['tonnage']} Metric Tons"
@@ -354,8 +354,8 @@ if select=="ADMIN" :
                     remaining_text = f"Bales Remaining : {target[i]['remaining']} Bales - {2 * target[i]['remaining']} Metric Tons"
                 
                     # Add text lines to the container
-                    add_text_with_frame(release_order_number_text, border_color='blue')
-                    add_text_with_frame(sales_order_item_text, border_color='blue')
+                    add_text_with_frame(a, border_color='blue')
+                    #add_text_with_frame(sales_order_item_text, border_color='blue')
                     st.write(total_quantity_text)
                     st.write(shipped_text)
                     st.write(remaining_text)
