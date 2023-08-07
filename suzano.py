@@ -639,12 +639,16 @@ if select=="INVENTORY" :
         
         
         if BL_filter!="ALL DRYWEIGHTS":
+            st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
         if BL_filter!="ALL BILL OF LADINGS":
+            st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["BL"]==BL_filter]
         if carrier_filter!="ALL CARRIERS":
+            st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["Carrier_Code"]==carrier_filter]
         if vehicle_filter!="ALL VEHICLES":
+            st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["Vehicle_Id"]==vehicle_filter]
         with col2:
             if date_filter:
