@@ -265,7 +265,8 @@ if select=="ADMIN" :
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
             edit=st.checkbox("CHECK TO ADD TO EXISTING RELEASE ORDER")
             if edit:
-                release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders/{vessel}")))
+                #release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders/{vessel}")))
+                release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_cs_files_f("olym_suzano", "release_orders/{vessel}")))
             else:
                 release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
