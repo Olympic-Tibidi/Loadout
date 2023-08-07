@@ -356,7 +356,7 @@ if select=="ADMIN" :
                     except:
                         pass
 
-                hangisi=st.select("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
+                hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
                 if st.button("DISPATCH TO WAREHOUSE",key="lala"):
                         dispatched={"vessel":vessel,"date":datetime.datetime.today()-datetime.timedelta(hours=7),"time":datetime.datetime.now()-datetime.timedelta(hours=7),
                                         "release_order":requested_file,"sales_order":hangisi}
