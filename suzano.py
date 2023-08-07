@@ -1,4 +1,4 @@
-import streamlit as st
+selimport streamlit as st
 import streamlit.components.v1 as components
 #import cv2
 import numpy as np
@@ -273,7 +273,7 @@ if select=="ADMIN" :
             edit=st.checkbox("CHECK TO ADD TO EXISTING RELEASE ORDER")
             if edit:
                 #release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders/{vessel}")))
-                release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")))
+                release_order_number=st.selectbox("SELECT RELEASE ORDER",([i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]))
             else:
                 release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
@@ -290,7 +290,7 @@ if select=="ADMIN" :
             if create_release_order:
                 #if rf"{vessel}-{release_order_number}.json" in list_files_in_folder("olym_suzano", "release_orders")[1:]:
                 if edit: 
-                    temp=gcp_download("olym_suzano",rf"release_orders/{vessel}-{release_order_number}.json")
+                    temp=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
                     to_edit=json.loads(data)
                     temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
                     st.write(f"ADDED sales order item {sales_order_item} to release order {release_order_number}!")
