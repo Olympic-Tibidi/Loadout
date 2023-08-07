@@ -297,7 +297,7 @@ if select=="ADMIN" :
                 #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}/{release_order_number}.json") 
                 
         with release_order_tab2:
-            vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
+            vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
             files_in_folder = list_files_in_folder("olym_suzano", rf"release_orders\{vessel}")
             requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder[1:])
             
