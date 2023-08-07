@@ -290,7 +290,7 @@ if select=="ADMIN" :
 
             create_release_order=st.button("SUBMIT")
             if create_release_order:
-                #if rf"{vessel}-{release_order_number}.json" in list_files_in_folder("olym_suzano", "release_orders")[1:]:
+                
                 if edit: 
                     data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
                     to_edit=json.loads(data)
@@ -308,7 +308,7 @@ if select=="ADMIN" :
                 
         with release_order_tab2:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
-            files_in_folder = list_files_in_folder("olym_suzano", rf"release_orders/{vessel}")
+            files_in_folder = list_files_in_subfolder("olym_suzano", rf"release_orders/{vessel}")
             requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder[1:])
             
             if st.button("DISPATCH TO WAREHOUSE"):
