@@ -530,8 +530,8 @@ if select=="LOADOUT" :
         pass        
     if st.button('SAVE/DISPLAY EDI'):
         process()
-        info["shipped"]=info["shipped"]+len(loads)
-        info["remaining"]=info["remaining"]-len(loads)
+        info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]+len(loads)
+        info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]-len(loads)
         json_data = json.dumps(info)
         storage_client = storage.Client()
         bucket = storage_client.bucket("olym_suzano")
