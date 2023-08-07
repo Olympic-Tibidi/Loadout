@@ -382,7 +382,11 @@ if select=="LOADOUT" :
 
     current=gcp_download("olym_suzano","dispatched.json")
     current=json.loads(current)
-    st.markdown(rf'Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}')
+    info=gcp_download("olym_suzano",rf"release_orders/{current[vessel]}/{current[release_order]}.json")
+    info=json.loads(info)
+    st.write(info)
+    st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
+    st.markdown(rf'**Total  : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
     with col1:
     
