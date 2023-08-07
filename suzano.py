@@ -282,7 +282,7 @@ if select=="ADMIN" :
             if create_release_order:
                 #if rf"{vessel}-{release_order_number}.json" in list_files_in_folder("olym_suzano", "release_orders")[1:]:
                 if edit: 
-                    temp=gcp_download("olym_suzano",fr "release_orders/{vessel}-{release_order_number}.json")
+                    temp=gcp_download("olym_suzano",rf"release_orders/{vessel}-{release_order_number}.json")
                     to_edit=json.loads(data)
                     temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
                     st.write(f"ADDED sales order item {sales_order_item} to release order {release_order_number}!")
