@@ -388,6 +388,8 @@ if select=="LOADOUT" :
     st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
     st.markdown(rf'**Total  : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
+    vessel=current["vessel"]
+    
     with col1:
     
 
@@ -396,31 +398,28 @@ if select=="LOADOUT" :
             st.session_state.file_date=file_date
         file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7))
         terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
-        release_order_number=st.text_input("Release Order Number (FROM SUZANO)",st.session_state.release_order_number,disabled=True,help="LALALA")
+        release_order_number=st.text_input("Release Order Number",current["release_order"],disabled=True,help="LALALA")
         
         
         delivery_date=st.date_input("Delivery Date",datetime.datetime.today(),key="delivery_date")
     with col2:
-        if st.session_state.transport_type=="TRUCK":
-            medium="TRUCK"
-        else:
-            medium="RAIL"
+        
         transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
         transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
         vehicle_id=st.text_input("Vehicle ID")
         quantity=st.number_input("Quantity In Tons", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
         frame_placeholder = st.empty()
     with col3: 
-        carrier_code=st.text_input("Carrier Code",st.session_state.carrier_code,disabled=True)
-        bill_of_lading=st.text_input("Bill of Lading",st.session_state.bill_of_lading,disabled=True)
+        carrier_code=st.text_input("Carrier Code",info[current["vessel"]][current["release_order"]]["carrier_code"],disabled=True)
+        bill_of_lading=st.text_input("Bill of Lading",info[current["vessel"]][current["release_order"]]["bill_of_lading"],disabled=True)
         eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
-        sales_order_item=st.text_input("Sales Order Item (Material Code)",st.session_state.sales_order_item,disabled=True)
+        sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
     with col4:
-        load1=st.text_input("Unit No : 01")[:-3]
-        load2=st.text_input("Unit No : 02")[:-3]
-        load3=st.text_input("Unit No : 03")[:-3]
-        load4=st.text_input("Unit No : 04")[:-3]
-        load5=st.text_input("Unit No : 05")[:-3]
+        load1=st.text_input("Unit No : 01")#[:-3]
+        load2=st.text_input("Unit No : 02")#[:-3]
+        load3=st.text_input("Unit No : 03")#[:-3]
+        load4=st.text_input("Unit No : 04")#[:-3]
+        load5=st.text_input("Unit No : 05")#[:-3]
             
         
         
@@ -430,11 +429,11 @@ if select=="LOADOUT" :
        
     with col5:
         
-        load6=st.text_input("Unit No : 06")[:-3]
-        load7=st.text_input("Unit No : 07")[:-3]
-        load8=st.text_input("Unit No : 08")[:-3]
-        load9=st.text_input("Unit No : 09")[:-3]
-        load10=st.text_input("Unit No : 10")[:-3]
+        load6=st.text_input("Unit No : 06")#[:-3]
+        load7=st.text_input("Unit No : 07")#[:-3]
+        load8=st.text_input("Unit No : 08")#[:-3]
+        load9=st.text_input("Unit No : 09")#[:-3]
+        load10=st.text_input("Unit No : 10")#[:-3]
         
     gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
     loads=[]
@@ -525,6 +524,13 @@ if select=="LOADOUT" :
         pass        
     if st.button('SAVE/DISPLAY EDI'):
         process()
+        info["shipped"]=info["shipped"]+len(loads)
+        info["remaining"]=info["remaining"]-len(loads)
+        json_data = json.dumps(info)
+        storage_client = storage.Client()
+        bucket = storage_client.bucket("olym_suzano")
+        blob = bucket.blob(rf"release_orders/{vessel}/{release_order_number}.json")
+        blob.upload_from_string(json_data)
         with open('placeholder.txt', 'r') as f:
             output_text = f.read()
         st.markdown("**EDI TEXT**")
