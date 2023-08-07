@@ -327,21 +327,30 @@ if select=="ADMIN" :
                     st.markdown(f"<div style='{style}'>{text}</div>", unsafe_allow_html=True)
 
 # Your loop to add a frame around all lines printed with 'i'
-                for i in target:
-                    st.beta_container()  # Create a new container for each 'i'
-                    release_order_number_text = f"**:blue[Release Order Number] : {requested_file}**"
-                    sales_order_item_text = f"**:blue[Sales Order Item] : {i}**"
-                    total_quantity_text = f"Total Quantity-Tonnage : {target[i]['quantity']} Bales - {target[i]['tonnage']} Metric Tons"
-                    shipped_text = f"Bales Shipped : {target[i]['shipped']} Bales - {2 * target[i]['shipped']} Metric Tons"
-                    remaining_text = f"Bales Remaining : {target[i]['remaining']} Bales - {2 * target[i]['remaining']} Metric Tons"
+                def add_text_with_frame(text, border_color='gray', padding='10px', border_radius='5px'):
+                    style = f"""
+                        border: 2px solid {border_color};
+                        padding: {padding};
+                        border-radius: {border_radius};
+                    """
+                    st.markdown(f"<div style='{style}'>{text}</div>", unsafe_allow_html=True)
 
-    # Add text lines to the container
-                add_text_with_frame(release_order_number_text, border_color='blue')
-                add_text_with_frame(sales_order_item_text, border_color='blue')
-                st.write(total_quantity_text)
-                st.write(shipped_text)
-                st.write(remaining_text)
-                st.write("")
+# Your loop to add a frame around all lines printed with 'i'
+                for i in target:
+                    with st.sidebar:  # Use the sidebar to group the content together
+                        release_order_number_text = f"**:blue[Release Order Number] : {requested_file}**"
+                        sales_order_item_text = f"**:blue[Sales Order Item] : {i}**"
+                        total_quantity_text = f"Total Quantity-Tonnage : {target[i]['quantity']} Bales - {target[i]['tonnage']} Metric Tons"
+                        shipped_text = f"Bales Shipped : {target[i]['shipped']} Bales - {2 * target[i]['shipped']} Metric Tons"
+                        remaining_text = f"Bales Remaining : {target[i]['remaining']} Bales - {2 * target[i]['remaining']} Metric Tons"
+                
+                        # Add text lines to the container
+                        add_text_with_frame(release_order_number_text, border_color='blue')
+                        add_text_with_frame(sales_order_item_text, border_color='blue')
+                        st.write(total_quantity_text)
+                        st.write(shipped_text)
+                        st.write(remaining_text)
+                        st.write("")
                 
                 for i in target:
                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
