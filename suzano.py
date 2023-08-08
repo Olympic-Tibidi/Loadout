@@ -399,7 +399,7 @@ if select=="LOADOUT" :
     info=json.loads(info)
     #st.write(info)
     st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
-    st.markdown(rf'**Ocean Bill Of Lading : {current["ocean_bill_of_lading"]}**')
+    st.markdown(f'**Ocean Bill Of Lading : {current["ocean_bill_of_lading"]}**')
     st.markdown(rf'**Total Quantity : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["quantity"]}**')
     st.markdown(rf'**Shipped : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]}**')
     st.markdown(rf'**Remaining : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]}**')
