@@ -420,7 +420,7 @@ if select=="LOADOUT" :
         release_order_number=st.text_input("Release Order Number",current["release_order"],disabled=True,help="LALALA")
         
         
-        delivery_date=st.date_input("Delivery Date",datetime.datetime.today(),key="delivery_date")
+        delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="delivery_date")
     with col2:
         
         transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
