@@ -345,6 +345,7 @@ if select=="ADMIN" :
                         st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                         st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
                         st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Bales - {target[targets[1]]['tonnage']} Metric Tons")
+                        st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
                         st.write(f"        Bales Shipped : {target[targets[1]]['shipped']} Bales - {2*target[targets[1]]['shipped']} Metric Tons")
                         st.write(f"        Bales Remaining : {target[targets[1]]['remaining']} Bales - {2*target[targets[1]]['remaining']} Metric Tons")
                         
@@ -358,6 +359,7 @@ if select=="ADMIN" :
                         st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                         st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
                         st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Bales - {target[targets[2]]['tonnage']} Metric Tons")
+                        st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
                         st.write(f"        Bales Shipped : {target[targets[2]]['shipped']} Bales - {2*target[targets[2]]['shipped']} Metric Tons")
                         st.write(f"        Bales Remaining : {target[targets[2]]['remaining']} Bales - {2*target[targets[2]]['remaining']} Metric Tons")
                         
@@ -369,7 +371,7 @@ if select=="ADMIN" :
                 if st.button("DISPATCH TO WAREHOUSE",key="lala"):
                         dispatched={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
                                     "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
-                                        "release_order":requested_file,"sales_order":hangisi}
+                                        "release_order":requested_file,"sales_order":hangisi,"ocean_bill_of_lading":ocean_bill_of_lading}
                         json_data = json.dumps(dispatched)
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
