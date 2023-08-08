@@ -437,8 +437,8 @@ if select=="LOADOUT" :
         load1=st.text_input("Unit No : 01")#[:-3]
         
         if len(load1)==11:
-            st.write(bill_mapping[load1])
-            if bill_mapping[load1]!=bill_of_lading:
+            st.write(bill_mapping[load1[:-3]])
+            if bill_mapping[load1[:-3]]!=bill_of_lading:
                 st.write("WRONG UNIT, scan another one")
         load2=st.text_input("Unit No : 02")#[:-3]
         load3=st.text_input("Unit No : 03")#[:-3]
