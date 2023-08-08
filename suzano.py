@@ -145,12 +145,13 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,bill_o
     json_data = json.dumps(release_order_data)
     return json_data
 
-def edit_release_order_data(file,vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
+def edit_release_order_data(file,vessel,release_order_number,sales_order_item,bill_of_lading,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Edit the loaded current dictionary.
     if sales_order_item not in file[vessel][release_order_number]:
         file[vessel][release_order_number][sales_order_item]={}
     file[vessel][release_order_number][sales_order_item]["bill_of_lading"]= bill_of_lading
+    file[vessel][release_order_number][sales_order_item]["ocean_bill_of_lading"]= ocean_bill_of_lading
     file[vessel][release_order_number][sales_order_item]["dryness"]= dryness
     file[vessel][release_order_number][sales_order_item]["transport_type"]= transport_type
     file[vessel][release_order_number][sales_order_item]["carrier_code"]= carrier_code
@@ -300,7 +301,7 @@ if select=="ADMIN" :
                     st.write(f"ADDED sales order item {sales_order_item} to release order {release_order_number}!")
                 else:
                     
-                    temp=store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
+                    temp=store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
                     #st.write(temp)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket("olym_suzano")
