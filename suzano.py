@@ -307,7 +307,7 @@ if select=="ADMIN" :
                 bucket = storage_client.bucket("olym_suzano")
                 blob = bucket.blob(rf"release_orders/{vessel}/{release_order_number}.json")
                 blob.upload_from_string(temp)
-                #upload_cs_file("olym_suzano", 'temp',rf"release_orders/{vessel}/{release_order_number}.json") 
+                st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                 
         with release_order_tab2:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
