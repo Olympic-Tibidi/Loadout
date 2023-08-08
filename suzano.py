@@ -425,6 +425,7 @@ if select=="LOADOUT" :
         
         transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
         transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
+        ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",current["ocean_bill_of_lading"],disabled=True)
         vehicle_id=st.text_input("Vehicle ID")
         quantity=st.number_input("Quantity In Tons", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
         frame_placeholder = st.empty()
