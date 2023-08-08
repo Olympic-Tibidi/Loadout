@@ -435,7 +435,9 @@ if select=="LOADOUT" :
         sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
     with col4:
         load1=st.text_input("Unit No : 01")#[:-3]
+        
         if len(load1)==11:
+            st.write(bill_mapping[load1])
             if bill_mapping[load1]!=bill_of_lading:
                 st.write("WRONG UNIT, scan another one")
         load2=st.text_input("Unit No : 02")#[:-3]
