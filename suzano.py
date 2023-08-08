@@ -335,6 +335,7 @@ if select=="ADMIN" :
                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                     st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
                     st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Bales - {target[targets[0]]['tonnage']} Metric Tons")
+                    st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
                     st.write(f"        Bales Shipped : {target[targets[0]]['shipped']} Bales - {2*target[targets[0]]['shipped']} Metric Tons")
                     st.write(f"        Bales Remaining : {target[targets[0]]['remaining']} Bales - {2*target[targets[0]]['remaining']} Metric Tons")
                     
