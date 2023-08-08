@@ -121,7 +121,7 @@ def list_files_in_subfolder(bucket_name, folder_name):
     filenames = [blob.name.split('/')[-1] for blob in blobs]
 
     return filenames
-def store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
+def store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Create a dictionary to store the release order data
     release_order_data = { vessel: {
@@ -129,6 +129,7 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,bill_o
         release_order_number:{
         sales_order_item: {
         "bill_of_lading": bill_of_lading,
+        "ocean_bill_of_lading": ocean_bill_of_lading,
         "dryness":dryness,
         "transport_type": transport_type,
         "carrier_code": carrier_code,
@@ -279,7 +280,8 @@ if select=="ADMIN" :
             else:
                 release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
-            bill_of_lading=st.text_input("Bill Of Lading")
+            bill_of_lading=st.text_input("Terminal Bill Of Lading")
+            ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading")
             dryness=st.text_input("Dryness")
             quantity=st.number_input("Quantity of Bales", min_value=1, max_value=300, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             tonnage=2*quantity
@@ -294,7 +296,7 @@ if select=="ADMIN" :
                 if edit: 
                     data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
                     to_edit=json.loads(data)
-                    temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
+                    temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,bill_of_lading,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
                     st.write(f"ADDED sales order item {sales_order_item} to release order {release_order_number}!")
                 else:
                     
