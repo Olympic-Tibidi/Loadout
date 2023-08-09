@@ -440,7 +440,8 @@ if select=="LOADOUT" :
     with col4:
 
         if st.button("CLICK TO START SCANNING"):
-            user_input = st.text_input("Enter some text:")
+            user_input = st.text_input("Enter some text:",key="barcodes")
+            st.script("document.getElementById('barcodes').focus();")
         
         
         
