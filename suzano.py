@@ -443,8 +443,12 @@ if select=="LOADOUT" :
         
         
         load1=st.text_area("Unit No : 01")#[:-3]
-        for line in load1:
-            st.write(line)
+        if laod1 is not None:
+            textsplit = load1.splitlines()
+
+            for x in textsplit:
+                st.write(x)
+                
         if len(load1)==11:
             st.write(bill_mapping[load1[:-3]])
             if bill_mapping[load1[:-3]]!=bill_of_lading:
