@@ -432,7 +432,7 @@ if select=="ADMIN" :
                         dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                         dispatch=json.loads(dispatch)
                         #last_order=dispatch.keys()[-1]
-                        st.write(f"1:{dispatch[1]}:Relase Order = {dispatch["release_order"]}, Item No: {dispatch["sales_order"])
+                        st.write(f'1:{dispatch[1]}:Relase Order = {dispatch["release_order"]}, Item No: {dispatch["sales_order"]}')
 
 
                         
