@@ -442,7 +442,7 @@ if select=="LOADOUT" :
         
         
         
-        load1=st.text_input("Unit No : 01")#[:-3]
+        load1=st.text_area("Unit No : 01")#[:-3]
         
         if len(load1)==11:
             st.write(bill_mapping[load1[:-3]])
