@@ -277,15 +277,18 @@ if select=="ADMIN" :
         with release_order_tab1:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
             edit=st.checkbox("CHECK TO ADD TO EXISTING RELEASE ORDER")
+            batch_mapping=gcp_download("olym_suzano",rf"batch_mapping.json")
+            batch_mapping=json.loads(batch_mapping)
             if edit:
                 #release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders/{vessel}")))
                 release_order_number=st.selectbox("SELECT RELEASE ORDER",([i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]))
             else:
+                
                 release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
-            batch=st.text_input("Batch No")
-            ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading")
-            dryness=st.text_input("Dryness")
+            ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch.keys.tolist())
+            batch=st.text_input("Batch No",batch_mapping[ocean_bill_of_lading]["batch"],disabled=True)
+            dryness=st.text_input("Dryness",batch_mapping[ocean_bill_of_lading]["dryness"],disabled=True)
             quantity=st.number_input("Quantity of Bales", min_value=1, max_value=800, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             tonnage=2*quantity
             #queue=st.number_input("Place in Queue", min_value=1, max_value=20, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
