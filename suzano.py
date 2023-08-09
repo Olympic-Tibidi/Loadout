@@ -512,7 +512,7 @@ if select=="LOADOUT" :
         tsn="01" if medium=="TRUCK" else "02"
         
         tt="0001" if medium=="TRUCK" else "0002"
-        line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+ocean_bill_of_lading+" "*(50-len(ocean_bill_of_lading))+c
+        line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+terminal_bill_of_lading+" "*(50-len(terminal_bill_of_lading))+c
                    
         loadls=[]
         for k in loads:
