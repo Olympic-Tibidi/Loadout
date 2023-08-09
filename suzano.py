@@ -451,6 +451,8 @@ if select=="ADMIN" :
                       #  blob.upload_from_string(json_data)
                 st.markdown("**CURRENT DISPATCH QUEUE**")
                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
+                dispatch=json.loads(dispatch)
+                st.swrite(dispatch)
                 
             else:
                 st.write("NO RELEASE ORDERS IN DATABASE")
