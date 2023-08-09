@@ -449,7 +449,7 @@ if select=="LOADOUT" :
         release_order_number=st.text_input("Release Order Number",current["release_order"],disabled=True,help="Release Order Number without the Item no")
         sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
         ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",current["ocean_bill_of_lading"],disabled=True)
-        batch=st.text_input("Ocean Bill Of Lading",current["batch"],disabled=True)
+        batch=st.text_input("Batch",current["batch"],disabled=True)
         terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
                
         frame_placeholder = st.empty()
