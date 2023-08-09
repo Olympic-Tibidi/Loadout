@@ -439,9 +439,9 @@ if select=="LOADOUT" :
         
     with col4:
         def flip(text):
-            st.write(text,end="/n")
+            st.write(st.session_state.barcodes,end="/n")
         
-        user_input = st.text_input("Enter some text:",on_change=flip(user_input),key="barcodes")
+        user_input = st.text_input("Enter some text:",on_change=flip(),key="barcodes")
             
         
         
