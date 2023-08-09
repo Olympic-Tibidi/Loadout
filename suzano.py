@@ -170,6 +170,53 @@ def edit_release_order_data(file,vessel,release_order_number,sales_order_item,ba
 def generate_bill_of_lading():
     pass
 
+ def process():
+        
+        line1="1HDR:"+a+b+terminal_code
+        tsn="01" if medium=="TRUCK" else "02"
+        
+        tt="0001" if medium=="TRUCK" else "0002"
+        line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+terminal_bill_of_lading+" "*(50-len(terminal_bill_of_lading))+c
+                   
+        loadls=[]
+        for k in loads:
+            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*16+str(quantity*100))
+            
+        number_of_units=len(loads)+3
+        end_initial="0"*(4-len(str(number_of_units)))
+        end=f"9TRL:{end_initial}{number_of_units}"
+        Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+        for i in loads:
+            #st.write(i)
+            try:
+                  
+                Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
+                Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
+                Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
+                Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
+                Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
+                Inventory.loc[Inventory["Lot"]==i,"BL"]=str(terminal_bill_of_lading)
+            except:
+                st.write("Check Unit Number,Unit Not In Inventory")
+            #st.write(vehicle_id)
+
+            temp=Inventory.to_csv("temp.csv")
+            upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
+        with open(f'placeholder.txt', 'w') as f:
+            f.write(line1)
+            f.write('\n')
+            f.write(line2)
+            f.write('\n')
+            
+            for i in loadls:
+                
+                f.write(i)
+                f.write('\n')
+
+            f.write(end)
+
+
+
 user="AFSIN"
     
 #if user :
@@ -515,56 +562,9 @@ if select=="LOADOUT" :
     
     st.write(loads)
         
-    def process():
+   
         
-        line1="1HDR:"+a+b+terminal_code
-        tsn="01" if medium=="TRUCK" else "02"
-        
-        tt="0001" if medium=="TRUCK" else "0002"
-        line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+terminal_bill_of_lading+" "*(50-len(terminal_bill_of_lading))+c
-                   
-        loadls=[]
-        for k in loads:
-            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*16+str(quantity*100))
-            
-        number_of_units=len(loads)+3
-        end_initial="0"*(4-len(str(number_of_units)))
-        end=f"9TRL:{end_initial}{number_of_units}"
-        Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-        for i in loads:
-            #st.write(i)
-            try:
-                  
-                Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
-                Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
-                Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
-                Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
-                Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
-                Inventory.loc[Inventory["Lot"]==i,"BL"]=str(terminal_bill_of_lading)
-            except:
-                st.write("Check Unit Number,Unit Not In Inventory")
-            #st.write(vehicle_id)
-
-            temp=Inventory.to_csv("temp.csv")
-            upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
-        with open(f'placeholder.txt', 'w') as f:
-            f.write(line1)
-            f.write('\n')
-            f.write(line2)
-            f.write('\n')
-            
-            for i in loadls:
-                
-                f.write(i)
-                f.write('\n')
-
-            f.write(end)
-        
-            
-    #try:
-     #   down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
-   # except:
-       # pass 
+  
     if st.button("GENERATE BILL OF LADING"):
         generate_bill_of_lading()
     if st.button('SUBMIT EDI'):
