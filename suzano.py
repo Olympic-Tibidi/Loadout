@@ -458,7 +458,7 @@ if select=="ADMIN" :
                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                 dispatch=json.loads(dispatch)
                 for i in dispatch.keys():
-                    st.write(f':blue[{i}]:Release Order = {dispatch["1"]["release_order"]}, Item No: {dispatch["1"]["sales_order"]}')
+                    st.write(f'{i}:Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
 
                 
             else:
