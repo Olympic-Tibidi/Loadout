@@ -473,7 +473,7 @@ if select=="LOADOUT" :
     
     if st.checkbox("CLICK TO LOAD MIXED SKU"):
         try:
-            next_item=info=gcp_download("olym_suzano",rf"release_orders/{current['vessel']}/{current['release_order']}.json")
+            next_item=gcp_download("olym_suzano",rf"release_orders/{current['vessel']}/{current['release_order']}.json")
         except:
             pass
     st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
