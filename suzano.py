@@ -623,9 +623,9 @@ if select=="LOADOUT" :
     
             send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
             upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
-    except:
-        st.title(f"**:red[NO RELEASE ORDERS DISPATCHED YET!!]**")
-        st.title(f"**:red[PLEASE CHECK WITH GATEHOUSE]**")
+        except:
+            st.title(f"**:red[NO RELEASE ORDERS DISPATCHED YET!!]**")
+            st.title(f"**:red[PLEASE CHECK WITH GATEHOUSE]**")
     
             
     
