@@ -464,9 +464,9 @@ if select=="LOADOUT" :
         
         
         
-        load1=st.text_area("Unit No : 01",height=300)#[:-3]
-        if load1 is not None:
-            textsplit = load1.splitlines()
+        load_input=st.text_area("Unit No : 01",height=300)#[:-3]
+        if load_input is not None:
+            textsplit = load_input.splitlines()
             #st.write(textsplit)
             for i,x in enumerate(textsplit):
                 #st.write(x)
