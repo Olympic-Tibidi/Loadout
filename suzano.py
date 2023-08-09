@@ -128,7 +128,7 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,batch,
        
         "release_order_number":{
         "sales_order_item": {
-        "batch": bill_of_lading,
+        "batch": batch,
         "ocean_bill_of_lading": ocean_bill_of_lading,
         "dryness":dryness,
         "transport_type": transport_type,
