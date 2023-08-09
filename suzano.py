@@ -388,6 +388,7 @@ if select=="ADMIN" :
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"dispatched.json")
                         blob.upload_from_string(json_data)
+                        st.markdown(f"**DISPATCHED Release Order Number {requested_file} Item No : {hangisi} to Warehouse**"}
                 with dol2:
                     
                     if st.button("DELETE ITEM",key="lalag"):
