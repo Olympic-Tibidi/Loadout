@@ -442,7 +442,7 @@ if select=="LOADOUT" :
             st.info(st.session_state[key])
         
         
-        user_input = st.text_input("Enter some text:",on_change=washchanged,key="barcodes")
+        user_input = st.text_input("Enter some text:",on_change=waschanged,key="barcodes")
             
         
         
