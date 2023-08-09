@@ -450,9 +450,10 @@ if select=="LOADOUT" :
                 #st.write(x)
                 st.text_input(f"Unit No : {i+1}",x)#[:-3]
                 
-        if len(load1)==11:
-            st.write(bill_mapping[load1[:-3]])
-            if bill_mapping[load1[:-3]]!=bill_of_lading:
+        def audit_unit(x):
+            if len(x)==11:
+            st.write(bill_mapping[x[:-3]])
+            if bill_mapping[x[:-3]]!=ocean_bill_of_lading:
                 st.write("WRONG UNIT, scan another one")
         
             
@@ -463,16 +464,12 @@ if select=="LOADOUT" :
      
        
     with col5:
-        load1=st.text_input("Unit No : 01")#[:-3]
-        load2=st.text_input("Unit No : 02")#[:-3]
-        load3=st.text_input("Unit No : 03")#[:-3]
-        load4=st.text_input("Unit No : 04")#[:-3]
-        load5=st.text_input("Unit No : 05")#[:-3]
-        load6=st.text_input("Unit No : 06")#[:-3]
-        load7=st.text_input("Unit No : 07")#[:-3]
-        load8=st.text_input("Unit No : 08")#[:-3]
-        load9=st.text_input("Unit No : 09")#[:-3]
-        load10=st.text_input("Unit No : 10")#[:-3]
+        if load1 is not None:
+            textsplit = load1.splitlines()
+            #st.write(textsplit)
+            for i,x in enumerate(textsplit):
+                audit_unit(x)
+                st.text_input(f"Unit No : {i+1}",x)#[:-3]
         
     gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
     loads=[]
