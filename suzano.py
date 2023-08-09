@@ -420,8 +420,7 @@ if select=="ADMIN" :
                     except:
                         pass
 
-                st.markdown("**CURRENT DISPATCH QUEUE**")
-                
+                               
                 
                 hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
                 dol1,dol2,dol3=st.columns([2,2,8])
@@ -450,7 +449,7 @@ if select=="ADMIN" :
                       #  bucket = storage_client.bucket("olym_suzano")
                       #  blob = bucket.blob(rf"dispatched.json")
                       #  blob.upload_from_string(json_data)
-
+                st.markdown("**CURRENT DISPATCH QUEUE**")
             else:
                 st.write("NO RELEASE ORDERS IN DATABASE")
 
