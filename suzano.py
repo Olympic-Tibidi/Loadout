@@ -423,7 +423,7 @@ if select=="LOADOUT" :
     info=gcp_download("olym_suzano",rf"release_orders/{current['vessel']}/{current['release_order']}.json")
     info=json.loads(info)
     #st.write(info)
-    loadout_col1,loadout_col2=st.columns([2,2],key="frist")
+    loadout_col1,loadout_col2=st.columns([2,2])
     with loadout_col1:
         st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
         st.markdown(f'**Ocean Bill Of Lading : {current["ocean_bill_of_lading"]}**')
