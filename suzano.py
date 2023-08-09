@@ -490,8 +490,10 @@ if select=="LOADOUT" :
             for i,x in enumerate(textsplit):
                 audit_unit(x)
                 st.text_input(f"Unit No : {i+1}",x)#[:-3]
-        
-    gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
+    gloads=[]
+    for k in textsplit:
+        gloads.append(k)
+    #gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
     loads=[]
     for i in gloads:
         if i:
