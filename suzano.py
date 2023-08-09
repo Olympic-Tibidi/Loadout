@@ -289,7 +289,7 @@ if select=="ADMIN" :
             ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch_mapping.keys())
             batch=st.text_input("Batch No",batch_mapping[ocean_bill_of_lading]["batch"],disabled=True)
             dryness=st.text_input("Dryness",batch_mapping[ocean_bill_of_lading]["dryness"],disabled=True)
-            quantity=st.number_input("Quantity of Bales", min_value=1, max_value=800, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+            quantity=st.number_input("Quantity of Units", min_value=1, max_value=800, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             tonnage=2*quantity
             #queue=st.number_input("Place in Queue", min_value=1, max_value=20, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
