@@ -420,7 +420,7 @@ if select=="ADMIN" :
                     except:
                         pass
 
-                st.subheader("CURRENT DISPATCH QUEUE")
+                st.markdown("**CURRENT DISPATCH QUEUE**")
                 
                 
                 hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
