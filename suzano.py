@@ -126,8 +126,8 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,batch,
     # Create a dictionary to store the release order data
     release_order_data = { vessel: {
        
-        "release_order_number":{
-        "sales_order_item": {
+        release_order_number:{
+        sales_order_item: {
         "batch": batch,
         "ocean_bill_of_lading": ocean_bill_of_lading,
         "dryness":dryness,
