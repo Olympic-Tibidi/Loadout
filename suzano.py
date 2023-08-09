@@ -639,8 +639,8 @@ if select=="INVENTORY" :
     
     
     dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-    df=Inventory[Inventory["Location"]=="OLYM"][["Lot","B/L","Ocean B/L","DryWeight","ADMT","Location","Warehouse_In"]]
-    zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Ocean B/L","DryWeight","ADMT","Release_Order_Number","Carrier_Code","BL",
+    df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","DryWeight","ADMT","Location","Warehouse_In"]]
+    zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot",""Ocean B/L","DryWeight","ADMT","Release_Order_Number","Carrier_Code","BL",
                                                      "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
     with dab1:
         
