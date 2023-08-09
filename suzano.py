@@ -121,14 +121,14 @@ def list_files_in_subfolder(bucket_name, folder_name):
     filenames = [blob.name.split('/')[-1] for blob in blobs]
 
     return filenames
-def store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
+def store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Create a dictionary to store the release order data
     release_order_data = { vessel: {
        
-        release_order_number:{
-        sales_order_item: {
-        "bill_of_lading": bill_of_lading,
+        "release_order_number":{
+        "sales_order_item": {
+        "batch": bill_of_lading,
         "ocean_bill_of_lading": ocean_bill_of_lading,
         "dryness":dryness,
         "transport_type": transport_type,
@@ -145,12 +145,12 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,bill_o
     json_data = json.dumps(release_order_data)
     return json_data
 
-def edit_release_order_data(file,vessel,release_order_number,sales_order_item,bill_of_lading,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
+def edit_release_order_data(file,vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Edit the loaded current dictionary.
     if sales_order_item not in file[vessel][release_order_number]:
         file[vessel][release_order_number][sales_order_item]={}
-    file[vessel][release_order_number][sales_order_item]["bill_of_lading"]= bill_of_lading
+    file[vessel][release_order_number][sales_order_item]["batch"]= batch
     file[vessel][release_order_number][sales_order_item]["ocean_bill_of_lading"]= ocean_bill_of_lading
     file[vessel][release_order_number][sales_order_item]["dryness"]= dryness
     file[vessel][release_order_number][sales_order_item]["transport_type"]= transport_type
@@ -283,10 +283,10 @@ if select=="ADMIN" :
             else:
                 release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
-            bill_of_lading=st.text_input("Terminal Bill Of Lading")
+            batch=st.text_input("Batch No")
             ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading")
             dryness=st.text_input("Dryness")
-            quantity=st.number_input("Quantity of Bales", min_value=1, max_value=300, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+            quantity=st.number_input("Quantity of Bales", min_value=1, max_value=800, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             tonnage=2*quantity
             #queue=st.number_input("Place in Queue", min_value=1, max_value=20, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
@@ -299,11 +299,11 @@ if select=="ADMIN" :
                 if edit: 
                     data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
                     to_edit=json.loads(data)
-                    temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,bill_of_lading,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
+                    temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
                     st.write(f"ADDED sales order item {sales_order_item} to release order {release_order_number}!")
                 else:
                     
-                    temp=store_release_order_data(vessel,release_order_number,sales_order_item,bill_of_lading,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
+                    temp=store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
                     #st.write(temp)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket("olym_suzano")
@@ -338,6 +338,7 @@ if select=="ADMIN" :
                     st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
                     st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Bales - {target[targets[0]]['tonnage']} Metric Tons")
                     st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
+                    st.write(f"        Batch : {target[targets[0]]['batch']}")
                     st.write(f"        Bales Shipped : {target[targets[0]]['shipped']} Bales - {2*target[targets[0]]['shipped']} Metric Tons")
                     st.write(f"        Bales Remaining : {target[targets[0]]['remaining']} Bales - {2*target[targets[0]]['remaining']} Metric Tons")
                     
@@ -346,8 +347,9 @@ if select=="ADMIN" :
                     
                         st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                         st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
-                        st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Bales - {target[targets[1]]['tonnage']} Metric Tons")
+                        st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Bales - {target[targets[1]]['tonnage']} Metric Tons")                        
                         st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
+                        st.write(f"        Batch : {target[targets[1]]['batch']}")
                         st.write(f"        Bales Shipped : {target[targets[1]]['shipped']} Bales - {2*target[targets[1]]['shipped']} Metric Tons")
                         st.write(f"        Bales Remaining : {target[targets[1]]['remaining']} Bales - {2*target[targets[1]]['remaining']} Metric Tons")
                         
@@ -362,6 +364,7 @@ if select=="ADMIN" :
                         st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
                         st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Bales - {target[targets[2]]['tonnage']} Metric Tons")
                         st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
+                        st.write(f"        Batch : {target[targets[2]]['batch']}")
                         st.write(f"        Bales Shipped : {target[targets[2]]['shipped']} Bales - {2*target[targets[2]]['shipped']} Metric Tons")
                         st.write(f"        Bales Remaining : {target[targets[2]]['remaining']} Bales - {2*target[targets[2]]['remaining']} Metric Tons")
                         
