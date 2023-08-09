@@ -486,7 +486,7 @@ if select=="LOADOUT" :
      
        
     with col5:
-        if load1 is not None:
+        if load_input is not None:
             textsplit = load1.splitlines()
             #st.write(textsplit)
             for i,x in enumerate(textsplit):
