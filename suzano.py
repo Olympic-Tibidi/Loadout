@@ -415,29 +415,28 @@ if select=="LOADOUT" :
     
     with col1:
     
-
+        terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
         file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates")
         if file_date not in st.session_state:
             st.session_state.file_date=file_date
         file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7))
-        terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
-        release_order_number=st.text_input("Release Order Number",current["release_order"],disabled=True,help="LALALA")
-        
-        
         delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="delivery_date")
-    with col2:
+        eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
         
-        transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
-        transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
+    with col2:
+        release_order_number=st.text_input("Release Order Number",current["release_order"],disabled=True,help="LALALA")
+        sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
         ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",current["ocean_bill_of_lading"],disabled=True)
-        vehicle_id=st.text_input("Vehicle ID")
-        quantity=st.number_input("Quantity In Tons", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+        terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",info[current["vessel"]][current["release_order"]][current["sales_order"]]["bill_of_lading"],disabled=False)
+               
         frame_placeholder = st.empty()
     with col3: 
         carrier_code=st.text_input("Carrier Code",info[current["vessel"]][current["release_order"]][current["sales_order"]]["carrier_code"],disabled=True)
-        bill_of_lading=st.text_input("Bill of Lading",info[current["vessel"]][current["release_order"]][current["sales_order"]]["bill_of_lading"],disabled=False)
-        eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date")
-        sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
+        transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
+        transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
+        vehicle_id=st.text_input("Vehicle ID")
+        quantity=st.number_input("Quantity In Tons", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+        
     with col4:
         load1=st.text_input("Unit No : 01")#[:-3]
         
