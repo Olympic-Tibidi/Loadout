@@ -457,7 +457,7 @@ if select=="ADMIN" :
                 st.markdown("**CURRENT DISPATCH QUEUE**")
                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                 dispatch=json.loads(dispatch)
-                st.write(f'1:{dispatch["1"]}:Relase Order = {dispatch["1]["release_order"]}, Item No: {dispatch["1"]["sales_order"]}')
+                st.write(f'1:{dispatch["1"]}:Relase Order = {dispatch["1"]["release_order"]}, Item No: {dispatch["1"]["sales_order"]}')
 
                 
             else:
