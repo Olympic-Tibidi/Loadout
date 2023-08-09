@@ -430,10 +430,12 @@ if select=="LOADOUT" :
         st.markdown(rf'**Total Quantity : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["quantity"]}**')
         st.markdown(rf'**Shipped : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]}**')
         st.markdown(rf'**Remaining : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]}**')
-        col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
     with loadout_col2:
         if st.button("CLICK TO LOAD MIXED SKU"):
             pass
+            
+    col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
+    
 
 
     
