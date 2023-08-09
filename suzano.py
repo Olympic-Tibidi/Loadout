@@ -286,7 +286,7 @@ if select=="ADMIN" :
                 
                 release_order_number=st.text_input("Release Order Number")
             sales_order_item=st.text_input("Sales Order Item")
-            ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch_mapping.keys().tolist())
+            ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch_mapping.keys())
             batch=st.text_input("Batch No",batch_mapping[ocean_bill_of_lading]["batch"],disabled=True)
             dryness=st.text_input("Dryness",batch_mapping[ocean_bill_of_lading]["dryness"],disabled=True)
             quantity=st.number_input("Quantity of Bales", min_value=1, max_value=800, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
