@@ -452,7 +452,7 @@ if select=="ADMIN" :
                 st.markdown("**CURRENT DISPATCH QUEUE**")
                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                 dispatch=json.loads(dispatch)
-                st.swrite(dispatch)
+                st.write(dispatch)
                 
             else:
                 st.write("NO RELEASE ORDERS IN DATABASE")
