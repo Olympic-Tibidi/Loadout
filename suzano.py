@@ -491,9 +491,9 @@ if select=="LOADOUT" :
             #st.write(textsplit)
             for i,x in enumerate(textsplit):
                 if audit_unit(x):
-                    st.text_input(f"Unit No : {i+1}",x)#[:-3]
+                    st.text_input(f"Unit No : {i+1}",x)
                 else:
-                    st.text_input(f"Unit No : {i+1}",:blue[x])#[:-3]
+                    st.text_input(f"Unit No : {i+1}",x)
     gloads=[]
     for k in textsplit:
         gloads.append(k)
