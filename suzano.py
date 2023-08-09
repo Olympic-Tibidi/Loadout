@@ -414,7 +414,7 @@ if select=="ADMIN" :
 
 
 if select=="LOADOUT" :
-
+    
     bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
     bill_mapping=json.loads(bill_mapping)
     current=gcp_download("olym_suzano","dispatched.json")
@@ -423,12 +423,20 @@ if select=="LOADOUT" :
     info=gcp_download("olym_suzano",rf"release_orders/{current['vessel']}/{current['release_order']}.json")
     info=json.loads(info)
     #st.write(info)
-    st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
-    st.markdown(f'**Ocean Bill Of Lading : {current["ocean_bill_of_lading"]}**')
-    st.markdown(rf'**Total Quantity : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["quantity"]}**')
-    st.markdown(rf'**Shipped : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]}**')
-    st.markdown(rf'**Remaining : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]}**')
-    col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
+    loadout_col1,loadout_col2=st.columns([2,2])
+    with loadout_col1:
+        st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
+        st.markdown(f'**Ocean Bill Of Lading : {current["ocean_bill_of_lading"]}**')
+        st.markdown(rf'**Total Quantity : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["quantity"]}**')
+        st.markdown(rf'**Shipped : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]}**')
+        st.markdown(rf'**Remaining : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]}**')
+        col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
+    with loadout_col2:
+        if st.button("CLICK TO LOAD MIXED SKU"):
+            pass
+
+
+    
     vessel=current["vessel"]
     if info[current["vessel"]][current["release_order"]][current["sales_order"]]["transport_type"]=="TRUCK":
         medium="TRUCK"
