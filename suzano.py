@@ -450,7 +450,7 @@ if select=="ADMIN" :
                       #  blob = bucket.blob(rf"dispatched.json")
                       #  blob.upload_from_string(json_data)
                 st.markdown("**CURRENT DISPATCH QUEUE**")
-                dispatch=gcp_download("olym_suzano",rf"release_orders/dispatched.json")
+                dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                 
             else:
                 st.write("NO RELEASE ORDERS IN DATABASE")
