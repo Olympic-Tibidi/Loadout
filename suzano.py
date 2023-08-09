@@ -442,7 +442,7 @@ if select=="LOADOUT" :
         
         
         
-        load1=st.text_area("Unit No : 01",height=30)#[:-3]
+        load1=st.text_area("Unit No : 01",height=300)#[:-3]
         if load1 is not None:
             textsplit = load1.splitlines()
 
