@@ -438,6 +438,13 @@ if select=="LOADOUT" :
         quantity=st.number_input("**:blue[Quantity in Tons]**", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
         
     with col4:
+
+        if st.button("CLICK TO START SCANNING"):
+            user_input = st.text_input("Enter some text:")
+        
+        
+        
+        
         load1=st.text_input("Unit No : 01")#[:-3]
         
         if len(load1)==11:
