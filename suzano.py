@@ -438,7 +438,7 @@ if select=="LOADOUT" :
         quantity=st.number_input("**:blue[Quantity in Tons]**", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
         
     with col4:
-        def flip(text):
+        def flip():
             st.write(st.session_state.barcodes,end="/n")
         
         user_input = st.text_input("Enter some text:",on_change=flip(),key="barcodes")
