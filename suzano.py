@@ -390,7 +390,7 @@ if select=="ADMIN" :
                     if st.button("DELETE ITEM",key="lalag"):
                         data_d=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
                         to_edit_d=json.loads(data_d)
-                        to_edit_d[[hangisi]={}
+                        to_edit_d[hangisi]={}
                         st.write(to_edit)
                         
                         #json_data = json.dumps(dispatched)
