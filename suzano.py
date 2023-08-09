@@ -450,6 +450,8 @@ if select=="ADMIN" :
                       #  blob = bucket.blob(rf"dispatched.json")
                       #  blob.upload_from_string(json_data)
                 st.markdown("**CURRENT DISPATCH QUEUE**")
+                dispatch=gcp_download("olym_suzano",rf"release_orders/dispatched.json")
+                
             else:
                 st.write("NO RELEASE ORDERS IN DATABASE")
 
@@ -481,13 +483,11 @@ if select=="LOADOUT" :
     st.markdown(rf'**Shipped : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]}**')
     st.markdown(rf'**Remaining : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]}**')
    
-        
-            
+     
+          
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
     
-
-
-    
+  
     vessel=current["vessel"]
     if info[current["vessel"]][current["release_order"]][current["sales_order"]]["transport_type"]=="TRUCK":
         medium="TRUCK"
