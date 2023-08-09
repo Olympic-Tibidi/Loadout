@@ -473,10 +473,11 @@ if select=="LOADOUT" :
                 
         def audit_unit(x):
             if len(x)==11:
-                st.write(bill_mapping[x[:-3]]["batch"])
-                if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading:
+                st.write(bill_mapping[x[:-3]]["Batch"])
+                if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
                     st.write("WRONG UNIT, scan another one")
-        
+                else:
+                    return True
             
         
         
@@ -489,8 +490,10 @@ if select=="LOADOUT" :
             textsplit = load_input.splitlines()
             #st.write(textsplit)
             for i,x in enumerate(textsplit):
-                audit_unit(x)
-                st.text_input(f"Unit No : {i+1}",x)#[:-3]
+                if audit_unit(x):
+                    st.text_input(f"Unit No : {i+1}",x)#[:-3]
+                else:
+                    st.text_input(f"Unit No : {i+1}",:blue[x])#[:-3]
     gloads=[]
     for k in textsplit:
         gloads.append(k)
