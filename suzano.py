@@ -376,9 +376,7 @@ if select=="ADMIN" :
             except:
                 nofile=1
                 
-            
-
-                         
+                                  
             if nofile!=1:         
                             
                 targets=[i for i in target]
@@ -421,7 +419,10 @@ if select=="ADMIN" :
                         
                     except:
                         pass
-    
+
+                st.markdown("CURRENT DISPATCH QUEUE")
+                
+                
                 hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
                 dol1,dol2,dol3=st.columns([2,2,8])
                 with dol1:
@@ -438,7 +439,7 @@ if select=="ADMIN" :
                         st.markdown(f"**DISPATCHED Release Order Number {requested_file} Item No : {hangisi} to Warehouse**")
                 with dol2:
                     
-                    if st.button("DELETE ITEM",key="lalag"):
+                    if st.button("DELETE SALES ORDER ITEM",key="lalag"):
                         data_d=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
                         to_edit_d=json.loads(data_d)
                         to_edit_d[hangisi]={}
@@ -471,6 +472,8 @@ if select=="LOADOUT" :
     #st.write(info)
     
     if st.checkbox("CLICK TO LOAD MIXED SKU"):
+        try:
+            next_item=info=gcp_download("olym_suzano",rf"release_orders/{current['vessel']}/{current['release_order']}.json")
             pass
     st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
     st.markdown(f'**Ocean Bill Of Lading : {current["ocean_bill_of_lading"]}**')
