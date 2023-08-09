@@ -509,7 +509,7 @@ if select=="LOADOUT" :
     c=datetime.datetime.strftime(eta_date,"%Y%m%d")
     
     #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
-    
+    st.write(gloads)
         
     def process():
         
