@@ -373,15 +373,31 @@ if select=="ADMIN" :
                         pass
     
                 hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target]))
-                if st.button("DISPATCH TO WAREHOUSE",key="lala"):
+                dol1,dol2,dol3=st.columns([2,2,8])
+                with dol1:
+                                                                  
+                    if st.button("DISPATCH TO WAREHOUSE",key="lala"):
                         dispatched={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
-                                    "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
-                                        "release_order":requested_file,"sales_order":hangisi,"ocean_bill_of_lading":ocean_bill_of_lading}
+                                        "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
+                                            "release_order":requested_file,"sales_order":hangisi,"ocean_bill_of_lading":ocean_bill_of_lading,"batch":batch}
                         json_data = json.dumps(dispatched)
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"dispatched.json")
                         blob.upload_from_string(json_data)
+                with dol2:
+                    
+                    if st.button("DELETE ITEM",key="lalag"):
+                        data_d=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
+                        to_edit_d=json.loads(data_d)
+                        to_edit_d[[hangisi]={}
+                        st.write(to_edit)
+                        
+                        #json_data = json.dumps(dispatched)
+                       # storage_client = storage.Client()
+                      #  bucket = storage_client.bucket("olym_suzano")
+                      #  blob = bucket.blob(rf"dispatched.json")
+                      #  blob.upload_from_string(json_data)
 
             else:
                 st.write("NO RELEASE ORDERS IN DATABASE")
