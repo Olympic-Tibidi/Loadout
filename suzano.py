@@ -167,6 +167,8 @@ def edit_release_order_data(file,vessel,release_order_number,sales_order_item,bi
     json_data = json.dumps(file)
     return json_data
 
+def generate_bill_of_lading():
+    pass
 
 user="AFSIN"
     
@@ -548,11 +550,13 @@ if select=="LOADOUT" :
             f.write(end)
         
             
-    try:
-        down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
-    except:
-        pass        
-    if st.button('SAVE/DISPLAY EDI'):
+    #try:
+     #   down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
+   # except:
+       # pass 
+    if st.button("GENERATE BILL OF LADING"):
+        generate_bill_of_lading()
+    if st.button('SUBMIT EDI'):
         process()
         info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]+len(loads)
         info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]-len(loads)
