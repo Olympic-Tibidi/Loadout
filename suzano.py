@@ -441,7 +441,7 @@ if select=="LOADOUT" :
 
         if st.button("CLICK TO START SCANNING"):
             user_input = st.text_input("Enter some text:",key="barcodes")
-            st.script("document.getElementById('barcodes').focus();")
+            st.write('<script>document.getElementById("user_input").focus();</script>', unsafe_allow_html=True)
         
         
         
