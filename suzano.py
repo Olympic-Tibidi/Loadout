@@ -468,9 +468,7 @@ if select=="LOADOUT" :
         if load_input is not None:
             textsplit = load_input.splitlines()
             #st.write(textsplit)
-            for i,x in enumerate(textsplit):
-                #st.write(x)
-                st.text_input(f"Unit No : {i+1}",x)#[:-3]
+            
                 
         def audit_unit(x):
             if len(x)==11:
@@ -487,7 +485,7 @@ if select=="LOADOUT" :
        
     with col5:
         if load_input is not None:
-            textsplit = load1.splitlines()
+            textsplit = load_inout.splitlines()
             #st.write(textsplit)
             for i,x in enumerate(textsplit):
                 audit_unit(x)
