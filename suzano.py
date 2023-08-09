@@ -494,22 +494,17 @@ if select=="LOADOUT" :
                     st.text_input(f"Unit No : {i+1}",x)
                 else:
                     st.text_input(f"Unit No : {i+1}",x)
-    gloads=[]
-    for k in textsplit:
-        gloads.append(k)
-    #gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
     loads=[]
-    for i in gloads:
-        if i:
-            loads.append(i)
+    for k in textsplit:
+        loads.append(k)
+       
                       
     a=datetime.datetime.strftime(file_date,"%Y%m%d")
     
     b=file_time.strftime("%H%M%S")
     c=datetime.datetime.strftime(eta_date,"%Y%m%d")
     
-    #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
-    st.write(gloads)
+    st.write(loads)
         
     def process():
         
@@ -518,37 +513,11 @@ if select=="LOADOUT" :
         
         tt="0001" if medium=="TRUCK" else "0002"
         line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+bill_of_lading+" "*(50-len(bill_of_lading))+c
+                   
         loadls=[]
-        if load1:
-            loadl1="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load1[:-3]+" "*(10-len(load1[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl1)
-        if load2:
-            loadl2="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load2[:-3]+" "*(10-len(load2[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl2)
-        if load3:
-            loadl3="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load3[:-3]+" "*(10-len(load3[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl3)
-        if load4:
-            loadl4="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load4[:-3]+" "*(10-len(load4[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl4)
-        if load5:
-            loadl5="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load5[:-3]+" "*(10-len(load5[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl5)
-        if load6:
-            loadl6="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load6[:-3]+" "*(10-len(load6[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl6)
-        if load7:
-            loadl7="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load7[:-3]+" "*(10-len(load7[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl7)
-        if load8:
-           loadl8="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load8[:-3]+" "*(10-len(load8[:-3]))+"0"*16+str(quantity*100)
-           loadls.append(loadl8)
-        if load9:
-            loadl9="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load9[:-3]+" "*(10-len(load9[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl9)
-        if load10:
-            loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load10[:-3]+" "*(10-len(load10[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl10)
+        for k in loads:
+            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load1[:-3]+" "*(10-len(load1[:-3]))+"0"*16+str(quantity*100))
+            
         number_of_units=len(loadls)+3
         end_initial="0"*(4-len(str(number_of_units)))
         end=f"9TRL:{end_initial}{number_of_units}"
