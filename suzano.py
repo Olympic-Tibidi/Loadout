@@ -485,7 +485,7 @@ if select=="LOADOUT" :
        
     with col5:
         if load_input is not None:
-            textsplit = load_inout.splitlines()
+            textsplit = load_input.splitlines()
             #st.write(textsplit)
             for i,x in enumerate(textsplit):
                 audit_unit(x)
