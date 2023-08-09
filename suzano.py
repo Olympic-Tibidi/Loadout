@@ -516,9 +516,9 @@ if select=="LOADOUT" :
                    
         loadls=[]
         for k in loads:
-            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load1[:-3]+" "*(10-len(load1[:-3]))+"0"*16+str(quantity*100))
+            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*16+str(quantity*100))
             
-        number_of_units=len(loadls)+3
+        number_of_units=len(loads)+3
         end_initial="0"*(4-len(str(number_of_units)))
         end=f"9TRL:{end_initial}{number_of_units}"
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
@@ -531,7 +531,7 @@ if select=="LOADOUT" :
                 Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
                 Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
                 Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
-                Inventory.loc[Inventory["Lot"]==i,"BL"]=str(bill_of_lading)
+                Inventory.loc[Inventory["Lot"]==i,"BL"]=str(terminal_bill_of_lading)
             except:
                 st.write("Check Unit Number,Unit Not In Inventory")
             #st.write(vehicle_id)
