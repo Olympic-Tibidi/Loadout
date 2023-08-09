@@ -445,9 +445,10 @@ if select=="LOADOUT" :
         load1=st.text_area("Unit No : 01",height=300)#[:-3]
         if load1 is not None:
             textsplit = load1.splitlines()
-            st.write(textsplit)
-            for x in textsplit:
-                st.write(x)
+            #st.write(textsplit)
+            for i,x in enumerate(textsplit):
+                #st.write(x)
+                st.text_input(f"Unit No : {i+1}",x)#[:-3]
                 
         if len(load1)==11:
             st.write(bill_mapping[load1[:-3]])
