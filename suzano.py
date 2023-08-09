@@ -443,7 +443,7 @@ if select=="LOADOUT" :
         
         
         load1=st.text_area("Unit No : 01")#[:-3]
-        if laod1 is not None:
+        if load1 is not None:
             textsplit = load1.splitlines()
 
             for x in textsplit:
