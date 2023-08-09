@@ -439,7 +439,7 @@ if select=="LOADOUT" :
         
     with col4:
         def waschanged(key):
-            st.info(st.session_state[key])
+            st.write(st.session_state[key],end="/n")
         
         
         user_input = st.text_input("Enter some text:",on_change=waschanged,key="barcodes")
