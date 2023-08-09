@@ -445,7 +445,7 @@ if select=="LOADOUT" :
         load1=st.text_area("Unit No : 01",height=300)#[:-3]
         if load1 is not None:
             textsplit = load1.splitlines()
-
+            st.write(textsplit)
             for x in textsplit:
                 st.write(x)
                 
@@ -453,10 +453,7 @@ if select=="LOADOUT" :
             st.write(bill_mapping[load1[:-3]])
             if bill_mapping[load1[:-3]]!=bill_of_lading:
                 st.write("WRONG UNIT, scan another one")
-        load2=st.text_input("Unit No : 02")#[:-3]
-        load3=st.text_input("Unit No : 03")#[:-3]
-        load4=st.text_input("Unit No : 04")#[:-3]
-        load5=st.text_input("Unit No : 05")#[:-3]
+        
             
         
         
@@ -465,7 +462,11 @@ if select=="LOADOUT" :
      
        
     with col5:
-        
+        load1=st.text_input("Unit No : 01")#[:-3]
+        load2=st.text_input("Unit No : 02")#[:-3]
+        load3=st.text_input("Unit No : 03")#[:-3]
+        load4=st.text_input("Unit No : 04")#[:-3]
+        load5=st.text_input("Unit No : 05")#[:-3]
         load6=st.text_input("Unit No : 06")#[:-3]
         load7=st.text_input("Unit No : 07")#[:-3]
         load8=st.text_input("Unit No : 08")#[:-3]
