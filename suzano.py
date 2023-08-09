@@ -414,215 +414,218 @@ if select=="LOADOUT" :
     bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
     bill_mapping=json.loads(bill_mapping)
 
-    current=gcp_download("olym_suzano","dispatched.json")
-    current=json.loads(current)
+    try:
+        current=gcp_download("olym_suzano","dispatched.json")
+        current=json.loads(current)
     #st.write(current)
-    info=gcp_download("olym_suzano",rf"release_orders/{current['vessel']}/{current['release_order']}.json")
-    info=json.loads(info)
-    #st.write(info)
-    st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
-    st.markdown(f'**Ocean Bill Of Lading : {current["ocean_bill_of_lading"]}**')
-    st.markdown(rf'**Total Quantity : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["quantity"]}**')
-    st.markdown(rf'**Shipped : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]}**')
-    st.markdown(rf'**Remaining : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]}**')
-    col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
-    vessel=current["vessel"]
-    if info[current["vessel"]][current["release_order"]][current["sales_order"]]["transport_type"]=="TRUCK":
-        medium="TRUCK"
-    else:
-        medium="RAIL"
-    
-    with col1:
-    
-        terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
-        file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates",disabled=True)
-        if file_date not in st.session_state:
-            st.session_state.file_date=file_date
-        file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),disabled=True)
-        delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="delivery_date",disabled=True)
-        eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
+        info=gcp_download("olym_suzano",rf"release_orders/{current['vessel']}/{current['release_order']}.json")
+        info=json.loads(info)
+        #st.write(info)
+        st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
+        st.markdown(f'**Ocean Bill Of Lading : {current["ocean_bill_of_lading"]}**')
+        st.markdown(rf'**Total Quantity : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["quantity"]}**')
+        st.markdown(rf'**Shipped : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]}**')
+        st.markdown(rf'**Remaining : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]}**')
+        col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
+        vessel=current["vessel"]
+        if info[current["vessel"]][current["release_order"]][current["sales_order"]]["transport_type"]=="TRUCK":
+            medium="TRUCK"
+        else:
+            medium="RAIL"
         
-    with col2:
-        release_order_number=st.text_input("Release Order Number",current["release_order"],disabled=True,help="Release Order Number without the Item no")
-        sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
-        ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",current["ocean_bill_of_lading"],disabled=True)
-        terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",info[current["vessel"]][current["release_order"]][current["sales_order"]]["bill_of_lading"],disabled=False)
-               
-        frame_placeholder = st.empty()
-    with col3: 
-        carrier_code=st.text_input("Carrier Code",info[current["vessel"]][current["release_order"]][current["sales_order"]]["carrier_code"],disabled=True)
-        transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
-        transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
-        vehicle_id=st.text_input("**:blue[Vehicle ID]**")
-        quantity=st.number_input("**:blue[Quantity in Tons]**", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+        with col1:
         
-    with col4:
-          
-        
-        
-        
-        load1=st.text_area("Unit No : 01",height=300)#[:-3]
-        if load1 is not None:
-            textsplit = load1.splitlines()
-            #st.write(textsplit)
-            for i,x in enumerate(textsplit):
-                #st.write(x)
-                st.text_input(f"Unit No : {i+1}",x)#[:-3]
+            terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
+            file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates",disabled=True)
+            if file_date not in st.session_state:
+                st.session_state.file_date=file_date
+            file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),disabled=True)
+            delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="delivery_date",disabled=True)
+            eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
+            
+        with col2:
+            release_order_number=st.text_input("Release Order Number",current["release_order"],disabled=True,help="Release Order Number without the Item no")
+            sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
+            ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",current["ocean_bill_of_lading"],disabled=True)
+            terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",info[current["vessel"]][current["release_order"]][current["sales_order"]]["bill_of_lading"],disabled=False)
+                   
+            frame_placeholder = st.empty()
+        with col3: 
+            carrier_code=st.text_input("Carrier Code",info[current["vessel"]][current["release_order"]][current["sales_order"]]["carrier_code"],disabled=True)
+            transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
+            transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
+            vehicle_id=st.text_input("**:blue[Vehicle ID]**")
+            quantity=st.number_input("**:blue[Quantity in Tons]**", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+            
+        with col4:
+              
+            
+            
+            
+            load1=st.text_area("Unit No : 01",height=300)#[:-3]
+            if load1 is not None:
+                textsplit = load1.splitlines()
+                #st.write(textsplit)
+                for i,x in enumerate(textsplit):
+                    #st.write(x)
+                    st.text_input(f"Unit No : {i+1}",x)#[:-3]
+                    
+            def audit_unit(x):
+                if len(x)==11:
+                    st.write(bill_mapping[x[:-3]])
+                    if bill_mapping[x[:-3]]!=ocean_bill_of_lading:
+                        st.write("WRONG UNIT, scan another one")
+            
                 
-        def audit_unit(x):
-            if len(x)==11:
-                st.write(bill_mapping[x[:-3]])
-                if bill_mapping[x[:-3]]!=ocean_bill_of_lading:
-                    st.write("WRONG UNIT, scan another one")
+            
+            
+            
+            
+         
+           
+        with col5:
+            if load1 is not None:
+                textsplit = load1.splitlines()
+                #st.write(textsplit)
+                for i,x in enumerate(textsplit):
+                    audit_unit(x)
+                    st.text_input(f"Unit No : {i+1}",x)#[:-3]
+            
+        gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
+        loads=[]
+        for i in gloads:
+            if i:
+                loads.append(i)
+                          
+        a=datetime.datetime.strftime(file_date,"%Y%m%d")
+        
+        b=file_time.strftime("%H%M%S")
+        c=datetime.datetime.strftime(eta_date,"%Y%m%d")
+        
+        #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
         
             
-        
-        
-        
-        
-     
-       
-    with col5:
-        if load1 is not None:
-            textsplit = load1.splitlines()
-            #st.write(textsplit)
-            for i,x in enumerate(textsplit):
-                audit_unit(x)
-                st.text_input(f"Unit No : {i+1}",x)#[:-3]
-        
-    gloads=[load1,load2,load3,load4,load5,load6,load7,load8,load9,load10]
-    loads=[]
-    for i in gloads:
-        if i:
-            loads.append(i)
+        def process():
+            
+            line1="1HDR:"+a+b+terminal_code
+            tsn="01" if medium=="TRUCK" else "02"
+            
+            tt="0001" if medium=="TRUCK" else "0002"
+            line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+bill_of_lading+" "*(50-len(bill_of_lading))+c
+            loadls=[]
+            if load1:
+                loadl1="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load1[:-3]+" "*(10-len(load1[:-3]))+"0"*16+str(quantity*100)
+                loadls.append(loadl1)
+            if load2:
+                loadl2="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load2[:-3]+" "*(10-len(load2[:-3]))+"0"*16+str(quantity*100)
+                loadls.append(loadl2)
+            if load3:
+                loadl3="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load3[:-3]+" "*(10-len(load3[:-3]))+"0"*16+str(quantity*100)
+                loadls.append(loadl3)
+            if load4:
+                loadl4="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load4[:-3]+" "*(10-len(load4[:-3]))+"0"*16+str(quantity*100)
+                loadls.append(loadl4)
+            if load5:
+                loadl5="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load5[:-3]+" "*(10-len(load5[:-3]))+"0"*16+str(quantity*100)
+                loadls.append(loadl5)
+            if load6:
+                loadl6="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load6[:-3]+" "*(10-len(load6[:-3]))+"0"*16+str(quantity*100)
+                loadls.append(loadl6)
+            if load7:
+                loadl7="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load7[:-3]+" "*(10-len(load7[:-3]))+"0"*16+str(quantity*100)
+                loadls.append(loadl7)
+            if load8:
+               loadl8="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load8[:-3]+" "*(10-len(load8[:-3]))+"0"*16+str(quantity*100)
+               loadls.append(loadl8)
+            if load9:
+                loadl9="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load9[:-3]+" "*(10-len(load9[:-3]))+"0"*16+str(quantity*100)
+                loadls.append(loadl9)
+            if load10:
+                loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load10[:-3]+" "*(10-len(load10[:-3]))+"0"*16+str(quantity*100)
+                loadls.append(loadl10)
+            number_of_units=len(loadls)+3
+            end_initial="0"*(4-len(str(number_of_units)))
+            end=f"9TRL:{end_initial}{number_of_units}"
+            Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+            for i in loads:
+                #st.write(i)
+                try:
                       
-    a=datetime.datetime.strftime(file_date,"%Y%m%d")
+                    Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
+                    Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
+                    Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
+                    Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
+                    Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
+                    Inventory.loc[Inventory["Lot"]==i,"BL"]=str(bill_of_lading)
+                except:
+                    st.write("Check Unit Number,Unit Not In Inventory")
+                #st.write(vehicle_id)
     
-    b=file_time.strftime("%H%M%S")
-    c=datetime.datetime.strftime(eta_date,"%Y%m%d")
-    
-    #st.write(f'1HDR:{datetime.datetime.strptime(file_date,"%y%m%d")}')
-    
-        
-    def process():
-        
-        line1="1HDR:"+a+b+terminal_code
-        tsn="01" if medium=="TRUCK" else "02"
-        
-        tt="0001" if medium=="TRUCK" else "0002"
-        line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+bill_of_lading+" "*(50-len(bill_of_lading))+c
-        loadls=[]
-        if load1:
-            loadl1="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load1[:-3]+" "*(10-len(load1[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl1)
-        if load2:
-            loadl2="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load2[:-3]+" "*(10-len(load2[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl2)
-        if load3:
-            loadl3="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load3[:-3]+" "*(10-len(load3[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl3)
-        if load4:
-            loadl4="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load4[:-3]+" "*(10-len(load4[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl4)
-        if load5:
-            loadl5="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load5[:-3]+" "*(10-len(load5[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl5)
-        if load6:
-            loadl6="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load6[:-3]+" "*(10-len(load6[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl6)
-        if load7:
-            loadl7="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load7[:-3]+" "*(10-len(load7[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl7)
-        if load8:
-           loadl8="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load8[:-3]+" "*(10-len(load8[:-3]))+"0"*16+str(quantity*100)
-           loadls.append(loadl8)
-        if load9:
-            loadl9="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load9[:-3]+" "*(10-len(load9[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl9)
-        if load10:
-            loadl10="2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+load10[:-3]+" "*(10-len(load10[:-3]))+"0"*16+str(quantity*100)
-            loadls.append(loadl10)
-        number_of_units=len(loadls)+3
-        end_initial="0"*(4-len(str(number_of_units)))
-        end=f"9TRL:{end_initial}{number_of_units}"
-        Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-        for i in loads:
-            #st.write(i)
-            try:
-                  
-                Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
-                Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
-                Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
-                Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
-                Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
-                Inventory.loc[Inventory["Lot"]==i,"BL"]=str(bill_of_lading)
-            except:
-                st.write("Check Unit Number,Unit Not In Inventory")
-            #st.write(vehicle_id)
-
-            temp=Inventory.to_csv("temp.csv")
-            upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
-        with open(f'placeholder.txt', 'w') as f:
-            f.write(line1)
-            f.write('\n')
-            f.write(line2)
-            f.write('\n')
-            
-            for i in loadls:
-                
-                f.write(i)
+                temp=Inventory.to_csv("temp.csv")
+                upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
+            with open(f'placeholder.txt', 'w') as f:
+                f.write(line1)
                 f.write('\n')
-
-            f.write(end)
-        
+                f.write(line2)
+                f.write('\n')
+                
+                for i in loadls:
+                    
+                    f.write(i)
+                    f.write('\n')
+    
+                f.write(end)
             
-    #try:
-     #   down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
-   # except:
-       # pass 
-    if st.button("GENERATE BILL OF LADING"):
-        generate_bill_of_lading()
-    if st.button('SUBMIT EDI'):
-        process()
-        info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]+len(loads)
-        info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]-len(loads)
-        json_data = json.dumps(info)
-        storage_client = storage.Client()
-        bucket = storage_client.bucket("olym_suzano")
-        blob = bucket.blob(rf"release_orders/{vessel}/{release_order_number}.json")
-        blob.upload_from_string(json_data)
-        with open('placeholder.txt', 'r') as f:
-            output_text = f.read()
-        st.markdown("**EDI TEXT**")
-        st.text_area('', value=output_text, height=600)
-        with open('placeholder.txt', 'r') as f:
-            file_content = f.read()
-        newline="\n"
-        filename = f'Suzano_EDI_{a}_{release_order_number}'
-        file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
-        st.write(filename)
-        subject = f'Suzano_EDI_{a}_{release_order_number}'
-        body = f"EDI for Release Order Number {release_order_number} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
-        sender = "warehouseoly@gmail.com"
-        #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-        recipients = ["afsiny@portolympia.com"]
-        password = "xjvxkmzbpotzeuuv"
-
-          # Replace with the actual file path
-
-
-        with open('temp_file.txt', 'w') as f:
-            f.write(file_content)
-
-        file_path = 'temp_file.txt'  # Use the path of the temporary file
-
-        send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
-        upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
-
-        
-
-        
+                
+        #try:
+         #   down_button=st.download_button(label="Download EDI as TXT",on_click=process,data=output(),file_name=f'Suzano_EDI_{a}_{release_order_number}.txt')
+       # except:
+           # pass 
+        if st.button("GENERATE BILL OF LADING"):
+            generate_bill_of_lading()
+        if st.button('SUBMIT EDI'):
+            process()
+            info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]+len(loads)
+            info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]-len(loads)
+            json_data = json.dumps(info)
+            storage_client = storage.Client()
+            bucket = storage_client.bucket("olym_suzano")
+            blob = bucket.blob(rf"release_orders/{vessel}/{release_order_number}.json")
+            blob.upload_from_string(json_data)
+            with open('placeholder.txt', 'r') as f:
+                output_text = f.read()
+            st.markdown("**EDI TEXT**")
+            st.text_area('', value=output_text, height=600)
+            with open('placeholder.txt', 'r') as f:
+                file_content = f.read()
+            newline="\n"
+            filename = f'Suzano_EDI_{a}_{release_order_number}'
+            file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
+            st.write(filename)
+            subject = f'Suzano_EDI_{a}_{release_order_number}'
+            body = f"EDI for Release Order Number {release_order_number} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
+            sender = "warehouseoly@gmail.com"
+            #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+            recipients = ["afsiny@portolympia.com"]
+            password = "xjvxkmzbpotzeuuv"
+    
+              # Replace with the actual file path
+    
+    
+            with open('temp_file.txt', 'w') as f:
+                f.write(file_content)
+    
+            file_path = 'temp_file.txt'  # Use the path of the temporary file
+    
+            send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
+            upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
+    except:
+        st.markdown(f"**red:["NO RELEASE ORDERS DISPATCHED YET!!/n PLEASE CHYECK BACK SOON**")
+    
             
+    
+            
+                
 
 
         
