@@ -452,9 +452,9 @@ if select=="LOADOUT" :
                 
         def audit_unit(x):
             if len(x)==11:
-            st.write(bill_mapping[x[:-3]])
-            if bill_mapping[x[:-3]]!=ocean_bill_of_lading:
-                st.write("WRONG UNIT, scan another one")
+                st.write(bill_mapping[x[:-3]])
+                if bill_mapping[x[:-3]]!=ocean_bill_of_lading:
+                    st.write("WRONG UNIT, scan another one")
         
             
         
