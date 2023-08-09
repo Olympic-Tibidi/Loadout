@@ -438,10 +438,11 @@ if select=="LOADOUT" :
         quantity=st.number_input("**:blue[Quantity in Tons]**", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
         
     with col4:
-
-        if st.button("CLICK TO START SCANNING"):
-            user_input = st.text_input("Enter some text:",key="barcodes")
-            st.write('<script>document.getElementById("user_input").focus();</script>', unsafe_allow_html=True)
+        def flip(text):
+            st.write(text,end="/n")
+        
+        user_input = st.text_input("Enter some text:",on_change=flip(user_input),key="barcodes")
+            
         
         
         
