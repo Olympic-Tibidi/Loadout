@@ -476,11 +476,10 @@ if select=="ADMIN" :
                         blob.upload_from_string(json_data)
                         st.markdown(f"**CLEARED ALL DISPATCHES**")   
                 with del_col2:
+                    dispatch=gcp_download("olym_suzano",rf"dispatched.json")
+                    dispatch=json.loads(dispatch)
                     item=st.selectbox("CHOOSE ITEM",dispatch.keys())
-                    if st.button("CLEAR DISPATCH ITEM"):
-                        dispatch=gcp_download("olym_suzano",rf"dispatched.json")
-                        dispatch=json.loads(dispatch)
-                        
+                    if st.button("CLEAR DISPATCH ITEM"):                                       
                         dispatch.pop(item)
                 st.markdown("**CURRENT DISPATCH QUEUE**")
                 try:
