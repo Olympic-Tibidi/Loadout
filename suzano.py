@@ -477,25 +477,28 @@ if select=="LOADOUT" :
     
     bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
     bill_mapping=json.loads(bill_mapping)
-    current=gcp_download("olym_suzano","dispatched.json")
-    current=json.loads(current)
-    vessel=current["1"]["vessel"]
-    #st.write(current)
-    info=gcp_download("olym_suzano",rf"release_orders/{current['1']['vessel']}/{current['1']['release_order']}.json")
+    dispatched=gcp_download("olym_suzano","dispatched.json")
+    dispatched=json.loads(current)
+    vessel=dispatched["1"]["vessel"]
+    current_release_order=dispatched['1']['release_order']
+    current_sales_order=dispatched['1']['sales_order']
+    
+    info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
     info=json.loads(info)
-    current=info[vessel][current['1']['release_order']]["001"]
-    #st.write(info)
+    
     
     if st.checkbox("CLICK TO LOAD MIXED SKU"):
         try:
             next_item=gcp_download("olym_suzano",rf"release_orders/{current['1']['vessel']}/{current['1']['release_order']}.json")
         except:
             pass
-    st.markdown(rf'**Currently Working : Release Order-{current["release_order"]}  Sales Order Item-{current["sales_order"]}**')
-    st.markdown(f'**Ocean Bill Of Lading : {current["ocean_bill_of_lading"]}**')
-    st.markdown(rf'**Total Quantity : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["quantity"]}**')
-    st.markdown(rf'**Shipped : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]}**')
-    st.markdown(rf'**Remaining : {info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]}**')
+
+    
+    st.markdown(rf'**Currently Working : Release Order-{current_release_order}  Sales Order Item-{current_sales_order}**')
+    st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]}**')
+    st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
+    st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
+    st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
    
      
           
