@@ -477,8 +477,7 @@ if select=="ADMIN" :
                     st.write("NO DISPATCH ITEMS")
                 
                 if st.button("CLEAR DISPATCH QUEUE!"):
-                    for i in dispatch.keys():
-                        dispatch.pop(i)
+                    dispatch={}
                     json_data = json.dumps(dispatch)
                     storage_client = storage.Client()
                     bucket = storage_client.bucket("olym_suzano")
