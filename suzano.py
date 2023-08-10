@@ -647,7 +647,13 @@ if select=="INVENTORY" :
         st.markdown(f"**IN WAREHOUSE = {len(df)}**")
         st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
         st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-        st.table(df)
+        wrap_filter=st.selectbox("Filter By Wrap/Unwrapped",["ALL WRAPS"]+[str(i) for i in filtered_zf["Wrap"].unique().tolist()])
+        oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
+        if wrap_filter!="ALL WRAPS":
+            filtered_df=filtered_zf[filtered_zf["Wrap"]==wrap_filter]       
+        if oc_bl_filter!="ALL OCEAN BILL OF LADINGS":
+            filtered_df=filtered_zf[filtered_zf["Ocean B/L"]==oc_bl_filter]       
+        st.table(filtered_df)
     with dab2:
         
         date_filter=st.checkbox("CLICK FOR DATE FILTER")
@@ -687,7 +693,8 @@ if select=="INVENTORY" :
             st.markdown(f"**IN WAREHOUSE = {len(df)}**")
             st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
         
-        
+        if wrap_filter!="ALL WRAPS":
+            filtered_zf=filtered_zf[filtered_zf["Wrap"]==wrap_filter]       
         if dryweight_filter!="ALL DRYWEIGHTS":
             filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
         if release_order_filter!="ALL TERMINAL BILL OF LADINGS":
