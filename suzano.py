@@ -505,8 +505,8 @@ if select=="LOADOUT" :
     col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
     
   
-    vessel=current["vessel"]
-    if info[current["1"]["vessel"]][current["release_order"]][current["sales_order"]]["transport_type"]=="TRUCK":
+   
+    if info[vessel][current_release_order][transport_type]=="TRUCK":
         medium="TRUCK"
     else:
         medium="RAIL"
@@ -522,15 +522,15 @@ if select=="LOADOUT" :
         eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
         
     with col2:
-        release_order_number=st.text_input("Release Order Number",current["release_order"],disabled=True,help="Release Order Number without the Item no")
-        sales_order_item=st.text_input("Sales Order Item (Material Code)",current["sales_order"],disabled=True)
-        ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",current["ocean_bill_of_lading"],disabled=True)
-        batch=st.text_input("Batch",current["batch"],disabled=True)
+        release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
+        sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
+        ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
+        batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
         terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
                
         frame_placeholder = st.empty()
     with col3: 
-        carrier_code=st.text_input("Carrier Code",info[current["vessel"]][current["release_order"]][current["sales_order"]]["carrier_code"],disabled=True)
+        carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier"],disabled=True)
         transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
         transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
         vehicle_id=st.text_input("**:blue[Vehicle ID]**")
