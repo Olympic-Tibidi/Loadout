@@ -372,6 +372,8 @@ if select=="ADMIN" :
                 release_order_json = json.loads(data)
                 
                 target=release_order_json[vessel][requested_file]
+                if len(target.keys())==0:
+                    nofile=1
                 st.write("this happened")
                 number_of_sales_orders=len(target)
                 rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
@@ -379,7 +381,7 @@ if select=="ADMIN" :
                 nofile=1
                 
                                   
-            if nofile!=1 or len(target.keys())!=0:         
+            if nofile!=1 and len(target.keys())!=0:         
                             
                 targets=[i for i in target]
                 with rel_col1:
