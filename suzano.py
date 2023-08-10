@@ -647,8 +647,9 @@ if select=="INVENTORY" :
         st.markdown(f"**IN WAREHOUSE = {len(df)}**")
         st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
         st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-        wrap_filter=st.selectbox("Filter By Wrap/Unwrapped",["ALL WRAPS"]+[str(i) for i in filtered_zf["Wrap"].unique().tolist()])
-        oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
+        wrap_filter=st.selectbox("Filter By Wrap/Unwrapped",["ALL WRAPS"]+[str(i) for i in df["Wrap"].unique().tolist()])
+        oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in df["Ocean B/L"].unique().tolist()])
+        filtered_df=df.copy()
         if wrap_filter!="ALL WRAPS":
             filtered_df=filtered_df[filtered_df["Wrap"]==wrap_filter]       
         if oc_bl_filter!="ALL OCEAN BILL OF LADINGS":
