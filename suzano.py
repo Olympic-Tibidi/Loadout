@@ -598,6 +598,7 @@ if select=="LOADOUT" :
         blob.upload_from_string(json_data)
         with open('placeholder.txt', 'r') as f:
             output_text = f.read()
+        st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
         st.markdown("**EDI TEXT**")
         st.text_area('', value=output_text, height=600)
         with open('placeholder.txt', 'r') as f:
@@ -623,7 +624,7 @@ if select=="LOADOUT" :
 
         send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
         upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
-        st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
+        
             
     
             
