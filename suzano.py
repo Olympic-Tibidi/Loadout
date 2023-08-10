@@ -696,8 +696,7 @@ if select=="INVENTORY" :
         
         if wrap_filter!="ALL WRAPS":
             filtered_zf=filtered_zf[filtered_zf["Wrap"]==wrap_filter]       
-        if dryweight_filter!="ALL DRYWEIGHTS":
-            filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
+        
         if release_order_filter!="ALL TERMINAL BILL OF LADINGS":
             filtered_zf=filtered_zf[filtered_zf["Release_Order_Number"]==release_order_filter]
         if BL_filter!="ALL TERMINAL BILL OF LADINGS":
