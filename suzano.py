@@ -461,6 +461,7 @@ if select=="ADMIN" :
                 dispatch=json.loads(dispatch)
                 for i in dispatch.keys():
                     st.write(f'**ORDER:{i}**___Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
+                    st.write(dispatch)
 
                 
             else:
