@@ -483,7 +483,7 @@ if select=="LOADOUT" :
     #st.write(current)
     info=gcp_download("olym_suzano",rf"release_orders/{current['1']['vessel']}/{current['1']['release_order']}.json")
     info=json.loads(info)
-    current=info[vessel]["001"][current['1']['release_order']]
+    current=info[vessel][current['1']['release_order']]["001"]
     #st.write(info)
     
     if st.checkbox("CLICK TO LOAD MIXED SKU"):
