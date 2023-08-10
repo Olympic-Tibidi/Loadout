@@ -481,7 +481,7 @@ if select=="LOADOUT" :
     current=json.loads(current)
     vessel=current["1"]["vessel"]
     #st.write(current)
-    info=gcp_download("olym_suzano",rf"release_orders/{current["1"]['vessel']}/{current["1"]['release_order']}.json")
+    info=gcp_download("olym_suzano",rf"release_orders/{current['1']['vessel']}/{current['1']['release_order']}.json")
     info=json.loads(info)
     current=info[vessel]["001"]
     #st.write(info)
