@@ -437,7 +437,7 @@ if select=="ADMIN" :
                                          "release_order":requested_file,"sales_order":hangisi,"ocean_bill_of_lading":target["ocean_bill_of_lading"],"batch":target["batch"]}
 
                         
-                        json_data = json.dumps(dispatched)
+                        json_data = json.dumps(dispatch)
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"dispatched.json")
