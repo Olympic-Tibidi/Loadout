@@ -623,7 +623,7 @@ if select=="LOADOUT" :
 
         send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
         upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
-        st.mark
+        st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
             
     
             
