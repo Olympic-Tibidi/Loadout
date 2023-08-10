@@ -647,7 +647,7 @@ if select=="INVENTORY" :
         st.markdown(f"**IN WAREHOUSE = {len(df)}**")
         st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
         st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-        wr_col1,wr_col2=st.columns([2,2,5])
+        wr_col1,wr_col2,wr_col3=st.columns([2,2,5])
         with wr_col1:
             wrap_filter=st.selectbox("Filter By Wrap/Unwrapped",["ALL WRAPS"]+[str(i) for i in df["Wrap"].unique().tolist()])
         with wr_col2:
