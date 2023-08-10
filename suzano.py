@@ -381,7 +381,7 @@ if select=="ADMIN" :
                 nofile=1
                 
                                   
-            if nofile!=1 and len(target.keys())!=0:         
+            if nofile!=1 :         
                             
                 targets=[i for i in target]
                 with rel_col1:
