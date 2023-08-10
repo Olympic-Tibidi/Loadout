@@ -465,6 +465,16 @@ if select=="ADMIN" :
                       #  blob = bucket.blob(rf"dispatched.json")
                       #  blob.upload_from_string(json_data)
                 st.markdown("**CURRENT DISPATCH QUEUE**")
+                
+                
+                if st.button("CLEAR DISPATCH QUEUE!"):
+                    dispatch={}
+                    json_data = json.dumps(dispatch)
+                    storage_client = storage.Client()
+                    bucket = storage_client.bucket("olym_suzano")
+                    blob = bucket.blob(rf"dispatched.json")
+                    blob.upload_from_string(json_data)
+                    st.markdown(f"**CLEARED ALL DISPATCHES**")   
                 try:
                     dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                     dispatch=json.loads(dispatch)
@@ -475,16 +485,6 @@ if select=="ADMIN" :
                         pass
                 except:
                     st.write("NO DISPATCH ITEMS")
-                
-                if st.button("CLEAR DISPATCH QUEUE!"):
-                    dispatch={}
-                    json_data = json.dumps(dispatch)
-                    storage_client = storage.Client()
-                    bucket = storage_client.bucket("olym_suzano")
-                    blob = bucket.blob(rf"dispatched.json")
-                    blob.upload_from_string(json_data)
-                    st.markdown(f"**CLEARED ALL DISPATCHES**")   
-                
             else:
                 st.write("NO RELEASE ORDERS IN DATABASE")
 
