@@ -603,14 +603,17 @@ if select=="LOADOUT" :
          
            
         with col5:
+            faults=[]
             if load_input is not None:
                 textsplit = load_input.splitlines()
                 #st.write(textsplit)
                 for i,x in enumerate(textsplit):
                     if audit_unit(x):
                         st.text_input(f"Unit No : {i+1}",x)
+                        faults.append(0)
                     else:
                         st.text_input(f"Unit No : {i+1}",x)
+                        faults.append(1)
         loads=[]
         for k in textsplit:
             loads.append(k)
@@ -629,42 +632,46 @@ if select=="LOADOUT" :
         if st.button("GENERATE BILL OF LADING"):
             generate_bill_of_lading()
         if st.button('SUBMIT EDI'):
-            process()
-            info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
-            info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
-            json_data = json.dumps(info)
-            storage_client = storage.Client()
-            bucket = storage_client.bucket("olym_suzano")
-            blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
-            blob.upload_from_string(json_data)
-            with open('placeholder.txt', 'r') as f:
-                output_text = f.read()
-            st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
-            st.markdown("**EDI TEXT**")
-            st.text_area('', value=output_text, height=600)
-            with open('placeholder.txt', 'r') as f:
-                file_content = f.read()
-            newline="\n"
-            filename = f'Suzano_EDI_{a}_{release_order_number}'
-            file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
-            st.write(filename)
-            subject = f'Suzano_EDI_{a}_{release_order_number}'
-            body = f"EDI for Release Order Number {current_release_order} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {terminal_bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
-            sender = "warehouseoly@gmail.com"
-            #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-            recipients = ["afsiny@portolympia.com"]
-            password = "xjvxkmzbpotzeuuv"
-    
-              # Replace with the actual file path
-    
-    
-            with open('temp_file.txt', 'w') as f:
-                f.write(file_content)
-    
-            file_path = 'temp_file.txt'  # Use the path of the temporary file
-    
-            send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
-            upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
+            if 1 in faults:
+                st.markdown(f"**:red[CAN NOT SUBMIT EDI] Unit {faults.index(1)}**")
+            else:
+                
+                process()
+                info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
+                info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
+                json_data = json.dumps(info)
+                storage_client = storage.Client()
+                bucket = storage_client.bucket("olym_suzano")
+                blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
+                blob.upload_from_string(json_data)
+                with open('placeholder.txt', 'r') as f:
+                    output_text = f.read()
+                st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
+                st.markdown("**EDI TEXT**")
+                st.text_area('', value=output_text, height=600)
+                with open('placeholder.txt', 'r') as f:
+                    file_content = f.read()
+                newline="\n"
+                filename = f'Suzano_EDI_{a}_{release_order_number}'
+                file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
+                st.write(filename)
+                subject = f'Suzano_EDI_{a}_{release_order_number}'
+                body = f"EDI for Release Order Number {current_release_order} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {terminal_bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
+                sender = "warehouseoly@gmail.com"
+                #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                recipients = ["afsiny@portolympia.com"]
+                password = "xjvxkmzbpotzeuuv"
+        
+                  # Replace with the actual file path
+        
+        
+                with open('temp_file.txt', 'w') as f:
+                    f.write(file_content)
+        
+                file_path = 'temp_file.txt'  # Use the path of the temporary file
+        
+                send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
+                upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
     except:
         st.write("Nothing dispatched")
             
