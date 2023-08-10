@@ -647,13 +647,16 @@ if select=="INVENTORY" :
         st.markdown(f"**IN WAREHOUSE = {len(df)}**")
         st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
         st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-        wrap_filter=st.selectbox("Filter By Wrap/Unwrapped",["ALL WRAPS"]+[str(i) for i in df["Wrap"].unique().tolist()])
-        oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in df["Ocean B/L"].unique().tolist()])
-        filtered_df=df.copy()
+        wr_col1,wr_col2=st.columns([2,2,5])
+        with wr_col1:
+            wrap_filter=st.selectbox("Filter By Wrap/Unwrapped",["ALL WRAPS"]+[str(i) for i in df["Wrap"].unique().tolist()])
+        with wr_col2:
+            oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in df["Ocean B/L"].unique().tolist()])
+                
         if wrap_filter!="ALL WRAPS":
-            filtered_df=filtered_df[filtered_df["Wrap"]==wrap_filter]       
+            filtered_df=df[df["Wrap"]==wrap_filter]       
         if oc_bl_filter!="ALL OCEAN BILL OF LADINGS":
-            filtered_df=filtered_df[filtered_df["Ocean B/L"]==oc_bl_filter]       
+            filtered_df=df[df["Ocean B/L"]==oc_bl_filter]       
         st.table(filtered_df)
     with dab2:
         
@@ -700,13 +703,10 @@ if select=="INVENTORY" :
         if release_order_filter!="ALL TERMINAL BILL OF LADINGS":
             filtered_zf=filtered_zf[filtered_zf["Release_Order_Number"]==release_order_filter]
         if BL_filter!="ALL TERMINAL BILL OF LADINGS":
-            #st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["Terminal B/L"]==BL_filter]
         if carrier_filter!="ALL CARRIERS":
-            #st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["Carrier_Code"]==carrier_filter]
         if vehicle_filter!="ALL VEHICLES":
-            #st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["Vehicle_Id"]==vehicle_filter]
         with col2:
             if date_filter:
