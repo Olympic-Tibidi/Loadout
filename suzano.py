@@ -465,15 +465,22 @@ if select=="ADMIN" :
                       #  blob = bucket.blob(rf"dispatched.json")
                       #  blob.upload_from_string(json_data)
                                
-                
-                if st.button("CLEAR DISPATCH QUEUE!"):
-                    dispatch={}
-                    json_data = json.dumps(dispatch)
-                    storage_client = storage.Client()
-                    bucket = storage_client.bucket("olym_suzano")
-                    blob = bucket.blob(rf"dispatched.json")
-                    blob.upload_from_string(json_data)
-                    st.markdown(f"**CLEARED ALL DISPATCHES**")   
+                del_col1,del_col2,del_col3=st.columns([2,2,6])
+                with del_col1:                                  
+                    if st.button("CLEAR DISPATCH QUEUE!"):
+                        dispatch={}
+                        json_data = json.dumps(dispatch)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"dispatched.json")
+                        blob.upload_from_string(json_data)
+                        st.markdown(f"**CLEARED ALL DISPATCHES**")   
+                with del_col2:
+                    if st.button("CLEAR DISPATCH ITEM"):
+                        dispatch=gcp_download("olym_suzano",rf"dispatched.json")
+                        dispatch=json.loads(dispatch)
+                        item=st.selectbox("CHOOSE ITEM",dispatch.keys())
+                        dispatch[item].pop()
                 st.markdown("**CURRENT DISPATCH QUEUE**")
                 try:
                     dispatch=gcp_download("olym_suzano",rf"dispatched.json")
