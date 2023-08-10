@@ -459,9 +459,11 @@ if select=="ADMIN" :
                 st.markdown("**CURRENT DISPATCH QUEUE**")
                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                 dispatch=json.loads(dispatch)
-                for i in dispatch.keys():
-                    st.write(f'**ORDER:{i}**___Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
-                    #st.write(dispatch)
+                try:
+                    for i in dispatch.keys():
+                        st.write(f'**ORDER:{i}**___Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
+                except:
+                    pass
                 if st.button("CLEAR DISPATCH QUEUE!"):
                     for i in dispatch.keys():
                         dispatch[i]={}
