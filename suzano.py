@@ -650,9 +650,9 @@ if select=="INVENTORY" :
         wrap_filter=st.selectbox("Filter By Wrap/Unwrapped",["ALL WRAPS"]+[str(i) for i in filtered_zf["Wrap"].unique().tolist()])
         oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
         if wrap_filter!="ALL WRAPS":
-            filtered_df=filtered_zf[filtered_zf["Wrap"]==wrap_filter]       
+            filtered_df=filtered_df[filtered_df["Wrap"]==wrap_filter]       
         if oc_bl_filter!="ALL OCEAN BILL OF LADINGS":
-            filtered_df=filtered_zf[filtered_zf["Ocean B/L"]==oc_bl_filter]       
+            filtered_df=filtered_df[filtered_df["Ocean B/L"]==oc_bl_filter]       
         st.table(filtered_df)
     with dab2:
         
