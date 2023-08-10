@@ -651,6 +651,7 @@ if select=="INVENTORY" :
         with wr_col2:
             oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in df["Ocean B/L"].unique().tolist()])
         filtered_df=df.copy() 
+        filtered_zf=zf.copy()
         if wrap_filter!="ALL WRAPS":
             filtered_df=filtered_df[filtered_df["Wrap"]==wrap_filter]    
             filtered_zf=filtered_zf[filtered_zf["Wrap"]==wrap_filter]  
