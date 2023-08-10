@@ -464,8 +464,7 @@ if select=="ADMIN" :
                       #  bucket = storage_client.bucket("olym_suzano")
                       #  blob = bucket.blob(rf"dispatched.json")
                       #  blob.upload_from_string(json_data)
-                st.markdown("**CURRENT DISPATCH QUEUE**")
-                
+                               
                 
                 if st.button("CLEAR DISPATCH QUEUE!"):
                     dispatch={}
@@ -475,6 +474,7 @@ if select=="ADMIN" :
                     blob = bucket.blob(rf"dispatched.json")
                     blob.upload_from_string(json_data)
                     st.markdown(f"**CLEARED ALL DISPATCHES**")   
+                st.markdown("**CURRENT DISPATCH QUEUE**")
                 try:
                     dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                     dispatch=json.loads(dispatch)
