@@ -462,7 +462,15 @@ if select=="ADMIN" :
                 for i in dispatch.keys():
                     st.write(f'**ORDER:{i}**___Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
                     #st.write(dispatch)
-
+                if st.button("CLEAR DISPATCH QUEUE!"):
+                    for i in dispatch.keys():
+                        dispatch[i]={}
+                    json_data = json.dumps(dispatch)
+                    storage_client = storage.Client()
+                    bucket = storage_client.bucket("olym_suzano")
+                    blob = bucket.blob(rf"dispatched.json")
+                    blob.upload_from_string(json_data)
+                    st.markdown(f"**CLEARED ALL DISPATCHES**")   
                 
             else:
                 st.write("NO RELEASE ORDERS IN DATABASE")
