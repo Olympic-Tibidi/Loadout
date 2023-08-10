@@ -658,7 +658,7 @@ if select=="INVENTORY" :
             filtered_df=filtered_df[filtered_df["Ocean B/L"]==oc_bl_filter]    
             filtered_zf=filtered_zf[filtered_zf["Wrap"]==wrap_filter]  
         st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
-        st.markdown(f"**TOTAL SHIPPED = {len(filtered_zfzf)}**")
+        st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
         st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
         st.table(filtered_df)
     with dab2:
