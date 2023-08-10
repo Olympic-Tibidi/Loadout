@@ -457,13 +457,13 @@ if select=="ADMIN" :
                         data_d=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
                         to_edit_d=json.loads(data_d)
                         to_edit_d[hangisi]={}
-                        st.write(to_edit)
+                        st.write(to_edit_d)
                         
-                        #json_data = json.dumps(dispatched)
-                       # storage_client = storage.Client()
-                      #  bucket = storage_client.bucket("olym_suzano")
-                      #  blob = bucket.blob(rf"dispatched.json")
-                      #  blob.upload_from_string(json_data)
+                        json_data = json.dumps(to_edit_d)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"release_orders/{vessel}/{requested_file}.json")
+                        blob.upload_from_string(json_data)
                                
                 del_col1,del_col2,del_col3=st.columns([2,2,6])
                 with del_col1:                                  
