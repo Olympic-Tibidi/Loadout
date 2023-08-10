@@ -462,13 +462,17 @@ if select=="ADMIN" :
                       #  blob = bucket.blob(rf"dispatched.json")
                       #  blob.upload_from_string(json_data)
                 st.markdown("**CURRENT DISPATCH QUEUE**")
-                dispatch=gcp_download("olym_suzano",rf"dispatched.json")
-                dispatch=json.loads(dispatch)
                 try:
-                    for i in dispatch.keys():
-                        st.write(f'**ORDER:{i}**___Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
+                    dispatch=gcp_download("olym_suzano",rf"dispatched.json")
+                    dispatch=json.loads(dispatch)
+                    try:
+                        for i in dispatch.keys():
+                            st.write(f'**ORDER:{i}**___Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
+                    except:
+                        pass
                 except:
-                    pass
+                    st.write("NO DISPATCH ITEMS")
+                
                 if st.button("CLEAR DISPATCH QUEUE!"):
                     for i in dispatch.keys():
                         dispatch[i]={}
