@@ -530,7 +530,7 @@ if select=="LOADOUT" :
                
         frame_placeholder = st.empty()
     with col3: 
-        carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier"],disabled=True)
+        carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True)
         transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
         transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
         vehicle_id=st.text_input("**:blue[Vehicle ID]**")
