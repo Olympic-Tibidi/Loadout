@@ -429,8 +429,11 @@ if select=="ADMIN" :
                 with dol1:
                                                                   
                     if st.button("DISPATCH TO WAREHOUSE",key="lala"):
-                        dispatch=gcp_download("olym_suzano",rf"dispatched.json")
-                        dispatch=json.loads(dispatch)
+                        try:
+                            dispatch=gcp_download("olym_suzano",rf"dispatched.json")
+                            dispatch=json.loads(dispatch)
+                        except:
+                            dispatch={}
                         try:
                             last=list(dispatch.keys())[-1]
                             dispatch[str(int(last)+1)]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
