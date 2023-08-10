@@ -640,7 +640,7 @@ if select=="INVENTORY" :
     
     dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
     df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","DryWeight","ADMT","Location","Warehouse_In"]]
-    zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","DryWeight","ADMT","Release_Order_Number","Carrier_Code","BL",
+    zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
                                                      "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
     with dab1:
         
@@ -676,7 +676,7 @@ if select=="INVENTORY" :
         
         oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
         release_order_filter=st.selectbox("Filter By Release Order",["ALL RELEASE ORDERS"]+[str(i) for i in filtered_zf["Release_Order_Number"].unique().tolist()])
-        BL_filter=st.selectbox("Filter By Terminal Bill Of Lading",["ALL BILL OF LADINGS"]+[str(i) for i in filtered_zf["Terminal Bill Of Lading"].unique().tolist()])
+        BL_filter=st.selectbox("Filter By Terminal Bill Of Lading",["ALL TERMINAL BILL OF LADINGS"]+[str(i) for i in filtered_zf["Terminal B/L"].unique().tolist()])
         carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(i) for i in filtered_zf["Carrier_Code"].unique().tolist()])
         vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
         
@@ -689,11 +689,12 @@ if select=="INVENTORY" :
         
         
         if dryweight_filter!="ALL DRYWEIGHTS":
-            
             filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
-        if BL_filter!="ALL BILL OF LADINGS":
+        if release_order_filter!="ALL TERMINAL BILL OF LADINGS":
+            filtered_zf=filtered_zf[filtered_zf["Release_Order_Number"]==release_order_filter]
+        if BL_filter!="ALL TERMINAL BILL OF LADINGS":
             #st.write("it happened")
-            filtered_zf=filtered_zf[filtered_zf["BL"]==BL_filter]
+            filtered_zf=filtered_zf[filtered_zf["Terminal B/L"]==BL_filter]
         if carrier_filter!="ALL CARRIERS":
             #st.write("it happened")
             filtered_zf=filtered_zf[filtered_zf["Carrier_Code"]==carrier_filter]
