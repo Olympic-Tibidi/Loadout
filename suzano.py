@@ -506,7 +506,7 @@ if select=="LOADOUT" :
     
   
    
-    if info[vessel][current_release_order][transport_type]=="TRUCK":
+    if info[vessel][current_release_order]["transport_type"]=="TRUCK":
         medium="TRUCK"
     else:
         medium="RAIL"
