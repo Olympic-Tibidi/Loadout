@@ -480,7 +480,7 @@ if select=="ADMIN" :
                         dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                         dispatch=json.loads(dispatch)
                         item=st.selectbox("CHOOSE ITEM",dispatch.keys())
-                        dispatch[item].pop()
+                        dispatch.pop(item)
                 st.markdown("**CURRENT DISPATCH QUEUE**")
                 try:
                     dispatch=gcp_download("olym_suzano",rf"dispatched.json")
