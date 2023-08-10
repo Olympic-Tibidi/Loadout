@@ -457,7 +457,7 @@ if select=="ADMIN" :
                         data_d=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
                         to_edit_d=json.loads(data_d)
                         to_edit_d[hangisi]={}
-                        st.write(to_edit_d)
+                        #st.write(to_edit_d)
                         
                         json_data = json.dumps(to_edit_d)
                         storage_client = storage.Client()
