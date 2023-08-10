@@ -580,7 +580,7 @@ if select=="LOADOUT" :
     b=file_time.strftime("%H%M%S")
     c=datetime.datetime.strftime(eta_date,"%Y%m%d")
     
-    st.write(loads)
+    
         
    
         
@@ -589,12 +589,12 @@ if select=="LOADOUT" :
         generate_bill_of_lading()
     if st.button('SUBMIT EDI'):
         process()
-        info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["shipped"]+len(loads)
-        info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]=info[current["vessel"]][current["release_order"]][current["sales_order"]]["remaining"]-len(loads)
+        info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
+        info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
         json_data = json.dumps(info)
         storage_client = storage.Client()
         bucket = storage_client.bucket("olym_suzano")
-        blob = bucket.blob(rf"release_orders/{vessel}/{release_order_number}.json")
+        blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
         blob.upload_from_string(json_data)
         with open('placeholder.txt', 'r') as f:
             output_text = f.read()
@@ -623,7 +623,7 @@ if select=="LOADOUT" :
 
         send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
         upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
-       
+        st.mark
             
     
             
