@@ -195,7 +195,7 @@ def process():
             Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
             Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
             Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
-            Inventory.loc[Inventory["Lot"]==i,"BL"]=str(terminal_bill_of_lading)
+            Inventory.loc[Inventory["Lot"]==i,"Terminal Bill Of Lading"]=str(terminal_bill_of_lading)
         except:
             st.write("Check Unit Number,Unit Not In Inventory")
         #st.write(vehicle_id)
@@ -550,6 +550,7 @@ if select=="LOADOUT" :
         def audit_unit(x):
             if len(x)==11:
                 #st.write(bill_mapping[x[:-3]]["Batch"])
+                
                 if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
                     st.write("WRONG UNIT, scan another one")
                 else:
@@ -672,10 +673,13 @@ if select=="INVENTORY" :
             
             filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
             
-        dryweight_filter=st.selectbox("Filter By DryWeight",["ALL DRYWEIGHTS"]+[str(i) for i in filtered_zf["DryWeight"].unique().tolist()])
-        BL_filter=st.selectbox("Filter By Bill Of Lading",["ALL BILL OF LADINGS"]+[str(i) for i in filtered_zf["BL"].unique().tolist()])
-        vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
+        
+        oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
+        release_order_filter=st.selectbox("Filter By Release Order",["ALL RELEASE ORDERS"]+[str(i) for i in filtered_zf["Release_Order_Number"].unique().tolist()])
+        BL_filter=st.selectbox("Filter By Terminal Bill Of Lading",["ALL BILL OF LADINGS"]+[str(i) for i in filtered_zf["Terminal Bill Of Lading"].unique().tolist()])
         carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(i) for i in filtered_zf["Carrier_Code"].unique().tolist()])
+        vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
+        
         
         col1,col2=st.columns([2,8])
         with col1:
@@ -683,7 +687,7 @@ if select=="INVENTORY" :
             st.markdown(f"**IN WAREHOUSE = {len(df)}**")
             st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
         
-        st.write(BL_filter)
+        
         if dryweight_filter!="ALL DRYWEIGHTS":
             
             filtered_zf=filtered_zf[filtered_zf["DryWeight"]==dryweight_filter]       
