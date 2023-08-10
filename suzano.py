@@ -432,7 +432,7 @@ if select=="ADMIN" :
                         dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                         dispatch=json.loads(dispatch)
                         last=list(dispatch.keys())[-1]
-                        dispatch[string(int(last)+1)]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
+                        dispatch[str(int(last)+1)]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
                                         "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
                                          "release_order":requested_file,"sales_order":hangisi,"ocean_bill_of_lading":target[hangisi]["ocean_bill_of_lading"],"batch":target[hangisi]["batch"]}
 
