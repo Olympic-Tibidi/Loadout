@@ -537,10 +537,10 @@ if select=="LOADOUT" :
     dispatched=gcp_download("olym_suzano","dispatched.json")
     dispatched=json.loads(dispatched)
     #st.write(dispatched)
-    a=1
+    x=1
     double_load=False
     
-    if a==1:
+    if x==1:
         vessel=dispatched["1"]["vessel"]
         current_release_order=dispatched['1']['release_order']
         current_sales_order=dispatched['1']['sales_order']
@@ -785,8 +785,8 @@ if select=="LOADOUT" :
                 with open('placeholder.txt', 'r') as f:
                     file_content = f.read()
                 newline="\n"
-                filename = f'Suzano_EDI_{a}_{release_order_number}'
-                file_name= f'Suzano_EDI_{a}_{release_order_number}.txt'
+                filename = f'{a}{b}OLYM'
+                file_name= f'{a}{b}OLYM.txt'
                 st.write(filename)
                 subject = f'Suzano_EDI_{a}_{release_order_number}'
                 body = f"EDI for Release Order Number {current_release_order} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {terminal_bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
