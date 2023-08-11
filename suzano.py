@@ -520,7 +520,7 @@ if select=="LOADOUT" :
     dispatched=json.loads(dispatched)
     #st.write(dispatched)
     a=1
-    
+    double_load=False
     if a==1:
         vessel=dispatched["1"]["vessel"]
         current_release_order=dispatched['1']['release_order']
@@ -530,7 +530,7 @@ if select=="LOADOUT" :
             next_sales_order=dispatched['2']['sales_order']
             
         except:
-            double_load=False
+            
             pass
         info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
         info=json.loads(info)
