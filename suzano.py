@@ -524,9 +524,7 @@ if select=="LOADOUT" :
     #st.write(dispatched)
     a=1
     double_load=False
-    updated_quantity=16
-    if updated_quantity not in st.session_state:
-        st.session_state.updated_quantity=updated_quantity
+    
     if a==1:
         vessel=dispatched["1"]["vessel"]
         current_release_order=dispatched['1']['release_order']
@@ -607,11 +605,12 @@ if select=="LOADOUT" :
             transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
             transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
             vehicle_id=st.text_input("**:blue[Vehicle ID]**")
-            quantity=st.number_input("**:blue[Quantity in Tons]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
-
+            
         
         with col4:
-
+            updated_quantity=16
+            if updated_quantity not in st.session_state:
+                st.session_state.updated_quantity=updated_quantity
             def audit_unit(x):
                     if len(x)==11:
                         #st.write(bill_mapping[x[:-3]]["Batch"])
@@ -665,7 +664,8 @@ if select=="LOADOUT" :
                     st.session_state.updated_quantity=updated_quantity
                     #st.write(textsplit)
                     
-                        
+            quantity=st.number_input("**:blue[Quantity in Tons]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
+                
                 
                     
             
