@@ -176,6 +176,9 @@ def process():
     tsn="01" if medium=="TRUCK" else "02"
     
     tt="0001" if medium=="TRUCK" else "0002"
+    if double_load:
+        line2="2DTD:"+current_release_order+" "*(10-len(current_release_order))+"000"+current_sales_order+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+terminal_bill_of_lading+" "*(50-len(terminal_bill_of_lading))+c
+        line2="2DTD:"+next_release_order+" "*(10-len(next_release_order))+"000"+next_sales_order+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+terminal_bill_of_lading+" "*(50-len(terminal_bill_of_lading))+c
     line2="2DTD:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(quantity*1000)+" "*(16-len(str(quantity*1000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+terminal_bill_of_lading+" "*(50-len(terminal_bill_of_lading))+c
                
     loadls=[]
@@ -521,6 +524,7 @@ if select=="LOADOUT" :
     #st.write(dispatched)
     a=1
     double_load=False
+    updated_quantity=0
     if a==1:
         vessel=dispatched["1"]["vessel"]
         current_release_order=dispatched['1']['release_order']
@@ -581,11 +585,11 @@ if select=="LOADOUT" :
             
         with col2:
             if double_load:
-                #release_order_number=st.text_input("Release Order Number",next_release_order,disabled=True,help="Release Order Number without the Item no")
-                #sales_order_item=st.text_input("Sales Order Item (Material Code)",next_sales_order,disabled=True)
-                #ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"],disabled=True)
-                #batch=st.text_input("Batch",info[vessel][next_release_order][next_sales_order]["batch"],disabled=True)
-                #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
+                release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
+                sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
+                ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
+                batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
+                terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
                 pass
             else:
                 release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
@@ -601,7 +605,7 @@ if select=="LOADOUT" :
             transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
             transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
             vehicle_id=st.text_input("**:blue[Vehicle ID]**")
-            quantity=st.number_input("**:blue[Quantity in Tons]**", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+            quantity=st.number_input("**:blue[Quantity in Tons]**",updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
 
         
         with col4:
@@ -631,11 +635,16 @@ if select=="LOADOUT" :
                     next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
                     
                     first_load_input=st.text_area("**FIRST SKU LOADS**",height=300)
+                    first_quantity=0
+                    second_quantity=0
                     if first_load_input is not None:
                         first_textsplit = first_load_input.splitlines()
+                        first_quantity=len(first_textsplit)
                     second_load_input=st.text_area("**SECOND SKU LOADS**",height=300)
                     if second_load_input is not None:
                         second_textsplit = second_load_input.splitlines()
+                        second_quantity=len(second_textsplit)
+                    updated_quantity=first_quantity+second_quantity
                 except Exception as e: 
                     st.write(e)
                     #st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
@@ -649,6 +658,7 @@ if select=="LOADOUT" :
                 load_input=st.text_area("**LOADS**",height=300)#[:-3]
                 if load_input is not None:
                     textsplit = load_input.splitlines()
+                    updated_quantity=len(textsplit)
                     #st.write(textsplit)
                     
                         
