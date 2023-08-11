@@ -627,8 +627,9 @@ if select=="LOADOUT" :
                     second_load_input=st.text_area("**SECOND SKU LOADS**",height=300)
                     if second_load_input is not None:
                         second_textsplit = second_load_input.splitlines()
-                except:
-                    st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
+                except Exception as e: 
+                    st.write(e)
+                    #st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                     pass
             
             else:
