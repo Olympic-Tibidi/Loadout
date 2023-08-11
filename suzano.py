@@ -589,6 +589,8 @@ if select=="LOADOUT" :
             batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
             terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
             if double_load:
+                pass
+                
                 
             
         with col3: 
