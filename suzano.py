@@ -739,9 +739,20 @@ if select=="LOADOUT" :
         if st.button("GENERATE BILL OF LADING"):
             generate_bill_of_lading()
         if st.button('SUBMIT EDI'):
-            if 1 in faults:
-                st.markdown(f"**:red[CAN NOT SUBMIT EDI] Unit {faults.index(1)+1}**")
+            proceed=False
+            if double_load:
+                if 1 in faults or 1 in second_faults:
+                    st.markdown(f"**:red[CAN NOT SUBMIT EDI] Unit {faults.index(1)+1}**")
+                    proceed=False
+                else:
+                    proceed=True
             else:
+                if 1 in faults:
+                    proceed=False
+                    st.markdown(f"**:red[CAN NOT SUBMIT EDI] Unit {faults.index(1)+1}**")
+                else:
+                    proceed=True
+            if proceed:
                 
                 process()
                 info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
