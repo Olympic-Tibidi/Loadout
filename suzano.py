@@ -741,7 +741,7 @@ if select=="LOADOUT" :
         if st.button('SUBMIT EDI'):
             proceed=False
             if double_load:
-                if 1 in faults or 1 in second_faults:
+                if 1 in first_faults or 1 in second_faults:
                     st.markdown(f"**:red[CAN NOT SUBMIT EDI] Unit {faults.index(1)+1}**")
                     proceed=False
                 else:
