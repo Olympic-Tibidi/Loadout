@@ -757,14 +757,21 @@ if select=="LOADOUT" :
             proceed=False
             if double_load:
                 if 1 in first_faults or 1 in second_faults:
-                    st.markdown(f"**:red[CAN NOT SUBMIT EDI] Unit {first_faults.index(1)+1} and Unit {second_faults.index(1)+1}**")
-                    proceed=False
+                    st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
+                    for i in first_faults:
+                        if i==1:
+                            st.markdown(f"**Unit{first_faults.index(i)+1}**")
+                    for i in second_faults:
+                        if i==1:
+                            st.markdown(f"**Unit{second_faults.index(i)+1}**")
                 else:
                     proceed=True
             else:
                 if 1 in faults:
                     proceed=False
-                    st.markdown(f"**:red[CAN NOT SUBMIT EDI] Unit {faults.index(1)+1}**")
+                    for i in second_faults:
+                        if i==1:
+                            st.markdown(f"**Unit{faults.index(i)+1}**")
                 else:
                     proceed=True
             if proceed:
