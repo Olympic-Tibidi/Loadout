@@ -540,7 +540,11 @@ if select=="LOADOUT" :
             double_load=True
             try:
                 next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
-                st.button("**FIRST LOAD THE FIRST ITEM, THEN CLICK HERE TO START LOADING THE SECOND ITEM**")
+                if st.button("**FIRST LOAD THE FIRST ITEM, THEN CLICK HERE TO START LOADING THE SECOND ITEM**"):
+                    try:
+                        st.write(len(loads)
+                    except:
+                        st.write("FIRST ITEM HAS NOT BEEN LOADED")
             except:
                 st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                 pass
@@ -583,14 +587,20 @@ if select=="LOADOUT" :
             eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
             
         with col2:
-            release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
-            sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
-            ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
-            batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
-            terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
             if double_load:
-                pass
+                release_order_number=st.text_input("Release Order Number",next_release_order,disabled=True,help="Release Order Number without the Item no")
+                sales_order_item=st.text_input("Sales Order Item (Material Code)",next_sales_order,disabled=True)
+                ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"],disabled=True)
+                batch=st.text_input("Batch",info[vessel][next_release_order][next_sales_order]["batch"],disabled=True)
+                terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
+            else:
                 
+                release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
+                sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
+                ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
+                batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
+                terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
+           
                 
             
         with col3: 
