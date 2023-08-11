@@ -580,15 +580,13 @@ if select=="LOADOUT" :
             eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
             
         with col2:
-            if  double_load:
+            if double_load:
                 release_order_number=st.text_input("Release Order Number",next_release_order,disabled=True,help="Release Order Number without the Item no")
                 sales_order_item=st.text_input("Sales Order Item (Material Code)",next_sales_order,disabled=True)
                 ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"],disabled=True)
                 batch=st.text_input("Batch",info[vessel][next_release_order][next_sales_order]["batch"],disabled=True)
                 terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
             else:
-                
-                
                 release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
                 sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
                 ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
@@ -603,7 +601,8 @@ if select=="LOADOUT" :
             transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
             vehicle_id=st.text_input("**:blue[Vehicle ID]**")
             quantity=st.number_input("**:blue[Quantity in Tons]**", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
-            
+
+        
         with col4:
             flip=False 
             if double_load:
@@ -612,10 +611,19 @@ if select=="LOADOUT" :
                     next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
                     if st.button("**LOAD FIRST SKU & CLICK HERE BEFORE SECOND SKU**"):
                         flip=True
+                    first_load_input=st.text_area("**FIRST SKU LOADS**",height=300)
+                    if load_input is not None:
+                        first_textsplit = first_load_input.splitlines()
+                    second_load_input=st.text_area("**SECOND SKU LOADS**",height=300)
+                    if second_load_input is not None:
+                        second_textsplit = second_load_input.splitlines()
                 except:
                     st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                     pass
             
+                
+
+
             
             load_input=st.text_area("**LOADS**",height=300)#[:-3]
             if load_input is not None:
@@ -639,6 +647,33 @@ if select=="LOADOUT" :
          
            
         with col5:
+
+            if double_load:
+                first_faults=[]
+                if first_load_input is not None:
+                    first_textsplit = first_load_input.splitlines()
+                    #st.write(textsplit)
+                    for i,x in enumerate(first_textsplit):
+                        if audit_unit(x):
+                            st.text_input(f"Unit No : {i+1}",x)
+                            first_faults.append(0)
+                        else:
+                            st.text_input(f"Unit No : {i+1}",x)
+                            first_faults.append(1)
+                second_faults=[]
+                if second_load_input is not None:
+                    second_textsplit = second_load_input.splitlines()
+                    #st.write(textsplit)
+                    for i,x in enumerate(second_textsplit):
+                        if audit_unit(x):
+                            st.text_input(f"Unit No : {i+1}",x)
+                            second_faults.append(0)
+                        else:
+                            st.text_input(f"Unit No : {i+1}",x)
+                            second_faults.append(1)
+                
+
+            
             faults=[]
             if load_input is not None:
                 textsplit = load_input.splitlines()
