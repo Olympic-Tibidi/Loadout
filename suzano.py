@@ -543,7 +543,7 @@ if select=="LOADOUT" :
     
         load_col1,load_col2,load_col3=st.columns([4,4,2])
         with load_col1:
-            st.markdown(rf'**blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
+            st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
             st.markdown(rf'**Sales Order Item-{current_sales_order}**')
             st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]}**')
             st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
