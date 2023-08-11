@@ -525,6 +525,8 @@ if select=="LOADOUT" :
     a=1
     double_load=False
     updated_quantity=None
+    if updated_quantity not in st.session_state:
+        st.session_state.updated_quantity=updated_quantity
     if a==1:
         vessel=dispatched["1"]["vessel"]
         current_release_order=dispatched['1']['release_order']
@@ -645,6 +647,7 @@ if select=="LOADOUT" :
                         second_textsplit = second_load_input.splitlines()
                         second_quantity=len(second_textsplit)
                     updated_quantity=first_quantity+second_quantity
+                    st.session_state.updated_quantity=updated_quantity
                 except Exception as e: 
                     st.write(e)
                     #st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
@@ -659,6 +662,7 @@ if select=="LOADOUT" :
                 if load_input is not None:
                     textsplit = load_input.splitlines()
                     updated_quantity=len(textsplit)
+                    st.session_state.updated_quantity=updated_quantity
                     #st.write(textsplit)
                     
                         
