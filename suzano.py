@@ -524,7 +524,7 @@ if select=="LOADOUT" :
     #st.write(dispatched)
     a=1
     double_load=False
-    updated_quantity=None
+    #updated_quantity=None
     if updated_quantity not in st.session_state:
         st.session_state.updated_quantity=updated_quantity
     if a==1:
