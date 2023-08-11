@@ -518,7 +518,7 @@ if select=="LOADOUT" :
     bill_mapping=json.loads(bill_mapping)
     dispatched=gcp_download("olym_suzano","dispatched.json")
     dispatched=json.loads(dispatched)
-    st.write(dispatched)
+    #st.write(dispatched)
     a=1
     
     if a==1:
@@ -536,7 +536,7 @@ if select=="LOADOUT" :
         
         
         if st.checkbox("CLICK TO LOAD MIXED SKU"):
-            st.write(current)
+            st.write(dispatched)
             try:
                 next_item=gcp_download("olym_suzano",rf"release_orders/{current['1']['vessel']}/{current['1']['release_order']}.json")
                 st.write(next_item)
