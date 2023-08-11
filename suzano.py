@@ -530,16 +530,17 @@ if select=="LOADOUT" :
             next_sales_order=dispatched['2']['sales_order']
             
         except:
+            double_load=False
             pass
         info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
         info=json.loads(info)
         
         
         if st.checkbox("CLICK TO LOAD MIXED SKU"):
-            #st.write(dispatched)
+            double_load=True
             try:
                 next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
-                st.write(next_item)
+                #st.write(next_item)
             except:
                 st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                 pass
@@ -552,6 +553,7 @@ if select=="LOADOUT" :
             st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
             st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
             st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
+            
         with load_col2:
             try:
                 st.markdown(rf'**NEXT ITEM : Release Order-{next_release_order}**')
@@ -586,8 +588,9 @@ if select=="LOADOUT" :
             ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
             batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
             terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
-                   
-            frame_placeholder = st.empty()
+            if double_load:
+                
+            
         with col3: 
             carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True)
             transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
@@ -596,7 +599,7 @@ if select=="LOADOUT" :
             quantity=st.number_input("**:blue[Quantity in Tons]**", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             
         with col4:
-              
+             
             
             
             
