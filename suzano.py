@@ -374,7 +374,7 @@ if select=="ADMIN" :
                 target=release_order_json[vessel][requested_file]
                 if len(target.keys())==0:
                     nofile=1
-                st.write("this happened")
+                #st.write("this happened")
                 number_of_sales_orders=len(target)
                 rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
             except:
@@ -530,6 +530,7 @@ if select=="LOADOUT" :
         if st.checkbox("CLICK TO LOAD MIXED SKU"):
             try:
                 next_item=gcp_download("olym_suzano",rf"release_orders/{current['1']['vessel']}/{current['1']['release_order']}.json")
+                st.write(next_item)
             except:
                 pass
     
