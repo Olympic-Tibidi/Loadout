@@ -667,7 +667,7 @@ if select=="LOADOUT" :
             generate_bill_of_lading()
         if st.button('SUBMIT EDI'):
             if 1 in faults:
-                st.markdown(f"**:red[CAN NOT SUBMIT EDI] Unit {faults.index(1)}**")
+                st.markdown(f"**:red[CAN NOT SUBMIT EDI] Unit {faults.index(1)+1}**")
             else:
                 
                 process()
