@@ -603,17 +603,16 @@ if select=="LOADOUT" :
             quantity=st.number_input("**:blue[Quantity in Tons]**", min_value=1, max_value=24, value=20, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
             
         with col4:
-             
-            try:
-                next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
-                if st.button("**LOAD FIRST SKU & CLICK HERE BEFORE SECOND SKU**"):
-                    try:
-                        st.write(len(loads))
-                    except:
-                        st.write("FIRST ITEM HAS NOT BEEN LOADED")
-            except:
-                st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
-                pass
+            flip=False 
+            if double_load:
+                
+                try:
+                    next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
+                    if st.button("**LOAD FIRST SKU & CLICK HERE BEFORE SECOND SKU**"):
+                        flip=True
+                except:
+                    st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
+                    pass
             
             
             load_input=st.text_area("**LOADS**",height=300)#[:-3]
