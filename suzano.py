@@ -540,7 +540,7 @@ if select=="LOADOUT" :
             double_load=True
             try:
                 next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
-                #st.write(next_item)
+                st.markdown("FIRST LOAD THE FIRST ITEM, THEN CLICK HERE TO START LOADING THE SECOND ITEM")
             except:
                 st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                 pass
