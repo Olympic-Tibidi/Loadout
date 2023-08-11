@@ -528,6 +528,7 @@ if select=="LOADOUT" :
         try:
             next_release_order=dispatched['2']['release_order']
             next_sales_order=dispatched['2']['sales_order']
+            
         except:
             pass
         info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
@@ -552,12 +553,13 @@ if select=="LOADOUT" :
             st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
             st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
         with load_col2:
-            if next_release_order:
+            try:
                 st.markdown(rf'**NEXT ITEM : Release Order-{next_release_order}**')
                 st.markdown(rf'**Sales Order Item-{next_sales_order}**')
                 st.markdown(f'**Ocean Bill Of Lading : {info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"]}**')
                 st.markdown(rf'**Total Quantity : {info[vessel][next_release_order][next_sales_order]["quantity"]}**')
-               
+            except:
+                pass
               
         col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
         
