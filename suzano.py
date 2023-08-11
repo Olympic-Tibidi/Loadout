@@ -543,7 +543,7 @@ if select=="LOADOUT" :
     
         load_col1,load_col2,load_col3=st.columns([4,4,2])
         with load_col1:
-            st.markdown(rf'**Currently Working : Release Order-{current_release_order}**')
+            st.markdown(rf'**blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
             st.markdown(rf'**Sales Order Item-{current_sales_order}**')
             st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]}**')
             st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
@@ -551,7 +551,7 @@ if select=="LOADOUT" :
             st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
         with load_col2:
             if next_release_order:
-                st.markdown(rf'**Next Item : Release Order-{next_release_order}**')
+                st.markdown(rf'**NEXT ITEM : Release Order-{next_release_order}**')
                 st.markdown(rf'**Sales Order Item-{next_sales_order}**')
                 st.markdown(f'**Ocean Bill Of Lading : {info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"]}**')
                 st.markdown(rf'**Total Quantity : {info[vessel][next_release_order][next_sales_order]["quantity"]}**')
