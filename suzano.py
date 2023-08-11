@@ -541,7 +541,7 @@ if select=="LOADOUT" :
                 st.write(" no next item ")
                 pass
     
-        load_col1,load_col2,load_col3=st.columns([2,2,6])
+        load_col1,load_col2,load_col3=st.columns([3,3,4])
         with load_col1:
             st.markdown(rf'**Currently Working : Release Order-{current_release_order}  Sales Order Item-{current_sales_order}**')
             st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]}**')
