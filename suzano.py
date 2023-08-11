@@ -622,25 +622,26 @@ if select=="LOADOUT" :
                     st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                     pass
             
+            else:
                 
 
 
             
-            load_input=st.text_area("**LOADS**",height=300)#[:-3]
-            if load_input is not None:
-                textsplit = load_input.splitlines()
-                #st.write(textsplit)
-                
+                load_input=st.text_area("**LOADS**",height=300)#[:-3]
+                if load_input is not None:
+                    textsplit = load_input.splitlines()
+                    #st.write(textsplit)
                     
-            def audit_unit(x):
-                if len(x)==11:
-                    #st.write(bill_mapping[x[:-3]]["Batch"])
+                        
+                def audit_unit(x):
+                    if len(x)==11:
+                        #st.write(bill_mapping[x[:-3]]["Batch"])
+                        
+                        if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
+                            st.write("WRONG UNIT, scan another one")
+                        else:
+                            return True
                     
-                    if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
-                        st.write("WRONG UNIT, scan another one")
-                    else:
-                        return True
-                
             
             
             
