@@ -528,6 +528,7 @@ if select=="LOADOUT" :
         
         
         if st.checkbox("CLICK TO LOAD MIXED SKU"):
+            st.write(current)
             try:
                 next_item=gcp_download("olym_suzano",rf"release_orders/{current['1']['vessel']}/{current['1']['release_order']}.json")
                 st.write(next_item)
