@@ -475,6 +475,7 @@ if select=="ADMIN" :
                 with dol2:
                     
                     if st.button("DELETE SALES ORDER ITEM",key="lalag"):
+                        
                         data_d=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
                         to_edit_d=json.loads(data_d)
                         to_edit_d[vessel][requested_file].pop(hangisi)
