@@ -519,7 +519,9 @@ if select=="LOADOUT" :
     dispatched=gcp_download("olym_suzano","dispatched.json")
     dispatched=json.loads(dispatched)
     st.write(dispatched)
-    try:
+    a=1
+    
+    if a==1:
         vessel=dispatched["1"]["vessel"]
         current_release_order=dispatched['1']['release_order']
         current_sales_order=dispatched['1']['sales_order']
@@ -687,7 +689,7 @@ if select=="LOADOUT" :
         
                 send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
                 upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
-    except:
+    else:
         st.write("Nothing dispatched")
             
     
