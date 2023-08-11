@@ -524,7 +524,7 @@ if select=="LOADOUT" :
     #st.write(dispatched)
     a=1
     double_load=False
-    updated_quantity=0
+    updated_quantity=None
     if a==1:
         vessel=dispatched["1"]["vessel"]
         current_release_order=dispatched['1']['release_order']
