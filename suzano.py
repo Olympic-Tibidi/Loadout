@@ -685,6 +685,13 @@ if select=="LOADOUT" :
                         else:
                             st.text_input(f"Unit No : {i+1}",x)
                             second_faults.append(1)
+
+                loads=[]
+                for k in first_textsplit:
+                    loads.append(k)
+                for l in second_textsplit:
+                    loads.append(l)
+            
             else:
                 
 
@@ -700,9 +707,9 @@ if select=="LOADOUT" :
                         else:
                             st.text_input(f"Unit No : {i+1}",x)
                             faults.append(1)
-        loads=[]
-        for k in textsplit:
-            loads.append(k)
+                loads=[]
+                for k in textsplit:
+                    loads.append(k)
            
                           
         a=datetime.datetime.strftime(file_date,"%Y%m%d")
