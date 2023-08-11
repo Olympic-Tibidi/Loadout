@@ -609,8 +609,7 @@ if select=="LOADOUT" :
                 
                 try:
                     next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
-                    if st.button("**LOAD FIRST SKU & CLICK HERE BEFORE SECOND SKU**"):
-                        flip=True
+                    
                     first_load_input=st.text_area("**FIRST SKU LOADS**",height=300)
                     if load_input is not None:
                         first_textsplit = first_load_input.splitlines()
