@@ -580,7 +580,7 @@ if select=="LOADOUT" :
             eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
             
         with col2:
-            if not double_load:
+            if  double_load:
                 release_order_number=st.text_input("Release Order Number",next_release_order,disabled=True,help="Release Order Number without the Item no")
                 sales_order_item=st.text_input("Sales Order Item (Material Code)",next_sales_order,disabled=True)
                 ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"],disabled=True)
