@@ -542,7 +542,7 @@ if select=="LOADOUT" :
                 next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
                 if st.button("**FIRST LOAD THE FIRST ITEM, THEN CLICK HERE TO START LOADING THE SECOND ITEM**"):
                     try:
-                        st.write(len(loads)
+                        st.write(len(loads))
                     except:
                         st.write("FIRST ITEM HAS NOT BEEN LOADED")
             except:
