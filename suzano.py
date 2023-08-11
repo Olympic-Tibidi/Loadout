@@ -607,7 +607,7 @@ if select=="LOADOUT" :
             transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
             transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
             vehicle_id=st.text_input("**:blue[Vehicle ID]**")
-            quantity=st.number_input("**:blue[Quantity in Tons]**",updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
+            quantity=st.number_input("**:blue[Quantity in Tons]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
 
         
         with col4:
