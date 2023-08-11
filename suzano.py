@@ -675,20 +675,21 @@ if select=="LOADOUT" :
                         else:
                             st.text_input(f"Unit No : {i+1}",x)
                             second_faults.append(1)
+            else:
                 
 
             
-            faults=[]
-            if load_input is not None:
-                textsplit = load_input.splitlines()
-                #st.write(textsplit)
-                for i,x in enumerate(textsplit):
-                    if audit_unit(x):
-                        st.text_input(f"Unit No : {i+1}",x)
-                        faults.append(0)
-                    else:
-                        st.text_input(f"Unit No : {i+1}",x)
-                        faults.append(1)
+                faults=[]
+                if load_input is not None:
+                    textsplit = load_input.splitlines()
+                    #st.write(textsplit)
+                    for i,x in enumerate(textsplit):
+                        if audit_unit(x):
+                            st.text_input(f"Unit No : {i+1}",x)
+                            faults.append(0)
+                        else:
+                            st.text_input(f"Unit No : {i+1}",x)
+                            faults.append(1)
         loads=[]
         for k in textsplit:
             loads.append(k)
