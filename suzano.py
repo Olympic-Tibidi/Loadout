@@ -581,11 +581,12 @@ if select=="LOADOUT" :
             
         with col2:
             if double_load:
-                release_order_number=st.text_input("Release Order Number",next_release_order,disabled=True,help="Release Order Number without the Item no")
-                sales_order_item=st.text_input("Sales Order Item (Material Code)",next_sales_order,disabled=True)
-                ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"],disabled=True)
-                batch=st.text_input("Batch",info[vessel][next_release_order][next_sales_order]["batch"],disabled=True)
-                terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
+                #release_order_number=st.text_input("Release Order Number",next_release_order,disabled=True,help="Release Order Number without the Item no")
+                #sales_order_item=st.text_input("Sales Order Item (Material Code)",next_sales_order,disabled=True)
+                #ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"],disabled=True)
+                #batch=st.text_input("Batch",info[vessel][next_release_order][next_sales_order]["batch"],disabled=True)
+                #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
+                pass
             else:
                 release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
                 sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
@@ -610,6 +611,14 @@ if select=="LOADOUT" :
                         #st.write(bill_mapping[x[:-3]]["Batch"])
                         
                         if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
+                            st.write("WRONG UNIT, scan another one")
+                        else:
+                            return True
+            def audit_split(release,sales):
+                    if len(x)==11:
+                        #st.write(bill_mapping[x[:-3]]["Batch"])
+                        
+                        if bill_mapping[x[:-3]]["Ocean_bl"]!=info[vessel][release][sales]["ocean_bill_of_lading"] and bill_mapping[x[:-3]]["Batch"]!=info[vessel][release][sales]["batch"]:
                             st.write("WRONG UNIT, scan another one")
                         else:
                             return True
@@ -659,7 +668,7 @@ if select=="LOADOUT" :
                     first_textsplit = first_load_input.splitlines()
                     #st.write(textsplit)
                     for i,x in enumerate(first_textsplit):
-                        if audit_unit(x):
+                        if audit_split(current_release_order,current_sales_order)
                             st.text_input(f"Unit No : {i+1}",x)
                             first_faults.append(0)
                         else:
@@ -670,7 +679,7 @@ if select=="LOADOUT" :
                     second_textsplit = second_load_input.splitlines()
                     #st.write(textsplit)
                     for i,x in enumerate(second_textsplit):
-                        if audit_unit(x):
+                        if audit_split(next_release_order,next_sales_order):
                             st.text_input(f"Unit No : {i+1}",x)
                             second_faults.append(0)
                         else:
