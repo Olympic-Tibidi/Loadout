@@ -407,11 +407,11 @@ if select=="ADMIN" :
                                 
                     targets=[i for i in target] ####doing this cause we set jason path {downloadedfile[vessel][releaseorder] as target. i have to use one of the keys (release order number) that is in target list
                     sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
-                    st.write(sales_orders_completed)
+                    
                     with rel_col1:
                         
                         st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                        if target[targets[0]]['remaining']<=0:
+                        if targets[0]<=0:
                             st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
                         else:
                             st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
