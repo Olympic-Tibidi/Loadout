@@ -684,7 +684,8 @@ if select=="LOADOUT" :
                     st.session_state.updated_quantity=updated_quantity
                     #st.write(textsplit)
                     
-            quantity=st.number_input("**:blue[Quantity in Tons]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
+            quantity=st.number_input("**:blue[Quantity of Units]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
+            st.markdown(f"{quantity*2} TONS - {quantity*2204.62} Pounds")
                 
                 
                     
