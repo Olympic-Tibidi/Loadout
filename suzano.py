@@ -858,7 +858,7 @@ if select=="LOADOUT" :
                 send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
                 upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
     else:
-        st.write("Nothing dispatched")
+        st.subheader("**Nothing dispatched!**")
             
     
             
