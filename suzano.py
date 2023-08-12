@@ -890,6 +890,9 @@ if select=="INVENTORY" :
             filtered_df=filtered_zf[filtered_zf[filter_by]==choice]
             
         except:
+            filtered_zf=filtered_zf
+            filtered_df=df.copy()
+            
             pass
         with col2:
             if date_filter:
