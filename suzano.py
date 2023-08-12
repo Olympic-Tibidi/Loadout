@@ -875,13 +875,13 @@ if select=="INVENTORY" :
             filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
             
         filter_by=st.multiselect("SELECT FILTER",["Wrap","Ocean Bill Of Lading","Release Order Number","Terminal Bill of Lading","Carrier Id","Vehicle Filter"])
-        
+        st.write(filter_by)
         st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
-        oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
-        release_order_filter=st.selectbox("Filter By Release Order",["ALL RELEASE ORDERS"]+[str(i) for i in filtered_zf["Release_Order_Number"].unique().tolist()])
-        BL_filter=st.selectbox("Filter By Terminal Bill Of Lading",["ALL TERMINAL BILL OF LADINGS"]+[str(i) for i in filtered_zf["Terminal B/L"].unique().tolist()])
-        carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(i) for i in filtered_zf["Carrier_Code"].unique().tolist()])
-        vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
+        #oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
+        #release_order_filter=st.selectbox("Filter By Release Order",["ALL RELEASE ORDERS"]+[str(i) for i in filtered_zf["Release_Order_Number"].unique().tolist()])
+        #BL_filter=st.selectbox("Filter By Terminal Bill Of Lading",["ALL TERMINAL BILL OF LADINGS"]+[str(i) for i in filtered_zf["Terminal B/L"].unique().tolist()])
+        #carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(i) for i in filtered_zf["Carrier_Code"].unique().tolist()])
+        #vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
         
         
         col1,col2=st.columns([2,8])
