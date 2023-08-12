@@ -876,12 +876,7 @@ if select=="INVENTORY" :
             
         filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release Order Number","Terminal B/L","Carrier Id","Vehicle_I"])
         #st.write(filter_by)
-        st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
-        #oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
-        #release_order_filter=st.selectbox("Filter By Release Order",["ALL RELEASE ORDERS"]+[str(i) for i in filtered_zf["Release_Order_Number"].unique().tolist()])
-        #BL_filter=st.selectbox("Filter By Terminal Bill Of Lading",["ALL TERMINAL BILL OF LADINGS"]+[str(i) for i in filtered_zf["Terminal B/L"].unique().tolist()])
-        #carrier_filter=st.selectbox("Filter By Carrier_Id",["ALL CARRIERS"]+[str(i) for i in filtered_zf["Carrier_Code"].unique().tolist()])
-        #vehicle_filter=st.selectbox("Filter By Vehicle_Id",["ALL VEHICLES"]+[str(i) for i in filtered_zf["Vehicle_Id"].unique().tolist()])
+        choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
         
         
         col1,col2=st.columns([2,8])
@@ -889,18 +884,10 @@ if select=="INVENTORY" :
             st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
             st.markdown(f"**IN WAREHOUSE = {len(df)}**")
             st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-        
-        if wrap_filter!="ALL WRAPS":
-            filtered_zf=filtered_zf[filtered_zf["Wrap"]==wrap_filter]       
-        
-        if release_order_filter!="ALL TERMINAL BILL OF LADINGS":
-            filtered_zf=filtered_zf[filtered_zf["Release_Order_Number"]==release_order_filter]
-        if BL_filter!="ALL TERMINAL BILL OF LADINGS":
-            filtered_zf=filtered_zf[filtered_zf["Terminal B/L"]==BL_filter]
-        if carrier_filter!="ALL CARRIERS":
-            filtered_zf=filtered_zf[filtered_zf["Carrier_Code"]==carrier_filter]
-        if vehicle_filter!="ALL VEHICLES":
-            filtered_zf=filtered_zf[filtered_zf["Vehicle_Id"]==vehicle_filter]
+        try:
+            filtered_zf=filtered_zf[filtered_zf[filter_by]==choice]
+        except:
+            pass
         with col2:
             if date_filter:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
