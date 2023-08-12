@@ -547,8 +547,11 @@ if select=="LOADOUT" :
     
     bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
     bill_mapping=json.loads(bill_mapping)
-    dispatched=gcp_download("olym_suzano","dispatched.json")
-    dispatched=json.loads(dispatched)
+    try:
+        dispatched=gcp_download("olym_suzano","dispatched.json")
+        dispatched=json.loads(dispatched)
+    except:
+        pass
     #st.write(dispatched)
     
     double_load=False
