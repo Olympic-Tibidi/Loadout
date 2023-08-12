@@ -845,7 +845,7 @@ if select=="INVENTORY" :
             st.write(items)
             inhouse=[df[df["Ocean B/L"]==i] for i in items]
             shipped=[zf[zf["Ocean B/L"]==i] for i in items]
-            tablo=pd.DataFrame([inhouse,shipped],columns=["Ocean B/l","In Warehouse","Shipped"])
+            tablo=pd.DataFrame([items,inhouse,shipped],columns=["Ocean B/l","In Warehouse","Shipped"])
             st.write(tablo)
         #st.table(df)
     with dab2:
