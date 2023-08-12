@@ -410,7 +410,7 @@ if select=="ADMIN" :
                         
                         st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                         if target[targets[0]]['remaining']<=0:
-                            st.markdown(f"**:purple[Sales Order Item] : {targets[0]} - COMPLETED**")
+                            st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
                         else:
                             st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
                         st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
