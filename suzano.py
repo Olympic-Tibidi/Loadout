@@ -566,6 +566,9 @@ if select=="LOADOUT" :
             st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]}**')
             st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
             st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
+            remaining=info[vessel][current_release_order][current_sales_order]["remaining"]
+            if remaining<10:
+                st.markdown(rf'**:red[CAUITON : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}]**')
             st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
             
         with load_col2:
