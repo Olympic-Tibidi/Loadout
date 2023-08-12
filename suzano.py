@@ -847,7 +847,8 @@ if select=="INVENTORY" :
             shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
             tablo=pd.DataFrame({"Ocean B/L":items,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
             st.dataframe(tablo)
-        #st.table(df)
+        with st.checkbox("CLICK TO SEE INVENTORY LIST"):
+            st.table(df)
     with dab2:
         
         date_filter=st.checkbox("CLICK FOR DATE FILTER")
