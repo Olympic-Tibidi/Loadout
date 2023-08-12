@@ -411,7 +411,7 @@ if select=="ADMIN" :
                     with rel_col1:
                         
                         st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                        if targets[0]<=0:
+                        if targets[0] in sales_orders_completed:
                             st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
                         else:
                             st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
