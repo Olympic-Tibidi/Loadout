@@ -792,6 +792,8 @@ if select=="LOADOUT" :
                     try:
                         dispatched["1"]=dispatched["2"]
                         del dispatched["2"]
+                    except:
+                        pass
                 json_data = json.dumps(info)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket("olym_suzano")
