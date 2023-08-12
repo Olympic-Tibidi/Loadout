@@ -461,8 +461,8 @@ if select=="ADMIN" :
                     dol1,dol2,dol3=st.columns([2,2,8])
                     with dol1:
                         try:
-                            dispatch=gcp_download("olym_suzano",rf"dispatched.json")
-                            dispatch=json.loads(dispatch)
+                            dispatched=gcp_download("olym_suzano",rf"dispatched.json")
+                            dispatched=json.loads(dispatch)
                         except:
                             dispatch={}
                        
