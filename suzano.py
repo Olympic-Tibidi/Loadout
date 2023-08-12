@@ -842,10 +842,10 @@ if select=="INVENTORY" :
             st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
             st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
         with inv_col2:
-            st.write(items)
+            #st.write(items)
             inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
             shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
-            tablo=pd.DataFrame({"Ocean B/L":items,"In Warehouse":inhouse,"Shipped":shipped})
+            tablo=pd.DataFrame({"Ocean B/L":items,"In Warehouse":inhouse,"Shipped":shipped},index=[range(1,len(items)+1])
             st.dataframe(tablo)
         #st.table(df)
     with dab2:
