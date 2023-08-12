@@ -460,16 +460,14 @@ if select=="ADMIN" :
                     hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target if i not in sales_orders_completed]))
                     dol1,dol2,dol3=st.columns([2,2,8])
                     with dol1:
-                        try:
-                            dispatched=gcp_download("olym_suzano",rf"dispatched.json")
-                            dispatched=json.loads(dispatch)
-                            st.write(dispatched)
-                        except:
-                            st.write("this happened")
-                            dispatch={}
+                       
+                        dispatched=gcp_download("olym_suzano",rf"dispatched.json")
+                        dispatched=json.loads(dispatch)
+                        st.write(dispatched)
+                       
                        
                         to_delete=[]
-                        st.write("happened")
+                        
                         for i in dispatched.keys():
                             st.write(i)
                             if dispatched[i]["release_order"]==current_release_order and dispatched[i]["sales_order"]==current_sales_order:
