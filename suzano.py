@@ -396,7 +396,7 @@ if select=="ADMIN" :
                     target=release_order_json[vessel][requested_file]
                     if len(target.keys())==0:
                         nofile=1
-                    #st.write("this happened")
+                   
                     number_of_sales_orders=len(target)
                     rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
                 except:
@@ -405,10 +405,14 @@ if select=="ADMIN" :
                                       
                 if nofile!=1 :         
                                 
-                    targets=[i for i in target]
+                    targets=[i for i in target] ####doing this cause we set jason path {downloadedfile[vessel][releaseorder] as target. i have to use one of the keys (release order number) that is in target list
                     with rel_col1:
                         
                         st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                        if target[targets[0]]['remaining']<=0:
+                            st.markdown(f"**:purple[Sales Order Item] : {targets[0]} - COMPLETED**")
+                        else:
+                            st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
                         st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
                         st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Bales - {target[targets[0]]['tonnage']} Metric Tons")
                         st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
@@ -813,6 +817,7 @@ if select=="LOADOUT" :
                         del dispatched["2"]
                     except:
                         pass
+                
                 json_data = json.dumps(info)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket("olym_suzano")
