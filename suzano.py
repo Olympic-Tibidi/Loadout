@@ -836,7 +836,7 @@ if select=="INVENTORY" :
     
     with dab1:
         
-        inv_col1,inv_col2,inv_col3=st.columns([3,3,4])
+        inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
         with inv_col1:
             st.markdown(f"**IN WAREHOUSE = {len(df)}**")
             st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
