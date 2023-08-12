@@ -415,22 +415,23 @@ if select=="ADMIN" :
                             st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
                         else:
                             st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
-                        st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Bales - {target[targets[0]]['tonnage']} Metric Tons")
+                        st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Units - {target[targets[0]]['tonnage']} Metric Tons")
                         st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
                         st.write(f"        Batch : {target[targets[0]]['batch']}")
-                        st.write(f"        Bales Shipped : {target[targets[0]]['shipped']} Bales - {2*target[targets[0]]['shipped']} Metric Tons")
-                        st.write(f"        Bales Remaining : {target[targets[0]]['remaining']} Bales - {2*target[targets[0]]['remaining']} Metric Tons")
+                        st.write(f"        Units Shipped : {target[targets[0]]['shipped']} Units - {2*target[targets[0]]['shipped']} Metric Tons")
+                        if target[targets[0]]['remaining']<=10:
+                            st.write(f"**        :red[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]")
                         
                     with rel_col2:
                         try:
                         
                             st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                             st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
-                            st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Bales - {target[targets[1]]['tonnage']} Metric Tons")                        
+                            st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Units - {target[targets[1]]['tonnage']} Metric Tons")                        
                             st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
                             st.write(f"        Batch : {target[targets[1]]['batch']}")
-                            st.write(f"        Bales Shipped : {target[targets[1]]['shipped']} Bales - {2*target[targets[1]]['shipped']} Metric Tons")
-                            st.write(f"        Bales Remaining : {target[targets[1]]['remaining']} Bales - {2*target[targets[1]]['remaining']} Metric Tons")
+                            st.write(f"        Units Shipped : {target[targets[1]]['shipped']} Units - {2*target[targets[1]]['shipped']} Metric Tons")
+                            st.write(f"        Units Remaining : {target[targets[1]]['remaining']} Units - {2*target[targets[1]]['remaining']} Metric Tons")
                             
                                 
                         except:
@@ -441,11 +442,11 @@ if select=="ADMIN" :
                         
                             st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                             st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
-                            st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Bales - {target[targets[2]]['tonnage']} Metric Tons")
+                            st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Units - {target[targets[2]]['tonnage']} Metric Tons")
                             st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
                             st.write(f"        Batch : {target[targets[2]]['batch']}")
-                            st.write(f"        Bales Shipped : {target[targets[2]]['shipped']} Bales - {2*target[targets[2]]['shipped']} Metric Tons")
-                            st.write(f"        Bales Remaining : {target[targets[2]]['remaining']} Bales - {2*target[targets[2]]['remaining']} Metric Tons")
+                            st.write(f"        Units Shipped : {target[targets[2]]['shipped']} Units - {2*target[targets[2]]['shipped']} Metric Tons")
+                            st.write(f"        Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons")
                             
                             
                         except:
