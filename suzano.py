@@ -413,7 +413,6 @@ if select=="ADMIN" :
                             st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
                         else:
                             st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
-                        st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
                         st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Bales - {target[targets[0]]['tonnage']} Metric Tons")
                         st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
                         st.write(f"        Batch : {target[targets[0]]['batch']}")
