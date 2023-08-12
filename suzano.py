@@ -876,7 +876,7 @@ if select=="INVENTORY" :
             
         filter_by=st.multiselect("SELECT FILTER",["Wrap","Ocean Bill Of Lading","Release Order Number","Terminal Bill of Lading","Carrier Id","Vehicle Filter"])
         
-        wrap_filter=st.selectbox("Filter By Wrap/Unwrapped",["ALL WRAPS"]+[str(i) for i in filtered_zf["Wrap"].unique().tolist()])
+        st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
         oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
         release_order_filter=st.selectbox("Filter By Release Order",["ALL RELEASE ORDERS"]+[str(i) for i in filtered_zf["Release_Order_Number"].unique().tolist()])
         BL_filter=st.selectbox("Filter By Terminal Bill Of Lading",["ALL TERMINAL BILL OF LADINGS"]+[str(i) for i in filtered_zf["Terminal B/L"].unique().tolist()])
