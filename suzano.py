@@ -874,7 +874,7 @@ if select=="INVENTORY" :
             
             filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
             
-        filter_by=st.multiselect("SELECT FILTER",["Wrap","Ocean Bill Of Lading","Release Order Number","Terminal Bill of Lading","Carrier Id","Vehicle Filter"])
+        filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release Order Number","Terminal Bill of Lading","Carrier Id","Vehicle Filter"])
         st.write(filter_by)
         st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
         #oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
