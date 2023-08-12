@@ -874,8 +874,8 @@ if select=="INVENTORY" :
             
             filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
             
-        filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release Order Number","Terminal Bill of Lading","Carrier Id","Vehicle Filter"])
-        st.write(filter_by)
+        filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release Order Number","Terminal B/L","Carrier Id","Vehicle_I"])
+        #st.write(filter_by)
         st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
         #oc_bl_filter=st.selectbox("Filter By Ocean Bill Of Lading",["ALL OCEAN BILL OF LADINGS"]+[str(i) for i in filtered_zf["Ocean B/L"].unique().tolist()])
         #release_order_filter=st.selectbox("Filter By Release Order",["ALL RELEASE ORDERS"]+[str(i) for i in filtered_zf["Release_Order_Number"].unique().tolist()])
