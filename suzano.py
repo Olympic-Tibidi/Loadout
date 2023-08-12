@@ -380,7 +380,7 @@ if select=="ADMIN" :
                 
         with release_order_tab2:
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
-            rls_tab1,rls_tabs2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
+            rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
 
             with rls_tab1:
                 
