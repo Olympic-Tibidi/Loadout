@@ -465,6 +465,7 @@ if select=="ADMIN" :
                             dispatched=json.loads(dispatch)
                             st.write(dispatched)
                         except:
+                            st.write("this happened")
                             dispatch={}
                        
                         to_delete=[]
