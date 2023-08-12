@@ -525,12 +525,13 @@ if select=="ADMIN" :
                             pass
                     except:
                         st.write("NO DISPATCH ITEMS")
-                with rls_tab2:
+                
+                else:
+                    st.write("NO RELEASE ORDERS IN DATABASE")
+            with rls_tab2:
                     pass
-            else:
-                st.write("NO RELEASE ORDERS IN DATABASE")
 
-   
+                
 
 ##########  LOAD OUT  ##############
 
