@@ -420,7 +420,7 @@ if select=="ADMIN" :
                         st.write(f"        Batch : {target[targets[0]]['batch']}")
                         st.write(f"        Units Shipped : {target[targets[0]]['shipped']} Units - {2*target[targets[0]]['shipped']} Metric Tons")
                         if target[targets[0]]['remaining']<=10:
-                            st.write(f"**        :red[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]**")
+                            st.markdown(f"**        :red[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]**")
                         else:
                             st.write(f"       Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons")
                     with rel_col2:
