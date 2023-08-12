@@ -547,16 +547,18 @@ if select=="LOADOUT" :
     
     bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
     bill_mapping=json.loads(bill_mapping)
+    no_dispatch=0
     try:
         dispatched=gcp_download("olym_suzano","dispatched.json")
         dispatched=json.loads(dispatched)
     except:
+        no_dispatch=1
         pass
     #st.write(dispatched)
     
     double_load=False
     
-    if len(dispatched.keys())>0:
+    if len(dispatched.keys())>0 and not no_dispatch:
         vessel=dispatched["1"]["vessel"]
         current_release_order=dispatched['1']['release_order']
         current_sales_order=dispatched['1']['sales_order']
