@@ -462,7 +462,7 @@ if select=="ADMIN" :
                     with dol1:
                        
                         dispatched=gcp_download("olym_suzano",rf"dispatched.json")
-                        dispatched=json.loads(dispatch)
+                        dispatched=json.loads(dispatched)
                         st.write(dispatched)
                        
                        
