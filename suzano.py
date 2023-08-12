@@ -779,6 +779,8 @@ if select=="LOADOUT" :
                             st.markdown(f"**Unit{faults.index(i)+1}**")
                 else:
                     proceed=True
+            if remaining<0:
+                proceed=False
             if proceed:
                 
                 process()
