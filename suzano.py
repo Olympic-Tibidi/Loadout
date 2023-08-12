@@ -798,8 +798,8 @@ if select=="LOADOUT" :
                     for i in dispatched.keys():
                         if dispatched[i]["release_order"]==current_release_order and dispatched[i]["sales_order"]==current_sales_order:
                             to_delete.append(i)
-                        for k in to_delete:
-                            dispatched.pop(k)
+                    for k in to_delete:
+                        dispatched.pop(k)
                     try:
                         dispatched["1"]=dispatched["2"]
                         del dispatched["2"]
