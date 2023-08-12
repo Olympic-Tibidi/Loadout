@@ -537,10 +537,10 @@ if select=="LOADOUT" :
     dispatched=gcp_download("olym_suzano","dispatched.json")
     dispatched=json.loads(dispatched)
     #st.write(dispatched)
-    x=1
+    
     double_load=False
     
-    if x==1:
+    if len(dispatched.keys())>0:
         vessel=dispatched["1"]["vessel"]
         current_release_order=dispatched['1']['release_order']
         current_sales_order=dispatched['1']['sales_order']
