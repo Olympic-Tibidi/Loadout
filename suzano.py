@@ -867,6 +867,7 @@ if select=="INVENTORY" :
         #st.write(zf)
         #zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("int")
         zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
+        st.write(zf["Release_Order_Number
         zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
         filtered_zf=zf.copy()
         if date_filter:
@@ -874,7 +875,7 @@ if select=="INVENTORY" :
             
             filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
             
-        filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release Order Number","Terminal B/L","Carrier Id","Vehicle_I"])
+        filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
         #st.write(filter_by)
         choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
         
@@ -886,11 +887,19 @@ if select=="INVENTORY" :
             st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
         try:
             filtered_zf=filtered_zf[filtered_zf[filter_by]==choice]
+            filtered_df=filtered_zf[filtered_zf[filter_by]==choice]
+            
         except:
             pass
         with col2:
             if date_filter:
                 st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+            else:
+                st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
+                st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
+                st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
+            
+            
         st.table(filtered_zf)
 #with tab4:
 #     df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
