@@ -463,6 +463,7 @@ if select=="ADMIN" :
                         try:
                             dispatched=gcp_download("olym_suzano",rf"dispatched.json")
                             dispatched=json.loads(dispatch)
+                            st.write(dispatched)
                         except:
                             dispatch={}
                        
