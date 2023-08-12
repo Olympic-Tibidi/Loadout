@@ -702,12 +702,12 @@ if select=="LOADOUT" :
                 if first_load_input is not None:
                     first_textsplit = first_load_input.splitlines()
                     #st.write(textsplit)
-                    for i,x in enumerate(first_textsplit):
+                    for j,x in enumerate(first_textsplit):
                         if audit_split(current_release_order,current_sales_order):
-                            st.text_input(f"Unit No : {i+1}",x)
+                            st.text_input(f"Unit No : {j+1}",x)
                             first_faults.append(0)
                         else:
-                            st.text_input(f"Unit No : {i+1}",x)
+                            st.text_input(f"Unit No : {j+1}",x)
                             first_faults.append(1)
                 second_faults=[]
                 if second_load_input is not None:
@@ -715,10 +715,10 @@ if select=="LOADOUT" :
                     #st.write(textsplit)
                     for i,x in enumerate(second_textsplit):
                         if audit_split(next_release_order,next_sales_order):
-                            st.text_input(f"Unit No : {i+1}",x)
+                            st.text_input(f"Unit No : {j+1+1}",x)
                             second_faults.append(0)
                         else:
-                            st.text_input(f"Unit No : {i+1}",x)
+                            st.text_input(f"Unit No : {j+1+1}",x)
                             second_faults.append(1)
 
                 loads=[]
