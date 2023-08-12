@@ -783,7 +783,15 @@ if select=="LOADOUT" :
                 
                 process()
                 info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
+                 
                 info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
+                if info[vessel][current_release_order][current_sales_order]["remaining"]==0:
+                    for i in dispatched.keys():
+                        if dispatched[i]["release_order"]==current_release_order and dispatched[i]["sales_order"]==current_sales_order:
+                            dispatched.pop(i)
+                    try:
+                        dispatched["1"]=dispatched["2"]
+                        del dispatched["2"]
                 json_data = json.dumps(info)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket("olym_suzano")
