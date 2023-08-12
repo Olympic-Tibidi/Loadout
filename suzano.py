@@ -833,7 +833,7 @@ if select=="INVENTORY" :
     zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
                                                      "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
     items=df["Ocean B/L"].unique().tolist()
-    st.write(items)
+    
     with dab1:
         
         inv_col1,inv_col2,inv_col3=st.columns([3,3,4])
@@ -841,8 +841,9 @@ if select=="INVENTORY" :
             st.markdown(f"**IN WAREHOUSE = {len(df)}**")
             st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
             st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-        
-        st.table(df)
+        with inv_col2:
+            st.write(items)
+        #st.table(df)
     with dab2:
         
         date_filter=st.checkbox("CLICK FOR DATE FILTER")
