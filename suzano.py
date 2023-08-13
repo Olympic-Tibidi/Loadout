@@ -412,7 +412,7 @@ if select=="ADMIN" :
                     pass
                 to_delete=[]            
                 for i in dispatched.keys():
-                    st.write(i)
+                    
                     dispatched_release_order=dispatched[i]["release_order"]
                     dispatched_sales_order=dispatched[i]["sales_order"]
                     dispatched_vessel=dispatched[i]["vessel"]
