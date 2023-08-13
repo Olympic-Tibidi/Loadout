@@ -857,7 +857,7 @@ if select=="LOADOUT" :
                 st.write(error)
             if not vehicle_id: 
                 proceed=False
-                error="Please check Vehicle ID and Terminal Bill Of Lading"
+                error="Please check Vehicle ID "
                 st.write(error)
             if not terminal_bill_of_lading:
                 proceed=False
