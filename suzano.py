@@ -863,6 +863,10 @@ if select=="LOADOUT" :
                 proceed=False
                 error="Please check Terminal Bill Of Lading"
                 st.write(error)
+            if quantity<10:
+                proceed=False
+                error=f"{quantity} loads on this truck. Please check "
+                st.write(error)
             if proceed:
                 
                 process()
