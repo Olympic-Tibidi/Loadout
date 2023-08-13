@@ -490,7 +490,7 @@ if select=="ADMIN" :
                                #                 "release_order":requested_file,"sales_order":hangisi,"ocean_bill_of_lading":ocean_bill_of_lading,"batch":batch}
                     
                     hangisi=st.selectbox("SELECT SALES ORDER ITEM TO DISPATCH",([i for i in target if i not in sales_orders_completed]))
-                    dol1,dol2,dol3=st.columns([2,2,8])
+                    dol1,dol2,dol3,dol4=st.columns([2,2,2,2])
                     with dol1:
                        
                                
@@ -516,7 +516,7 @@ if select=="ADMIN" :
                             blob = bucket.blob(rf"dispatched.json")
                             blob.upload_from_string(json_data)
                             st.markdown(f"**DISPATCHED Release Order Number {requested_file} Item No : {hangisi} to Warehouse**")
-                    with dol2:
+                    with dol4:
                         
                         if st.button("DELETE SALES ORDER ITEM",key="lalag"):
                             
@@ -531,8 +531,7 @@ if select=="ADMIN" :
                             blob = bucket.blob(rf"release_orders/{vessel}/{requested_file}.json")
                             blob.upload_from_string(json_data)
                                    
-                    del_col1,del_col2,del_col3=st.columns([2,2,6])
-                    with del_col1:                                  
+                    with dol2:  
                         if st.button("CLEAR DISPATCH QUEUE!"):
                             dispatch={}
                             json_data = json.dumps(dispatch)
@@ -541,7 +540,7 @@ if select=="ADMIN" :
                             blob = bucket.blob(rf"dispatched.json")
                             blob.upload_from_string(json_data)
                             st.markdown(f"**CLEARED ALL DISPATCHES**")   
-                    with del_col2:
+                    with dol3:
                         dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                         dispatch=json.loads(dispatch)
                         item=st.selectbox("CHOOSE ITEM",dispatch.keys())
