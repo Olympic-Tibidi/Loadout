@@ -427,7 +427,7 @@ if select=="ADMIN" :
                 for i in dispatched.keys():
                     for j in target.keys():
                         if target[j]["remaining"]==0:
-                        to_delete.append(i)
+                            to_delete.append(i)
                 for k in to_delete:
                     dispatched.pop(k)
                     #st.write("deleted k")
