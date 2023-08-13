@@ -245,7 +245,7 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
     bill_of_ladings=json.dumps(bill_of_ladings)
     storage_client = storage.Client()
     bucket = storage_client.bucket("olym_suzano")
-    blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+    blob = bucket.blob("olym_suzano",rf"terminal_bill_of_ladings.json")
     blob.upload_from_string(bill_of_ladings)
     return bill_of_ladings,bill_of_lading_number
 
