@@ -589,8 +589,9 @@ if select=="LOADOUT" :
     bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
     bill_mapping=json.loads(bill_mapping)
     no_dispatch=0
+    number=None
     if number not in st.session_state:
-        st.session_state.number=None
+        st.session_state.number=number
     try:
         dispatched=gcp_download("olym_suzano","dispatched.json")
         dispatched=json.loads(dispatched)
