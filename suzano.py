@@ -415,7 +415,9 @@ if select=="ADMIN" :
                     rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
                 except:
                     nofile=1
-              
+             
+                #### DISPATCHED CLEANUP  #######
+                
                 try:
                     dispatched=gcp_download("olym_suzano",rf"dispatched.json")
                     dispatched=json.loads(dispatched)
@@ -430,16 +432,24 @@ if select=="ADMIN" :
                 for k in to_delete:
                     dispatched.pop(k)
                     #st.write("deleted k")
-                try:
-                    dispatched["1"]=dispatched["2"]
-                    del dispatched["2"]
-                except:
-                    pass      
+                    try:
+                        dispatched["1"]=dispatched["2"]
+                        dispatched["2"]=dispatched["3"]
+                        del dispatched["3"]
+                    except:
+                        pass
+                    try:
+                        dispatched["1"]=dispatched["2"]
+                        del dispatched["2"]
+                    except:
+                        pass
                 json_data = json.dumps(dispatched)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket("olym_suzano")
                 blob = bucket.blob(rf"dispatched.json")
                 blob.upload_from_string(json_data)
+                
+                
                 ###CLEAN DISPATCH
 
                 
