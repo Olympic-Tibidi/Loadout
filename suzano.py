@@ -425,11 +425,8 @@ if select=="ADMIN" :
                     pass
                 to_delete=[]            
                 for i in dispatched.keys():
-                    
-                    dispatched_release_order=dispatched[i]["release_order"]
-                    dispatched_sales_order=dispatched[i]["sales_order"]
-                    dispatched_vessel=dispatched[i]["vessel"]
-                    if target[dispatched_sales_order]["remaining"]==0:
+                    for j in target.keys():
+                        if target[j]["remaining"]==0:
                         to_delete.append(i)
                 for k in to_delete:
                     dispatched.pop(k)
