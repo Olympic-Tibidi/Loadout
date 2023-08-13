@@ -555,7 +555,7 @@ if select=="ADMIN" :
                         dispatch=json.loads(dispatch)
                         item=st.selectbox("CHOOSE ITEM",dispatch.keys())
                         if st.button("CLEAR DISPATCH ITEM"):                                       
-                            dispatch.pop(item)
+                            del dispatch[item]
                             json_data = json.dumps(dispatch)
                             storage_client = storage.Client()
                             bucket = storage_client.bucket("olym_suzano")
