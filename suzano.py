@@ -855,9 +855,13 @@ if select=="LOADOUT" :
                 proceed=False
                 error="No more Items to ship on this Sales Order"
                 st.write(error)
-            if not vehicle_id or not terminal_bill_of_lading:
+            if not vehicle_id: 
                 proceed=False
                 error="Please check Vehicle ID and Terminal Bill Of Lading"
+                st.write(error)
+            if not terminal_bill_of_lading:
+                proceed=False
+                error="Please check Terminal Bill Of Lading"
                 st.write(error)
             if proceed:
                 
