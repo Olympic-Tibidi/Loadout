@@ -907,6 +907,7 @@ if select=="LOADOUT" :
                             to_delete.append(i)
                     for k in to_delete:
                         dispatched.pop(k)
+                        st.write("this happened")
                     try:
                         dispatched["1"]=dispatched["2"]
                         del dispatched["2"]
