@@ -426,7 +426,7 @@ if select=="ADMIN" :
                     del dispatched["2"]
                 except:
                     pass      
-                json_data = json.dumps(dispatch)
+                json_data = json.dumps(dispatched)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket("olym_suzano")
                 blob = bucket.blob(rf"dispatched.json")
