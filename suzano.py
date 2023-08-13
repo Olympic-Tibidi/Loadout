@@ -247,7 +247,7 @@ select=st.sidebar.radio("SELECT FUNCTION",
     
 if select=="ADMIN" :
     admin_tab1,admin_tab2=st.tabs(["SHIPMENT FILES","RELEASE ORDERS"])
-    with admin_tab1:
+    with admin_tab2:
         st.markdown("SHIPMENT FILES")
         shipment_tab1,shipment_tab2=st.tabs(["UPLOAD/PROCESS SHIPMENT FILE","SHIPMENT FILE DATABASE"])
         with shipment_tab1:
@@ -332,7 +332,7 @@ if select=="ADMIN" :
                 if st.button("LOAD SHIPPING FILE"):
                     requested_shipping_file=gcp_csv_to_df("olym_suzano", requested_file)
                     st.write(requested_shipping_file[["Lot","Lot Qty","B/L","Wrap","Ocean B/L","DryWeight","ADMT","Location","Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code","BL"]])
-    with admin_tab2:
+    with admin_tab1:
         
         #st.markdown("RELEASE ORDERS") 
         
