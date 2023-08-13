@@ -234,7 +234,7 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
     bill_of_ladings=json.loads(data)
     list_of_ladings=[]
     try:
-        for keys in bill_of_ladings:
+        for key in bill_of_ladings:
             list_of_ladings.append(int(key))
         bill_of_lading_number=max(list_of_ladings)+1
     except:
