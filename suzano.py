@@ -944,7 +944,7 @@ if select=="LOADOUT" :
             else:   ###cancel bill of lading
                 data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                 bill_of_ladings=json.loads(data)
-                del bill_of_ladings[str(bill_of_ladings_number)]
+                del bill_of_ladings[str(bill_of_lading_number)]
                 bill_of_ladings=json.dumps(bill_of_ladings)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket("olym_suzano")
