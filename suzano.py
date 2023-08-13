@@ -821,7 +821,7 @@ if select=="LOADOUT" :
         
         
             
-        submit_col1,submit_col2,submit_col3=st.columns([3,3,4])
+        submit_col1,submit_col2,submit_col3,extra=st.columns([2,2,2,4])
         with submit_col1:
             if st.button("GENERATE BILL OF LADING"):
                 number,bill_of_ladings=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,st.session_state.updated_quantity)
@@ -833,101 +833,101 @@ if select=="LOADOUT" :
                 blob.upload_from_string(bill_of_ladings)
         with submit_col2:
             terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",st.session_state.number,disabled=False)
-        
-        if st.button('SUBMIT EDI'):
-            proceed=False
-            if double_load:
-                if 1 in first_faults or 1 in second_faults:
-                    st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
-                    for i in first_faults:
-                        if i==1:
-                            st.markdown(f"**Unit{first_faults.index(i)+1}**")
-                    for i in second_faults:
-                        if i==1:
-                            st.markdown(f"**Unit{second_faults.index(i)+1}**")
-                else:
-                    proceed=True
-            else:
-                if 1 in faults:
-                    proceed=False
-                    for i in second_faults:
-                        if i==1:
-                            st.markdown(f"**Unit{faults.index(i)+1}**")
-                else:
-                    proceed=True
-            if remaining<0:
+        with submit_col3:
+            if st.button('SUBMIT EDI'):
                 proceed=False
-                error="No more Items to ship on this Sales Order"
-                st.write(error)
-            if not vehicle_id: 
-                proceed=False
-                error="Please check Vehicle ID "
-                st.write(error)
-            if len(terminal_bill_of_lading)<6:
-                proceed=False
-                error="Please check Terminal Bill Of Lading. It should have 6 digits."
-                st.write(error)
-            if quantity<10:
-                proceed=False
-                error=f"{quantity} loads on this truck. Please check "
-                st.write(error)
-            if proceed:
-                
-                process()
                 if double_load:
-                    info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(first_textsplit)
-                    info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(first_textsplit)
-                    info[vessel][next_release_order][next_sales_order]["shipped"]=info[vessel][next_release_order][next_sales_order]["shipped"]+len(second_textsplit)
-                    info[vessel][next_release_order][next_sales_order]["remaining"]=info[vessel][next_release_order][next_sales_order]["remaining"]-len(second_textsplit)
+                    if 1 in first_faults or 1 in second_faults:
+                        st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
+                        for i in first_faults:
+                            if i==1:
+                                st.markdown(f"**Unit{first_faults.index(i)+1}**")
+                        for i in second_faults:
+                            if i==1:
+                                st.markdown(f"**Unit{second_faults.index(i)+1}**")
+                    else:
+                        proceed=True
                 else:
-                    info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
-                    info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
-                if info[vessel][current_release_order][current_sales_order]["remaining"]==0:
-                    to_delete=[]
-                    for i in dispatched.keys():
-                        if dispatched[i]["release_order"]==current_release_order and dispatched[i]["sales_order"]==current_sales_order:
-                            to_delete.append(i)
-                    for k in to_delete:
-                        dispatched.pop(k)
-                    try:
-                        dispatched["1"]=dispatched["2"]
-                        del dispatched["2"]
-                    except:
-                        pass
-                
-                json_data = json.dumps(info)
-                storage_client = storage.Client()
-                bucket = storage_client.bucket("olym_suzano")
-                blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
-                blob.upload_from_string(json_data)
-                with open('placeholder.txt', 'r') as f:
-                    output_text = f.read()
-                st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
-                st.markdown("**EDI TEXT**")
-                st.text_area('', value=output_text, height=600)
-                with open('placeholder.txt', 'r') as f:
-                    file_content = f.read()
-                newline="\n"
-                filename = f'{a}{b}OLYM'
-                file_name= f'{a}{b}OLYM.txt'
-                st.write(filename)
-                subject = f'Suzano_EDI_{a}_{release_order_number}'
-                body = f"EDI for Release Order Number {current_release_order} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {terminal_bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
-                sender = "warehouseoly@gmail.com"
-                #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                recipients = ["afsiny@portolympia.com"]
-                password = "xjvxkmzbpotzeuuv"
-        
-                  # Replace with the actual file path
-        
-        
-                with open('temp_file.txt', 'w') as f:
-                    f.write(file_content)
-        
-                file_path = 'temp_file.txt'  # Use the path of the temporary file
-        
-                send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
-                upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
+                    if 1 in faults:
+                        proceed=False
+                        for i in second_faults:
+                            if i==1:
+                                st.markdown(f"**Unit{faults.index(i)+1}**")
+                    else:
+                        proceed=True
+                if remaining<0:
+                    proceed=False
+                    error="No more Items to ship on this Sales Order"
+                    st.write(error)
+                if not vehicle_id: 
+                    proceed=False
+                    error="Please check Vehicle ID "
+                    st.write(error)
+                if len(terminal_bill_of_lading)<6:
+                    proceed=False
+                    error="Please check Terminal Bill Of Lading. It should have 6 digits."
+                    st.write(error)
+                if quantity<10:
+                    proceed=False
+                    error=f"{quantity} loads on this truck. Please check "
+                    st.write(error)
+                if proceed:
+                    
+                    process()
+                    if double_load:
+                        info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(first_textsplit)
+                        info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(first_textsplit)
+                        info[vessel][next_release_order][next_sales_order]["shipped"]=info[vessel][next_release_order][next_sales_order]["shipped"]+len(second_textsplit)
+                        info[vessel][next_release_order][next_sales_order]["remaining"]=info[vessel][next_release_order][next_sales_order]["remaining"]-len(second_textsplit)
+                    else:
+                        info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
+                        info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
+                    if info[vessel][current_release_order][current_sales_order]["remaining"]==0:
+                        to_delete=[]
+                        for i in dispatched.keys():
+                            if dispatched[i]["release_order"]==current_release_order and dispatched[i]["sales_order"]==current_sales_order:
+                                to_delete.append(i)
+                        for k in to_delete:
+                            dispatched.pop(k)
+                        try:
+                            dispatched["1"]=dispatched["2"]
+                            del dispatched["2"]
+                        except:
+                            pass
+                    
+                    json_data = json.dumps(info)
+                    storage_client = storage.Client()
+                    bucket = storage_client.bucket("olym_suzano")
+                    blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
+                    blob.upload_from_string(json_data)
+                    with open('placeholder.txt', 'r') as f:
+                        output_text = f.read()
+                    st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
+                    st.markdown("**EDI TEXT**")
+                    st.text_area('', value=output_text, height=600)
+                    with open('placeholder.txt', 'r') as f:
+                        file_content = f.read()
+                    newline="\n"
+                    filename = f'{a}{b}OLYM'
+                    file_name= f'{a}{b}OLYM.txt'
+                    st.write(filename)
+                    subject = f'Suzano_EDI_{a}_{release_order_number}'
+                    body = f"EDI for Release Order Number {current_release_order} is attached.{newline}For Carrier Code:{carrier_code} and Bill of Lading: {terminal_bill_of_lading}, {len(loads)} loads were loaded to vehicle {vehicle_id}."
+                    sender = "warehouseoly@gmail.com"
+                    #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                    recipients = ["afsiny@portolympia.com"]
+                    password = "xjvxkmzbpotzeuuv"
+            
+                      # Replace with the actual file path
+            
+            
+                    with open('temp_file.txt', 'w') as f:
+                        f.write(file_content)
+            
+                    file_path = 'temp_file.txt'  # Use the path of the temporary file
+            
+                    send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
+                    upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
     else:
         st.subheader("**Nothing dispatched!**")
             
