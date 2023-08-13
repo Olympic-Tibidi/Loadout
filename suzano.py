@@ -913,12 +913,18 @@ if select=="LOADOUT" :
                             to_delete.append(i)
                     for k in to_delete:
                         dispatched.pop(k)
-                        st.write("this happened")
-                    try:
+                        try:
                         dispatched["1"]=dispatched["2"]
-                        del dispatched["2"]
-                    except:
-                        pass
+                        dispatched["2"]=dispatched["3"]
+                        del dispatched["3"]
+                        except:
+                            pass
+                        try:
+                            dispatched["1"]=dispatched["2"]
+                            del dispatched["2"]
+                        except:
+                            pass
+                           
                 
                 json_data = json.dumps(info)
                 storage_client = storage.Client()
