@@ -239,16 +239,8 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
         bill_of_lading_number=max(list_of_ladings)+1
     except:
         bill_of_lading_number=115240
-        
+    return bill_of_lading_number,bill_of_ladings
     
-    bill_of_ladings[str(bill_of_lading_number)]:{"vessel":vessel,"release_order":release_order,"sales_order":sales_order,"carrier_id":carrier_id,"vehicle":vehicle,"quantity":quantity}
-    bill_of_ladings=json.dumps(bill_of_ladings)
-    storage_client = storage.Client()
-    bucket = storage_client.bucket("olym_suzano")
-    blob = bucket.blob(rf"terminal_bill_of_ladings.json")
-    blob.upload_from_string(bill_of_ladings)
-    return bill_of_ladings,bill_of_lading_number
-
 
 user="AFSIN"
     
@@ -696,7 +688,13 @@ if select=="LOADOUT" :
             vehicle_id=st.text_input("**:blue[Vehicle ID]**")
             number=None
             if st.button("GENERATE BILL OF LADING"):
-                bill,number=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,st.session_state.updated_quantity)
+                number,bill_of_ladings=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,st.session_state.updated_quantity)
+                bill_of_ladings[str(number)]:{"vessel":vessel,"release_order":release_order,"sales_order":sales_order,"carrier_id":carrier_id,"vehicle":vehicle,"quantity":quantity}
+                bill_of_ladings=json.dumps(bill_of_ladings)
+                storage_client = storage.Client()
+                bucket = storage_client.bucket("olym_suzano")
+                blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+                blob.upload_from_string(bill_of_ladings)
             terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",number,disabled=False)
        
         with col4:
