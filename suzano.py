@@ -416,7 +416,7 @@ if select=="ADMIN" :
                     dispatched_release_order=dispatched["release_order"]
                     dispatched_sales_order=dispatched["sales_order"]
                     dispatched_vessel=dispatched["vessel"]
-                    if target[dispatched_sales_order"]["remaining"]==0:
+                    if target[dispatched_sales_order]["remaining"]==0:
                         to_delete.append(i)
                 for k in to_delete:
                     dispatched.pop(k)
