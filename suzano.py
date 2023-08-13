@@ -407,7 +407,7 @@ if select=="ADMIN" :
                 try:
                     dispatched=gcp_download("olym_suzano",rf"dispatched.json")
                     dispatched=json.loads(dispatched)
-                    st.write(dispatched)
+                    #st.write(dispatched)
                 except:
                     pass
                 to_delete=[]            
@@ -420,7 +420,7 @@ if select=="ADMIN" :
                         to_delete.append(i)
                 for k in to_delete:
                     dispatched.pop(k)
-                    st.write("deleted k")
+                    #st.write("deleted k")
                 try:
                     dispatched["1"]=dispatched["2"]
                     del dispatched["2"]
