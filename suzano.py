@@ -844,9 +844,9 @@ if select=="LOADOUT" :
             bucket = storage_client.bucket("olym_suzano")
             blob = bucket.blob(rf"terminal_bill_of_ladings.json")
             blob.upload_from_string(bill_of_ladings)
-            st.session_state.number=number
             
-            terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",st.session_state.number,disabled=True)
+            
+            terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",bill_of_lading_number,disabled=True)
             
             proceed=False
             if double_load:
