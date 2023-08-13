@@ -413,9 +413,9 @@ if select=="ADMIN" :
                 to_delete=[]            
                 for i in dispatched.keys():
                     st.write(i)
-                    dispatched_release_order=dispatched["release_order"]
-                    dispatched_sales_order=dispatched["sales_order"]
-                    dispatched_vessel=dispatched["vessel"]
+                    dispatched_release_order=dispatched[i]["release_order"]
+                    dispatched_sales_order=dispatched[i]["sales_order"]
+                    dispatched_vessel=dispatched[i]["vessel"]
                     if target[dispatched_sales_order]["remaining"]==0:
                         to_delete.append(i)
                 for k in to_delete:
