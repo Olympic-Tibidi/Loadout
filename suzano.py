@@ -689,17 +689,8 @@ if select=="LOADOUT" :
             transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
             transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
             vehicle_id=st.text_input("**:blue[Vehicle ID]**")
-            number=None
-            if st.button("GENERATE BILL OF LADING"):
-                number,bill_of_ladings=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,st.session_state.updated_quantity)
-                
-                bill_of_ladings[str(number)]:{"vessel":vessel,"release_order":release_order_number,"sales_order":sales_order_item,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":st.session_state.updated_quantity}
-                bill_of_ladings=json.dumps(bill_of_ladings)
-                storage_client = storage.Client()
-                bucket = storage_client.bucket("olym_suzano")
-                blob = bucket.blob(rf"terminal_bill_of_ladings.json")
-                blob.upload_from_string(bill_of_ladings)
-            terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",st.session_state.number,disabled=False)
+        
+            
        
         with col4:
             updated_quantity=0
@@ -830,9 +821,18 @@ if select=="LOADOUT" :
         
         
             
-       
-            
-      
+        submit_col1,submit_col2,submit_col3=st.columns([3,3,4])
+        with submit_col1:
+            if st.button("GENERATE BILL OF LADING"):
+                number,bill_of_ladings=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,st.session_state.updated_quantity)
+                bill_of_ladings[str(number)]:{"vessel":vessel,"release_order":release_order_number,"sales_order":sales_order_item,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":st.session_state.updated_quantity}
+                bill_of_ladings=json.dumps(bill_of_ladings)
+                storage_client = storage.Client()
+                bucket = storage_client.bucket("olym_suzano")
+                blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+                blob.upload_from_string(bill_of_ladings)
+        with submit_col2:
+            terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",st.session_state.number,disabled=False)
         
         if st.button('SUBMIT EDI'):
             proceed=False
