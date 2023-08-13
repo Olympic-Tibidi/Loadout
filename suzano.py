@@ -258,7 +258,7 @@ if select=="ADMIN" :
     with admin_tab2:
         bill_data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
         admin_bill_of_ladings=json.loads(data)
-        st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings)
+        st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings))
     
     with admin_tab3:
         st.markdown("SHIPMENT FILES")
