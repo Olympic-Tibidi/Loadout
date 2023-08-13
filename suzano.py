@@ -929,7 +929,7 @@ if select=="INVENTORY" :
             tablo=pd.DataFrame({"Ocean B/L":items,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
             total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
             tablo = tablo.append(total_row, ignore_index=True)
-            tablo["TOTAL"] = tablo.loc[1:, ["In Warehouse", "Shipped"]].sum(axis=1)
+            tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
  
             st.dataframe(tablo)
         if st.checkbox("CLICK TO SEE INVENTORY LIST"):
