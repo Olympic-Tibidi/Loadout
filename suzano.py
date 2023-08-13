@@ -927,7 +927,10 @@ if select=="INVENTORY" :
             inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
             shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
             tablo=pd.DataFrame({"Ocean B/L":items,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
-            tablo.loc[3,"Ocean B/L"]={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
+            total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
+            tablo = tablo.append(total_row, ignore_index=True)
+
+ 
             st.dataframe(tablo)
         if st.checkbox("CLICK TO SEE INVENTORY LIST"):
             st.table(df)
