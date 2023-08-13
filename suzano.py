@@ -235,7 +235,7 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
     list_of_ladings=[]
     try:
         for keys in bill_of_ladings:
-            list_of_ladings.append(int(ke))
+            list_of_ladings.append(int(key))
         bill_of_lading_number=max(list_of_ladings)+1
     except:
         bill_of_lading_number=115240
