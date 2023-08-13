@@ -914,9 +914,9 @@ if select=="LOADOUT" :
                     for k in to_delete:
                         dispatched.pop(k)
                         try:
-                        dispatched["1"]=dispatched["2"]
-                        dispatched["2"]=dispatched["3"]
-                        del dispatched["3"]
+                            dispatched["1"]=dispatched["2"]
+                            dispatched["2"]=dispatched["3"]
+                            del dispatched["3"]
                         except:
                             pass
                         try:
