@@ -498,7 +498,7 @@ if select=="ADMIN" :
                            
                             
                             
-                            
+                            dispatch=dispatched.copy()
                             try:
                                 last=list(dispatch.keys())[-1]
                                 dispatch[str(int(last)+1)]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
