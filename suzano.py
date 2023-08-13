@@ -695,7 +695,7 @@ if select=="LOADOUT" :
             vehicle_id=st.text_input("**:blue[Vehicle ID]**")
             number=None
             if st.button("GENERATE BILL OF LADING"):
-                bill,number=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,updated_quantity)
+                bill,number=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,quantity)
             terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",number,disabled=False)
        
         with col4:
