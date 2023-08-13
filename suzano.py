@@ -859,9 +859,9 @@ if select=="LOADOUT" :
                 proceed=False
                 error="Please check Vehicle ID "
                 st.write(error)
-            if not terminal_bill_of_lading or terminal_bill_of_lading==None:
+            if len(terminal_bill_of_lading)<6:
                 proceed=False
-                error="Please check Terminal Bill Of Lading"
+                error="Please check Terminal Bill Of Lading. It should have 6 digits."
                 st.write(error)
             if quantity<10:
                 proceed=False
