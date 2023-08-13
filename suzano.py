@@ -415,8 +415,7 @@ if select=="ADMIN" :
                     rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
                 except:
                     nofile=1
-               
-                ###CLEAN DISPATCH
+              
                 try:
                     dispatched=gcp_download("olym_suzano",rf"dispatched.json")
                     dispatched=json.loads(dispatched)
@@ -425,9 +424,9 @@ if select=="ADMIN" :
                     pass
                 to_delete=[]            
                 for i in dispatched.keys():
-                    for j in target.keys():
-                        if target[j]["remaining"]==0:
-                            to_delete.append(i)
+                    sales=dispatched[i]["sales_order"]
+                    if target[sales]["remaining"]==0:
+                        to_delete.append(i)
                 for k in to_delete:
                     dispatched.pop(k)
                     #st.write("deleted k")
