@@ -608,7 +608,11 @@ if select=="LOADOUT" :
         
         
         if st.checkbox("CLICK TO LOAD MIXED SKU"):
-            double_load=True
+            try:
+                next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
+                double_load=True
+            except:
+                st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
             
     
         load_col1,load_col2,load_col3=st.columns([4,4,2])
