@@ -167,8 +167,6 @@ def edit_release_order_data(file,vessel,release_order_number,sales_order_item,ba
     json_data = json.dumps(file)
     return json_data
 
-def generate_bill_of_lading():
-    pass
 
 def process():
            
@@ -231,7 +229,24 @@ def process():
             f.write('\n')
 
         f.write(end)
-
+def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,quantity):
+    data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+    bill_of_ladings=json.loads(data)
+    list_of_ladings=[]
+    try:
+        for keys in bill_of_ladings:
+            list_of_ladings.append(key)
+        bill_of_lading_number=max(list_of_ladings)+1
+    except:
+        bill_of_lading_number=115240
+        
+    
+    bill_of_ladings[bill_of_lading_number]:{"vessel":vessel,"release_order":release_order,"sales_order":sales_order,"carrier_id":carrier_id,"vehicle":vehicle,"quantity":quantity}
+    storage_client = storage.Client()
+    bucket = storage_client.bucket("olym_suzano")
+    blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+    blob.upload_from_string(bill_of_ladings)
+    return bill_of_ladings,bill_of_lading_number
 
 
 user="AFSIN"
@@ -621,7 +636,7 @@ if select=="LOADOUT" :
             st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]}**')
             st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
             st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
-            remaining=info[vessel][current_release_order][current_sales_order]["remaining"]
+            remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
             if remaining<10:
                 st.markdown(rf'**:red[CAUTION : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}]**')
             st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
@@ -662,14 +677,14 @@ if select=="LOADOUT" :
                 sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
                 ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
                 batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
-                terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
+                #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
                 pass
             else:
                 release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
                 sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
                 ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
                 batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
-                terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
+                #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
            
                 
             
@@ -678,8 +693,11 @@ if select=="LOADOUT" :
             transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
             transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
             vehicle_id=st.text_input("**:blue[Vehicle ID]**")
-            
-        
+            number=None
+            if st.button("GENERATE BILL OF LADING"):
+                bill,number=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,updated_quantity)
+            terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",number,disabled=False)
+       
         with col4:
             updated_quantity=0
             live_quantity=0
@@ -812,8 +830,7 @@ if select=="LOADOUT" :
        
             
       
-        if st.button("GENERATE BILL OF LADING"):
-            generate_bill_of_lading()
+        
         if st.button('SUBMIT EDI'):
             proceed=False
             if double_load:
@@ -837,6 +854,10 @@ if select=="LOADOUT" :
                     proceed=True
             if remaining<0:
                 proceed=False
+                error="No more Items to ship on this Sales Order"
+            if not vehicle_id or not terminal_bill_of_lading:
+                proceed=False
+                error="Please check Vehicle ID and Terminal Bill Of Lading"
             if proceed:
                 
                 process()
