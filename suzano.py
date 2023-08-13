@@ -911,7 +911,7 @@ if select=="LOADOUT" :
                         if dispatched[i]["release_order"]==current_release_order and dispatched[i]["sales_order"]==current_sales_order:
                             to_delete.append(i)
                     for k in to_delete:
-                        del dispatched(k)
+                        del dispatched[k]
                     if dispatched.keys()==["2","3"]:
                         dispatched["1"]=dispatched["2"]
                         dispatched["2"]=dispatched["3"]
