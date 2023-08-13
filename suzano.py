@@ -379,6 +379,7 @@ if select=="ADMIN" :
                 st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                 
         with release_order_tab2:
+            
             vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
             rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
 
@@ -401,7 +402,33 @@ if select=="ADMIN" :
                     rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
                 except:
                     nofile=1
-                    
+               
+                ###CLEAN DISPATCH
+                try:
+                    dispatched=gcp_download("olym_suzano",rf"dispatched.json")
+                    dispatched=json.loads(dispatched)
+                    st.write(dispatched)
+                except:
+                    pass
+                to_delete=[]            
+                for i in dispatched.keys():
+                    st.write(i)
+                    dispatched_release_order=dispatched["release_order"]
+                    dispatched_sales_order=dispatched["sales_order"]
+                    dispatched_vessel=dispatched["vessel"]
+                    if target[dispatched_sales_order"]["remaining"]==0:
+                        to_delete.append(i)
+                for k in to_delete:
+                    dispatched.pop(k)
+                    st.write("deleted k")
+                try:
+                    dispatched["1"]=dispatched["2"]
+                    del dispatched["2"]
+                except:
+                    pass      
+                ###CLEAN DISPATCH
+
+                
                                       
                 if nofile!=1 :         
                                 
@@ -461,25 +488,7 @@ if select=="ADMIN" :
                     dol1,dol2,dol3=st.columns([2,2,8])
                     with dol1:
                        
-                        dispatched=gcp_download("olym_suzano",rf"dispatched.json")
-                        dispatched=json.loads(dispatched)
-                        st.write(dispatched)
-                       
-                       
-                        to_delete=[]
-                        
-                        for i in dispatched.keys():
-                            st.write(i)
-                            if dispatched[i]["release_order"]==current_release_order and dispatched[i]["sales_order"]==current_sales_order:
-                                to_delete.append(i)
-                        for k in to_delete:
-                            dispatched.pop(k)
-                            st.write("deleted k")
-                        try:
-                            dispatched["1"]=dispatched["2"]
-                            del dispatched["2"]
-                        except:
-                            pass                                             
+                               
                         if st.button("DISPATCH TO WAREHOUSE",key="lala"):
                            
                             
