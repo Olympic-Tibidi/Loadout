@@ -254,8 +254,13 @@ select=st.sidebar.radio("SELECT FUNCTION",
 
     
 if select=="ADMIN" :
-    admin_tab1,admin_tab2=st.tabs(["RELEASE ORDERS","SHIPMENT FILES"])
+    admin_tab1,admin_tab2,admin_tab3=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","SHIPMENT FILES"])
     with admin_tab2:
+        bill_data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+        admin_bill_of_ladings=json.loads(data)
+        st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings)
+    
+    with admin_tab3:
         st.markdown("SHIPMENT FILES")
         shipment_tab1,shipment_tab2=st.tabs(["UPLOAD/PROCESS SHIPMENT FILE","SHIPMENT FILE DATABASE"])
         with shipment_tab1:
@@ -832,13 +837,13 @@ if select=="LOADOUT" :
                 bill_of_lading_number=max(list_of_ladings)+1
             except:
                 bill_of_lading_number=115240
-            st.write(bill_of_lading_number)
+            #st.write(bill_of_lading_number)
             
             
             #number,bill_of_ladings=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,st.session_state.updated_quantity)
-            st.write(bill_of_ladings)
+            #st.write(bill_of_ladings)
             bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":sales_order_item,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":st.session_state.updated_quantity}            
-            st.write(bill_of_ladings)
+            #st.write(bill_of_ladings)
             bill_of_ladings=json.dumps(bill_of_ladings)
             storage_client = storage.Client()
             bucket = storage_client.bucket("olym_suzano")
