@@ -941,6 +941,18 @@ if select=="LOADOUT" :
         
                 send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
                 upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
+            else:   ###cancel bill of lading
+                data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                bill_of_ladings=json.loads(data)
+                del bill_of_ladings[str(bill_of_ladings_number)]
+                bill_of_ladings=json.dumps(bill_of_ladings)
+                storage_client = storage.Client()
+                bucket = storage_client.bucket("olym_suzano")
+                blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+                blob.upload_from_string(bill_of_ladings)
+
+    
+                
     else:
         st.subheader("**Nothing dispatched!**")
             
