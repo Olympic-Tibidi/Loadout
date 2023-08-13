@@ -246,7 +246,7 @@ select=st.sidebar.radio("SELECT FUNCTION",
 
     
 if select=="ADMIN" :
-    admin_tab1,admin_tab2=st.tabs(["SHIPMENT FILES","RELEASE ORDERS"])
+    admin_tab1,admin_tab2=st.tabs(["RELEASE ORDERS""SHIPMENT FILES"])
     with admin_tab2:
         st.markdown("SHIPMENT FILES")
         shipment_tab1,shipment_tab2=st.tabs(["UPLOAD/PROCESS SHIPMENT FILE","SHIPMENT FILE DATABASE"])
