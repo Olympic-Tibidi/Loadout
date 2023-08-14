@@ -71,7 +71,7 @@ def check_password():
         return False
     else:
         # Password correct.
-        return True
+        return True,st,session_state["username"]
 
 
 
@@ -277,12 +277,12 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
     except:
         bill_of_lading_number=115240
     return bill_of_lading_number,bill_of_ladings
-    
-if check_password():
+yes,user=check_password()
+if yes:
     #st.write("Here goes your normal Streamlit app...")
     #st.button("Click me")
     
-    user=st.session_state["username"]
+    #user=st.session_state["username"]
     st.write(user)
     #if user :
     #colu1,colu2=st.columns([1,8])
