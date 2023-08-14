@@ -753,6 +753,7 @@ if check_password():
                             
                             if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
                                 st.write("WRONG B/L, DO NOT LOAD!")
+                            st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"])
                             if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"]!="OLYM":
                                 st.write("THIS UNIT HAS BEEN SHIPPED")
                             
