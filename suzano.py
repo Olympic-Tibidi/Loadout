@@ -60,7 +60,7 @@ def check_password():
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
-        return "No"
+        return "No",user
     elif not st.session_state["password_correct"]:
         # Password not correct, show input + error.
         user=st.text_input("Username", on_change=password_entered, key="username")
@@ -68,7 +68,7 @@ def check_password():
             "Password", type="password", on_change=password_entered, key="password"
         )
         st.error("😕 User not known or password incorrect")
-        return "No"
+        return "No",user
     else:
         # Password correct.
         return "Yes",user
@@ -279,10 +279,7 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
     return bill_of_lading_number,bill_of_ladings
 answer,user=check_password()
 if answer=="Yes":
-    #st.write("Here goes your normal Streamlit app...")
-    #st.button("Click me")
     
-    #user=st.session_state["username"]
     st.write(user)
     #if user :
     #colu1,colu2=st.columns([1,8])
