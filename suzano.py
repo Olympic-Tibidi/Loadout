@@ -432,11 +432,11 @@ if select=="ADMIN" :
                 for k in to_delete:
                     dispatched.pop(k)
                     #st.write("deleted k")
-                if dispatched.keys()==["2","3"]:
+                if list(dispatched.keys())==["2","3"]:
                     dispatched["1"]=dispatched["2"]
                     dispatched["2"]=dispatched["3"]
                     del dispatched["3"]
-                if dispatched.keys()==["2"]:
+                if list(dispatched.keys())==["2"]:
                     dispatched["1"]=dispatched["2"]
                     del dispatched["2"]
                 
@@ -920,11 +920,11 @@ if select=="LOADOUT" :
                             to_delete.append(i)
                     for k in to_delete:
                         del dispatched[k]
-                    if dispatched.keys()==["2","3"]:
+                    if list(dispatched.keys())==["2","3"]:
                         dispatched["1"]=dispatched["2"]
                         dispatched["2"]=dispatched["3"]
                         del dispatched["3"]
-                    if dispatched.keys()==["2"]:
+                    if list(dispatched.keys())==["2"]:
                         dispatched["1"]=dispatched["2"]
                         del dispatched["2"]
                     json_data = json.dumps(dispatched)
