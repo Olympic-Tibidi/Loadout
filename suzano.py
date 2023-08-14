@@ -68,10 +68,10 @@ def check_password():
             "Password", type="password", on_change=password_entered, key="password"
         )
         st.error("😕 User not known or password incorrect")
-        return False
+        return "No"
     else:
         # Password correct.
-        return True,st,session_state["username"]
+        return "Yes",st,session_state["username"]
 
 
 
@@ -277,8 +277,8 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
     except:
         bill_of_lading_number=115240
     return bill_of_lading_number,bill_of_ladings
-yes,user=check_password()
-if yes:
+answer,user=check_password()
+if answer=="Yes":
     #st.write("Here goes your normal Streamlit app...")
     #st.button("Click me")
     
