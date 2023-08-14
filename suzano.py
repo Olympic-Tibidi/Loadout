@@ -820,6 +820,7 @@ if check_password():
                
             with col5:
                 Inventory_Audit=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+                st.write(Inventory_Audit)
                 if double_load:
                     first_faults=[]
                     if first_load_input is not None:
