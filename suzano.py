@@ -833,22 +833,30 @@ if select=="LOADOUT" :
             
         
         if st.button('SUBMIT EDI'):
-            data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
-            bill_of_ladings=json.loads(data)
-            list_of_ladings=[]
-            try:
-                for key in bill_of_ladings:
-                    list_of_ladings.append(int(key))
-                bill_of_lading_number=max(list_of_ladings)+1
-            except:
-                bill_of_lading_number=115240
+            def gen_bill_of_lading():
+                data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                bill_of_ladings=json.loads(data)
+                list_of_ladings=[]
+                try:
+                    for key in bill_of_ladings:
+                        if key % 2 == 0:
+                            list_of_ladings.append(int(key))
+                    bill_of_lading_number=max(list_of_ladings)+2
+                except:
+                    bill_of_lading_number=115240
+                return bill_of_lading_number
             #st.write(bill_of_lading_number)
             
             
-            #number,bill_of_ladings=generate_bill_of_lading(vessel,release_order_number,sales_order_item,carrier_code,vehicle_id,st.session_state.updated_quantity)
-            #st.write(bill_of_ladings)
-            bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":sales_order_item,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":st.session_state.updated_quantity}            
-            #st.write(bill_of_ladings)
+            if double_load:
+                bill_of_lading_number=gen_bill_of_lading()
+                bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":current_sales_order,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(first_textsplit)} 
+                bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"sales_order":next_sales_order,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(second_textsplit)} 
+            else:
+                bill_of_lading_number=gen_bill_of_lading()
+                bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":sales_order_item,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":st.session_state.updated_quantity}            
+                
+         
             bill_of_ladings=json.dumps(bill_of_ladings)
             storage_client = storage.Client()
             bucket = storage_client.bucket("olym_suzano")
