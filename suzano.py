@@ -279,8 +279,8 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
     return bill_of_lading_number,bill_of_ladings
     
 if check_password():
-    st.write("Here goes your normal Streamlit app...")
-    st.button("Click me")
+    #st.write("Here goes your normal Streamlit app...")
+    #st.button("Click me")
 
     user="AFSIN"
         
