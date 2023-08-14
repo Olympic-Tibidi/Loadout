@@ -862,7 +862,7 @@ if check_password():
                         #st.write(textsplit)
                         st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"])
                         for i,x in enumerate(textsplit):
-                            st.write(
+                            
                             if audit_unit(x):
                                 st.text_input(f"Unit No : {i+1}",x)
                                 faults.append(0)
