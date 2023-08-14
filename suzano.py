@@ -281,9 +281,9 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
 if check_password():
     #st.write("Here goes your normal Streamlit app...")
     #st.button("Click me")
-
-    user="AFSIN"
-        
+    
+    user="st.session_state["username"]
+    st.write(user)
     #if user :
     #colu1,colu2=st.columns([1,8])
     select=st.sidebar.radio("SELECT FUNCTION",
