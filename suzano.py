@@ -839,7 +839,7 @@ if select=="LOADOUT" :
                 list_of_ladings=[]
                 try:
                     for key in bill_of_ladings:
-                        if key % 2 == 0:
+                        if int(key) % 2 == 0:
                             list_of_ladings.append(int(key))
                     bill_of_lading_number=max(list_of_ladings)+2
                 except:
