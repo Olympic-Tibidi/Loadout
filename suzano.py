@@ -712,7 +712,10 @@ if select=="LOADOUT" :
                         #st.write(bill_mapping[x[:-3]]["Batch"])
                         
                         if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
-                            st.write("WRONG UNIT, scan another one")
+                            st.write("WRONG B/L, DO NOT LOAD!")
+                        if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"]!="OLYM":
+                            st.write("THIS UNIT HAS BEEN SHIPPED")
+                        
                         else:
                             return True
             def audit_split(release,sales):
@@ -720,9 +723,12 @@ if select=="LOADOUT" :
                         #st.write(bill_mapping[x[:-3]]["Batch"])
                         
                         if bill_mapping[x[:-3]]["Ocean_bl"]!=info[vessel][release][sales]["ocean_bill_of_lading"] and bill_mapping[x[:-3]]["Batch"]!=info[vessel][release][sales]["batch"]:
-                            st.write("WRONG UNIT, scan another one")
+                            st.write("WRONG B/L, DO NOT LOAD!")
+                        if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"]!="OLYM":
+                            st.write("THIS UNIT HAS BEEN SHIPPED")
                         else:
                             return True
+            
             flip=False 
             first_load_input=None
             second_load_input=None
@@ -773,7 +779,7 @@ if select=="LOADOUT" :
          
            
         with col5:
-
+            Inventory_Audit=gcp_csv_to_df("olym_suzano", "Inventory.csv")
             if double_load:
                 first_faults=[]
                 if first_load_input is not None:
@@ -881,7 +887,7 @@ if select=="LOADOUT" :
             else:
                 if 1 in faults:
                     proceed=False
-                    for i in second_faults:
+                    for i in faults:
                         if i==1:
                             st.markdown(f"**Unit{faults.index(i)+1}**")
                 else:
