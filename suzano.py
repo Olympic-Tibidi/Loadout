@@ -282,7 +282,7 @@ if check_password():
     #st.write("Here goes your normal Streamlit app...")
     #st.button("Click me")
     
-    user="st.session_state["username"]
+    user=st.session_state["username"]
     st.write(user)
     #if user :
     #colu1,colu2=st.columns([1,8])
