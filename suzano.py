@@ -844,16 +844,16 @@ if select=="LOADOUT" :
                     bill_of_lading_number=max(list_of_ladings)+2
                 except:
                     bill_of_lading_number=115240
-                return bill_of_lading_number
+                return bill_of_lading_number,bill_of_ladings
             #st.write(bill_of_lading_number)
             
             
             if double_load:
-                bill_of_lading_number=gen_bill_of_lading()
+                bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                 bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":current_sales_order,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(first_textsplit)} 
                 bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"sales_order":next_sales_order,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(second_textsplit)} 
             else:
-                bill_of_lading_number=gen_bill_of_lading()
+                bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                 bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":sales_order_item,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":st.session_state.updated_quantity}            
                 
          
