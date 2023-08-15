@@ -841,6 +841,7 @@ if gty==1:
                         first_faults=[]
                         if first_load_input is not None:
                             first_textsplit = first_load_input.splitlines()
+                            first_textsplit=[i for i in first_textsplit if len(i)>8]
                             #st.write(textsplit)
                             for j,x in enumerate(first_textsplit):
                                 if audit_split(current_release_order,current_sales_order):
@@ -852,6 +853,7 @@ if gty==1:
                         second_faults=[]
                         if second_load_input is not None:
                             second_textsplit = second_load_input.splitlines()
+                            second_textsplit = [i for i in second_textsplit if len(i)>8]
                             #st.write(textsplit)
                             for i,x in enumerate(second_textsplit):
                                 if audit_split(next_release_order,next_sales_order):
@@ -874,6 +876,7 @@ if gty==1:
                         faults=[]
                         if load_input is not None:
                             textsplit = load_input.splitlines()
+                            textsplit=[i for i in textsplit if len(i)>8]
                             #st.write(textsplit)
                             
                             for i,x in enumerate(textsplit):
