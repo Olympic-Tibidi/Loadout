@@ -751,7 +751,7 @@ if gty==1:
                     transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
                     transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
                     vehicle_id=st.text_input("**:blue[Vehicle ID]**")
-                    foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+                    foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1,key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
                 
                     
                
