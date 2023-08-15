@@ -867,7 +867,7 @@ if gty==1:
                             #st.write(textsplit)
                             
                             for i,x in enumerate(textsplit):
-                                st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"])
+                               
                                 if audit_unit(x):
                                     st.text_input(f"Unit No : {i+1}",x)
                                     faults.append(0)
