@@ -285,7 +285,7 @@ authenticated_username='ayilmaz'
 if gty==1:
     
     if authenticated_username == 'ayilmaz':
-        print(f'Welcome {name}')
+        #print(f'Welcome {name}')
 
 
 
