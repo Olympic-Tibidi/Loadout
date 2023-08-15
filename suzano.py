@@ -284,20 +284,35 @@ yaman=gcp_download("olym_suzano",rf"configure.yaml")
 with open(r"configure.yaml") as file:
     config = yaml.load(file, Loader=SafeLoader)
 config=yaml.load(yaman,Loader=SafeLoader)
+
+credentials = config["credentials"]["usernames"]
+cookie_config = config["cookie"]
+preauthorized_emails = config["preauthorized"]["emails"]
+
+# Create a dictionary to map usernames to their corresponding information
+user_info = {username: info for username, info in credentials.items()}
+
+# Example of accessing specific user information
+username = "ayilmaz"
+user_data = user_info.get(username, {})
+
+# Initialize the Authenticator
 authenticator = sa.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
+    user_data.get("email", ""),
+    cookie_config["name"],
+    cookie_config["key"],
+    cookie_config["expiry_days"],
+    preauthorized_emails
 )
-name, authentication_status, username = authenticator.login('Login', 'main')
+
+# Perform authentication
+name, authentication_status, authenticated_username = authenticator.login('Login', 'main')
+
 if authentication_status:
     authenticator.logout('Logout', 'main')
-    if username == 'ayilmaz':
-        st.write(f'Welcome *{name}*')
-        st.title('Application 1')
-   
+    if authenticated_username == 'ayilmaz':
+        print(f'Welcome {name}')
+
 
     
     
