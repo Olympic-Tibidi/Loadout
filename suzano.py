@@ -296,7 +296,7 @@ answer="Yes"
 #answer,user=check_password()
 if answer=="Yes":
     
-    st.write(user)
+    #st.write(user)
     #if user :
     #colu1,colu2=st.columns([1,8])
     select=st.sidebar.radio("SELECT FUNCTION",
