@@ -755,7 +755,7 @@ if gty==1:
                     def audit_unit(x):
                             if len(x)==11:
                                 #st.write(bill_mapping[x[:-3]]["Batch"])
-                                st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"])
+                                st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0])
                                 if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
                                     st.write("WRONG B/L, DO NOT LOAD!")
                                 
@@ -826,7 +826,7 @@ if gty==1:
                    
                 with col5:
                     Inventory_Audit=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-                    st.write(Inventory_Audit)
+                    #st.write(Inventory_Audit)
                     if double_load:
                         first_faults=[]
                         if first_load_input is not None:
