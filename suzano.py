@@ -755,11 +755,11 @@ if gty==1:
                     def audit_unit(x):
                             if len(x)==11:
                                 #st.write(bill_mapping[x[:-3]]["Batch"])
-                                st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0])
+                                #st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0])
                                 if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
                                     st.write("WRONG B/L, DO NOT LOAD!")
                                 
-                                #if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"]!="OLYM":
+                                if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
                                    # st.write("THIS UNIT HAS BEEN SHIPPED")
                                 
                                 else:
@@ -770,7 +770,7 @@ if gty==1:
                                 
                                 if bill_mapping[x[:-3]]["Ocean_bl"]!=info[vessel][release][sales]["ocean_bill_of_lading"] and bill_mapping[x[:-3]]["Batch"]!=info[vessel][release][sales]["batch"]:
                                     st.write("WRONG B/L, DO NOT LOAD!")
-                                if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"]!="OLYM":
+                                if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
                                     st.write("THIS UNIT HAS BEEN SHIPPED")
                                 else:
                                     return True
