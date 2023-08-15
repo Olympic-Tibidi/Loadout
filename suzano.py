@@ -280,38 +280,10 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
         bill_of_lading_number=115240
     return bill_of_lading_number,bill_of_ladings
 
-yaman=gcp_download("olym_suzano",rf"configure.yaml")
-with open(r"configure.yaml") as file:
-    config = yaml.load(file, Loader=SafeLoader)
-config=yaml.load(yaman,Loader=SafeLoader)
-
-# Extract the relevant information from the config dictionary
-credentials = config["credentials"]
-usernames_credentials = credentials.get("usernames", {})
-cookie_config = config["cookie"]
-preauthorized_emails = config["preauthorized"]["emails"]
-
-# Convert usernames to lowercase and store the user information
-user_info = {username.lower(): info for username, info in usernames_credentials.items()}
-
-# Example of accessing specific user information
-username = "ayilmaz"
-user_data = user_info.get(username, {})
-
-# Initialize the Authenticator
-authenticator = sa.Authenticate(
-    user_data.get("email", ""),
-    cookie_config["name"],
-    cookie_config["key"],
-    cookie_config["expiry_days"],
-    preauthorized_emails
-)
-
-# Perform authentication
-name, authentication_status, authenticated_username = authenticator.login('Login', 'main')
-
-if authentication_status:
-    authenticator.logout('Logout', 'main')
+gty=1
+authenticated_username='ayilmaz'
+if gty==1:
+    
     if authenticated_username == 'ayilmaz':
         print(f'Welcome {name}')
 
