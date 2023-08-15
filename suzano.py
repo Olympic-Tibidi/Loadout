@@ -440,7 +440,7 @@ if gty==1:
                     
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
                     rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
-        
+                    completed_release_order=[]
                     with rls_tab1:
                         
                                     
@@ -508,6 +508,7 @@ if gty==1:
                                 st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                                 if targets[0] in sales_orders_completed:
                                     st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
+                                    
                                 else:
                                     st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
                                 st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Units - {target[targets[0]]['tonnage']} Metric Tons")
@@ -630,7 +631,9 @@ if gty==1:
                         else:
                             st.write("NO RELEASE ORDERS IN DATABASE")
                     with rls_tab2:
-                            pass
+                        sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
+                        
+                                
         
                         
         
