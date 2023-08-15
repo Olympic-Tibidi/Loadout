@@ -284,7 +284,7 @@ yaman=gcp_download("olym_suzano",rf"configure.yaml")
 with open("configure.yaml") as file:
     config = yaml.load(file, Loader=SafeLoader)
 
-authenticator = stauth.Authenticate(
+authenticator = sa.Authenticate(
     config['credentials'],
     config['cookie']['name'],
     config['cookie']['key'],
