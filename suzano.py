@@ -285,7 +285,9 @@ with open(r"configure.yaml") as file:
     config = yaml.load(file, Loader=SafeLoader)
 config=yaml.load(yaman,Loader=SafeLoader)
 
-usernames_credentials = config["credentials"]["usernames"]
+# Extract the relevant information from the config dictionary
+credentials = config["credentials"]
+usernames_credentials = credentials.get("usernames", {})
 cookie_config = config["cookie"]
 preauthorized_emails = config["preauthorized"]["emails"]
 
@@ -312,7 +314,6 @@ if authentication_status:
     authenticator.logout('Logout', 'main')
     if authenticated_username == 'ayilmaz':
         print(f'Welcome {name}')
-
 
 
 
