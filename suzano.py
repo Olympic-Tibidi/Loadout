@@ -283,7 +283,7 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
 yaman=gcp_download("olym_suzano",rf"configure.yaml")
 with open(r"configure.yaml") as file:
     config = yaml.load(file, Loader=SafeLoader)
-
+config=yaml.load(yaman,Loader=SafeLoader)
 authenticator = sa.Authenticate(
     config['credentials'],
     config['cookie']['name'],
