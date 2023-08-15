@@ -941,10 +941,10 @@ if gty==1:
                             st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
                             for i in first_faults:
                                 if i==1:
-                                    st.markdown(f"**Unit{first_faults.index(i)+1}**")
+                                    st.markdown(f"**:red[Unit{first_faults.index(i)+1}]**")
                             for i in second_faults:
                                 if i==1:
-                                    st.markdown(f"**Unit{second_faults.index(i)+1}**")
+                                    st.markdown(f"**:red[Unit{second_faults.index(i)+1}]**")
                         else:
                             proceed=True
                     else:
@@ -952,7 +952,7 @@ if gty==1:
                             proceed=False
                             for i in faults:
                                 if i==1:
-                                    st.markdown(f"**Unit{faults.index(i)+1}**")
+                                    st.markdown(f"**:red[Unit{faults.index(i)+1}**]")
                         else:
                             proceed=True
                     if remaining<0:
