@@ -795,10 +795,12 @@ if gty==1:
                             second_quantity=0
                             if first_load_input is not None:
                                 first_textsplit = first_load_input.splitlines()
+                                first_textsplit=[i for i in first_textsplit if len(i)>8]
                                 first_quantity=len(first_textsplit)
                             second_load_input=st.text_area("**SECOND SKU LOADS**",height=300)
                             if second_load_input is not None:
                                 second_textsplit = second_load_input.splitlines()
+                                second_textsplit = [i for i in second_textsplit if len(i)>8]
                                 second_quantity=len(second_textsplit)
                             updated_quantity=first_quantity+second_quantity
                             st.session_state.updated_quantity=updated_quantity
@@ -816,6 +818,7 @@ if gty==1:
                         load_input=st.text_area("**LOADS**",height=300)#[:-3]
                         if load_input is not None:
                             textsplit = load_input.splitlines()
+                            textsplit=[i for i in textsplit if len(i)>8]
                             updated_quantity=len(textsplit)
                             st.session_state.updated_quantity=updated_quantity
                             #st.write(textsplit)
