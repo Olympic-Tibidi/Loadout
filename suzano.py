@@ -281,7 +281,7 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
     return bill_of_lading_number,bill_of_ladings
 
 yaman=gcp_download("olym_suzano",rf"configure.yaml")
-with open(yaman) as file:
+with open("configure.yaml") as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
