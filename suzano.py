@@ -485,15 +485,16 @@ if gty==1:
                             if list(dispatched.keys())==["2"]:
                                 dispatched["1"]=dispatched["2"]
                                 del dispatched["2"]
+                            json_data = json.dumps(dispatched)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"dispatched.json")
+                            blob.upload_from_string(json_data)
                         except:
                             pass
                         
                             
-                        json_data = json.dumps(dispatched)
-                        storage_client = storage.Client()
-                        bucket = storage_client.bucket("olym_suzano")
-                        blob = bucket.blob(rf"dispatched.json")
-                        blob.upload_from_string(json_data)
+                        
                         
                         
                         ###CLEAN DISPATCH
