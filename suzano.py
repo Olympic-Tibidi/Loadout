@@ -291,6 +291,7 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days'],
     config['preauthorized']
 )
+name, authentication_status, username = authenticator.login('Login', 'main')
 answer="Yes"
 #answer,user=check_password()
 if answer=="Yes":
