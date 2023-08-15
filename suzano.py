@@ -631,7 +631,8 @@ if gty==1:
                         else:
                             st.write("NO RELEASE ORDERS IN DATABASE")
                     with rls_tab2:
-                        sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
+                        pass
+                        #sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
                         
                                 
         
