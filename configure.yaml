@@ -1,0 +1,14 @@
+credentials:
+  usernames:
+    ayilmaz:
+      email: afsin1977@gmail.com
+      name: afsin yilmaz
+      password: testedelim
+   
+cookie:
+  expiry_days: 30
+  key: some_signature_key # Must be string
+  name: some_cookie_name
+preauthorized:
+  emails:
+  - afsin1977@gmail.com
