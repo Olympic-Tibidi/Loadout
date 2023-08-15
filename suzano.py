@@ -285,12 +285,12 @@ with open(r"configure.yaml") as file:
     config = yaml.load(file, Loader=SafeLoader)
 config=yaml.load(yaman,Loader=SafeLoader)
 
-credentials = config["credentials"]["usernames"]
+usernames_credentials = config["credentials"]["usernames"]
 cookie_config = config["cookie"]
 preauthorized_emails = config["preauthorized"]["emails"]
 
-# Create a dictionary to map usernames to their corresponding information
-user_info = {username: info for username, info in credentials.items()}
+# Convert usernames to lowercase and store the user information
+user_info = {username.lower(): info for username, info in usernames_credentials.items()}
 
 # Example of accessing specific user information
 username = "ayilmaz"
