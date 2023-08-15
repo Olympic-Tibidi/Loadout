@@ -751,6 +751,7 @@ if gty==1:
                     transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
                     transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
                     vehicle_id=st.text_input("**:blue[Vehicle ID]**")
+                    foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
                 
                     
                
@@ -821,10 +822,10 @@ if gty==1:
                             textsplit=[i for i in textsplit if len(i)>8]
                             updated_quantity=len(textsplit)
                             st.session_state.updated_quantity=updated_quantity
-                            #st.write(textsplit)
+                       
                             
-                    quantity=st.number_input("**:blue[Quantity of Units]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
-                    st.markdown(f"{quantity*2} TONS - {round(quantity*2*2204.62,1)} Pounds")
+                    quantity=st.number_input("**:blue[Scanned Quantity of Units]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
+                    st.markdown(f"**{quantity*2} TONS - {round(quantity*2*2204.62,1)} Pounds**")
                         
                         
                             
