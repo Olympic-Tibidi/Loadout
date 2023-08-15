@@ -27,6 +27,8 @@ import seaborn as sns
 import datetime as dt
 #from pyzbar import pyzbar
 import pickle
+import yaml
+from yaml.loader import SafeLoader
 
 
 
@@ -277,7 +279,20 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
     except:
         bill_of_lading_number=115240
     return bill_of_lading_number,bill_of_ladings
-answer,user=check_password()
+
+yaman=gcp_download("olym_suzano",rf"configure.yaml")
+with open(yaman) as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
+answer="Yes"
+#answer,user=check_password()
 if answer=="Yes":
     
     st.write(user)
