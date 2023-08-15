@@ -865,9 +865,9 @@ if gty==1:
                         if load_input is not None:
                             textsplit = load_input.splitlines()
                             #st.write(textsplit)
-                            st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"])
+                            
                             for i,x in enumerate(textsplit):
-                                
+                                st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"])
                                 if audit_unit(x):
                                     st.text_input(f"Unit No : {i+1}",x)
                                     faults.append(0)
