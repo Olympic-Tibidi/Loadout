@@ -1140,7 +1140,7 @@ if authentication_status:
         #with tab4:
         #     df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
         #    st.write(df)
-     elif username == 'rbriggs':
+    elif username == 'rbriggs':
         st.write(f'Welcome *{name}*')
         st.title('Application 2')
     elif authentication_status == False:
