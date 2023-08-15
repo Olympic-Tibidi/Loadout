@@ -760,7 +760,7 @@ if gty==1:
                                     st.write("WRONG B/L, DO NOT LOAD!")
                                 
                                 if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
-                                   # st.write("THIS UNIT HAS BEEN SHIPPED")
+                                    st.write("THIS UNIT HAS BEEN SHIPPED")
                                 
                                 else:
                                     return True
