@@ -641,7 +641,7 @@ if gty==1:
                                     bucket = storage_client.bucket("olym_suzano")
                                     blob = bucket.blob(rf"release_orders/{vessel}/{requested_file}.json")
                                     blob.upload_from_string(json_data)
-                                if st.button("DELETE RELEASE ORDER ITEM!",key="lalag"):
+                                if st.button("DELETE RELEASE ORDER ITEM!",key="laladg"):
                                     
                                     
                                     #st.write(to_edit_d)
