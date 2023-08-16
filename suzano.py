@@ -433,6 +433,19 @@ if gty==1:
                             
                             temp=store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
                             #st.write(temp)
+                        junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
+                        junk=json.loads(junk)
+                        try:
+                            del junk[release_order_number]
+                            jason_data=json.dumps(junk)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"release_orders/{vessel}/junk_release.json")
+                            blob.upload_from_string(jason_data)
+                        except:
+                            pass
+                        
+
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/{vessel}/{release_order_number}.json")
@@ -646,7 +659,7 @@ if gty==1:
                                     blob.upload_from_string(json_data)
                                 if st.button("DELETE RELEASE ORDER ITEM!",key="laladg"):
                                     junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
-                                    junk=json.loads(data_d)
+                                    junk=json.loads(junk)
                                     
                                     #st.write(to_edit_d)
                                     junk[requested_file]=datetime.datetime.today()
