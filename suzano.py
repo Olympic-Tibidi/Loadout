@@ -473,7 +473,7 @@ if gty==1:
                         try:
                             for i in dispatched.keys():
                                 sales=dispatched[i]["sales_order"]
-                                if target[sales]["remaining"]==0:
+                                if target[sales]["remaining"]<=0:
                                     to_delete.append(i)
                             for k in to_delete:
                                 dispatched.pop(k)
@@ -1014,7 +1014,7 @@ if gty==1:
                         else:
                             info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
                             info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
-                        if info[vessel][current_release_order][current_sales_order]["remaining"]==0:
+                        if info[vessel][current_release_order][current_sales_order]["remaining"]<=0:
                             to_delete=[]
                             for i in dispatched.keys():
                                 if dispatched[i]["release_order"]==current_release_order and dispatched[i]["sales_order"]==current_sales_order:
