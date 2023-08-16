@@ -519,7 +519,7 @@ if gty==1:
                                 st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
                                 st.write(f"        Batch : {target[targets[0]]['batch']}")
                                 st.write(f"        Units Shipped : {target[targets[0]]['shipped']} Units - {2*target[targets[0]]['shipped']} Metric Tons")
-                                if target[targets[0]]['remaining']<=10:
+                                if 0<target[targets[0]]['remaining']<=10:
                                     st.markdown(f"**:red[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]**")
                                 elif target[targets[0]]['remaining']<=0:
                                     st.markdown(f"**:orange[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]**")                                                                        
@@ -537,7 +537,7 @@ if gty==1:
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[1]]['batch']}")
                                     st.write(f"        Units Shipped : {target[targets[1]]['shipped']} Units - {2*target[targets[1]]['shipped']} Metric Tons")
-                                    if target[targets[1]]['remaining']<=10:
+                                    if 0<target[targets[1]]['remaining']<=10:
                                         st.markdown(f"**:red[Units Remaining : {target[targets[1]]['remaining']} Units - {2*target[targets[1]]['remaining']} Metric Tons]**")
                                     elif target[targets[1]]['remaining']<=0:
                                         st.markdown(f"**:orange[Units Remaining : {target[targets[1]]['remaining']} Units - {2*target[targets[1]]['remaining']} Metric Tons]**")
@@ -559,7 +559,7 @@ if gty==1:
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[2]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[2]]['batch']}")
                                     st.write(f"        Units Shipped : {target[targets[2]]['shipped']} Units - {2*target[targets[2]]['shipped']} Metric Tons")
-                                    if target[targets[2]]['remaining']<=10:
+                                    if 0<target[targets[2]]['remaining']<=10:
                                         st.markdown(f"**:red[Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons]**")
                                     elif target[targets[2]]['remaining']<=0:
                                         st.markdown(f"**:orange[Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons]**")
@@ -582,7 +582,7 @@ if gty==1:
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[3]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[3]]['batch']}")
                                     st.write(f"        Units Shipped : {target[targets[3]]['shipped']} Units - {2*target[targets[3]]['shipped']} Metric Tons")
-                                    if target[targets[3]]['remaining']<=10:
+                                    if 0<target[targets[3]]['remaining']<=10:
                                         st.markdown(f"**:red[Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons]**")
                                     else:
                                         st.write(f"       Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons")
