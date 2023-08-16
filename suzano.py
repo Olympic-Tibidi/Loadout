@@ -1123,7 +1123,7 @@ if gty==1:
                     inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
                     shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
                     
-                    wrap_=[df[df["Ocean B/L"]==i]["Wrap"] for i in items]
+                    wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique[0] for i in items]
                     st.write(wrap_)
                     tablo=pd.DataFrame({"Ocean B/L":items,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
                     total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
