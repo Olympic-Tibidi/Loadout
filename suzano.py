@@ -448,6 +448,9 @@ if gty==1:
                         
                                     
                         files_in_folder = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
+                        junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
+                        junk=json.loads(data_d)
+                        files_in_folder=[i for i in files_folder if i not in junk.keys()]
                         requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
                         
                         nofile=0
@@ -642,12 +645,16 @@ if gty==1:
                                     blob = bucket.blob(rf"release_orders/{vessel}/{requested_file}.json")
                                     blob.upload_from_string(json_data)
                                 if st.button("DELETE RELEASE ORDER ITEM!",key="laladg"):
-                                    
+                                    junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
+                                    junk=json.loads(data_d)
                                     
                                     #st.write(to_edit_d)
-                                    key = blobstore.create_gs_key(rf'/gs/olym_suzano/release_orders/{vessel}/{requested_file}.json')
-                                    blobstore.delete(key)
-                                    
+                                    junk[requested_file]=datetime.datetime.today()
+                                    json_data = json.dumps(junk)
+                                    storage_client = storage.Client()
+                                    bucket = storage_client.bucket("olym_suzano")
+                                    blob = bucket.blob(rf"release_orders/{vessel}/junk_release.json")
+                                    blob.upload_from_string(json_data)
                                            
                             with dol2:  
                                 if st.button("CLEAR DISPATCH QUEUE!"):
