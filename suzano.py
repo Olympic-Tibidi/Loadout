@@ -999,7 +999,7 @@ if gty==1:
                         proceed=False
                         error="Please check Terminal Bill Of Lading. It should have 6 digits."
                         st.write(error)
-                    if quantity<10:
+                    if quantity!=foreman_quantity:
                         proceed=False
                         error=f"{quantity} loads on this truck. Please check "
                         st.write(error)
