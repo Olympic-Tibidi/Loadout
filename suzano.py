@@ -645,7 +645,7 @@ if gty==1:
                                     
                                     
                                     #st.write(to_edit_d)
-                                    key = blobstore.create_gs_key('/gs/olym_suzano/release_orders/{vessel}/{requested_file}.json')
+                                    key = blobstore.create_gs_key(rf'/gs/olym_suzano/release_orders/{vessel}/{requested_file}.json')
                                     blobstore.delete(key)
                                     
                                            
