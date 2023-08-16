@@ -736,7 +736,7 @@ if gty==1:
                     st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
                     st.markdown(rf'**Sales Order Item-{current_sales_order}**')
                     wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
-                    st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - wrap_dict[info[vessel][current_release_order][current_sales_order]["wrap"]]**')
+                    st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[info[vessel][current_release_order][current_sales_order]["wrap"]]}**')
                     st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
                     st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
                     remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
