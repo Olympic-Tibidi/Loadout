@@ -998,19 +998,19 @@ if gty==1:
                             proceed=True
                     if remaining<0:
                         proceed=False
-                        error="No more Items to ship on this Sales Order"
+                        error="**:red[No more Items to ship on this Sales Order]"
                         st.write(error)
                     if not vehicle_id: 
                         proceed=False
-                        error="Please check Vehicle ID "
+                        error="**:red[Please check Vehicle ID]"
                         st.write(error)
                     if len(terminal_bill_of_lading)<6:
                         proceed=False
-                        error="Please check Terminal Bill Of Lading. It should have 6 digits."
+                        error="**:red[Please check Terminal Bill Of Lading. It should have 6 digits.]"
                         st.write(error)
                     if quantity!=foreman_quantity:
                         proceed=False
-                        error=f"{quantity} loads on this truck. Please check "
+                        error=f"**:red[{quantity} loads on this truck. Please check. You planned for {foreman_quantity} loads!]** "
                         st.write(error)
                     if proceed:
                         
