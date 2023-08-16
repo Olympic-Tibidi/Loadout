@@ -545,10 +545,9 @@ if gty==1:
                                 
                                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                                     if targets[0] in sales_orders_completed:
-                                        st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
+                                        st.markdown(f"**:orange[Sales Order Item : {targets[2]} - COMPLETED]**")
                                     else:
-                                        st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
-                                    st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
+                                        st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
                                     st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Units - {target[targets[2]]['tonnage']} Metric Tons")
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[2]]['batch']}")
