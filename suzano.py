@@ -449,7 +449,7 @@ if gty==1:
                                     
                         files_in_folder = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
                         junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
-                        junk=json.loads(data_d)
+                        junk=json.loads(junk)
                         files_in_folder=[i for i in files_folder if i not in junk.keys()]
                         requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
                         
