@@ -993,7 +993,7 @@ if gty==1:
                             proceed=False
                             for i in faults:
                                 if i==1:
-                                    st.markdown(f"**:red[Unit{faults.index(i)+1}**]")
+                                    st.markdown(f"**:red[Unit{faults.index(i)+1}]**")
                         else:
                             proceed=True
                     if remaining<0:
