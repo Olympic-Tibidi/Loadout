@@ -641,6 +641,13 @@ if gty==1:
                                     bucket = storage_client.bucket("olym_suzano")
                                     blob = bucket.blob(rf"release_orders/{vessel}/{requested_file}.json")
                                     blob.upload_from_string(json_data)
+                                if st.button("DELETE RELEASE ORDER ITEM!",key="lalag"):
+                                    
+                                    
+                                    #st.write(to_edit_d)
+                                    key = blobstore.create_gs_key('/gs/olym_suzano/release_orders/{vessel}/{requested_file}.json')
+                                    blobstore.delete(key)
+                                    
                                            
                             with dol2:  
                                 if st.button("CLEAR DISPATCH QUEUE!"):
