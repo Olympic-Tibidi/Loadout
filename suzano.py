@@ -169,6 +169,7 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,batch,
         sales_order_item: {
         "batch": batch,
         "ocean_bill_of_lading": ocean_bill_of_lading,
+        "wrap": wrap,
         "dryness":dryness,
         "transport_type": transport_type,
         "carrier_code": carrier_code,
@@ -191,6 +192,7 @@ def edit_release_order_data(file,vessel,release_order_number,sales_order_item,ba
         file[vessel][release_order_number][sales_order_item]={}
     file[vessel][release_order_number][sales_order_item]["batch"]= batch
     file[vessel][release_order_number][sales_order_item]["ocean_bill_of_lading"]= ocean_bill_of_lading
+    file[vessel][release_order_number][sales_order_item]["wrap"]= wrap
     file[vessel][release_order_number][sales_order_item]["dryness"]= dryness
     file[vessel][release_order_number][sales_order_item]["transport_type"]= transport_type
     file[vessel][release_order_number][sales_order_item]["carrier_code"]= carrier_code
@@ -425,11 +427,11 @@ if gty==1:
                         if edit: 
                             data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
                             to_edit=json.loads(data)
-                            temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
+                            temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
                             st.write(f"ADDED sales order item {sales_order_item} to release order {release_order_number}!")
                         else:
                             
-                            temp=store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code)
+                            temp=store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
                             #st.write(temp)
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
@@ -733,7 +735,7 @@ if gty==1:
                 with load_col1:
                     st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
                     st.markdown(rf'**Sales Order Item-{current_sales_order}**')
-                    st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]}**')
+                    st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - WRAPPED**')
                     st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
                     st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
                     remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
