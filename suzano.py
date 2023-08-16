@@ -457,7 +457,7 @@ if gty==1:
                                 nofile=1
                            
                             number_of_sales_orders=len(target)
-                            rel_col1,rel_col2,rel_col3=st.columns([2,2,2])
+                            rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
                         except:
                             nofile=1
                      
@@ -551,10 +551,10 @@ if gty==1:
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
                                     st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Units - {target[targets[2]]['tonnage']} Metric Tons")
-                                    st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
+                                    st.write(f"        Ocean Bill Of Lading : {target[targets[2]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[2]]['batch']}")
                                     st.write(f"        Units Shipped : {target[targets[2]]['shipped']} Units - {2*target[targets[2]]['shipped']} Metric Tons")
-                                    if target[targets[0]]['remaining']<=10:
+                                    if target[targets[2]]['remaining']<=10:
                                         st.markdown(f"**:red[Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons]**")
                                     else:
                                         st.write(f"       Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons")
@@ -563,7 +563,28 @@ if gty==1:
                                 except:
                                     pass
             
-                                   # dispatched={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
+                            with rel_col4:
+                                try:
+                                
+                                    st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                                    if targets[3] in sales_orders_completed:
+                                        st.markdown(f"**:orange[Sales Order Item : {targets[3]} - COMPLETED]**")
+                                    else:
+                                        st.markdown(f"**:blue[Sales Order Item] : {targets[3]}**")
+                                    st.write(f"        Total Quantity-Tonnage : {target[targets[3]]['quantity']} Units - {target[targets[3]]['tonnage']} Metric Tons")
+                                    st.write(f"        Ocean Bill Of Lading : {target[targets[3]]['ocean_bill_of_lading']}")
+                                    st.write(f"        Batch : {target[targets[3]]['batch']}")
+                                    st.write(f"        Units Shipped : {target[targets[3]]['shipped']} Units - {2*target[targets[3]]['shipped']} Metric Tons")
+                                    if target[targets[3]]['remaining']<=10:
+                                        st.markdown(f"**:red[Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons]**")
+                                    else:
+                                        st.write(f"       Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons")
+                                    
+                                    
+                                except:
+                                    pass
+                            
+                            # dispatched={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
                                      #               "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
                                        #                 "release_order":requested_file,"sales_order":hangisi,"ocean_bill_of_lading":ocean_bill_of_lading,"batch":batch}
                             
