@@ -160,7 +160,7 @@ def list_files_in_subfolder(bucket_name, folder_name):
     filenames = [blob.name.split('/')[-1] for blob in blobs]
 
     return filenames
-def store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
+def store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Create a dictionary to store the release order data
     release_order_data = { vessel: {
@@ -185,7 +185,7 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,batch,
     json_data = json.dumps(release_order_data)
     return json_data
 
-def edit_release_order_data(file,vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,dryness,quantity,tonnage,transport_type,carrier_code):
+def edit_release_order_data(file,vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Edit the loaded current dictionary.
     if sales_order_item not in file[vessel][release_order_number]:
