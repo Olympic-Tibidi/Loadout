@@ -440,7 +440,7 @@ if gty==1:
                     
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
                     rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
-                    completed_release_order=[]
+                    completed_release_orders=[]
                     with rls_tab1:
                         
                                     
@@ -526,7 +526,10 @@ if gty==1:
                                 try:
                                 
                                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                                    st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
+                                    if targets[0] in sales_orders_completed:
+                                        st.markdown(f"**:orange[Sales Order Item : {targets[1]} - COMPLETED]**")                                    
+                                    else:
+                                        st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
                                     st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Units - {target[targets[1]]['tonnage']} Metric Tons")                        
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[1]]['batch']}")
@@ -541,6 +544,10 @@ if gty==1:
                                 try:
                                 
                                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                                    if targets[0] in sales_orders_completed:
+                                        st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
+                                    else:
+                                        st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
                                     st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
                                     st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Units - {target[targets[2]]['tonnage']} Metric Tons")
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
