@@ -409,6 +409,7 @@ if gty==1:
                         release_order_number=st.text_input("Release Order Number")
                     sales_order_item=st.text_input("Sales Order Item")
                     ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch_mapping.keys())
+                    wrap=st.text_input("Wrap",batch_mapping[ocean_bill_of_lading]["wrap"],disabled=True)
                     batch=st.text_input("Batch No",batch_mapping[ocean_bill_of_lading]["batch"],disabled=True)
                     dryness=st.text_input("Dryness",batch_mapping[ocean_bill_of_lading]["dryness"],disabled=True)
                     quantity=st.number_input("Quantity of Units", min_value=1, max_value=800, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
