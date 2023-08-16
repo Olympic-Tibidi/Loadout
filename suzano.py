@@ -899,7 +899,7 @@ if gty==1:
                             #st.write(textsplit)
                             for i,x in enumerate(second_textsplit):
                                 if audit_split(next_release_order,next_sales_order):
-                                    st.text_input(f"Unit No : {j+1+i+1}",x)
+                                    st.text_input(f"Unit No : {len(first_textsplit)+1+i}",x)
                                     second_faults.append(0)
                                 else:
                                     st.text_input(f"Unit No : {j+1+i+1}",x)
