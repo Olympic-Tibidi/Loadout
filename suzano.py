@@ -526,7 +526,7 @@ if gty==1:
                                 try:
                                 
                                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                                    if targets[0] in sales_orders_completed:
+                                    if targets[1] in sales_orders_completed:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[1]} - COMPLETED]**")                                    
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
@@ -546,7 +546,7 @@ if gty==1:
                                 try:
                                 
                                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                                    if targets[0] in sales_orders_completed:
+                                    if targets[2] in sales_orders_completed:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[2]} - COMPLETED]**")
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
