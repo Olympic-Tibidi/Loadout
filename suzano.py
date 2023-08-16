@@ -662,7 +662,7 @@ if gty==1:
                                     junk=json.loads(junk)
                                     
                                     #st.write(to_edit_d)
-                                    junk[requested_file]=datetime.strftime(datetime.datetime.today(),"%Y-%m-%d")
+                                    junk[requested_file]=datetime.datetime.strftime(datetime.datetime.today(),"%Y-%m-%d")
                                     json_data = json.dumps(junk)
                                     storage_client = storage.Client()
                                     bucket = storage_client.bucket("olym_suzano")
