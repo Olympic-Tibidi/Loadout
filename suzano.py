@@ -29,7 +29,8 @@ import datetime as dt
 import pickle
 import yaml
 from yaml.loader import SafeLoader
-from streamlit_extras.dataframe_explorer import dataframe_explorer
+#from streamlit_extras.dataframe_explorer import dataframe_explorer
+import streamlit_extras
 
 
 pd.set_option('display.max_rows', None)
