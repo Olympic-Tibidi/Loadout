@@ -354,7 +354,7 @@ if gty==1:
                                 else:
                                     new_list.append(f"{df.loc[i,'Lot']}0{j}")
                                 lotq.append(df.loc[i,"Lot Qty"])
-                                batch.append(str(df.loc[i,"B/L"]))
+                                batch.append(str(df.loc[i,"Batch"]))
                                 wrap.append(df.loc[i,"Wrap"])
                                 vessel.append(df.loc[i,"Vessel"])
                                 DryWeight.append(df.loc[i,"DryWeight"])
