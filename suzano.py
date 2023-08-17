@@ -395,7 +395,7 @@ if gty==1:
                             filtered_df=requested_shipping_file[["Lot","Lot Qty","Batch","Wrap","Ocean B/L","DryWeight","ADMT","Location",
                                                                                       "Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code"]]
                             #st.data_editor(filtered_df, use_container_width=True)
-                            st.experimental_dataframe(filtered_df)
+                            st.data_editor(filtered_df)
                           
             with admin_tab1:
                 
