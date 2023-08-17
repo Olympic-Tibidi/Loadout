@@ -359,7 +359,7 @@ if gty==1:
                                 vessel.append(df.loc[i,"Vessel"])
                                 DryWeight.append(df.loc[i,"DryWeight"])
                                 ADMT.append(df.loc[i,"ADMT"])
-                        new_df=pd.DataFrame(list(zip(new_list,lotq,bl,wrap,vessel,DryWeight,ADMT)),columns=df.columns.to_list())
+                        new_df=pd.DataFrame(list(zip(new_list,lotq,batch,wrap,vessel,DryWeight,ADMT)),columns=df.columns.to_list())
                         new_df["Location"]="OLYM"
                         new_df["Warehouse_In"]="8/24/2023"
                         new_df["Warehouse_Out"]=""
