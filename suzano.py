@@ -332,7 +332,7 @@ if gty==1:
                         gemi=temp[5].unique()[0]
                         voyage=int(temp[6].unique()[0])
                         df=pd.DataFrame(list(zip([i[5:] for i in temp[0]],[str(i)[13:15] for i in temp[7]],
-                                  [str(i)[20:28] for i in temp[7]])),columns=["Lot","Lot Qty","B/L"])
+                                  [str(i)[20:28] for i in temp[7]])),columns=["Lot","Lot Qty","Batch"])
                         df["Lot Qty"]=[int(int(i)/2) for i in df["Lot Qty"]]
                         df["Wrap"]=[i[:3] for i in temp[1]]
                         df["Vessel"]=[i[-12:] for i in temp[7]]
@@ -340,7 +340,7 @@ if gty==1:
                         df["ADMT"]=[int(i)/0.9/100000 for i in temp[8]]
                         new_list=[]
                         lotq=[]
-                        bl=[]
+                        batch=[]
                         wrap=[]
                         vessel=[]
                         DryWeight=[]
@@ -354,7 +354,7 @@ if gty==1:
                                 else:
                                     new_list.append(f"{df.loc[i,'Lot']}0{j}")
                                 lotq.append(df.loc[i,"Lot Qty"])
-                                bl.append(str(df.loc[i,"B/L"]))
+                                batch.append(str(df.loc[i,"B/L"]))
                                 wrap.append(df.loc[i,"Wrap"])
                                 vessel.append(df.loc[i,"Vessel"])
                                 DryWeight.append(df.loc[i,"DryWeight"])
@@ -367,8 +367,8 @@ if gty==1:
                         new_df["Release_Order_Number"]=""
                         new_df["Carrier_Code"]=""
                         new_df["BL"]=""
-                        bls=new_df["B/L"].value_counts()
-                        wraps=[new_df[new_df["B/L"]==k]["Wrap"].unique()[0] for k in bls.keys()]
+                        bls=new_df["Batch"].value_counts()
+                        wraps=[new_df[new_df["Batch"]==k]["Wrap"].unique()[0] for k in bls.keys()]
                         wrap_dict={"ISU":"Unwrapped","ISP":"Wrapped"}
                         col1, col2= st.columns([2,2])
                         with col1:
@@ -391,7 +391,7 @@ if gty==1:
                         requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[0:])
                         if st.button("LOAD SHIPPING FILE"):
                             requested_shipping_file=gcp_csv_to_df("olym_suzano", requested_file)
-                            st.write(requested_shipping_file[["Lot","Lot Qty","B/L","Wrap","Ocean B/L","DryWeight","ADMT","Location","Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code"]])
+                            st.write(requested_shipping_file[["Lot","Lot Qty","Batch","Wrap","Ocean B/L","DryWeight","ADMT","Location","Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code"]])
             with admin_tab1:
                 
                 #st.markdown("RELEASE ORDERS") 
