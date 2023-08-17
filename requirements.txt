@@ -3,7 +3,7 @@ streamlit_authenticator
 pandas==1.5.3
 Requests==2.31.0
 seaborn==0.12.2
-streamlit_extras
+streamlit_extras==0.3.0
 streamlit-extras
 streamlit==1.24.1
 openpyxl
