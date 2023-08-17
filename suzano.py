@@ -392,8 +392,8 @@ if gty==1:
                         requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[0:])
                         if st.button("LOAD SHIPPING FILE"):
                             requested_shipping_file=gcp_csv_to_df("olym_suzano", requested_file)
-                            filtered_df = dataframe_explorer(requested_shipping_file[["Lot","Lot Qty","Batch","Wrap","Ocean B/L","DryWeight","ADMT","Location",
-                                                                                      "Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code"]], case=False)
+                            filtered_df=requested_shipping_file[["Lot","Lot Qty","Batch","Wrap","Ocean B/L","DryWeight","ADMT","Location",
+                                                                                      "Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code"]]
                             st.dataframe(filtered_df, use_container_width=True)
                           
             with admin_tab1:
