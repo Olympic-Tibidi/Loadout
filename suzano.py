@@ -438,7 +438,10 @@ if gty==1:
                             
                             temp=store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
                             #st.write(temp)
-                        junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
+                        try:
+                            junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
+                        except:
+                            junk=gcp_download("olym_suzano",rf"junk_release.json")
                         junk=json.loads(junk)
                         try:
                             del junk[release_order_number]
