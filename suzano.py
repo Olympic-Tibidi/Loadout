@@ -302,12 +302,15 @@ if gty==1:
         
             
         if select=="ADMIN" :
-            admin_tab1,admin_tab2,admin_tab3=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","SHIPMENT FILES"])
+            admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","VESSEL SHIPMENT FILES","MILL SHIPMENTS"])
             with admin_tab2:
                 bill_data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
                 st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings).T)
-            
+            with admin_tab4:
+                mill_shipments=gcp_download("olym_suzano",rf"mill_shipments.json")
+                mill_shipments=json.loads(mill_shipments)
+                st.dataframe(pd.DataFrame.from_dict(mill_shipments).T)
             with admin_tab3:
                 st.markdown("SHIPMENT FILES")
                 shipment_tab1,shipment_tab2=st.tabs(["UPLOAD/PROCESS SHIPMENT FILE","SHIPMENT FILE DATABASE"])
