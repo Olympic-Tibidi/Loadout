@@ -762,7 +762,7 @@ if gty==1:
                 current_release_order=dispatched['1']['release_order']
                 current_sales_order=dispatched['1']['sales_order']
                 #
-destination=
+#destination=
                 try:
                     next_release_order=dispatched['2']['release_order']
                     next_sales_order=dispatched['2']['sales_order']
