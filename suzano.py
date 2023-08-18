@@ -425,8 +425,8 @@ if gty==1:
                         release_order_number=st.text_input("Release Order Number")
                         
                     destination_list=[f"{i}-{j}" for i,j in zip(mill_df["Group"].tolist(),mill_df["Final Destination"].tolist())]
-                    st.write(destination)
-                    destination=st.selectbox("SELECT DESTINATION",mill_df[")
+                    st.write(destination_list)
+                    destination=st.selectbox("SELECT DESTINATION",destination_list)
                     sales_order_item=st.text_input("Sales Order Item")
                     ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch_mapping.keys())
                     wrap=st.text_input("Wrap",batch_mapping[ocean_bill_of_lading]["wrap"],disabled=True)
