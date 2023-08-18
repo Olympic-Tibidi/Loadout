@@ -927,8 +927,8 @@ if gty==1:
                     quantity=st.number_input("**:blue[Scanned Quantity of Units]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
                     st.markdown(f"**{quantity*2} TONS - {round(quantity*2*2204.62,1)} Pounds**")
                     #ADMT=st.text_input("ADMT",round(info[vessel][current_release_order][current_sales_order]["dryness"]/90,4)*updated_quantity,disabled=True)
-                    admt=round(info[vessel][current_release_order][current_sales_order]["dryness"]/90*updated_quantity,4)
-                    st.markdown(f"** ADMT TONS = {round(quantity*admt,4)}**")
+                    admt=round(int(info[vessel][current_release_order][current_sales_order]["dryness"])/90*updated_quantity,4)
+                    st.markdown(f"** ADMT TONS = {admt}**")
                         
                         
                             
