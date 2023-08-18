@@ -312,7 +312,7 @@ if gty==1:
                 mill_shipments=json.loads(mill_shipments)
                 mill_df=pd.DataFrame.from_dict(mill_shipments).T
                 mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
-                mill_df["Terminal Code"]=mill_df["New Product"].astype(str)
+                mill_df["New Product"]=mill_df["New Product"].astype(str)
                 st.dataframe(mill_df)
             with admin_tab3:
                 st.markdown("SHIPMENT FILES")
