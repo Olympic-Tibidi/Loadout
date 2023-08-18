@@ -556,6 +556,7 @@ if gty==1:
                                     
                                 else:
                                     st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
+                                st.markdown(f"**:blue[Destination] : {target["destination"]}**")
                                 st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Units - {target[targets[0]]['tonnage']} Metric Tons")
                                 st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
                                 st.write(f"        Batch : {target[targets[0]]['batch']}")
