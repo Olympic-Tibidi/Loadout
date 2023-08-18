@@ -834,6 +834,7 @@ if gty==1:
                         sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
                         ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
                         batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
+                        
                         #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
                         pass
                     else:
@@ -925,6 +926,9 @@ if gty==1:
                             
                     quantity=st.number_input("**:blue[Scanned Quantity of Units]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
                     st.markdown(f"**{quantity*2} TONS - {round(quantity*2*2204.62,1)} Pounds**")
+                    #ADMT=st.text_input("ADMT",round(info[vessel][current_release_order][current_sales_order]["dryness"]/90,4)*updated_quantity,disabled=True)
+                    admt=round(info[vessel][current_release_order][current_sales_order]["dryness"]/90*updated_quantity,4)
+                    st.markdown(f"** ADMT TONS = {round(quantity*admt,4)}**")
                         
                         
                             
