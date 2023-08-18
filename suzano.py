@@ -310,7 +310,9 @@ if gty==1:
             with admin_tab4:
                 mill_shipments=gcp_download("olym_suzano",rf"mill_shipments.json")
                 mill_shipments=json.loads(mill_shipments)
-                st.dataframe(pd.DataFrame.from_dict(mill_shipments).T)
+                df=pd.DataFrame.from_dict(mill_shipments).T
+                df["Terminal Code"]=df["Terminal Code].astype("str")
+                st.dataframe(df)
             with admin_tab3:
                 st.markdown("SHIPMENT FILES")
                 shipment_tab1,shipment_tab2=st.tabs(["UPLOAD/PROCESS SHIPMENT FILE","SHIPMENT FILE DATABASE"])
