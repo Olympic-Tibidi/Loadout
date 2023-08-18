@@ -311,7 +311,7 @@ if gty==1:
                 mill_shipments=gcp_download("olym_suzano",rf"mill_shipments.json")
                 mill_shipments=json.loads(mill_shipments)
                 df=pd.DataFrame.from_dict(mill_shipments).T
-                df["Terminal Code"]=df["Terminal Code].astype("string")
+                df["Terminal Code"]=df["Terminal Code].astype(str)
                 st.dataframe(df)
             with admin_tab3:
                 st.markdown("SHIPMENT FILES")
