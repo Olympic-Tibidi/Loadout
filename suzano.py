@@ -161,12 +161,13 @@ def list_files_in_subfolder(bucket_name, folder_name):
     filenames = [blob.name.split('/')[-1] for blob in blobs]
 
     return filenames
-def store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code):
+def store_release_order_data(vessel,release_order_number,destination,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Create a dictionary to store the release order data
     release_order_data = { vessel: {
-       
+        
         release_order_number:{
+        'destination':destination,
         sales_order_item: {
         "batch": batch,
         "ocean_bill_of_lading": ocean_bill_of_lading,
@@ -181,14 +182,16 @@ def store_release_order_data(vessel,release_order_number,sales_order_item,batch,
         }}              
     }
     }
+                         
 
     # Convert the dictionary to JSON format
     json_data = json.dumps(release_order_data)
     return json_data
 
-def edit_release_order_data(file,vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code):
+def edit_release_order_data(file,vessel,destination,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Edit the loaded current dictionary.
+    file[vessel][release_order_number]["destination"]= destination
     if sales_order_item not in file[vessel][release_order_number]:
         file[vessel][release_order_number][sales_order_item]={}
     file[vessel][release_order_number][sales_order_item]["batch"]= batch
@@ -420,6 +423,10 @@ if gty==1:
                     else:
                         
                         release_order_number=st.text_input("Release Order Number")
+                        
+                    destination_list=[f"{i}-{j}" for i,j in zip(mill_df["Group"].tolist(),mill_df["Final Destination"].tolist())]
+                    st.write(destination)
+                    destination=st.selectbox("SELECT DESTINATION",mill_df[")
                     sales_order_item=st.text_input("Sales Order Item")
                     ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch_mapping.keys())
                     wrap=st.text_input("Wrap",batch_mapping[ocean_bill_of_lading]["wrap"],disabled=True)
@@ -438,11 +445,11 @@ if gty==1:
                         if edit: 
                             data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
                             to_edit=json.loads(data)
-                            temp=edit_release_order_data(to_edit,vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
+                            temp=edit_release_order_data(to_edit,vessel,destination,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
                             st.write(f"ADDED sales order item {sales_order_item} to release order {release_order_number}!")
                         else:
                             
-                            temp=store_release_order_data(vessel,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
+                            temp=store_release_order_data(vessel,destination,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
                             #st.write(temp)
                         try:
                             junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
