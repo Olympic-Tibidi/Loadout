@@ -764,7 +764,7 @@ if gty==1:
                 info=json.loads(info)
                 current_release_order=dispatched['1']['release_order']
                 current_sales_order=dispatched['1']['sales_order']
-                destination=info['vessel][dispatched['1']['release_order']]['destination']
+                destination=info['vessel][dispatched["1"]['release_order']]['destination']
                 try:
                     next_release_order=dispatched['2']['release_order']
                     next_sales_order=dispatched['2']['sales_order']
