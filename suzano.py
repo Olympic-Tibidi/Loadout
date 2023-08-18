@@ -544,7 +544,7 @@ if gty==1:
                                               
                         if nofile!=1 :         
                                         
-                            targets=[i for i in target if i.str()!="destination"] ####doing this cause we set jason path {downloadedfile[vessel][releaseorder] as target. i have to use one of the keys (release order number) that is in target list
+                            targets=[i for i in target if i !="destination"] ####doing this cause we set jason path {downloadedfile[vessel][releaseorder] as target. i have to use one of the keys (release order number) that is in target list
                             sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
                             
                             with rel_col1:
