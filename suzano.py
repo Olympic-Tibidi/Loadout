@@ -432,6 +432,7 @@ if gty==1:
                     wrap=st.text_input("Wrap",batch_mapping[ocean_bill_of_lading]["wrap"],disabled=True)
                     batch=st.text_input("Batch No",batch_mapping[ocean_bill_of_lading]["batch"],disabled=True)
                     dryness=st.text_input("Dryness",batch_mapping[ocean_bill_of_lading]["dryness"],disabled=True)
+                    admt=st.text_input("ADMT PER UNIT",int(batch_mapping[ocean_bill_of_lading]["dryness"])/90,disabled=True)
                     quantity=st.number_input("Quantity of Units", min_value=1, max_value=800, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
                     tonnage=2*quantity
                     #queue=st.number_input("Place in Queue", min_value=1, max_value=20, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
@@ -760,6 +761,7 @@ if gty==1:
                 vessel=dispatched["1"]["vessel"]
                 current_release_order=dispatched['1']['release_order']
                 current_sales_order=dispatched['1']['sales_order']
+                destination=
                 try:
                     next_release_order=dispatched['2']['release_order']
                     next_sales_order=dispatched['2']['sales_order']
@@ -782,6 +784,7 @@ if gty==1:
                 load_col1,load_col2,load_col3=st.columns([4,4,2])
                 with load_col1:
                     st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
+                    st.markdown(rf'**Destination-{current_release_order}**')
                     st.markdown(rf'**Sales Order Item-{current_sales_order}**')
                     wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
                     st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[info[vessel][current_release_order][current_sales_order]["wrap"]]}**')
