@@ -188,7 +188,7 @@ def store_release_order_data(vessel,release_order_number,destination,sales_order
     json_data = json.dumps(release_order_data)
     return json_data
 
-def edit_release_order_data(file,vessel,destination,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code):
+def edit_release_order_data(file,vessel,release_order_number,destination,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code):
        
     # Edit the loaded current dictionary.
     file[vessel][release_order_number]["destination"]= destination
@@ -425,7 +425,7 @@ if gty==1:
                         release_order_number=st.text_input("Release Order Number")
                         
                     destination_list=list(set([f"{i}-{j}" for i,j in zip(mill_df["Group"].tolist(),mill_df["Final Destination"].tolist())]))
-                    st.write(destination_list)
+                    #st.write(destination_list)
                     destination=st.selectbox("SELECT DESTINATION",destination_list)
                     sales_order_item=st.text_input("Sales Order Item")
                     ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch_mapping.keys())
@@ -445,11 +445,11 @@ if gty==1:
                         if edit: 
                             data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{release_order_number}.json")
                             to_edit=json.loads(data)
-                            temp=edit_release_order_data(to_edit,vessel,destination,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
+                            temp=edit_release_order_data(to_edit,vessel,release_order_number,destination,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
                             st.write(f"ADDED sales order item {sales_order_item} to release order {release_order_number}!")
                         else:
                             
-                            temp=store_release_order_data(vessel,destination,release_order_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
+                            temp=store_release_order_data(vessel,release_order_number,destination,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,quantity,tonnage,transport_type,carrier_code)
                             #st.write(temp)
                         try:
                             junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
