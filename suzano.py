@@ -760,10 +760,11 @@ if gty==1:
             
             if len(dispatched.keys())>0 and not no_dispatch:
                 vessel=dispatched["1"]["vessel"]
+                info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
+                info=json.loads(info)
                 current_release_order=dispatched['1']['release_order']
                 current_sales_order=dispatched['1']['sales_order']
-                #
-#destination=
+                destination=info['destination']
                 try:
                     next_release_order=dispatched['2']['release_order']
                     next_sales_order=dispatched['2']['sales_order']
