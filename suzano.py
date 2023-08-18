@@ -313,7 +313,7 @@ if gty==1:
                 mill_df=pd.DataFrame.from_dict(mill_shipments).T
                 mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
                 mill_df["Terminal Code"]=mill_df["New Product"].astype(str)
-                st.dataframe(df)
+                st.dataframe(mill_df)
             with admin_tab3:
                 st.markdown("SHIPMENT FILES")
                 shipment_tab1,shipment_tab2=st.tabs(["UPLOAD/PROCESS SHIPMENT FILE","SHIPMENT FILE DATABASE"])
