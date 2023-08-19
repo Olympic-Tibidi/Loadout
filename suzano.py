@@ -1064,7 +1064,7 @@ if gty==1:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                         bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                      "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(first_textsplit),"issued":f"{a} {b}"} 
+                                                                     "quantity":len(textsplit),"issued":f"{a} {b}"} 
                         
                  
                     bill_of_ladings=json.dumps(bill_of_ladings)
