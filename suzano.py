@@ -500,7 +500,7 @@ if gty==1:
                             if len(target.keys())==0:
                                 nofile=1
                            
-                            number_of_sales_orders=len(target)
+                            number_of_sales_orders=len(target)    ****WRONG CAUSE THERE IS NOW DESTINATION KEYS
                             rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
                         except:
                             nofile=1
@@ -578,6 +578,7 @@ if gty==1:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[1]} - COMPLETED]**")                                    
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
+                                    st.markdown(f"**:blue[Destination : {target['destination']}]**")
                                     st.write(f"        Total Quantity-Tonnage : {target[targets[1]]['quantity']} Units - {target[targets[1]]['tonnage']} Metric Tons")                        
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[1]]['batch']}")
@@ -600,6 +601,7 @@ if gty==1:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[2]} - COMPLETED]**")
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
+                                    st.markdown(f"**:blue[Destination : {target['destination']}]**")
                                     st.write(f"        Total Quantity-Tonnage : {target[targets[2]]['quantity']} Units - {target[targets[2]]['tonnage']} Metric Tons")
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[2]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[2]]['batch']}")
@@ -623,6 +625,7 @@ if gty==1:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[3]} - COMPLETED]**")
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[3]}**")
+                                    st.markdown(f"**:blue[Destination : {target['destination']}]**")
                                     st.write(f"        Total Quantity-Tonnage : {target[targets[3]]['quantity']} Units - {target[targets[3]]['tonnage']} Metric Tons")
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[3]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[3]]['batch']}")
@@ -653,14 +656,14 @@ if gty==1:
                                     
                                     dispatch=dispatched.copy()
                                     try:
-                                        last=list(dispatch.keys())[-1]
-                                        dispatch[str(int(last)+1)]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
+                                        last=list(dispatch[requested_file].keys())[-1]
+                                        dispatch[requested_file][last]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
                                                     "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
-                                                     "release_order":requested_file,"sales_order":hangisi,"ocean_bill_of_lading":target[hangisi]["ocean_bill_of_lading"],"batch":target[hangisi]["batch"]}
+                                                     "release_order":requested_file,"sales_order":hangisi,"destination":destination,"ocean_bill_of_lading":target[hangisi]["ocean_bill_of_lading"],"batch":target[hangisi]["batch"]}
                                     except:
-                                        dispatch["1"]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
+                                        dispatch[requested_file][1]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
                                                     "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
-                                                     "release_order":requested_file,"sales_order":hangisi,"ocean_bill_of_lading":target[hangisi]["ocean_bill_of_lading"],"batch":target[hangisi]["batch"]}
+                                                     "release_order":requested_file,"sales_order":hangisi,"destination":destination,"ocean_bill_of_lading":target[hangisi]["ocean_bill_of_lading"],"batch":target[hangisi]["batch"]}
             
                                     
                                     json_data = json.dumps(dispatch)
@@ -707,9 +710,9 @@ if gty==1:
                             with dol3:
                                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                                 dispatch=json.loads(dispatch)
-                                item=st.selectbox("CHOOSE ITEM",dispatch.keys())
+                                item=st.selectbox("CHOOSE ITEM",dispatch[requested_file].keys())
                                 if st.button("CLEAR DISPATCH ITEM"):                                       
-                                    del dispatch[item]
+                                    del dispatch[requested_file][item]
                                     json_data = json.dumps(dispatch)
                                     storage_client = storage.Client()
                                     bucket = storage_client.bucket("olym_suzano")
