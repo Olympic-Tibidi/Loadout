@@ -986,7 +986,7 @@ if gty==1:
                             #st.write(textsplit)
                             for j,x in enumerate(first_textsplit):
                                 if audit_split(current_release_order,current_sales_order):
-                                    st.text_input(f"Unit No : {j+1},x)
+                                    st.text_input(f"Unit No : {j+1}",x)
                                     first_faults.append(0)
                                 else:
                                     st.text_input(f"Unit No : {j+1}",x)
