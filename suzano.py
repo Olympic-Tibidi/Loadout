@@ -801,7 +801,6 @@ if gty==1:
                 load_col1,load_col2,load_col3=st.columns([4,4,2])
                 with load_col1:
                     st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
-                    st.write(destination)
                     st.markdown(rf'**Destination : {destination}**')
                     st.markdown(rf'**Sales Order Item-{current_sales_order}**')
                     wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
