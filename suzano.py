@@ -731,8 +731,8 @@ if gty==1:
                                 try:
                                     for release_order in dispatch.keys():
                                         st.write(release_order)
-                                        for sales in dispatch[i].keys():
-                                            st.write(f'**Release Order = {i}, Item No: {dispatch[i]["sales_order"]}**')
+                                        for sales in dispatch[release_order].keys():
+                                            st.write(f'**Release Order = {release_order}, Item No: {dispatch[i]["sales_order"]}**')
                                 except:
                                     pass
                             except:
