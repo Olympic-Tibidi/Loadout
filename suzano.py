@@ -765,7 +765,7 @@ if gty==1:
             except:
                 no_dispatch=1
                 pass
-            #st.write(dispatched)
+           
             
             double_load=False
             
@@ -774,7 +774,6 @@ if gty==1:
                 
                 
                 if "001" in list(dispatched[work_order].keys()):
-                    st.write(rf"release_orders/vessel/{work_order}.json")
                     vessel=dispatched[work_order]["001"]["vessel"]
                     info=gcp_download("olym_suzano",rf"release_orders/{vessel}/{work_order}.json")
                     info=json.loads(info)
