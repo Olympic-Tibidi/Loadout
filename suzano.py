@@ -954,7 +954,7 @@ if gty==1:
                             updated_quantity=len(textsplit)
                             st.session_state.updated_quantity=updated_quantity
                        
-                            
+                        
                     quantity=st.number_input("**Scanned Quantity of Units**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
                     st.markdown(f"**{quantity*2} TONS - {round(quantity*2*2204.62,1)} Pounds**")
                     #ADMT=st.text_input("ADMT",round(info[vessel][current_release_order][current_sales_order]["dryness"]/90,4)*updated_quantity,disabled=True)
@@ -1010,6 +1010,8 @@ if gty==1:
                         faults=[]
                         if load_input is not None:
                             textsplit = load_input.splitlines()
+                            
+                                
                             textsplit=[i for i in textsplit if len(i)>8]
                             #st.write(textsplit)
                             
@@ -1021,6 +1023,9 @@ if gty==1:
                                 else:
                                     st.text_input(f"Unit No : {i+1}",x)
                                     faults.append(1)
+                            if len(textsplit)!=len(set(textsplit)) :
+                                st.markdown("YOU SCANNED SAME UNIT TWICE")
+                                faults=[1]*len(textsplit)
                         loads=[]
                         for k in textsplit:
                             loads.append(k)
