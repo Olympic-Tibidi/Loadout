@@ -1031,7 +1031,7 @@ if gty==1:
                         for k in textsplit:
                             loads.append(k)
                    
-                st.write(faults)                  
+                #st.write(faults)                  
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
                 
                 b=file_time.strftime("%H%M%S")
@@ -1131,7 +1131,7 @@ if gty==1:
                             to_delete=[]
                             for release in dispatched.keys():
                                 if release==current_release_order:
-                                    for sales in release.keys():
+                                    for sales in dispatched[release].keys():
                                         if sales==current_sales_order:
                                             to_delete.append((release,sales))
                             for victim in to_delete:
