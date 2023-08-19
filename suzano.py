@@ -770,7 +770,7 @@ if gty==1:
             double_load=False
             
             if len(dispatched.keys())>0 and not no_dispatch:
-                work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatch.keys())
+                work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatched.keys())
                 
                 
                 
