@@ -1027,7 +1027,7 @@ if gty==1:
                                 else:
                                     st.text_input(f"Unit No : {i+1}",x)
                                     faults.append(1)
-                           
+                                seen.add(x)
                         loads=[]
                         for k in textsplit:
                             loads.append(k)
