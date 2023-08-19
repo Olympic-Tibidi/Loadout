@@ -817,7 +817,8 @@ if gty==1:
                     st.markdown(rf'**Destination : {destination} .**')
                     st.markdown(rf'**Sales Order Item-{current_sales_order}**')
                     wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
-                    st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[info[vessel][current_release_order][current_sales_order]["wrap"]]}**')
+                    wrap=info[vessel][current_release_order][current_sales_order]["wrap"]
+                    st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[wrap]}**')
                     st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
                     st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
                     st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
