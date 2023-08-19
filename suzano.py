@@ -770,6 +770,10 @@ if gty==1:
             double_load=False
             
             if len(dispatched.keys())>0 and not no_dispatch:
+                work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatch.keys())
+                
+                
+                
                 vessel=dispatched["1"]["vessel"]
                 info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
                 info=json.loads(info)
