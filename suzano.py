@@ -475,6 +475,14 @@ if gty==1:
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/{vessel}/{release_order_number}.json")
                         blob.upload_from_string(temp)
+
+                        release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                        release_order_database=json.loads(release_order_database)
+                        release_order_database[release_order_number]={"destination"=destination}
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"release_orders/{vessel}/rf"release_orders/RELEASE_ORDERS.json")
+                        blob.upload_from_string(temp)
                         st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                         
                 with release_order_tab2:
@@ -769,6 +777,7 @@ if gty==1:
             double_load=False
             
             if len(dispatched.keys())>0 and not no_dispatch:
+                menu_destinations=[f"{i} TO {j}" for i,j in zip[dispatched.keys()
                 work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatched.keys())
                 
                 
@@ -1036,11 +1045,14 @@ if gty==1:
                     
                     if double_load:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
-                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":current_sales_order,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(first_textsplit)} 
-                        bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"sales_order":next_sales_order,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(second_textsplit)} 
+                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":current_sales_order,
+                                                                     "carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(first_textsplit),"issued":f"{a} {b}"} 
+                        bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"sales_order":next_sales_order,
+                                                                       "carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(second_textsplit),"issued":f"{a} {b}"} 
                     else:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
-                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":sales_order_item,"carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":st.session_state.updated_quantity}            
+                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":sales_order_item,
+                                                                     "carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":st.session_state.updated_quantity,"issued":f"{a} {b}"}            
                         
                  
                     bill_of_ladings=json.dumps(bill_of_ladings)
@@ -1178,6 +1190,9 @@ if gty==1:
                 daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
                 with daily1:
                     st.write("HERE")
+                    data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                    bill_of_ladings=json.loads(data)
+                    st.write(bill_of_ladings)
             
 
 
