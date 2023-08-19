@@ -502,6 +502,7 @@ if gty==1:
                             release_order_json = json.loads(data)
                             
                             target=release_order_json[vessel][requested_file]
+                            destination=target['destination']
                             if len(target.keys())==0:
                                 nofile=1
                            
@@ -509,7 +510,7 @@ if gty==1:
                             rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
                         except:
                             nofile=1
-                        destination=target['destination']
+                        
                         #### DISPATCHED CLEANUP  #######
                         
                         try:
