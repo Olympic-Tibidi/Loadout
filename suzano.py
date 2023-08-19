@@ -730,6 +730,7 @@ if gty==1:
                                 dispatch=json.loads(dispatch)
                                 try:
                                     for i in dispatch.keys():
+                                        st.write(i)
                                         st.write(f'**ORDER:{i}**___Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
                                 except:
                                     pass
