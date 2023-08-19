@@ -189,7 +189,7 @@ def store_release_order_data(vessel,release_order_number,destination,sales_order
     json_data = json.dumps(release_order_data)
     return json_data
 
-def edit_release_order_data(vessel,release_order_number,destination,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,unitized,quantity,tonnage,transport_type,carrier_code):
+def edit_release_order_data(file,vessel,release_order_number,destination,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,unitized,quantity,tonnage,transport_type,carrier_code):
        
     # Edit the loaded current dictionary.
     file[vessel][release_order_number]["destination"]= destination
