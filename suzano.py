@@ -819,6 +819,7 @@ if gty==1:
                     wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
                     wrap=info[vessel][current_release_order][current_sales_order]["wrap"]
                     st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[wrap]}**')
+                    unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
                     st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
                     st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
                     st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
@@ -1160,7 +1161,7 @@ if gty==1:
                                     Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}
                                     Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}
                                     Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}
-                                    {len(loads)} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_id} {newline} 
+                                    {len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_id} {newline} 
                                     Truck loading comnpleted at {a} {b}
                                     """
                         sender = "warehouseoly@gmail.com"
