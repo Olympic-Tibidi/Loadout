@@ -857,6 +857,8 @@ if gty==1:
                         release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
                         sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
                         ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
+                        current_ocean_bill_of_lading=ocean_bill_of_lading
+                        next_ocean_bill_of_lading=info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"]
                         batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
                         
                         #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
@@ -865,6 +867,7 @@ if gty==1:
                         release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
                         sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
                         ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
+                        
                         batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
                         #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
                    
@@ -1046,14 +1049,17 @@ if gty==1:
                     
                     if double_load:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
-                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":current_sales_order,
-                                                                     "carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(first_textsplit),"issued":f"{a} {b}"} 
-                        bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"sales_order":next_sales_order,
-                                                                       "carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":len(second_textsplit),"issued":f"{a} {b}"} 
+                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,sales_order":current_sales_order,
+                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                     "quantity":len(first_textsplit),"issued":f"{a} {b}"} 
+                        bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,sales_order":next_sales_order,
+                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                     "quantity":len(first_textsplit),"issued":f"{a} {b}"} 
                     else:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
-                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"sales_order":sales_order_item,
-                                                                     "carrier_id":carrier_code,"vehicle":vehicle_id,"quantity":st.session_state.updated_quantity,"issued":f"{a} {b}"}            
+                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,sales_order":current_sales_order,
+                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                     "quantity":len(first_textsplit),"issued":f"{a} {b}"} 
                         
                  
                     bill_of_ladings=json.dumps(bill_of_ladings)
@@ -1190,13 +1196,13 @@ if gty==1:
             with inv1:
                 daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
                 with daily1:
-                    st.write("HERE")
+                   
                     data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                     bill_of_ladings=json.loads(data)
                     df_bill=pd.DataFrame(bill_of_ladings).T
                     df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","wrap","carrier_id","vehicle","quantity","issued"]]
                     df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY","ISSUED"]
-                    st.table(df_bill)
+                    st.dataframe(df_bill)
 
 
 
