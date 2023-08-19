@@ -570,8 +570,8 @@ if gty==1:
                                     st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
                                 st.markdown(f"**:blue[Destination : {target['destination']}]**")
                                 st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Units - {target[targets[0]]['tonnage']} Metric Tons")
-                                st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
-                                st.write(f"        Batch : {target[targets[0]]['batch']}")
+                                st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']} - Wrap :{target[targets[0]]['wrap']}")
+                                st.write(f"        Batch : {target[targets[0]]['batch']} WIRES : {target[targets[0]]['unitized']}")
                                 st.write(f"        Units Shipped : {target[targets[0]]['shipped']} Units - {2*target[targets[0]]['shipped']} Metric Tons")
                                 if 0<target[targets[0]]['remaining']<=10:
                                     st.markdown(f"**:red[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]**")
