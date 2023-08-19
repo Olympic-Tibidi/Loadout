@@ -481,7 +481,7 @@ if gty==1:
                         release_order_database[release_order_number]={"destination":destination}
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
-                        blob = bucket.blob(rf"release_orders/{vessel}/rf"release_orders/RELEASE_ORDERS.json")
+                        blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
                         blob.upload_from_string(temp)
                         st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                         
