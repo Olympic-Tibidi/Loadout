@@ -500,7 +500,7 @@ if gty==1:
                             if len(target.keys())==0:
                                 nofile=1
                            
-                            number_of_sales_orders=len(target)    ****WRONG CAUSE THERE IS NOW DESTINATION KEYS
+                            number_of_sales_orders=len(target)    ##### WRONG CAUSE THERE IS NOW DESTINATION KEYS
                             rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
                         except:
                             nofile=1
