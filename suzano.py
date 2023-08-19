@@ -803,7 +803,7 @@ if gty==1:
                 with load_col1:
                     st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
                     st.write(destination)
-                    st.markdown(rf'**Destination-{destination}**')
+                    st.markdown(rf'**Destination : {destination}**')
                     st.markdown(rf'**Sales Order Item-{current_sales_order}**')
                     wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
                     st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[info[vessel][current_release_order][current_sales_order]["wrap"]]}**')
