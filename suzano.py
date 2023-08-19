@@ -938,11 +938,11 @@ if gty==1:
                             st.session_state.updated_quantity=updated_quantity
                        
                             
-                    quantity=st.number_input("**:blue[Scanned Quantity of Units]**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
+                    quantity=st.number_input("**Scanned Quantity of Units**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
                     st.markdown(f"**{quantity*2} TONS - {round(quantity*2*2204.62,1)} Pounds**")
                     #ADMT=st.text_input("ADMT",round(info[vessel][current_release_order][current_sales_order]["dryness"]/90,4)*updated_quantity,disabled=True)
                     admt=round(float(info[vessel][current_release_order][current_sales_order]["dryness"])/90*updated_quantity*2,4)
-                    st.markdown(f"**ADMT TONS = {admt} TONS**")
+                    st.markdown(f"**ADMT= {admt} TONS**")
                         
                         
                             
@@ -1101,18 +1101,14 @@ if gty==1:
                             info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
                         if info[vessel][current_release_order][current_sales_order]["remaining"]<=0:
                             to_delete=[]
-                            for i in dispatched.keys():
-                                if dispatched[i]["release_order"]==current_release_order and dispatched[i]["sales_order"]==current_sales_order:
-                                    to_delete.append(i)
-                            for k in to_delete:
-                                del dispatched[k]
-                            if list(dispatched.keys())==["2","3"]:
-                                dispatched["1"]=dispatched["2"]
-                                dispatched["2"]=dispatched["3"]
-                                del dispatched["3"]
-                            if list(dispatched.keys())==["2"]:
-                                dispatched["1"]=dispatched["2"]
-                                del dispatched["2"]
+                            for release in dispatched.keys():
+                                if release==current_release_order:
+                                    for sales in release.keys():
+                                        if sales==current_sales_order:
+                                            to_delete.append((release,sales))
+                            for victim in to_delete:
+                                del dispatched[victim[0]][victim[1]]
+                            
                             json_data = json.dumps(dispatched)
                             storage_client = storage.Client()
                             bucket = storage_client.bucket("olym_suzano")
