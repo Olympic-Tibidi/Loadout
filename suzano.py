@@ -1156,13 +1156,8 @@ if gty==1:
                         file_name= f'{a}{b}OLYM.txt'
                         st.write(filename)
                         subject = f'Suzano_EDI_{a}_{release_order_number}'
-                        body = f"""\EDI for Below attached.{newline} 
-                                    Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}
-                                    Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}
-                                    Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}
-                                    {len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_id} {newline} 
-                                    Truck loading comnpleted at {a} {b}
-                                    """
+                        body = f"EDI for Below attached.{newline}  Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}   Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}                  Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}  {len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_id} {newline}    Truck loading comnpleted at {a} {b}"
+                                   
                         sender = "warehouseoly@gmail.com"
                         #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
                         recipients = ["afsiny@portolympia.com"]
