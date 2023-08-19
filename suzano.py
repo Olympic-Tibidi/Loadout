@@ -710,15 +710,18 @@ if gty==1:
                             with dol3:
                                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                                 dispatch=json.loads(dispatch)
-                                item=st.selectbox("CHOOSE ITEM",dispatch[requested_file].keys())
-                                if st.button("CLEAR DISPATCH ITEM"):                                       
-                                    del dispatch[requested_file][item]
-                                    json_data = json.dumps(dispatch)
-                                    storage_client = storage.Client()
-                                    bucket = storage_client.bucket("olym_suzano")
-                                    blob = bucket.blob(rf"dispatched.json")
-                                    blob.upload_from_string(json_data)
-                                    st.markdown(f"**CLEARED DISPATCH ITEM {item}**")   
+                                try:
+                                    item=st.selectbox("CHOOSE ITEM",dispatch[requested_file].keys())
+                                    if st.button("CLEAR DISPATCH ITEM"):                                       
+                                        del dispatch[requested_file][item]
+                                        json_data = json.dumps(dispatch)
+                                        storage_client = storage.Client()
+                                        bucket = storage_client.bucket("olym_suzano")
+                                        blob = bucket.blob(rf"dispatched.json")
+                                        blob.upload_from_string(json_data)
+                                        st.markdown(f"**CLEARED DISPATCH ITEM {item}**")   
+                                else:
+                                    pass
                             st.markdown("**CURRENT DISPATCH QUEUE**")
                             try:
                                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
