@@ -729,9 +729,10 @@ if gty==1:
                                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                                 dispatch=json.loads(dispatch)
                                 try:
-                                    for i in dispatch.keys():
-                                        st.write(i)
-                                        st.write(f'**ORDER:{i}**___Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
+                                    for release_order in dispatch.keys():
+                                        st.write(release_order)
+                                        for sales in dispatch[i].keys():
+                                            st.write(f'**{i}**___Release Order = {dispatch[i]["release_order"]}, Item No: {dispatch[i]["sales_order"]}')
                                 except:
                                     pass
                             except:
