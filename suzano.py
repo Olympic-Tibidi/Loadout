@@ -710,7 +710,7 @@ if gty==1:
                                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                                 dispatch=json.loads(dispatch)
                                 try:
-                                    item=st.selectbox("CHOOSE ITEM",dispatch[requested_file].keys())
+                                    item=st.selectbox("CHOOSE ITEM",dispatch.keys())
                                     if st.button("CLEAR DISPATCH ITEM"):                                       
                                         del dispatch[requested_file][item]
                                         json_data = json.dumps(dispatch)
