@@ -1172,94 +1172,103 @@ if gty==1:
                         
         if select=="INVENTORY" :
             Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+
+            inv1,inv2=st.tabs(["DAILY ACTION","MAIN INVENTORY"])
+            with inv1:
+                daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
+                with daily1:
+                    st.write("HERE")
             
-            
-            dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-            df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Location","Warehouse_In"]]
-            zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
-                                                             "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-            items=df["Ocean B/L"].unique().tolist()
-            
-            with dab1:
+
+
+
                 
-                inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
-                with inv_col1:
-                    st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-                    st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-                    st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-                with inv_col2:
-                    #st.write(items)
-                    inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
-                    shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
+            with inv2:
+                     
+                dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
+                df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Location","Warehouse_In"]]
+                zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
+                                                                 "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
+                items=df["Ocean B/L"].unique().tolist()
+                
+                with dab1:
                     
-                    wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique()[0] for i in items]
-                   # st.write(wrap_)
-                    tablo=pd.DataFrame({"Ocean B/L":items,"Wrap":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
-                    total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
-                    tablo = tablo.append(total_row, ignore_index=True)
-                    tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
-         
-                    st.dataframe(tablo)
-                if st.checkbox("CLICK TO SEE INVENTORY LIST"):
-                    st.table(df)
-            with dab2:
-                
-                date_filter=st.checkbox("CLICK FOR DATE FILTER")
-                if "disabled" not in st.session_state:
-                    st.session_state.visibility = "visible"
-                    st.session_state.disabled = True
-                if date_filter:
-                    st.session_state.disabled=False
+                    inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
+                    with inv_col1:
+                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                    with inv_col2:
+                        #st.write(items)
+                        inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
+                        shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
+                        
+                        wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique()[0] for i in items]
+                       # st.write(wrap_)
+                        tablo=pd.DataFrame({"Ocean B/L":items,"Wrap":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
+                        total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
+                        tablo = tablo.append(total_row, ignore_index=True)
+                        tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
+             
+                        st.dataframe(tablo)
+                    if st.checkbox("CLICK TO SEE INVENTORY LIST"):
+                        st.table(df)
+                with dab2:
                     
-                else:
-                    st.session_state.disabled=True
-                    #min_value=min([i.date() for i in zf["Warehouse_Out"]])
-                filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
-                
-                
-                #st.write(zf)
-                #zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("int")
-                zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
-                
-                zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
-                filtered_zf=zf.copy()
-                if date_filter:
-                    filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
-                    
-                    filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
-                    
-                filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
-                #st.write(filter_by)
-                choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
-                
-                
-                col1,col2=st.columns([2,8])
-                with col1:
-                    st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-                    st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-                    st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-                try:
-                    filtered_zf=filtered_zf[filtered_zf[filter_by]==choice]
-                    filtered_df=filtered_zf[filtered_zf[filter_by]==choice]
-                    
-                except:
-                    filtered_zf=filtered_zf
-                    filtered_df=df.copy()
-                    
-                    pass
-                with col2:
+                    date_filter=st.checkbox("CLICK FOR DATE FILTER")
+                    if "disabled" not in st.session_state:
+                        st.session_state.visibility = "visible"
+                        st.session_state.disabled = True
                     if date_filter:
-                        st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+                        st.session_state.disabled=False
+                        
                     else:
-                        st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
-                        st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
-                        st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
+                        st.session_state.disabled=True
+                        #min_value=min([i.date() for i in zf["Warehouse_Out"]])
+                    filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
                     
                     
-                st.table(filtered_zf)
-        #with tab4:
-        #     df=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-        #    st.write(df)
+                    #st.write(zf)
+                    #zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("int")
+                    zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
+                    
+                    zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
+                    filtered_zf=zf.copy()
+                    if date_filter:
+                        filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+                        
+                        filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+                        
+                    filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
+                    #st.write(filter_by)
+                    choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
+                    
+                    
+                    col1,col2=st.columns([2,8])
+                    with col1:
+                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                    try:
+                        filtered_zf=filtered_zf[filtered_zf[filter_by]==choice]
+                        filtered_df=filtered_zf[filtered_zf[filter_by]==choice]
+                        
+                    except:
+                        filtered_zf=filtered_zf
+                        filtered_df=df.copy()
+                        
+                        pass
+                    with col2:
+                        if date_filter:
+                            st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+                        else:
+                            st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
+                            st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
+                            st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
+                        
+                        
+                    st.table(filtered_zf)
+       
     elif username == 'rbriggs':
         st.write(f'Welcome *{name}*')
         st.title('Application 2')
