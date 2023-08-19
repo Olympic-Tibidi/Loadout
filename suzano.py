@@ -773,13 +773,12 @@ if gty==1:
                 work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatched.keys())
                 
                 
-                
-                vessel=dispatched["1"]["vessel"]
-                info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
-                info=json.loads(info)
-                current_release_order=dispatched['1']['release_order']
-                current_sales_order=dispatched['1']['sales_order']
-                destination=info[vessel][dispatched["1"]['release_order']]['destination']
+                if "001" in list(dispatched[work_order].keys()):
+                    
+                    vessel=dispatched[work_order]["001"]["vessel"]
+                    info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
+                    info=json.loads(info)
+                    destination=info[vessel][dispatched["001"]['release_order']]['destination']
                 try:
                     next_release_order=dispatched['2']['release_order']
                     next_sales_order=dispatched['2']['sales_order']
