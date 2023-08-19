@@ -733,7 +733,7 @@ if gty==1:
                                         st.write(dispatched_release)
                                         for sales in dispatch[dispatched_release].keys():
                                             st.write(sales)
-                                            #st.write(f'**Release Order = {release_order}, Item No: {dispatch[i]["sales_order"]}**')
+                                            st.write(f'**Release Order = {dispatched_release}, Sales Item : {sales}, Total : {dispatch[dispacthed_release][sales]["total"]} **')
                                 except:
                                     pass
                             except:
