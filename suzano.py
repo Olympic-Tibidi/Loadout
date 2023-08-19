@@ -1194,7 +1194,7 @@ if gty==1:
                     data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                     bill_of_ladings=json.loads(data)
                     df_bill=pd.DataFrame(bill_of_ladings).T
-                    st.dataframe(bill_of_ladings)
+                    st.dataframe(df_bill)
 
 
 
