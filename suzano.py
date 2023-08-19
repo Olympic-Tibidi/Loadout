@@ -778,7 +778,7 @@ if gty==1:
                     vessel=dispatched[work_order]["001"]["vessel"]
                     info=gcp_download("olym_suzano",rf"release_orders/vessel/{work_order}.json")
                     info=json.loads(info)
-                    destination=info[vessel][dispatched["001"]['destination']
+                    destination=info[vessel][dispatched["001"]]['destination']
                     current_release_order=work_order
                     current_sales_order="001"
                 try:
