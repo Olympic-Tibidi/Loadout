@@ -942,7 +942,7 @@ if gty==1:
                     st.markdown(f"**{quantity*2} TONS - {round(quantity*2*2204.62,1)} Pounds**")
                     #ADMT=st.text_input("ADMT",round(info[vessel][current_release_order][current_sales_order]["dryness"]/90,4)*updated_quantity,disabled=True)
                     admt=round(float(info[vessel][current_release_order][current_sales_order]["dryness"])/90*updated_quantity*2,4)
-                    st.markdown(f"** ADMT TONS = {admt} TONS**")
+                    st.markdown(f"**ADMT TONS = {admt} TONS**")
                         
                         
                             
