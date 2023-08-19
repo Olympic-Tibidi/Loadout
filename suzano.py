@@ -478,7 +478,7 @@ if gty==1:
 
                         release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
                         release_order_database=json.loads(release_order_database)
-                        release_order_database[release_order_number]={"destination"=destination}
+                        release_order_database[release_order_number]={"destination":destination}
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/{vessel}/rf"release_orders/RELEASE_ORDERS.json")
