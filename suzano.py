@@ -898,7 +898,7 @@ if gty==1:
                                 #st.write(bill_mapping[x[:-3]]["Batch"])
                                 #st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0])
                                 if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
-                                    st.write("WRONG B/L, DO NOT LOAD!")
+                                    st.write("**:red[WRONG B/L, DO NOT LOAD!]**")
                                 
                                 if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
                                     st.write("THIS UNIT HAS BEEN SHIPPED")
@@ -910,7 +910,7 @@ if gty==1:
                                 #st.write(bill_mapping[x[:-3]]["Batch"])
                                 
                                 if bill_mapping[x[:-3]]["Ocean_bl"]!=info[vessel][release][sales]["ocean_bill_of_lading"] and bill_mapping[x[:-3]]["Batch"]!=info[vessel][release][sales]["batch"]:
-                                    st.write("WRONG B/L, DO NOT LOAD!")
+                                    st.write("**:red[WRONG B/L, DO NOT LOAD!]**")
                                 if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
                                     st.write("THIS UNIT HAS BEEN SHIPPED")
                                 else:
