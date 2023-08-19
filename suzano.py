@@ -1194,6 +1194,7 @@ if gty==1:
                     data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                     bill_of_ladings=json.loads(data)
                     df_bill=pd.DataFrame(bill_of_ladings).T
+                    df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","wrap","carrier_id","vehicle","quantity","issued"]]
                     st.dataframe(df_bill)
 
 
