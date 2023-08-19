@@ -774,7 +774,7 @@ if gty==1:
                 
                 
                 if "001" in list(dispatched[work_order].keys()):
-                    
+                    st.write(work_order)
                     vessel=dispatched[work_order]["001"]["vessel"]
                     info=gcp_download("olym_suzano",rf"release_orders/vessel/{work_order}.json")
                     info=json.loads(info)
