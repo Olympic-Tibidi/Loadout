@@ -1193,8 +1193,8 @@ if gty==1:
                     st.write("HERE")
                     data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                     bill_of_ladings=json.loads(data)
-                    st.write(bill_of_ladings)
-            
+                    df_bill=pd.DataFrame.from_dict(bill_of_ladings)
+                    st.dataframe(bill_of_ladings)
 
 
 
