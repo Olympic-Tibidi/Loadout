@@ -776,12 +776,14 @@ if gty==1:
                 if "001" in list(dispatched[work_order].keys()):
                     
                     vessel=dispatched[work_order]["001"]["vessel"]
-                    info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
+                    info=gcp_download("olym_suzano",rf"release_orders/vessel/{work_order}.json")
                     info=json.loads(info)
-                    destination=info[vessel][dispatched["001"]['release_order']]['destination']
+                    destination=info[vessel][dispatched["001"]['destination']
+                    current_release_order=work_order
+                    current_sales_order="001"
                 try:
-                    next_release_order=dispatched['2']['release_order']
-                    next_sales_order=dispatched['2']['sales_order']
+                    next_release_order=dispatched['002']['release_order']
+                    next_sales_order=dispatched['002']['sales_order']
                     
                 except:
                     
