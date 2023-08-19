@@ -486,9 +486,6 @@ if gty==1:
                         
                                     
                         files_in_folder = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
-                        #junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
-                        #junk=json.loads(junk)
-                       # files_in_folder=[i for i in files_in_folder if i not in junk.keys()]
                         requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
                         
                         nofile=0
@@ -504,7 +501,7 @@ if gty==1:
                             rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
                         except:
                             nofile=1
-                     
+                        destination=target['destination']
                         #### DISPATCHED CLEANUP  #######
                         
                         try:
