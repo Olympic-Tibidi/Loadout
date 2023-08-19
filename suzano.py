@@ -986,7 +986,7 @@ if gty==1:
                             #st.write(textsplit)
                             for j,x in enumerate(first_textsplit):
                                 if audit_split(current_release_order,current_sales_order):
-                                    st.text_input(f"Unit No : {j+1}",x)
+                                    st.text_input(f"Unit No : {j+1},x)
                                     first_faults.append(0)
                                 else:
                                     st.text_input(f"Unit No : {j+1}",x)
@@ -1086,10 +1086,10 @@ if gty==1:
                             st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
                             for i in first_faults:
                                 if i==1:
-                                    st.markdown(f"**:red[Unit{first_faults.index(i)+1}]**")
+                                    st.markdown(f"**:red[Check Unit Unit{first_faults.index(i)+1}]**")
                             for i in second_faults:
                                 if i==1:
-                                    st.markdown(f"**:red[Unit{second_faults.index(i)+1}]**")
+                                    st.markdown(f"**:red[Check Unit Unit{second_faults.index(i)+1}]**")
                         else:
                             proceed=True
                     else:
@@ -1097,7 +1097,7 @@ if gty==1:
                             proceed=False
                             for i in faults:
                                 if i==1:
-                                    st.markdown(f"**:red[Unit{faults.index(i)+1}]**")
+                                    st.markdown(f"**:red[Check Unit {faults.index(i)+1}]**")
                         else:
                             proceed=True
                     if remaining<0:
