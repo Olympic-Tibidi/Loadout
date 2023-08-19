@@ -525,19 +525,13 @@ if gty==1:
                         to_delete=[]            
                         try:
                             for i in dispatched.keys():
-                                sales=dispatched[i]["sales_order"]
-                                if target[sales]["remaining"]<=0:
-                                    to_delete.append(i)
+                                if not dispatched[i].keys():
+                                    del dispatched[i]
+                                
                             for k in to_delete:
                                 dispatched.pop(k)
                                 #st.write("deleted k")
-                            if list(dispatched.keys())==["2","3"]:
-                                dispatched["1"]=dispatched["2"]
-                                dispatched["2"]=dispatched["3"]
-                                del dispatched["3"]
-                            if list(dispatched.keys())==["2"]:
-                                dispatched["1"]=dispatched["2"]
-                                del dispatched["2"]
+                           
                             json_data = json.dumps(dispatched)
                             storage_client = storage.Client()
                             bucket = storage_client.bucket("olym_suzano")
@@ -1136,6 +1130,8 @@ if gty==1:
                                             to_delete.append((release,sales))
                             for victim in to_delete:
                                 del dispatched[victim[0]][victim[1]]
+                                if len(dispatched[victim[0]].keys())==0:
+                                    del dispatched[victim[0]]
                             
                             json_data = json.dumps(dispatched)
                             storage_client = storage.Client()
