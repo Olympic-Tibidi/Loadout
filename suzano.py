@@ -1014,18 +1014,20 @@ if gty==1:
                                 
                             textsplit=[i for i in textsplit if len(i)>8]
                             #st.write(textsplit)
-                            
+                            seen=set()
                             for i,x in enumerate(textsplit):
-                               
+                                
                                 if audit_unit(x):
-                                    st.text_input(f"Unit No : {i+1}",x)
-                                    faults.append(0)
+                                    if x in seen:
+                                        st.text_input(f"Unit No : {i+1}",x)
+                                        faults.append(1)
+                                    else:
+                                        st.text_input(f"Unit No : {i+1}",x)
+                                        faults.append(0)
                                 else:
                                     st.text_input(f"Unit No : {i+1}",x)
                                     faults.append(1)
-                            if len(textsplit)!=len(set(textsplit)) :
-                                st.markdown("YOU SCANNED SAME UNIT TWICE")
-                                faults=[1]*len(textsplit)
+                           
                         loads=[]
                         for k in textsplit:
                             loads.append(k)
