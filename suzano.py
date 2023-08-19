@@ -720,7 +720,7 @@ if gty==1:
                                         blob = bucket.blob(rf"dispatched.json")
                                         blob.upload_from_string(json_data)
                                         st.markdown(f"**CLEARED DISPATCH ITEM {item}**")   
-                                else:
+                                except:
                                     pass
                             st.markdown("**CURRENT DISPATCH QUEUE**")
                             try:
