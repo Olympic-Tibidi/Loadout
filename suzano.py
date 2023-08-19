@@ -1008,7 +1008,6 @@ if gty==1:
                     
                     else:
                         
-        
                     
                         faults=[]
                         if load_input is not None:
@@ -1028,7 +1027,7 @@ if gty==1:
                         for k in textsplit:
                             loads.append(k)
                    
-                                  
+                st.write(faults)                  
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
                 
                 b=file_time.strftime("%H%M%S")
