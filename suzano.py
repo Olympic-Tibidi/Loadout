@@ -476,8 +476,11 @@ if gty==1:
                         blob = bucket.blob(rf"release_orders/{vessel}/{release_order_number}.json")
                         blob.upload_from_string(temp)
 
-                        release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
-                        release_order_database=json.loads(release_order_database)
+                        try:
+                            release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                            release_order_database=json.loads(release_order_database)
+                        except:
+                            release_order_database={}
                         release_order_database[release_order_number]={"destination":destination}
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
