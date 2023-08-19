@@ -646,7 +646,6 @@ if gty==1:
                             dol1,dol2,dol3,dol4=st.columns([2,2,2,2])
                             with dol1:
                                
-                                st.write(destination)       
                                 if st.button("DISPATCH TO WAREHOUSE",key="lala"):
                                    
                                     
