@@ -730,10 +730,10 @@ if gty==1:
                                 dispatch=json.loads(dispatch)
                                 try:
                                     for dispatched_release in dispatch.keys():
-                                        st.write(dispatched_release)
+                                        #st.write(dispatched_release)
                                         for sales in dispatch[dispatched_release].keys():
-                                            st.write(sales)
-                                            st.write(f'**Release Order = {dispatched_release}, Sales Item : {sales}, Destination : {dispatch[dispatched_release][sales]["destination"]} **')
+                                            #st.write(sales)
+                                            st.markdown(f'**Release Order = {dispatched_release}, Sales Item : {sales}, Destination : {dispatch[dispatched_release][sales]["destination"]} **')
                                 except:
                                     pass
                             except:
