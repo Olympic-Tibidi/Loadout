@@ -1008,6 +1008,7 @@ if gty==1:
                         
                     
                         faults=[]
+                        fault_messaging={}
                         if load_input is not None:
                             textsplit = load_input.splitlines()
                             
@@ -1021,6 +1022,7 @@ if gty==1:
                                     if x in seen:
                                         st.text_input(f"Unit No : {i+1}",x)
                                         faults.append(1)
+                                        fault_messaging[i+1]="This unit has been scanned TWICE!"
                                     else:
                                         st.text_input(f"Unit No : {i+1}",x)
                                         faults.append(0)
@@ -1101,6 +1103,9 @@ if gty==1:
                                     st.markdown(f"**:red[Check Unit {faults.index(i)+1}]**")
                         else:
                             proceed=True
+                    if fault_messaging.keys():
+                        for i in fault_messaging.keys():
+                            error=f"**:red[Unitfault_messaging[i]]**"
                     if remaining<0:
                         proceed=False
                         error="**:red[No more Items to ship on this Sales Order]"
