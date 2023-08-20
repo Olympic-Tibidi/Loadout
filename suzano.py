@@ -1225,8 +1225,7 @@ if gty==1:
                     df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY","ISSUED"]
                     st.dataframe(df_bill)
                 with daily2:
-                    #now=datetime.datetime.now()-datetime.timedelta(hours=7)
-                    #st.write(now)
+                    
                     for i in bill_of_ladings:
                         if i!="115240":
                             date_strings=bill_of_ladings[i]["issued"].split(" ")
@@ -1237,17 +1236,19 @@ if gty==1:
                             #st.write(bill_of_ladings[i]["issued"])
                             destination=bill_of_ladings[i]['destination']
                             truck=bill_of_ladings[i]['vehicle']
-                            #st.write(mill_info[bill_of_ladings[i]['destination']]["distance"])
+                            distance=mill_info[bill_of_ladings[i]['destination']]["distance"]
                             hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
                             minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
                             combined_departure=datetime.datetime.combine(ship_date,ship_time)
-                            st.write(combined_departure)
+                           
                             estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
                             estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y - %H:%M")
-                            st.write(estimated_arrival)
                             now=datetime.datetime.now()-datetime.timedelta(hours=7)
                             if estimated_arrival>now:
                                 st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival_string}")
+                            else:
+                                with daily3:
+                                    st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
                                                                                      
 
                 
