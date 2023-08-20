@@ -786,6 +786,7 @@ if gty==1:
                         current_sales_order=i
                         vessel=dispatched[work_order][i]["vessel"]
                         destination=dispatched[work_order][i]['destination']
+                        break
                     else:
                         pass
                 try:
