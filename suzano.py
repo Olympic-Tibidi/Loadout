@@ -1214,16 +1214,18 @@ if gty==1:
 
             inv1,inv2=st.tabs(["DAILY ACTION","MAIN INVENTORY"])
             with inv1:
+                data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                bill_of_ladings=json.loads(data)
                 daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
                 with daily1:
-                   
-                    data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
-                    bill_of_ladings=json.loads(data)
+                              
                     df_bill=pd.DataFrame(bill_of_ladings).T
                     df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","wrap","carrier_id","vehicle","quantity","issued"]]
                     df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY","ISSUED"]
                     st.dataframe(df_bill)
-
+                with daily2:
+                    now=datetime.datetime.now()
+                    st.write(now)
 
 
                 
