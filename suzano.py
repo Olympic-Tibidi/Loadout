@@ -306,28 +306,6 @@ if authentication_status:
     authenticator.logout('Logout', 'main')
     if username == 'ayilmaz':
         st.write(f'Welcome *{name}*')
-        st.title('Application 1')
-    elif username == 'gatehouse':
-        st.write(f'Welcome *{name}*')
-        st.title('Application 2')
-    elif username == '':
-        st.write(f'Welcome *{name}*')
-        st.title('Application 2')
-elif authentication_status == False:
-    st.error('Username/password is incorrect')
-elif authentication_status == None:
-    st.warning('Please enter your username and password')
-gty=1
-authenticated_username='ayilmaz'
-if gty==1:
-    
-    if authenticated_username == 'ayilmaz':
-        #print(f'Welcome {name}')
-
-
-
-    
-    
         select=st.sidebar.radio("SELECT FUNCTION",
             ('ADMIN', 'LOADOUT', 'INVENTORY'))
         
@@ -1389,12 +1367,611 @@ if gty==1:
                     for innerKey, values in innerDict.items():
                         reformed_dict[(outerKey,innerKey)] = values
                 st.dataframe(pd.DataFrame(reformed_dict).T)
-    elif username == 'rbriggs':
+    
+    elif username == 'warehouse':
         st.write(f'Welcome *{name}*')
-        st.title('Application 2')
-    elif authentication_status == False:
-        st.error('Username/password is incorrect')
-    elif authentication_status == None:
-        st.warning('Please enter your username and password')
+        bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
+            bill_mapping=json.loads(bill_mapping)
+            no_dispatch=0
+            number=None
+            if number not in st.session_state:
+                st.session_state.number=number
+            try:
+                dispatched=gcp_download("olym_suzano","dispatched.json")
+                dispatched=json.loads(dispatched)
+            except:
+                no_dispatch=1
+                pass
+           
+            
+            double_load=False
+            
+            if len(dispatched.keys())>0 and not no_dispatch:
+                #menu_destinations=[f"{i} TO {j}" for i,j in zip[dispatched.keys()
+                work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatched.keys())
+                
+                order=["001","002","003","004","005","006"]
+                
+                for i in order:
+                    if i in dispatched[work_order].keys():
+                        current_release_order=work_order
+                        current_sales_order=i
+                        vessel=dispatched[work_order][i]["vessel"]
+                        destination=dispatched[work_order][i]['destination']
+                        break
+                    else:
+                        pass
+                try:
+                    next_release_order=dispatched['002']['release_order']
+                    next_sales_order=dispatched['002']['sales_order']
+                    
+                except:
+                    
+                    pass
+                info=gcp_download("olym_suzano",rf"release_orders/{vessel}/{work_order}.json")
+                info=json.loads(info)
+                
+                
+                if st.checkbox("CLICK TO LOAD MIXED SKU"):
+                    try:
+                        next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
+                        double_load=True
+                    except:
+                        st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
+                    
+            
+                load_col1,load_col2,load_col3=st.columns([4,4,2])
+                with load_col1:
+                    st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
+                    st.markdown(rf'**Destination : {destination} .**')
+                    st.markdown(rf'**Sales Order Item-{current_sales_order}**')
+                    wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
+                    wrap=info[vessel][current_release_order][current_sales_order]["wrap"]
+                    st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[wrap]}**')
+                    unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
+                    st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
+                    st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
+                    st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
+                    remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
+                    if remaining<10:
+                        st.markdown(rf'**:red[CAUTION : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}]**')
+                    st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
+                    
+                with load_col2:
+                    if double_load:
+                        
+                        try:
+                            st.markdown(rf'**NEXT ITEM : Release Order-{next_release_order}**')
+                            st.markdown(rf'**Sales Order Item-{next_sales_order}**')
+                            st.markdown(f'**Ocean Bill Of Lading : {info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"]}**')
+                            st.markdown(rf'**Total Quantity : {info[vessel][next_release_order][next_sales_order]["quantity"]}**')
+                        except:
+                            pass
+                      
+                col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
+                
+              
+               
+                if info[vessel][current_release_order][current_sales_order]["transport_type"]=="TRUCK":
+                    medium="TRUCK"
+                else:
+                    medium="RAIL"
+                
+                with col1:
+                
+                    terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
+                    file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates",disabled=True)
+                    if file_date not in st.session_state:
+                        st.session_state.file_date=file_date
+                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=60,disabled=False)
+                    delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="delivery_date",disabled=True)
+                    eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
+                    
+                with col2:
+                    if double_load:
+                        release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
+                        sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
+                        ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
+                        current_ocean_bill_of_lading=ocean_bill_of_lading
+                        next_ocean_bill_of_lading=info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"]
+                        batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
+                        
+                        #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
+                        pass
+                    else:
+                        release_order_number=st.text_input("Release Order Number",current_release_order,disabled=True,help="Release Order Number without the Item no")
+                        sales_order_item=st.text_input("Sales Order Item (Material Code)",current_sales_order,disabled=True)
+                        ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
+                        
+                        batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
+                        #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
+                   
+                        
+                    
+                with col3: 
+                    carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True)
+                    transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
+                    transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
+                    vehicle_id=st.text_input("**:blue[Vehicle ID]**")
+                    foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1,key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+                
+                    
+               
+                with col4:
+                    updated_quantity=0
+                    live_quantity=0
+                    if updated_quantity not in st.session_state:
+                        st.session_state.updated_quantity=updated_quantity
+                    def audit_unit(x):
+                            if len(x)==11:
+                                #st.write(bill_mapping[x[:-3]]["Batch"])
+                                #st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0])
+                                if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
+                                    st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
+                                    return False
+                                
+                                if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
+                                    st.write(":red[THIS BELOW UNIT HAS BEEN SHIPPED]")
+                                    return False
+                                
+                                else:
+                                    return True
+                    def audit_split(release,sales):
+                            if len(x)==11:
+                                #st.write(bill_mapping[x[:-3]]["Batch"])
+                                
+                                if bill_mapping[x[:-3]]["Ocean_bl"]!=info[vessel][release][sales]["ocean_bill_of_lading"] and bill_mapping[x[:-3]]["Batch"]!=info[vessel][release][sales]["batch"]:
+                                    st.write("**:red[WRONG B/L, DO NOT LOAD BELOW!]**")
+                                    return False
+                                if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
+                                    st.write(":red[THIS BELOW UNIT HAS BEEN SHIPPED]")
+                                    return False
+                                else:
+                                    return True
+                    
+                    flip=False 
+                    first_load_input=None
+                    second_load_input=None
+                    if double_load:
+                        
+                        try:
+                            next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
+                            
+                            first_load_input=st.text_area("**FIRST SKU LOADS**",height=300)
+                            first_quantity=0
+                            second_quantity=0
+                            if first_load_input is not None:
+                                first_textsplit = first_load_input.splitlines()
+                                first_textsplit=[i for i in first_textsplit if len(i)>8]
+                                first_quantity=len(first_textsplit)
+                            second_load_input=st.text_area("**SECOND SKU LOADS**",height=300)
+                            if second_load_input is not None:
+                                second_textsplit = second_load_input.splitlines()
+                                second_textsplit = [i for i in second_textsplit if len(i)>8]
+                                second_quantity=len(second_textsplit)
+                            updated_quantity=first_quantity+second_quantity
+                            st.session_state.updated_quantity=updated_quantity
+                        except Exception as e: 
+                            st.write(e)
+                            #st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
+                            pass
+                        
+                    
+                    else:
+                        
+        
+        
+                    
+                        load_input=st.text_area("**LOADS**",height=300)#[:-3]
+                        if load_input is not None:
+                            textsplit = load_input.splitlines()
+                            textsplit=[i for i in textsplit if len(i)>8]
+                            updated_quantity=len(textsplit)
+                            st.session_state.updated_quantity=updated_quantity
+                       
+                        
+                    quantity=st.number_input("**Scanned Quantity of Units**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
+                    st.markdown(f"**{quantity*2} TONS - {round(quantity*2*2204.62,1)} Pounds**")
+                    #ADMT=st.text_input("ADMT",round(info[vessel][current_release_order][current_sales_order]["dryness"]/90,4)*updated_quantity,disabled=True)
+                    admt=round(float(info[vessel][current_release_order][current_sales_order]["dryness"])/90*updated_quantity*2,4)
+                    st.markdown(f"**ADMT= {admt} TONS**")
+                        
+                        
+                            
+                    
+                    
+                    
+                    
+                 
+                   
+                with col5:
+                    Inventory_Audit=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+                    #st.write(Inventory_Audit)
+                    if double_load:
+                        first_faults=[]
+                        if first_load_input is not None:
+                            first_textsplit = first_load_input.splitlines()
+                            first_textsplit=[i for i in first_textsplit if len(i)>8]
+                            #st.write(textsplit)
+                            for j,x in enumerate(first_textsplit):
+                                if audit_split(current_release_order,current_sales_order):
+                                    st.text_input(f"Unit No : {j+1}",x)
+                                    first_faults.append(0)
+                                else:
+                                    st.text_input(f"Unit No : {j+1}",x)
+                                    first_faults.append(1)
+                        second_faults=[]
+                        if second_load_input is not None:
+                            second_textsplit = second_load_input.splitlines()
+                            second_textsplit = [i for i in second_textsplit if len(i)>8]
+                            #st.write(textsplit)
+                            for i,x in enumerate(second_textsplit):
+                                if audit_split(next_release_order,next_sales_order):
+                                    st.text_input(f"Unit No : {len(first_textsplit)+1+i}",x)
+                                    second_faults.append(0)
+                                else:
+                                    st.text_input(f"Unit No : {j+1+i+1}",x)
+                                    second_faults.append(1)
+        
+                        loads=[]
+                        for k in first_textsplit:
+                            loads.append(k)
+                        for l in second_textsplit:
+                            loads.append(l)
+                    
+                    else:
+                        
+                    
+                        faults=[]
+                        fault_messaging={}
+                        if load_input is not None:
+                            textsplit = load_input.splitlines()
+                            
+                                
+                            textsplit=[i for i in textsplit if len(i)>8]
+                            #st.write(textsplit)
+                            seen=set()
+                            for i,x in enumerate(textsplit):
+                                
+                                if audit_unit(x):
+                                    if x in seen:
+                                        st.text_input(f"Unit No : {i+1}",x)
+                                        faults.append(1)
+                                        fault_messaging[i+1]="This unit has been scanned TWICE!"
+                                    else:
+                                        st.text_input(f"Unit No : {i+1}",x)
+                                        faults.append(0)
+                                else:
+                                    st.text_input(f"Unit No : {i+1}",x)
+                                    faults.append(1)
+                                seen.add(x)
+                        loads=[]
+                        for k in textsplit:
+                            loads.append(k)
+                   
+                #st.write(faults)                  
+                a=datetime.datetime.strftime(file_date,"%Y%m%d")
+                a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
+                b=file_time.strftime("%H%M%S")
+                b_=file_time.strftime("%H:%M:%S")
+                c=datetime.datetime.strftime(eta_date,"%Y%m%d")
+                st.write(file_date.month)
+                
+                    
+                
+                if st.button('SUBMIT EDI'):
+                    def gen_bill_of_lading():
+                        data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                        bill_of_ladings=json.loads(data)
+                        list_of_ladings=[]
+                        try:
+                            for key in bill_of_ladings:
+                                if int(key) % 2 == 0:
+                                    list_of_ladings.append(int(key))
+                            bill_of_lading_number=max(list_of_ladings)+2
+                        except:
+                            bill_of_lading_number=115240
+                        return bill_of_lading_number,bill_of_ladings
+                    #st.write(bill_of_lading_number)
+                    
+                    
+                    if double_load:
+                        bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
+                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
+                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_}"} 
+                        bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
+                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_}"} 
+                    else:
+                        bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
+                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
+                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                     "quantity":len(textsplit),"issued":f"{a_} {b_}"} 
+                        
+                 
+                    bill_of_ladings=json.dumps(bill_of_ladings)
+                    storage_client = storage.Client()
+                    bucket = storage_client.bucket("olym_suzano")
+                    blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+                    blob.upload_from_string(bill_of_ladings)
+                    
+                    
+                    terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",bill_of_lading_number,disabled=True)
+                    
+                    proceed=False
+                    if double_load:
+                        if 1 in first_faults or 1 in second_faults:
+                            st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
+                            for i in first_faults:
+                                if i==1:
+                                    st.markdown(f"**:red[Check Unit Unit{first_faults.index(i)+1}]**")
+                            for i in second_faults:
+                                if i==1:
+                                    st.markdown(f"**:red[Check Unit Unit{second_faults.index(i)+1}]**")
+                        else:
+                            proceed=True
+                    else:
+                        if 1 in faults:
+                            proceed=False
+                            for i in faults:
+                                if i==1:
+                                    st.markdown(f"**:red[Check Unit {faults.index(i)+1}]**")
+                        else:
+                            proceed=True
+                    if fault_messaging.keys():
+                        for i in fault_messaging.keys():
+                            error=f"**:red[Unitfault_messaging[i]]**"
+                    if remaining<0:
+                        proceed=False
+                        error="**:red[No more Items to ship on this Sales Order]"
+                        st.write(error)
+                    if not vehicle_id: 
+                        proceed=False
+                        error="**:red[Please check Vehicle ID]"
+                        st.write(error)
+                    if len(terminal_bill_of_lading)<6:
+                        proceed=False
+                        error="**:red[Please check Terminal Bill Of Lading. It should have 6 digits.]"
+                        st.write(error)
+                    if quantity!=foreman_quantity:
+                        proceed=False
+                        error=f"**:red[{quantity} loads on this truck. Please check. You planned for {foreman_quantity} loads!]** "
+                        st.write(error)
+                    if proceed:
+                        
+                        process()
+                        mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
+                        map={8:"SEP 2023",9:"SEP 2023",10:"OCT 2023",11:"NOV 2023",12:"DEC 2023"}
+                        mill_progress[destination][map[file_date.month]]["Shipped"]=mill_progress[destination][map[file_date.month]]["Shipped"]+len(textsplit)*2
+                        json_data = json.dumps(mill_progress)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"mill_progress.json")
+                        blob.upload_from_string(json_data)       
+                        if double_load:
+                            info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(first_textsplit)
+                            info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(first_textsplit)
+                            info[vessel][next_release_order][next_sales_order]["shipped"]=info[vessel][next_release_order][next_sales_order]["shipped"]+len(second_textsplit)
+                            info[vessel][next_release_order][next_sales_order]["remaining"]=info[vessel][next_release_order][next_sales_order]["remaining"]-len(second_textsplit)
+                        else:
+                            info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
+                            info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
+                        if info[vessel][current_release_order][current_sales_order]["remaining"]<=0:
+                            to_delete=[]
+                            for release in dispatched.keys():
+                                if release==current_release_order:
+                                    for sales in dispatched[release].keys():
+                                        if sales==current_sales_order:
+                                            to_delete.append((release,sales))
+                            for victim in to_delete:
+                                del dispatched[victim[0]][victim[1]]
+                                if len(dispatched[victim[0]].keys())==0:
+                                    del dispatched[victim[0]]
+                            
+                            json_data = json.dumps(dispatched)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"dispatched.json")
+                            blob.upload_from_string(json_data)       
+                        
+                        json_data = json.dumps(info)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
+                        blob.upload_from_string(json_data)
 
 
+
+                        
+                        with open('placeholder.txt', 'r') as f:
+                            output_text = f.read()
+                        st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
+                        st.markdown("**EDI TEXT**")
+                        st.text_area('', value=output_text, height=600)
+                        with open('placeholder.txt', 'r') as f:
+                            file_content = f.read()
+                        newline="\n"
+                        filename = f'{a}{b}OLYM'
+                        file_name= f'{a}{b}OLYM.txt'
+                        st.write(filename)
+                        st.write(current_release_order,current_sales_order,destination,ocean_bill_of_lading,terminal_bill_of_lading,wrap)
+                        subject = f'Suzano_EDI_{a}_{release_order_number}'
+                        body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}Destination : {destination}Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
+                        st.write(body)           
+                        sender = "warehouseoly@gmail.com"
+                        #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                        recipients = ["afsiny@portolympia.com"]
+                        password = "xjvxkmzbpotzeuuv"
+                
+                          # Replace with the actual file path
+                
+                
+                        with open('temp_file.txt', 'w') as f:
+                            f.write(file_content)
+                
+                        file_path = 'temp_file.txt'  # Use the path of the temporary file
+                
+                        send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
+                        upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
+                        
+                    else:   ###cancel bill of lading
+                        data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                        bill_of_ladings=json.loads(data)
+                        del bill_of_ladings[str(bill_of_lading_number)]
+                        bill_of_ladings=json.dumps(bill_of_ladings)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+                        blob.upload_from_string(bill_of_ladings)
+        
+            
+                        
+            else:
+                st.subheader("**Nothing dispatched!**")
+    elif username == 'olysuzanodash':
+        st.write(f'Welcome *{name}*')
+        Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+           
+            mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
+            inv1,inv2,inv3=st.tabs(["DAILY ACTION","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
+            with inv1:
+                data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                bill_of_ladings=json.loads(data)
+                daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
+                with daily1:
+                              
+                    df_bill=pd.DataFrame(bill_of_ladings).T
+                    df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","wrap","carrier_id","vehicle","quantity","issued"]]
+                    df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY","ISSUED"]
+                    st.dataframe(df_bill)
+                with daily2:
+                    
+                    for i in bill_of_ladings:
+                        if i!="115240":
+                            date_strings=bill_of_ladings[i]["issued"].split(" ")
+                   
+                            ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
+                            ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
+                            
+                            #st.write(bill_of_ladings[i]["issued"])
+                            destination=bill_of_ladings[i]['destination']
+                            truck=bill_of_ladings[i]['vehicle']
+                            distance=mill_info[bill_of_ladings[i]['destination']]["distance"]
+                            hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
+                            minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
+                            combined_departure=datetime.datetime.combine(ship_date,ship_time)
+                           
+                            estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
+                            estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y - %H:%M")
+                            now=datetime.datetime.now()-datetime.timedelta(hours=7)
+                            if estimated_arrival>now:
+                                st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival_string}")
+                            else:
+                                with daily3:
+                                    st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
+                                                                                     
+
+                
+            with inv2:
+                     
+                dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
+                df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Location","Warehouse_In"]]
+                zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
+                                                                 "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
+                items=df["Ocean B/L"].unique().tolist()
+                
+                with dab1:
+                    
+                    inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
+                    with inv_col1:
+                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                    with inv_col2:
+                        #st.write(items)
+                        inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
+                        shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
+                        
+                        wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique()[0] for i in items]
+                       # st.write(wrap_)
+                        tablo=pd.DataFrame({"Ocean B/L":items,"Wrap":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
+                        total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
+                        tablo = tablo.append(total_row, ignore_index=True)
+                        tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
+             
+                        st.dataframe(tablo)
+                    if st.checkbox("CLICK TO SEE INVENTORY LIST"):
+                        st.table(df)
+                with dab2:
+                    
+                    date_filter=st.checkbox("CLICK FOR DATE FILTER")
+                    if "disabled" not in st.session_state:
+                        st.session_state.visibility = "visible"
+                        st.session_state.disabled = True
+                    if date_filter:
+                        st.session_state.disabled=False
+                        
+                    else:
+                        st.session_state.disabled=True
+                        #min_value=min([i.date() for i in zf["Warehouse_Out"]])
+                    filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
+                    
+                    
+                    #st.write(zf)
+                    #zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("int")
+                    zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
+                    
+                    zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
+                    filtered_zf=zf.copy()
+                    if date_filter:
+                        filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+                        
+                        filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+                        
+                    filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
+                    #st.write(filter_by)
+                    choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
+                    
+                    
+                    col1,col2=st.columns([2,8])
+                    with col1:
+                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                    try:
+                        filtered_zf=filtered_zf[filtered_zf[filter_by]==choice]
+                        filtered_df=filtered_zf[filtered_zf[filter_by]==choice]
+                        
+                    except:
+                        filtered_zf=filtered_zf
+                        filtered_df=df.copy()
+                        
+                        pass
+                    with col2:
+                        if date_filter:
+                            st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+                        else:
+                            st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
+                            st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
+                            st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
+                        
+                        
+                    st.table(filtered_zf)
+            with inv3:
+                mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
+                reformed_dict = {}
+                for outerKey, innerDict in mill_progress.items():
+                    for innerKey, values in innerDict.items():
+                        reformed_dict[(outerKey,innerKey)] = values
+                st.dataframe(pd.DataFrame(reformed_dict).T)
+elif authentication_status == False:
+    st.error('Username/password is incorrect')
+elif authentication_status == None:
+    st.warning('Please enter your username and password')
+
+
+
+
+    
+ 
