@@ -785,7 +785,7 @@ if gty==1:
                         current_release_order=work_order
                         current_sales_order=i
                         vessel=dispatched[work_order][i]["vessel"]
-                        destination=info[vessel][work_order]['destination']
+                        destination==dispatched[work_order][i]['destination']
                     else:
                         pass
                 try:
