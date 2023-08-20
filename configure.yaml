@@ -2,8 +2,16 @@ credentials:
   usernames:
     ayilmaz:
       email: afsin1977@gmail.com
-      name: afsin yilmaz
+      name: Afsin Yilmaz
       password: $2b$12$gOuqApdQ4.Biv41XVw2cKOcqipkE4NeTAgGp3o1XsTpMh22zXif0i
+    gatehouse:
+      email: warehouseoly@gmail.com
+      name: Seaport Team
+      password: $2b$12$JSs9ZUjKKSYXv30TMXlR/OrpWJIiEvwhGfHIQjCeuPECD6VWfYJ5S
+    olysuzanodash:
+      email: warehouseoly@gmail.com
+      name: Awesome Guest
+      password: $2b$12$817gkG6m1cNCAG4B0OuPRu1BkZbbxCTaTIyLRrY57.k0TOlpdM3j2
    
 cookie:
   expiry_days: 30
