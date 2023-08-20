@@ -291,7 +291,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 
 
 
-with open('config.yaml') as file:
+with open('configure.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 authenticator = Authenticate(
     config['credentials'],
