@@ -1240,7 +1240,7 @@ if gty==1:
                             hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
                             minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
                             combined_departure=datetime.datetime.combine(ship_date,ship_time)
-                            #st.write(combined_departure)
+                            st.write(combined_departure)
                             estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
                             st.write(estimated_arrival)
                             now=datetime.datetime.now()-datetime.timedelta(hours=7)
