@@ -1345,7 +1345,7 @@ if gty==1:
                 for outerKey, innerDict in mill_progress.items():
                     for innerKey, values in innerDict.items():
                         reformed_dict[(outerKey,innerKey)] = values
-                st.dataframe(pd.DataFrame(reformed_dict).T)
+                st.table(pd.DataFrame(reformed_dict).T)
     elif username == 'rbriggs':
         st.write(f'Welcome *{name}*')
         st.title('Application 2')
