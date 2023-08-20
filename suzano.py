@@ -1042,7 +1042,7 @@ if gty==1:
                 b=file_time.strftime("%H%M%S")
                 b_=file_time.strftime("%H:%M:%S")
                 c=datetime.datetime.strftime(eta_date,"%Y%m%d")
-                
+                st.write(a.month)
                 
                     
                 
@@ -1128,6 +1128,8 @@ if gty==1:
                     if proceed:
                         
                         process()
+                        mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
+                        #mill_progress[
                         if double_load:
                             info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(first_textsplit)
                             info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(first_textsplit)
@@ -1159,6 +1161,10 @@ if gty==1:
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
                         blob.upload_from_string(json_data)
+
+
+
+                        
                         with open('placeholder.txt', 'r') as f:
                             output_text = f.read()
                         st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
@@ -1189,6 +1195,7 @@ if gty==1:
                 
                         send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
                         upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
+                        
                     else:   ###cancel bill of lading
                         data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                         bill_of_ladings=json.loads(data)
