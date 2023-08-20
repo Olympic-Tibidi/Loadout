@@ -1224,7 +1224,7 @@ if gty==1:
                     df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY","ISSUED"]
                     st.dataframe(df_bill)
                 with daily2:
-                    now=datetime.datetime.now()
+                    now=datetime.datetime.now()-datetime.timedelta(hours=7)
                     st.write(now)
 
 
