@@ -777,15 +777,17 @@ if gty==1:
             if len(dispatched.keys())>0 and not no_dispatch:
                 #menu_destinations=[f"{i} TO {j}" for i,j in zip[dispatched.keys()
                 work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatched.keys())
-                
-                
-                if "001" in list(dispatched[work_order].keys()):
-                    vessel=dispatched[work_order]["001"]["vessel"]
-                    info=gcp_download("olym_suzano",rf"release_orders/{vessel}/{work_order}.json")
-                    info=json.loads(info)
-                    destination=info[vessel][work_order]['destination']
-                    current_release_order=work_order
-                    current_sales_order="001"
+                vessel=dispatched[work_order]["001"]["vessel"]
+                destination=info[vessel][work_order]['destination']
+                order=["001","002","003","004","005","006"]
+                info=gcp_download("olym_suzano",rf"release_orders/{vessel}/{work_order}.json")
+                info=json.loads(info)
+                for i in order:
+                    if i in dispatched[work_order].keys():
+                        current_release_order=work_order
+                        current_sales_order=i
+                    else:
+                        pass
                 try:
                     next_release_order=dispatched['002']['release_order']
                     next_sales_order=dispatched['002']['sales_order']
