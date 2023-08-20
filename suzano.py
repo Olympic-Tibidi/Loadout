@@ -1226,6 +1226,10 @@ if gty==1:
                 with daily2:
                     now=datetime.datetime.now()-datetime.timedelta(hours=7)
                     st.write(now)
+                    for i in bill_of_ladings:
+                        if i!="115240":
+                            st.write(bill_of_ladings[i]["issued"]
+                        
 
 
                 
