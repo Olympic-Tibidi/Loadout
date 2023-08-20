@@ -304,7 +304,7 @@ authenticator = stauth.Authenticate(
 name, authentication_status, username = authenticator.login('Login', 'main')
 if authentication_status:
     authenticator.logout('Logout', 'main')
-    if username == 'ayilmaz':
+    if username == 'ayilmaz' or username=='warehouse':
         st.write(f'Welcome *{name}*')
         select=st.sidebar.radio("SELECT FUNCTION",
             ('ADMIN', 'LOADOUT', 'INVENTORY'))
