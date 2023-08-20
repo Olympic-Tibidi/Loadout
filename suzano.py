@@ -1212,7 +1212,7 @@ if gty==1:
         if select=="INVENTORY" :
             Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
            
-            mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json")
+            mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
             inv1,inv2=st.tabs(["DAILY ACTION","MAIN INVENTORY"])
             with inv1:
                 data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
