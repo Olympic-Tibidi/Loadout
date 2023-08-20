@@ -1833,138 +1833,138 @@ if authentication_status:
         st.write(f'Welcome *{name}*')
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
            
-            mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
-            inv1,inv2,inv3=st.tabs(["DAILY ACTION","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
-            with inv1:
-                data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
-                bill_of_ladings=json.loads(data)
-                daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
-                with daily1:
-                              
-                    df_bill=pd.DataFrame(bill_of_ladings).T
-                    df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","wrap","carrier_id","vehicle","quantity","issued"]]
-                    df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY","ISSUED"]
-                    st.dataframe(df_bill)
-                with daily2:
-                    
-                    for i in bill_of_ladings:
-                        if i!="115240":
-                            date_strings=bill_of_ladings[i]["issued"].split(" ")
-                   
-                            ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
-                            ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
-                            
-                            #st.write(bill_of_ladings[i]["issued"])
-                            destination=bill_of_ladings[i]['destination']
-                            truck=bill_of_ladings[i]['vehicle']
-                            distance=mill_info[bill_of_ladings[i]['destination']]["distance"]
-                            hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
-                            minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
-                            combined_departure=datetime.datetime.combine(ship_date,ship_time)
-                           
-                            estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
-                            estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y - %H:%M")
-                            now=datetime.datetime.now()-datetime.timedelta(hours=7)
-                            if estimated_arrival>now:
-                                st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival_string}")
-                            else:
-                                with daily3:
-                                    st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
-                                                                                     
-
+        mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
+        inv1,inv2,inv3=st.tabs(["DAILY ACTION","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
+        with inv1:
+            data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+            bill_of_ladings=json.loads(data)
+            daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
+            with daily1:
+                          
+                df_bill=pd.DataFrame(bill_of_ladings).T
+                df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","wrap","carrier_id","vehicle","quantity","issued"]]
+                df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY","ISSUED"]
+                st.dataframe(df_bill)
+            with daily2:
                 
-            with inv2:
-                     
-                dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-                df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Location","Warehouse_In"]]
-                zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
-                                                                 "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-                items=df["Ocean B/L"].unique().tolist()
-                
-                with dab1:
-                    
-                    inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
-                    with inv_col1:
-                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-                    with inv_col2:
-                        #st.write(items)
-                        inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
-                        shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
+                for i in bill_of_ladings:
+                    if i!="115240":
+                        date_strings=bill_of_ladings[i]["issued"].split(" ")
+               
+                        ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
+                        ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
                         
-                        wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique()[0] for i in items]
-                       # st.write(wrap_)
-                        tablo=pd.DataFrame({"Ocean B/L":items,"Wrap":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
-                        total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
-                        tablo = tablo.append(total_row, ignore_index=True)
-                        tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
-             
-                        st.dataframe(tablo)
-                    if st.checkbox("CLICK TO SEE INVENTORY LIST"):
-                        st.table(df)
-                with dab2:
-                    
-                    date_filter=st.checkbox("CLICK FOR DATE FILTER")
-                    if "disabled" not in st.session_state:
-                        st.session_state.visibility = "visible"
-                        st.session_state.disabled = True
-                    if date_filter:
-                        st.session_state.disabled=False
-                        
-                    else:
-                        st.session_state.disabled=True
-                        #min_value=min([i.date() for i in zf["Warehouse_Out"]])
-                    filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
-                    
-                    
-                    #st.write(zf)
-                    #zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("int")
-                    zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
-                    
-                    zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
-                    filtered_zf=zf.copy()
-                    if date_filter:
-                        filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
-                        
-                        filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
-                        
-                    filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
-                    #st.write(filter_by)
-                    choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
-                    
-                    
-                    col1,col2=st.columns([2,8])
-                    with col1:
-                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-                    try:
-                        filtered_zf=filtered_zf[filtered_zf[filter_by]==choice]
-                        filtered_df=filtered_zf[filtered_zf[filter_by]==choice]
-                        
-                    except:
-                        filtered_zf=filtered_zf
-                        filtered_df=df.copy()
-                        
-                        pass
-                    with col2:
-                        if date_filter:
-                            st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+                        #st.write(bill_of_ladings[i]["issued"])
+                        destination=bill_of_ladings[i]['destination']
+                        truck=bill_of_ladings[i]['vehicle']
+                        distance=mill_info[bill_of_ladings[i]['destination']]["distance"]
+                        hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
+                        minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
+                        combined_departure=datetime.datetime.combine(ship_date,ship_time)
+                       
+                        estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
+                        estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y - %H:%M")
+                        now=datetime.datetime.now()-datetime.timedelta(hours=7)
+                        if estimated_arrival>now:
+                            st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival_string}")
                         else:
-                            st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
-                            st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
-                            st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
-                        
-                        
-                    st.table(filtered_zf)
-            with inv3:
-                mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
-                reformed_dict = {}
-                for outerKey, innerDict in mill_progress.items():
-                    for innerKey, values in innerDict.items():
-                        reformed_dict[(outerKey,innerKey)] = values
-                st.dataframe(pd.DataFrame(reformed_dict).T)
+                            with daily3:
+                                st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
+                                                                                 
+
+            
+        with inv2:
+                 
+            dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
+            df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Location","Warehouse_In"]]
+            zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
+                                                             "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
+            items=df["Ocean B/L"].unique().tolist()
+            
+            with dab1:
+                
+                inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
+                with inv_col1:
+                    st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+                    st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+                    st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                with inv_col2:
+                    #st.write(items)
+                    inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
+                    shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
+                    
+                    wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique()[0] for i in items]
+                   # st.write(wrap_)
+                    tablo=pd.DataFrame({"Ocean B/L":items,"Wrap":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
+                    total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
+                    tablo = tablo.append(total_row, ignore_index=True)
+                    tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
+         
+                    st.dataframe(tablo)
+                if st.checkbox("CLICK TO SEE INVENTORY LIST"):
+                    st.table(df)
+            with dab2:
+                
+                date_filter=st.checkbox("CLICK FOR DATE FILTER")
+                if "disabled" not in st.session_state:
+                    st.session_state.visibility = "visible"
+                    st.session_state.disabled = True
+                if date_filter:
+                    st.session_state.disabled=False
+                    
+                else:
+                    st.session_state.disabled=True
+                    #min_value=min([i.date() for i in zf["Warehouse_Out"]])
+                filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
+                
+                
+                #st.write(zf)
+                #zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("int")
+                zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
+                
+                zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
+                filtered_zf=zf.copy()
+                if date_filter:
+                    filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+                    
+                    filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+                    
+                filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
+                #st.write(filter_by)
+                choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
+                
+                
+                col1,col2=st.columns([2,8])
+                with col1:
+                    st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+                    st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+                    st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                try:
+                    filtered_zf=filtered_zf[filtered_zf[filter_by]==choice]
+                    filtered_df=filtered_zf[filtered_zf[filter_by]==choice]
+                    
+                except:
+                    filtered_zf=filtered_zf
+                    filtered_df=df.copy()
+                    
+                    pass
+                with col2:
+                    if date_filter:
+                        st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+                    else:
+                        st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
+                        st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
+                        st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
+                    
+                    
+                st.table(filtered_zf)
+        with inv3:
+            mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
+            reformed_dict = {}
+            for outerKey, innerDict in mill_progress.items():
+                for innerKey, values in innerDict.items():
+                    reformed_dict[(outerKey,innerKey)] = values
+            st.dataframe(pd.DataFrame(reformed_dict).T)
 elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
