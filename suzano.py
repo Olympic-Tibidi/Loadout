@@ -1236,16 +1236,17 @@ if gty==1:
                             
                             #st.write(bill_of_ladings[i]["issued"])
                             destination=bill_of_ladings[i]['destination']
+                            truck=bill_of_ladings[i]['vehicle_id']
                             #st.write(mill_info[bill_of_ladings[i]['destination']]["distance"])
                             hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
                             minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
                             combined_departure=datetime.datetime.combine(ship_date,ship_time)
                             st.write(combined_departure)
-                            estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
+                            estimated_arrival=datetime.datetime.strftime(combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo),"%B %d,%Y - %H:%M")
                             st.write(estimated_arrival)
                             now=datetime.datetime.now()-datetime.timedelta(hours=7)
                             if estimated_arrival>now:
-                                st.write(f"This truck is Enroute to {destination} with ETA {estimated_arrival}")
+                                st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival}")
                                                                                      
 
                 
