@@ -1228,7 +1228,7 @@ if gty==1:
                     st.write(now)
                     for i in bill_of_ladings:
                         if i!="115240":
-                            st.write(bill_of_ladings[i]["issued"]
+                            st.write(bill_of_ladings[i]["issued"])
                         
 
 
