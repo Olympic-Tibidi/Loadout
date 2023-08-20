@@ -1236,7 +1236,7 @@ if gty==1:
                             
                             #st.write(bill_of_ladings[i]["issued"])
                             destination=bill_of_ladings[i]['destination']
-                            truck=bill_of_ladings[i]['vehicle_id']
+                            truck=bill_of_ladings[i]['vehicle']
                             #st.write(mill_info[bill_of_ladings[i]['destination']]["distance"])
                             hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
                             minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
