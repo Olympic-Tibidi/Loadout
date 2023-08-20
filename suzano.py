@@ -1036,8 +1036,9 @@ if gty==1:
                    
                 #st.write(faults)                  
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
-                
+                a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
                 b=file_time.strftime("%H%M%S")
+                b_=file_time.strftime("%H:%M:%S")
                 c=datetime.datetime.strftime(eta_date,"%Y%m%d")
                 
                 
@@ -1063,15 +1064,15 @@ if gty==1:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                         bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                      "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(first_textsplit),"issued":f"{a} {b}"} 
+                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_}"} 
                         bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
                                                                      "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(first_textsplit),"issued":f"{a} {b}"} 
+                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_}"} 
                     else:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                         bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                      "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(textsplit),"issued":f"{a} {b}"} 
+                                                                     "quantity":len(textsplit),"issued":f"{a_} {b_}"} 
                         
                  
                     bill_of_ladings=json.dumps(bill_of_ladings)
@@ -1169,7 +1170,7 @@ if gty==1:
                         st.write(filename)
                         st.write(current_release_order,current_sales_order,destination,ocean_bill_of_lading,terminal_bill_of_lading,wrap)
                         subject = f'Suzano_EDI_{a}_{release_order_number}'
-                        body = f"EDI for Below attached.{newline}  Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}   Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}                  Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}  {len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}    Truck loading completed at {a} {b}"
+                        body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}Destination : {destination}Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
                         st.write(body)           
                         sender = "warehouseoly@gmail.com"
                         #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
