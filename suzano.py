@@ -1225,8 +1225,8 @@ if gty==1:
                     df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY","ISSUED"]
                     st.dataframe(df_bill)
                 with daily2:
-                    now=datetime.datetime.now()-datetime.timedelta(hours=7)
-                    st.write(now)
+                    #now=datetime.datetime.now()-datetime.timedelta(hours=7)
+                    #st.write(now)
                     for i in bill_of_ladings:
                         if i!="115240":
                             date_strings=bill_of_ladings[i]["issued"].split(" ")
@@ -1243,7 +1243,7 @@ if gty==1:
                             #st.write(combined_departure)
                             estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
                             st.write(estimated_arrival)
-                            now=datetime.datetime.now()
+                            now=datetime.datetime.now()-datetime.timedelta(hours=7)
                             if estimated_arrival>now:
                                 st.write(f"This truck is Enroute to {destination} with ETA {estimated_arrival}")
                                                                                      
