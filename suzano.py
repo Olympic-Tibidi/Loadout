@@ -1230,14 +1230,15 @@ if gty==1:
                     for i in bill_of_ladings:
                         if i!="115240":
                             date_strings=bill_of_ladings[i]["issued"].split(" ")
-                            st.write(date_strings)
+                   
                             ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
                             ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
-                            st.write(ship_date)
-                            st.write(ship_time)
+                            
                             st.write(bill_of_ladings[i]["issued"])
                             st.write(bill_of_ladings[i]['destination'])
-                            st.write(mill_info[bill_of_ladings[i]['destination']])
+                            st.write(mill_info[bill_of_ladings[i]['destination']]["distance"])
+                            st.write(mill_info[bill_of_ladings[i]['destination']]["hours"])
+                            st.write(mill_info[bill_of_ladings[i]['destination']]["minutes"])
 
                 
             with inv2:
