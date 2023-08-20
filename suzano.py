@@ -1042,7 +1042,7 @@ if gty==1:
                 b=file_time.strftime("%H%M%S")
                 b_=file_time.strftime("%H:%M:%S")
                 c=datetime.datetime.strftime(eta_date,"%Y%m%d")
-                st.write(a.month)
+                st.write(file_date.month)
                 
                     
                 
