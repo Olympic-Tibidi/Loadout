@@ -1340,7 +1340,7 @@ if gty==1:
                         
                     st.table(filtered_zf)
             with inv3:
-                mill_schedule=json.loads(gcp_download("olym_suzano",rf"mill_schedule.json")).T
+                mill_schedule=pd.DataFrame(json.loads(gcp_download("olym_suzano",rf"mill_schedule.json"))).T
                 
                 st.dataframe(mill_schedule)
     elif username == 'rbriggs':
