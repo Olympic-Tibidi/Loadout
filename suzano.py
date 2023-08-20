@@ -301,7 +301,7 @@ authenticator = stauth.Authenticate(
     config['preauthorized']
 )
 
-name, authentication_status, username = authenticator.login('Login', 'main')
+name, authentication_status, username = authenticator.login('PORT OF OLYMPIA TOS LOGIN', 'main')
 if authentication_status:
     authenticator.logout('Logout', 'main')
     if username == 'ayilmaz' or username=='gatehouse':
