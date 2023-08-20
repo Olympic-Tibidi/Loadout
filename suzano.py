@@ -1238,7 +1238,7 @@ if gty==1:
                             st.write(bill_of_ladings[i]['destination'])
                             st.write(mill_info[bill_of_ladings[i]['destination']]["distance"])
                             hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
-                            minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"])
+                            minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
                             estimated_arrival=ship_date+ship_time+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
                             st.write(estimated_arrival)
                                                                                      
