@@ -3,7 +3,7 @@ credentials:
     ayilmaz:
       email: afsin1977@gmail.com
       name: afsin yilmaz
-      password: testedelim
+      password: $2b$12$gOuqApdQ4.Biv41XVw2cKOcqipkE4NeTAgGp3o1XsTpMh22zXif0i
    
 cookie:
   expiry_days: 30
