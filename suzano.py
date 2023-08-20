@@ -1234,15 +1234,18 @@ if gty==1:
                             ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
                             ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
                             
-                            st.write(bill_of_ladings[i]["issued"])
-                            st.write(bill_of_ladings[i]['destination'])
-                            st.write(mill_info[bill_of_ladings[i]['destination']]["distance"])
-                            hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
-                            minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
+                            #st.write(bill_of_ladings[i]["issued"])
+                            #st.write(bill_of_ladings[i]['destination'])
+                            #st.write(mill_info[bill_of_ladings[i]['destination']]["distance"])
+                            #hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
+                            #minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
                             combined_departure=datetime.datetime.combine(ship_date,ship_time)
-                            st.write(combined_departure)
+                            #st.write(combined_departure)
                             estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
                             st.write(estimated_arrival)
+                            now=datetime.datetime.now()
+                            if estimated_arrival>now:
+                                st.write(f"This truck is Enroute to {destination} with ETA {estimated_arrival}")
                                                                                      
 
                 
