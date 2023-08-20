@@ -12,6 +12,10 @@ credentials:
       email: warehouseoly@gmail.com
       name: Awesome Guest
       password: $2b$12$817gkG6m1cNCAG4B0OuPRu1BkZbbxCTaTIyLRrY57.k0TOlpdM3j2
+    warehouse:
+      email: warehouseoly@gmail.com
+      name: Awesome Longshore of Olympia
+      password: $2b$12$yfPU0gy.MLr8Xw/biwZWTOrzdM7ww8yX.cmHufk/iM0wDpi6DNhS.
    
 cookie:
   expiry_days: 30
