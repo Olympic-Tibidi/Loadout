@@ -1130,7 +1130,7 @@ if gty==1:
                         process()
                         mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
                         map={8:"SEP 2023",9:"SEP 2023",10:"OCT 2023",11:"NOV 2023",12:"DEC 2023"}
-                        mill_progress[destination][map[file_date.month]["Shipped"]=mill_progress[destination][map[file_date.month]["Shipped"]+len(textsplit)
+                        mill_progress[destination][map[file_date.month]]["Shipped"]=mill_progress[destination][map[file_date.month]["Shipped"]+len(textsplit)
                         json_data = json.dumps(mill_progress)
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
