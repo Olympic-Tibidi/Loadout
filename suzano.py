@@ -1230,7 +1230,7 @@ if gty==1:
                         if i!="115240":
                             date_strings=bill_of_ladings[i]["issued"].split(" ")
                             st.write(date_strings)
-                            ship_date=datetime.datetime.strptime(date_strings[0],%Y%m%d)
+                            ship_date=datetime.datetime.strptime(date_strings[0],"%Y%m%d")
                             st.write(ship_date)
                             st.write(bill_of_ladings[i]["issued"])
                         
