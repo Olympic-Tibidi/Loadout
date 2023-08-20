@@ -1341,7 +1341,7 @@ if gty==1:
                     st.table(filtered_zf)
             with inv3:
                 mill_schedule=json.loads(gcp_download("olym_suzano",rf"mill_schedule.json"))
-                mill_schedule=json.loads(mill_schedule)
+                
                 st.dataframe(mill_schedule)
     elif username == 'rbriggs':
         st.write(f'Welcome *{name}*')
