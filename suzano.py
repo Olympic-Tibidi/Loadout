@@ -307,7 +307,10 @@ if authentication_status:
     if username == 'ayilmaz':
         st.write(f'Welcome *{name}*')
         st.title('Application 1')
-    elif username == 'rbriggs':
+    elif username == 'gatehouse':
+        st.write(f'Welcome *{name}*')
+        st.title('Application 2')
+    elif username == '':
         st.write(f'Welcome *{name}*')
         st.title('Application 2')
 elif authentication_status == False:
