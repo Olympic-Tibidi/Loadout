@@ -1235,7 +1235,7 @@ if gty==1:
                             ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
                             
                             #st.write(bill_of_ladings[i]["issued"])
-                            #st.write(bill_of_ladings[i]['destination'])
+                            destination=bill_of_ladings[i]['destination']
                             #st.write(mill_info[bill_of_ladings[i]['destination']]["distance"])
                             hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
                             minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
