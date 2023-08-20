@@ -848,7 +848,7 @@ if gty==1:
                     file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates",disabled=True)
                     if file_date not in st.session_state:
                         st.session_state.file_date=file_date
-                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),disabled=False)
+                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=60,disabled=False)
                     delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="delivery_date",disabled=True)
                     eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
                     
