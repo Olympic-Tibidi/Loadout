@@ -1340,7 +1340,7 @@ if gty==1:
                         
                     st.table(filtered_zf)
             with inv3:
-                mill_progress=pd.DataFrame(json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))).T
+                mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
                 reformed_dict = {}
                 for outerKey, innerDict in mill_progress.items():
                     for innerKey, values in innerDict.items():
