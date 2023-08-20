@@ -779,8 +779,7 @@ if gty==1:
                 work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatched.keys())
                 
                 order=["001","002","003","004","005","006"]
-                info=gcp_download("olym_suzano",rf"release_orders/{vessel}/{work_order}.json")
-                info=json.loads(info)
+                
                 for i in order:
                     if i in dispatched[work_order].keys():
                         current_release_order=work_order
@@ -796,8 +795,8 @@ if gty==1:
                 except:
                     
                     pass
-                #info=gcp_download("olym_suzano",rf"release_orders/{dispatched['1']['vessel']}/{dispatched['1']['release_order']}.json")
-                #info=json.loads(info)
+                info=gcp_download("olym_suzano",rf"release_orders/{vessel}/{work_order}.json")
+                info=json.loads(info)
                 
                 
                 if st.checkbox("CLICK TO LOAD MIXED SKU"):
