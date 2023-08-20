@@ -1215,7 +1215,7 @@ if gty==1:
             Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
            
             mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
-            inv1,inv2=st.tabs(["DAILY ACTION","MAIN INVENTORY"])
+            inv1,inv2,inv3=st.tabs(["DAILY ACTION","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
             with inv1:
                 data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                 bill_of_ladings=json.loads(data)
@@ -1339,7 +1339,10 @@ if gty==1:
                         
                         
                     st.table(filtered_zf)
-       
+            with inv3:
+                mill_schedule=json.loads(gcp_download("olym_suzano",rf"mill_schedule.json"))
+                mill_schedule=json.loads(mill_schedule)
+                st.dataframe(mill_schedule)
     elif username == 'rbriggs':
         st.write(f'Welcome *{name}*')
         st.title('Application 2')
