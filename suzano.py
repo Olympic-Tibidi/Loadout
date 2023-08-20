@@ -311,7 +311,7 @@ if gty==1:
             with admin_tab2:
                 bill_data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
-                st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings).T)
+                st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:])
             with admin_tab4:
                 mill_shipments=gcp_download("olym_suzano",rf"mill_shipments.json")
                 mill_shipments=json.loads(mill_shipments)
