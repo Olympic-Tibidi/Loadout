@@ -314,19 +314,21 @@ if authentication_status:
         
             
         if select=="ADMIN" :
-            admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","VESSEL SHIPMENT FILES","MILL SHIPMENTS"])
+            admin_tab1,admin_tab2,admin_tab3,admin_tab4,admin_tab5=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES","MILL SHIPMENTS"])
             with admin_tab2:
                 bill_data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
                 st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:])
-            with admin_tab4:
+            with admin_tab3:
+                st.write(list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/"))
+            with admin_tab5:
                 mill_shipments=gcp_download("olym_suzano",rf"mill_shipments.json")
                 mill_shipments=json.loads(mill_shipments)
                 mill_df=pd.DataFrame.from_dict(mill_shipments).T
                 mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
                 mill_df["New Product"]=mill_df["New Product"].astype(str)
                 st.table(mill_df)
-            with admin_tab3:
+            with admin_tab4:
                 st.markdown("SHIPMENT FILES")
                 shipment_tab1,shipment_tab2=st.tabs(["UPLOAD/PROCESS SHIPMENT FILE","SHIPMENT FILE DATABASE"])
                 with shipment_tab1:
