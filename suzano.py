@@ -499,13 +499,15 @@ if authentication_status:
                         
                         try:
                             release_order_database[release_order_number][sales_order_item]=temp[vessel][release_order_number]
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
+                            blob.upload_from_string(release_order_database)
                         except:
-                            release_order_database[release_order_number]={}
-                            release_order_database[release_order_number][sales_order_item]=temp[vessel][release_order_number]
-                        storage_client = storage.Client()
-                        bucket = storage_client.bucket("olym_suzano")
-                        blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
-                        blob.upload_from_string(release_order_database)
+                            pass
+                            #release_order_database[release_order_number]={}
+                            #release_order_database[release_order_number][sales_order_item]=temp[vessel][release_order_number]
+                        
                         st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                         
                 with release_order_tab2:
