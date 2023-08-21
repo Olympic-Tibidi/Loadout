@@ -33,7 +33,7 @@ from yaml.loader import SafeLoader
 import yaml
 from yaml.loader import SafeLoader
 
-#import plotly.graph_objects as go
+import plotly.graph_objects as go
 st.set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
