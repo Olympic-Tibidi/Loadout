@@ -798,7 +798,15 @@ if authentication_status:
             double_load=False
             
             if len(dispatched.keys())>0 and not no_dispatch:
-                #menu_destinations=[f"{i} TO {j}" for i,j in zip[dispatched.keys()
+                menu_destinations={}
+                
+                for rel_ord in dispatched.keys():
+                    for sales in rel_ord:
+                        try:
+                            menu_destinations[rel_ord]=dispatched[rel_ord][sales]["destination"]
+                            break
+                        except:
+                            pass
                 work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatched.keys())
                 
                 order=["001","002","003","004","005","006"]
