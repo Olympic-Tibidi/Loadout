@@ -322,10 +322,11 @@ if authentication_status:
             with admin_tab3:
                 edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
-                requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
-                            
-                st.text_area("EDI",requested_edi,height=400)
-               
+                try:
+                    requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
+                    st.text_area("EDI",requested_edi,height=400)
+                except:
+                    st.write("NO EDI FILES IN DIRECTORY")
                                                                                  
             with admin_tab5:
                 mill_shipments=gcp_download("olym_suzano",rf"mill_shipments.json")
