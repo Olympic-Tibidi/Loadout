@@ -1418,7 +1418,9 @@ if authentication_status:
                 for outerKey, innerDict in mill_progress.items():
                     for innerKey, values in innerDict.items():
                         reformed_dict[(outerKey,innerKey)] = values
-                st.dataframe(pd.DataFrame(reformed_dict).T)
+                mill_prog_col1,mill_prog_col2=st.columns([2,2])
+                with mill_prog_col1:
+                    st.dataframe(pd.DataFrame(reformed_dict).T)
     
     elif username == 'warehouse':
         st.write(f'Welcome *{name}*')
