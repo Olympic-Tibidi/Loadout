@@ -807,8 +807,9 @@ if authentication_status:
                             break
                         except:
                             pass
-                work_order=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",dispatched.keys())
-                
+                liste=[f"{i} to {menu_destinations[i]}" for i in dispatched.keys()]
+                work_order_=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",liste)
+                work_order=work_order_.split(" ")[0]
                 order=["001","002","003","004","005","006"]
                 
                 for i in order:                   ##############HERE we check all the sales orders in dispatched[releaseordernumber] dictionary. it breaks after it finds the first sales order
