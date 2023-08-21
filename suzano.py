@@ -1257,11 +1257,11 @@ if authentication_status:
 
                 
                 with daily2:
-                    
+                    enroute_vehicles={}
                     for i in bill_of_ladings:
                         if i!="115240":
                             date_strings=bill_of_ladings[i]["issued"].split(" ")
-                   
+                            
                             ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
                             ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
                             
@@ -1274,14 +1274,16 @@ if authentication_status:
                             combined_departure=datetime.datetime.combine(ship_date,ship_time)
                            
                             estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
-                            estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y - %H:%M")
+                            estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y -- %H:%M")
                             now=datetime.datetime.now()-datetime.timedelta(hours=7)
                             if estimated_arrival>now:
                                 st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival_string}")
+                                enroute_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
+                                                 "QUANTITY":f"{bill_of_ladings[i]["quantity"]},"LOADED TIME":f"{ship_date}---{ship_time}","ETA":estimated_arrival_string}
                             else:
                                 with daily3:
                                     st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
-                                                                                     
+                            st.dataframe(pd.DataFrame(enroute_vehicles))                                                    
 
                 
             with inv2:
