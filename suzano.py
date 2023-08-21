@@ -327,7 +327,7 @@ if authentication_status:
                 st.write(requested_edi)
             
                 # To convert to a string based IO:
-                stringio = StringIO(requested_edi.decode("utf-8"))
+                stringio = StringIO(requested_edi)
                 #st.write(stringio)
             
                 # To read file as string:
