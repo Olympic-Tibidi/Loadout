@@ -1433,12 +1433,12 @@ if authentication_status:
                     days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
                     days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
                     shipped_so_far=800
-                    reference=68*days_passed
+                    reference=daily_needed_rate*days_passed
                     fig = go.Figure(go.Indicator(
                             domain = {'x': [0, 1], 'y': [0, 1]},
-                            value = shipped_so_far,
+                            value = shipped,
                             mode = "gauge+number+delta",
-                            title = {'text': "Tons Shipped to Lewiston - TARGET 1500 MT"},
+                            title = {'text': "Tons Shipped to Lewiston - SEPT TARGET 1500 MT"},
                             delta = {'reference': reference},
                             gauge = {'axis': {'range': [None, 1500]},
                                      'steps' : [
