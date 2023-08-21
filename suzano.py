@@ -1182,7 +1182,8 @@ if authentication_status:
 
 
                         
-                       
+                        with open('placeholder.txt', 'r') as f:
+                            output_text = f.read()
                         st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
                         st.markdown("**EDI TEXT**")
                         st.text_area('', value=output_text, height=600)
