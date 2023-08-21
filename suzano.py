@@ -1283,7 +1283,7 @@ if authentication_status:
                             else:
                                 with daily3:
                                     st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
-                    st.dataframe(pd.DataFrame(enroute_vehicles).T)                                                    
+                    st.table(pd.DataFrame(enroute_vehicles).T)                                                    
 
                 
             with inv2:
