@@ -33,7 +33,7 @@ from yaml.loader import SafeLoader
 import yaml
 from yaml.loader import SafeLoader
 
-import plotly.graph_objects as go
+#import plotly.graph_objects as go
 st.set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
@@ -1422,8 +1422,33 @@ if authentication_status:
                 with mill_prog_col1:
                     st.dataframe(pd.DataFrame(reformed_dict).T)
                 with mill_prog_col2:
-                    pass
-                    
+                    def cust_business_days(start, end):
+                        business_days = pd.date_range(start=start, end=end, freq='B')
+                        return business_days
+                    daily_needed_rate=68
+                    days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
+                    days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
+                    shipped_so_far=800
+                    reference=68*days_passed
+                    fig = go.Figure(go.Indicator(
+                            domain = {'x': [0, 1], 'y': [0, 1]},
+                            value = shipped_so_far,
+                            mode = "gauge+number+delta",
+                            title = {'text': "Tons Shipped to Lewiston - TARGET 1500 MT"},
+                            delta = {'reference': reference},
+                            gauge = {'axis': {'range': [None, 1500]},
+                                     'steps' : [
+                                         {'range': [0, reference], 'color': "lightgray"},
+                                      ],
+                                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 1500}}))
+
+                    fig.show()
+
+
+
+
+
+    ########################                                WAREHOUSE                            ####################
     
     elif username == 'warehouse':
         st.write(f'Welcome *{name}*')
