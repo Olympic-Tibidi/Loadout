@@ -1288,6 +1288,7 @@ if authentication_status:
                                                  "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date}---{ship_time}","ARRIVAL TIME":estimated_arrival_string}
                                     arrived_vehicles=pd.DataFrame(arrived_vehicles)
                                     arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')
+                                    st.table(arrived_vehicles.T)
                     enroute_vehicles=pd.DataFrame(enroute_vehicles)
                     enroute_vehicles=enroute_vehicles.rename_axis('TRUCK NO')
                     st.table(enroute_vehicles.T)                                                    
