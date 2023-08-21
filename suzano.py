@@ -33,7 +33,7 @@ from yaml.loader import SafeLoader
 import yaml
 from yaml.loader import SafeLoader
 
-
+import plotly.graph_objects as go
 st.set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
@@ -1421,6 +1421,8 @@ if authentication_status:
                 mill_prog_col1,mill_prog_col2=st.columns([2,2])
                 with mill_prog_col1:
                     st.dataframe(pd.DataFrame(reformed_dict).T)
+                with mill_prog_col2:
+                    
     
     elif username == 'warehouse':
         st.write(f'Welcome *{name}*')
