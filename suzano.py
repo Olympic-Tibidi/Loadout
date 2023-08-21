@@ -1432,11 +1432,9 @@ if authentication_status:
                     daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
                     days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
                     days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
-                    shipped_so_far=800
+                    shipped=800
                     reference=daily_needed_rate*days_passed
-                    st.markdown(f"SHOULD HAVE SHIPPED SO FAR : {reference}")
-                    st.markdown(f"SHIPPED SO FAR : {shipped} - DAYS PASSED : {days_passed}")
-                    st.markdown(f"LEFT TO GO : {target-shipped} - DAYS TO GO : {days_left}")
+                    
                     
                     fig = go.Figure(go.Indicator(
                             domain = {'x': [0, 1], 'y': [0, 1]},
@@ -1452,6 +1450,9 @@ if authentication_status:
 
                     st.plotly_chart(fig)
 
+                    st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
+                    st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
+                    st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
 
 
 
