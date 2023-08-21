@@ -1322,7 +1322,7 @@ if authentication_status:
                     arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')               
                     enroute_vehicles=pd.DataFrame(enroute_vehicles)
                     enroute_vehicles=enroute_vehicles.rename_axis('TRUCK NO')
-                    st.table(enroute_vehicles.T)                                                    
+                    st.dataframe(enroute_vehicles.T)                                                    
 
                 with daily3:
                     st.table(arrived_vehicles.T)
