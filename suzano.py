@@ -1252,7 +1252,7 @@ if authentication_status:
                     df_bill["Date"]=[None]+[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in df_bill["ISSUED"].values[1:]]
                     
                     df_today=df_bill[df_bill["Date"]==now.date()]
-                    df_today.loc["TOTAL","QUANTITY"]=df_today["QUANTITY"].sum()
+                    df_today.loc["TOTAL","QUANTITY (UNITS)"]=df_today["QUANTITY (UNITS)"].sum()
                        
                     st.dataframe(df_today)
 
