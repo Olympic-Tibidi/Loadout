@@ -1423,12 +1423,13 @@ if authentication_status:
                     st.dataframe(pd.DataFrame(reformed_dict).T)
                 with mill_prog_col2:
 
-                    st.selectbox("SELECT MILL TO SEE PROGRESS",mill_progress.keys())
+                    requested_mill=st.selectbox("SELECT MILL TO SEE PROGRESS",mill_progress.keys())
                     def cust_business_days(start, end):
                         business_days = pd.date_range(start=start, end=end, freq='B')
                         return business_days
-                    
-                    daily_needed_rate=68
+                    target=mill_progress[requested_mill]["SEP 2023"]["Planned"]
+                    shipped=mill_progress[requested_mill]["SEP 2023"]["Shipped"]
+                    daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
                     days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
                     days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
                     shipped_so_far=800
