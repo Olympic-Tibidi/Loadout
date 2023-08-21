@@ -1423,7 +1423,7 @@ if authentication_status:
                     st.dataframe(pd.DataFrame(reformed_dict).T)
                 with mill_prog_col2:
 
-                    st.selectbox("SELECT MILL TO SEE PROGRESS",[reformed_dict.keys())
+                    st.selectbox("SELECT MILL TO SEE PROGRESS",reformed_dict.keys())
                     def cust_business_days(start, end):
                         business_days = pd.date_range(start=start, end=end, freq='B')
                         return business_days
