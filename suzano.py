@@ -1074,8 +1074,8 @@ if authentication_status:
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
                 a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
                 b=file_time.strftime("%H%M%S")
-                b=datetime.datetime.now().strftime("%H%M%S")
-                b_=datetime.datetime.now().strftime("%H:%M:%S")
+                b=(datetime.datetime.now()-datetime.timedelta(hours=7)).strftime("%H%M%S")
+                b_=(datetime.datetime.now()-datetime.timedelta(hours=7)).strftime("%H:%M:%S")
                 c=datetime.datetime.strftime(eta_date,"%Y%m%d")
                 
                 
