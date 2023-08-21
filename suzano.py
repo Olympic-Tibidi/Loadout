@@ -801,7 +801,7 @@ if authentication_status:
                 menu_destinations={}
                 
                 for rel_ord in dispatched.keys():
-                    for sales in rel_ord:
+                    for sales in dispatched[rel_ord]:
                         st.write(sales)
                         try:
                             menu_destinations[rel_ord]=dispatched[rel_ord][sales]["destination"]
