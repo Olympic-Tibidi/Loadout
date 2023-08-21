@@ -712,16 +712,16 @@ if authentication_status:
                                     blob = bucket.blob(rf"release_orders/{vessel}/{requested_file}.json")
                                     blob.upload_from_string(json_data)
                                 if st.button("DELETE RELEASE ORDER ITEM!",key="laladg"):
-                                    junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
-                                    junk=json.loads(junk)
-                                    
+                                    #junk=gcp_download("olym_suzano",rf"release_orders/{vessel}/junk_release.json")
+                                    #junk=json.loads(junk)
+                                    pass
                                     #st.write(to_edit_d)
-                                    junk[requested_file]=datetime.datetime.strftime(datetime.datetime.today(),"%Y-%m-%d")
-                                    json_data = json.dumps(junk)
-                                    storage_client = storage.Client()
-                                    bucket = storage_client.bucket("olym_suzano")
-                                    blob = bucket.blob(rf"release_orders/{vessel}/junk_release.json")
-                                    blob.upload_from_string(json_data)
+                                    #junk[requested_file]=datetime.datetime.strftime(datetime.datetime.today(),"%Y-%m-%d")
+                                   #json_data = json.dumps(junk)
+                                   # storage_client = storage.Client()
+                                   # bucket = storage_client.bucket("olym_suzano")
+                                   # blob = bucket.blob(rf"release_orders/{vessel}/junk_release.json")
+                                   # blob.upload_from_string(json_data)
                                            
                             with dol2:  
                                 if st.button("CLEAR DISPATCH QUEUE!"):
