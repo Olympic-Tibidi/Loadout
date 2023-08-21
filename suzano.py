@@ -488,15 +488,16 @@ if authentication_status:
                         blob.upload_from_string(temp)
 
                         
-                        release_order_database[release_order_number]={"destination":destination}
+                        release_order_database[vessel][release_order_number]=temp[vessel][release_order_number]
+                        
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
-                        blob.upload_from_string(temp)
+                        blob.upload_from_string(release_order_database)
                         st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                         
                 with release_order_tab2:
-                    st.write(release_order_database)
+                    
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
                     rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
                     completed_release_orders=[]
@@ -788,7 +789,7 @@ if authentication_status:
                 
                 order=["001","002","003","004","005","006"]
                 
-                for i in order:
+                for i in order:                   ##############HERE we check all the sales orders in dispatched[releaseordernumber] dictionary. it breaks after it finds the first sales order
                     if i in dispatched[work_order].keys():
                         current_release_order=work_order
                         current_sales_order=i
@@ -798,7 +799,7 @@ if authentication_status:
                     else:
                         pass
                 try:
-                    next_release_order=dispatched['002']['release_order']
+                    next_release_order=dispatched['002']['release_order']    #############################  CHECK HERE ######################## FOR MIXED LOAD
                     next_sales_order=dispatched['002']['sales_order']
                     
                 except:
