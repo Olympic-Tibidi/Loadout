@@ -1258,6 +1258,7 @@ if authentication_status:
                 
                 with daily2:
                     enroute_vehicles={}
+                    arrived_vehicles={}
                     for i in bill_of_ladings:
                         if i!="115240":
                             date_strings=bill_of_ladings[i]["issued"].split(" ")
@@ -1283,6 +1284,10 @@ if authentication_status:
                             else:
                                 with daily3:
                                     st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
+                                    arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
+                                                 "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date}---{ship_time}","ARRIVAL TIME":estimated_arrival_string}
+                                    arrived_vehicles=pd.DataFrame(arrived_vehicles)
+                                    arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')
                     enroute_vehicles=pd.DataFrame(enroute_vehicles)
                     enroute_vehicles=enroute_vehicles.rename_axis('TRUCK NO')
                     st.table(enroute_vehicles.T)                                                    
