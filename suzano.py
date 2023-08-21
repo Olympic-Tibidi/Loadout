@@ -1422,6 +1422,7 @@ if authentication_status:
                 with mill_prog_col1:
                     st.dataframe(pd.DataFrame(reformed_dict).T)
                 with mill_prog_col2:
+                    pass
                     
     
     elif username == 'warehouse':
