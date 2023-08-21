@@ -9,5 +9,5 @@ streamlit==1.24.1
 openpyxl
 gcsfs
 git+https://github.com/streamlit/files-connection
-plotly==5.1.0
+plotly
 google-cloud-storage
