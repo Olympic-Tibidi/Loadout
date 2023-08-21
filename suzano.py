@@ -325,7 +325,7 @@ if authentication_status:
                 requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
                 
                 st.write(requested_edi)
-                st.text_area(requested_edi)
+                st.text_area("EDI",requested_edi)
                
                                                                                  
             with admin_tab5:
