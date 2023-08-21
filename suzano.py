@@ -1251,9 +1251,9 @@ if authentication_status:
                     df_bill["Date"]=[None]+[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S") for i in df_bill["ISSUED"].values[1:]]
                     
                     now=datetime.datetime.now()-datetime.timedelta(hours=7)
-                    
-                    st.write(issue_dates)
-                    st.dataframe(df_bill)
+                    df_today=df_bill[df_bill["Date"]==now]
+                   
+                    st.dataframe(df_today)
 
                 
                 with daily2:
