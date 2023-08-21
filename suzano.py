@@ -496,10 +496,11 @@ if authentication_status:
                         st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                         
                 with release_order_tab2:
-                    
+                    st.write(release_order_database)
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
                     rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
                     completed_release_orders=[]
+                    
                     with rls_tab1:
                         
                                     
