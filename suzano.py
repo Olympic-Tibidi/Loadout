@@ -840,7 +840,7 @@ if authentication_status:
                     except:
                         st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                     
-                def load_columns():
+               
                     
                 load_col1,load_col2,load_col3=st.columns([4,4,2])
                 with load_col1:
