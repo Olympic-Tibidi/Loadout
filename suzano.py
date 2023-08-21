@@ -320,7 +320,8 @@ if authentication_status:
                 admin_bill_of_ladings=json.loads(bill_data)
                 st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:])
             with admin_tab3:
-                st.write(list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/"))
+                edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
+                st.selectbox("SELECT EDI",edi_files)
             with admin_tab5:
                 mill_shipments=gcp_download("olym_suzano",rf"mill_shipments.json")
                 mill_shipments=json.loads(mill_shipments)
