@@ -1311,7 +1311,7 @@ if authentication_status:
                                 with daily3:
                                     st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
                                     arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
-                                                 "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date}---{ship_time}","ARRIVAL TIME":estimated_arrival_string}
+                                                 "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date}---{ship_time}","ARRIVAL TIME":estimated_arrival_string}
                                     
                     arrived_vehicles=pd.DataFrame(arrived_vehicles)
                     arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')               
