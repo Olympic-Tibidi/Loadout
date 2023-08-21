@@ -323,8 +323,7 @@ if authentication_status:
                 edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
                 requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
-                
-               
+                            
                 st.text_area("EDI",requested_edi,height=400)
                
                                                                                  
@@ -1081,20 +1080,20 @@ if authentication_status:
                         return bill_of_lading_number,bill_of_ladings
                     #st.write(bill_of_lading_number)
                     
-                    
+                    edi_name= f'{a}{b}OLYM.txt'
                     if double_load:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                         bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                      "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_}"} 
+                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_},"edi_no":edi_name} 
                         bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
                                                                      "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_}"} 
+                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_},"edi_no":edi_name"} 
                     else:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                         bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                      "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(textsplit),"issued":f"{a_} {b_}"} 
+                                                                     "quantity":len(textsplit),"issued":f"{a_} {b_},"edi_no":edi_name"} 
                         
                  
                     bill_of_ladings=json.dumps(bill_of_ladings)
