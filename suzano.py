@@ -1442,7 +1442,7 @@ if authentication_status:
                                       ],
                                      'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 1500}}))
 
-                    fig.show()
+                    st.plotly_chart(fig)
 
 
 
