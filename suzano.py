@@ -802,6 +802,7 @@ if authentication_status:
                 
                 for rel_ord in dispatched.keys():
                     for sales in rel_ord:
+                        st.write(sales)
                         try:
                             menu_destinations[rel_ord]=dispatched[rel_ord][sales]["destination"]
                             break
