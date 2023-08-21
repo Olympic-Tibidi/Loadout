@@ -497,8 +497,11 @@ if authentication_status:
                         blob.upload_from_string(temp)
 
                         
-                        release_order_database[vessel][release_order_number]=temp[vessel][release_order_number]
-                        
+                        try:
+                            release_order_database[vessel][release_order_number]=temp[vessel][release_order_number]
+                        except:
+                            release_order_database[vessel]={}
+                            release_order_database[vessel][release_order_number]=temp[vessel][release_order_number]
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
