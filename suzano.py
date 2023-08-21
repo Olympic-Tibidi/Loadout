@@ -417,7 +417,11 @@ if authentication_status:
                           
             with admin_tab1:
                 
-                #st.markdown("RELEASE ORDERS") 
+                try:
+                    release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                    release_order_database=json.loads(release_order_database)
+                except:
+                    release_order_database={}
                 
                 #st.write(f'CURRENT RELEASE ORDERS : {list_files_in_folder("olym_suzano", "release_orders")[1:]}')
                 release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
@@ -483,11 +487,7 @@ if authentication_status:
                         blob = bucket.blob(rf"release_orders/{vessel}/{release_order_number}.json")
                         blob.upload_from_string(temp)
 
-                        try:
-                            release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
-                            release_order_database=json.loads(release_order_database)
-                        except:
-                            release_order_database={}
+                        
                         release_order_database[release_order_number]={"destination":destination}
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
