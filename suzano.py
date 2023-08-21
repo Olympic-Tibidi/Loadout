@@ -1283,7 +1283,9 @@ if authentication_status:
                             else:
                                 with daily3:
                                     st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
-                    st.table(pd.DataFrame(enroute_vehicles).T)                                                    
+                    enroute_vehicles=pd.DataFrame(enroute_vehicles)
+                    enroute_vehicles.index.names=["TRUCK NO"]
+                    st.table(enroute_vehicles.T)                                                    
 
                 
             with inv2:
