@@ -323,8 +323,8 @@ if authentication_status:
                 edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
                 requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
-                bytes_data = requested_edi.getvalue()
-                #st.write(bytes_data)
+                #bytes_data = requested_edi.getvalue()
+                st.write(requested_edi)
             
                 # To convert to a string based IO:
                 stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
