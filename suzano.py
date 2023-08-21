@@ -324,8 +324,8 @@ if authentication_status:
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
                 requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
                 
-                st.write(requested_edi)
-                st.text_area("EDI",requested_edi)
+               
+                st.text_area("EDI",requested_edi,height=100)
                
                                                                                  
             with admin_tab5:
