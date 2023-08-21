@@ -997,8 +997,7 @@ if authentication_status:
                     #ADMT=st.text_input("ADMT",round(info[vessel][current_release_order][current_sales_order]["dryness"]/90,4)*updated_quantity,disabled=True)
                     admt=round(float(info[vessel][current_release_order][current_sales_order]["dryness"])/90*updated_quantity*2,4)
                     st.markdown(f"**ADMT= {admt} TONS**")
-                    if st.button("**CLEAR ENTRIES**"):
-                        pass
+                    
        
                     
                     
@@ -1081,172 +1080,176 @@ if authentication_status:
                 
                 
                     
-                
-                if st.button('SUBMIT EDI'):
-                    def gen_bill_of_lading():
-                        data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
-                        bill_of_ladings=json.loads(data)
-                        list_of_ladings=[]
-                        try:
-                            for key in bill_of_ladings:
-                                if int(key) % 2 == 0:
-                                    list_of_ladings.append(int(key))
-                            bill_of_lading_number=max(list_of_ladings)+2
-                        except:
-                            bill_of_lading_number=115240
-                        return bill_of_lading_number,bill_of_ladings
-                    #st.write(bill_of_lading_number)
-                    
-                    edi_name= f'{a}{b}OLYM.txt'
-                    if double_load:
-                        bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
-                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
-                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
-                        bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
-                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
-                    else:
-                        bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
-                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
-                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
+                but_col1,but_col2=st.columns([2,2])
+                with but_col1:
+                    if st.button('SUBMIT EDI'):
+                        def gen_bill_of_lading():
+                            data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                            bill_of_ladings=json.loads(data)
+                            list_of_ladings=[]
+                            try:
+                                for key in bill_of_ladings:
+                                    if int(key) % 2 == 0:
+                                        list_of_ladings.append(int(key))
+                                bill_of_lading_number=max(list_of_ladings)+2
+                            except:
+                                bill_of_lading_number=115240
+                            return bill_of_lading_number,bill_of_ladings
+                        #st.write(bill_of_lading_number)
                         
-                 
-                    bill_of_ladings=json.dumps(bill_of_ladings)
-                    storage_client = storage.Client()
-                    bucket = storage_client.bucket("olym_suzano")
-                    blob = bucket.blob(rf"terminal_bill_of_ladings.json")
-                    blob.upload_from_string(bill_of_ladings)
-                    
-                    
-                    terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",bill_of_lading_number,disabled=True)
-                    
-                    proceed=False
-                    if double_load:
-                        if 1 in first_faults or 1 in second_faults:
-                            st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
-                            for i in first_faults:
-                                if i==1:
-                                    st.markdown(f"**:red[Check Unit Unit{first_faults.index(i)+1}]**")
-                            for i in second_faults:
-                                if i==1:
-                                    st.markdown(f"**:red[Check Unit Unit{second_faults.index(i)+1}]**")
-                        else:
-                            proceed=True
-                    else:
-                        if 1 in faults:
-                            proceed=False
-                            for i in faults:
-                                if i==1:
-                                    st.markdown(f"**:red[Check Unit {faults.index(i)+1}]**")
-                        else:
-                            proceed=True
-                    if fault_messaging.keys():
-                        for i in fault_messaging.keys():
-                            error=f"**:red[Unitfault_messaging[i]]**"
-                    if remaining<0:
-                        proceed=False
-                        error="**:red[No more Items to ship on this Sales Order]"
-                        st.write(error)
-                    if not vehicle_id: 
-                        proceed=False
-                        error="**:red[Please check Vehicle ID]"
-                        st.write(error)
-                    if len(terminal_bill_of_lading)<6:
-                        proceed=False
-                        error="**:red[Please check Terminal Bill Of Lading. It should have 6 digits.]"
-                        st.write(error)
-                    if quantity!=foreman_quantity:
-                        proceed=False
-                        error=f"**:red[{quantity} loads on this truck. Please check. You planned for {foreman_quantity} loads!]** "
-                        st.write(error)
-                    if proceed:
-                        
-                        process()
-                        mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
-                        map={8:"SEP 2023",9:"SEP 2023",10:"OCT 2023",11:"NOV 2023",12:"DEC 2023"}
-                        mill_progress[destination][map[file_date.month]]["Shipped"]=mill_progress[destination][map[file_date.month]]["Shipped"]+len(textsplit)*2
-                        json_data = json.dumps(mill_progress)
-                        storage_client = storage.Client()
-                        bucket = storage_client.bucket("olym_suzano")
-                        blob = bucket.blob(rf"mill_progress.json")
-                        blob.upload_from_string(json_data)       
+                        edi_name= f'{a}{b}OLYM.txt'
                         if double_load:
-                            info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(first_textsplit)
-                            info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(first_textsplit)
-                            info[vessel][next_release_order][next_sales_order]["shipped"]=info[vessel][next_release_order][next_sales_order]["shipped"]+len(second_textsplit)
-                            info[vessel][next_release_order][next_sales_order]["remaining"]=info[vessel][next_release_order][next_sales_order]["remaining"]-len(second_textsplit)
+                            bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
+                            bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
+                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                         "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
+                            bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
+                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                         "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                         else:
-                            info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
-                            info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
-                        if info[vessel][current_release_order][current_sales_order]["remaining"]<=0:
-                            to_delete=[]
-                            for release in dispatched.keys():
-                                if release==current_release_order:
-                                    for sales in dispatched[release].keys():
-                                        if sales==current_sales_order:
-                                            to_delete.append((release,sales))
-                            for victim in to_delete:
-                                del dispatched[victim[0]][victim[1]]
-                                if len(dispatched[victim[0]].keys())==0:
-                                    del dispatched[victim[0]]
+                            bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
+                            bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
+                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                         "quantity":len(textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                             
-                            json_data = json.dumps(dispatched)
-                            storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
-                            blob = bucket.blob(rf"dispatched.json")
-                            blob.upload_from_string(json_data)       
-                        
-                        json_data = json.dumps(info)
-                        storage_client = storage.Client()
-                        bucket = storage_client.bucket("olym_suzano")
-                        blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
-                        blob.upload_from_string(json_data)
-
-
-
-                        
-                        with open('placeholder.txt', 'r') as f:
-                            output_text = f.read()
-                        st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
-                        st.markdown("**EDI TEXT**")
-                        st.text_area('', value=output_text, height=600)
-                        with open('placeholder.txt', 'r') as f:
-                            file_content = f.read()
-                        newline="\n"
-                        filename = f'{a}{b}OLYM'
-                        file_name= f'{a}{b}OLYM.txt'
-                        st.write(filename)
-                        st.write(current_release_order,current_sales_order,destination,ocean_bill_of_lading,terminal_bill_of_lading,wrap)
-                        subject = f'Suzano_EDI_{a}_{release_order_number}'
-                        body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}Destination : {destination}Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
-                        st.write(body)           
-                        sender = "warehouseoly@gmail.com"
-                        #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                        recipients = ["afsiny@portolympia.com"]
-                        password = "xjvxkmzbpotzeuuv"
-                
-                          # Replace with the actual file path
-                
-                
-                        with open('temp_file.txt', 'w') as f:
-                            f.write(file_content)
-                
-                        file_path = 'temp_file.txt'  # Use the path of the temporary file
-                
-                        send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
-                        upload_cs_file("olym_suzano", 'temp_file.txt',rf"EDIS/{vessel}/{file_name}") 
-                        
-                    else:   ###cancel bill of lading
-                        data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
-                        bill_of_ladings=json.loads(data)
-                        del bill_of_ladings[str(bill_of_lading_number)]
+                     
                         bill_of_ladings=json.dumps(bill_of_ladings)
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"terminal_bill_of_ladings.json")
                         blob.upload_from_string(bill_of_ladings)
+                        
+                        
+                        terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",bill_of_lading_number,disabled=True)
+                        
+                        proceed=False
+                        if double_load:
+                            if 1 in first_faults or 1 in second_faults:
+                                st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
+                                for i in first_faults:
+                                    if i==1:
+                                        st.markdown(f"**:red[Check Unit Unit{first_faults.index(i)+1}]**")
+                                for i in second_faults:
+                                    if i==1:
+                                        st.markdown(f"**:red[Check Unit Unit{second_faults.index(i)+1}]**")
+                            else:
+                                proceed=True
+                        else:
+                            if 1 in faults:
+                                proceed=False
+                                for i in faults:
+                                    if i==1:
+                                        st.markdown(f"**:red[Check Unit {faults.index(i)+1}]**")
+                            else:
+                                proceed=True
+                        if fault_messaging.keys():
+                            for i in fault_messaging.keys():
+                                error=f"**:red[Unitfault_messaging[i]]**"
+                        if remaining<0:
+                            proceed=False
+                            error="**:red[No more Items to ship on this Sales Order]"
+                            st.write(error)
+                        if not vehicle_id: 
+                            proceed=False
+                            error="**:red[Please check Vehicle ID]"
+                            st.write(error)
+                        if len(terminal_bill_of_lading)<6:
+                            proceed=False
+                            error="**:red[Please check Terminal Bill Of Lading. It should have 6 digits.]"
+                            st.write(error)
+                        if quantity!=foreman_quantity:
+                            proceed=False
+                            error=f"**:red[{quantity} loads on this truck. Please check. You planned for {foreman_quantity} loads!]** "
+                            st.write(error)
+                        if proceed:
+                            
+                            process()
+                            mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
+                            map={8:"SEP 2023",9:"SEP 2023",10:"OCT 2023",11:"NOV 2023",12:"DEC 2023"}
+                            mill_progress[destination][map[file_date.month]]["Shipped"]=mill_progress[destination][map[file_date.month]]["Shipped"]+len(textsplit)*2
+                            json_data = json.dumps(mill_progress)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"mill_progress.json")
+                            blob.upload_from_string(json_data)       
+                            if double_load:
+                                info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(first_textsplit)
+                                info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(first_textsplit)
+                                info[vessel][next_release_order][next_sales_order]["shipped"]=info[vessel][next_release_order][next_sales_order]["shipped"]+len(second_textsplit)
+                                info[vessel][next_release_order][next_sales_order]["remaining"]=info[vessel][next_release_order][next_sales_order]["remaining"]-len(second_textsplit)
+                            else:
+                                info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
+                                info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
+                            if info[vessel][current_release_order][current_sales_order]["remaining"]<=0:
+                                to_delete=[]
+                                for release in dispatched.keys():
+                                    if release==current_release_order:
+                                        for sales in dispatched[release].keys():
+                                            if sales==current_sales_order:
+                                                to_delete.append((release,sales))
+                                for victim in to_delete:
+                                    del dispatched[victim[0]][victim[1]]
+                                    if len(dispatched[victim[0]].keys())==0:
+                                        del dispatched[victim[0]]
+                                
+                                json_data = json.dumps(dispatched)
+                                storage_client = storage.Client()
+                                bucket = storage_client.bucket("olym_suzano")
+                                blob = bucket.blob(rf"dispatched.json")
+                                blob.upload_from_string(json_data)       
+                            
+                            json_data = json.dumps(info)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
+                            blob.upload_from_string(json_data)
+    
+    
+    
+                            
+                            with open('placeholder.txt', 'r') as f:
+                                output_text = f.read()
+                            st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
+                            st.markdown("**EDI TEXT**")
+                            st.text_area('', value=output_text, height=600)
+                            with open('placeholder.txt', 'r') as f:
+                                file_content = f.read()
+                            newline="\n"
+                            filename = f'{a}{b}OLYM'
+                            file_name= f'{a}{b}OLYM.txt'
+                            st.write(filename)
+                            st.write(current_release_order,current_sales_order,destination,ocean_bill_of_lading,terminal_bill_of_lading,wrap)
+                            subject = f'Suzano_EDI_{a}_{release_order_number}'
+                            body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}Destination : {destination}Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
+                            st.write(body)           
+                            sender = "warehouseoly@gmail.com"
+                            #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                            recipients = ["afsiny@portolympia.com"]
+                            password = "xjvxkmzbpotzeuuv"
+                    
+                              # Replace with the actual file path
+                    
+                    
+                            with open('temp_file.txt', 'w') as f:
+                                f.write(file_content)
+                    
+                            file_path = 'temp_file.txt'  # Use the path of the temporary file
+                    
+                            send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
+                            upload_cs_file("olym_suzano", 'temp_file.txt',rf"EDIS/{vessel}/{file_name}") 
+                            
+                        else:   ###cancel bill of lading
+                            data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                            bill_of_ladings=json.loads(data)
+                            del bill_of_ladings[str(bill_of_lading_number)]
+                            bill_of_ladings=json.dumps(bill_of_ladings)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+                            blob.upload_from_string(bill_of_ladings)
+                with but_col2:
+                    if st.button("**CLEAR ENTRIES**"):
+                        pass
         
             
                         
