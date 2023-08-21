@@ -1434,6 +1434,10 @@ if authentication_status:
                     days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
                     shipped_so_far=800
                     reference=daily_needed_rate*days_passed
+                    st.markdown(f"SHOULD HAVE SHIPPED SO FAR : {reference}")
+                    st.markdown(f"SHIPPED SO FAR : {shipped} - DAYS PASSED : {days_passed}")
+                    st.markdown(f"LEFT TO GO : {target-shipped} - DAYS TO GO : {days_left}")
+                    
                     fig = go.Figure(go.Indicator(
                             domain = {'x': [0, 1], 'y': [0, 1]},
                             value = shipped,
