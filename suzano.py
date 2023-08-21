@@ -323,16 +323,10 @@ if authentication_status:
                 edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
                 requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
-                #bytes_data = requested_edi.getvalue()
+                
                 st.write(requested_edi)
-            
-                # To convert to a string based IO:
-                stringio = StringIO(requested_edi)
-                #st.write(stringio)
-            
-                # To read file as string:
-                string_data = stringio.read()
-                st.write(string_data)
+                st.text_area(requested_edi)
+               
                                                                                  
             with admin_tab5:
                 mill_shipments=gcp_download("olym_suzano",rf"mill_shipments.json")
