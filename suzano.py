@@ -860,7 +860,7 @@ if authentication_status:
                     file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates",disabled=True)
                     if file_date not in st.session_state:
                         st.session_state.file_date=file_date
-                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=60,disabled=False)
+                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=1,disabled=False)
                     delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="delivery_date",disabled=True)
                     eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
                     
@@ -1181,8 +1181,7 @@ if authentication_status:
 
 
                         
-                        with open('placeholder.txt', 'r') as f:
-                            output_text = f.read()
+                       
                         st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
                         st.markdown("**EDI TEXT**")
                         st.text_area('', value=output_text, height=600)
@@ -1210,7 +1209,7 @@ if authentication_status:
                         file_path = 'temp_file.txt'  # Use the path of the temporary file
                 
                         send_email_with_attachment(subject, body, sender, recipients, password, file_path,file_name)
-                        upload_cs_file("olym_suzano", 'temp_file.txt',file_name) 
+                        upload_cs_file("olym_suzano", 'temp_file.txt',rf"EDIS/{vessel}/file_name) 
                         
                     else:   ###cancel bill of lading
                         data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
