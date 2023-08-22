@@ -1440,13 +1440,13 @@ if authentication_status:
                             domain = {'x': [0, 1], 'y': [0, 1]},
                             value = shipped,
                             mode = "gauge+number+delta",
-                            title = {'text': "Tons Shipped to Lewiston - SEPT TARGET 1500 MT"},
+                            title = {'text': f"TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT"},
                             delta = {'reference': reference},
-                            gauge = {'axis': {'range': [None, 1500]},
+                            gauge = {'axis': {'range': [None, target]},
                                      'steps' : [
                                          {'range': [0, reference], 'color': "lightgray"},
                                       ],
-                                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 1500}}))
+                                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': {target}}}))
 
                     st.plotly_chart(fig)
 
