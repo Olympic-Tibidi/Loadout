@@ -2261,7 +2261,7 @@ if authentication_status:
                 st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
                 st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
 
-        st.dataframe(pd.DataFrame(reformed_dict).T)
+        
 elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
