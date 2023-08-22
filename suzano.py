@@ -1440,7 +1440,7 @@ if authentication_status:
                             domain = {'x': [0, 1], 'y': [0, 1]},
                             value = shipped,
                             mode = "gauge+number+delta",
-                            title={'text': f"<span style='font-weight:bold; color:blue;'>TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT</span>", 'font': {'size': 14}},
+                            title={'text': f"<span style='font-weight:bold; color:blue;'>TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT</span>", 'font': {'size': 20}},
                             delta = {'reference': reference},
                             gauge = {'axis': {'range': [None, target]},
                                      'steps' : [
