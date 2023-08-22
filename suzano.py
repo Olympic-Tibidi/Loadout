@@ -1353,7 +1353,7 @@ if authentication_status:
                     st.table(arrived_vehicles.T)
             
             with inv2:
-                
+                st.markdown("REPORTS HERE")
 
 
 
