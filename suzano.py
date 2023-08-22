@@ -1435,7 +1435,7 @@ if authentication_status:
                     shipped=800
                     reference=daily_needed_rate*days_passed
                     
-                    delta_text = f"Change from reference: {relative_difference:.2f}% TONS"
+                   
                     fig = go.Figure(go.Indicator(
                             domain = {'x': [0, 1], 'y': [0, 1]},
                             value = shipped,
@@ -1453,7 +1453,7 @@ if authentication_status:
                     st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
                     st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
                     st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
-                    st.markdown(delta_text)
+
 
 
 
