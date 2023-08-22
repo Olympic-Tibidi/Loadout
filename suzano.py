@@ -1189,14 +1189,27 @@ if authentication_status:
                         if proceed:
                             
                             process()
-                            mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
-                            map={8:"SEP 2023",9:"SEP 2023",10:"OCT 2023",11:"NOV 2023",12:"DEC 2023"}
-                            mill_progress[destination][map[file_date.month]]["Shipped"]=mill_progress[destination][map[file_date.month]]["Shipped"]+len(textsplit)*2
-                            json_data = json.dumps(mill_progress)
-                            storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
-                            blob = bucket.blob(rf"mill_progress.json")
-                            blob.upload_from_string(json_data)       
+                            if double_load:
+                                
+                                suzano_report.update({"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
+                                                     "Consignee State":consignee_state,"Release #":release_order_number,"Carrier":carrier_code,
+                                                     "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Warehouse":"OLYM","Vessel":vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
+                                                     "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type})
+                            else:
+                               
+                                suzano_report.update({"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
+                                                     "Consignee State":consignee_state,"Release #":release_order_number,"Carrier":carrier_code,
+                                                     "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Warehouse":"OLYM","Vessel":vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
+                                                     "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type})
+                         
+                                mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
+                                map={8:"SEP 2023",9:"SEP 2023",10:"OCT 2023",11:"NOV 2023",12:"DEC 2023"}
+                                mill_progress[destination][map[file_date.month]]["Shipped"]=mill_progress[destination][map[file_date.month]]["Shipped"]+len(textsplit)*2
+                                json_data = json.dumps(mill_progress)
+                                storage_client = storage.Client()
+                                bucket = storage_client.bucket("olym_suzano")
+                                blob = bucket.blob(rf"mill_progress.json")
+                                blob.upload_from_string(json_data)       
                             if double_load:
                                 info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(first_textsplit)
                                 info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(first_textsplit)
@@ -1356,7 +1369,7 @@ if authentication_status:
                 st.markdown("REPORTS HERE")
                 suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
                 suzano_report=json.loads(suzano_report_)
-                st.dataframe(pd.DataFrame(suzano_report).T)
+                st.dataframe(pd.DataFrame(suzano_report,index=").T)
 
 
 
