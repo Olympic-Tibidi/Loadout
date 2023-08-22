@@ -1373,21 +1373,22 @@ if authentication_status:
                     suzano_report=pd.DataFrame(suzano_report).T
                     suzano_report=suzano_report[["Date Shipped","Vehicle", "Shipment ID #", "Consignee","Consignee City","Consignee State","Release #","Carrier","ETA","Ocean BOL#","Warehouse","Vessel","Voyage #","Grade","Quantity","Metric Ton", "ADMT","Mode of Transportation"]]
                     st.dataframe(suzano_report)
+                    @st.cache
+                    def convert_df(df):
+                        # IMPORTANT: Cache the conversion to prevent computation on every rerun
+                        return df.to_csv().encode('utf-8')
+                    
+                    csv = convert_df(suzano_report)
+                    
+                
+                    st.download_button(
+                        label="DOWNLOAD REPOLRT AS CSV",
+                        data=csv,
+                        file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                        mime='text/csv')
                 except:
                     st.write("NO REPORTS RECORDED")
-                @st.cache
-                def convert_df(df):
-                    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-                    return df.to_csv().encode('utf-8')
-                
-                csv = convert_df(suzano_report)
-                
-                
-                st.download_button(
-                    label="DOWNLOAD REPOLRT AS CSV",
-                    data=csv,
-                    file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
-                    mime='text/csv')
+               
 
 
 
