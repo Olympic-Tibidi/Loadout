@@ -1098,6 +1098,19 @@ if authentication_status:
                         #st.write(bill_of_lading_number)
                         
                         edi_name= f'{a}{b}OLYM.txt'
+
+                        mill_info_=gcp_download("olym_suzano",rf"mill_info.json")
+                        mill_info=json.loads(mill_info_)
+                        try:
+                            suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
+                            suzano_report=json.loads(suzano_report_)
+                        except:
+                            suzano_report={}
+                        consignee=destination.split("-")[0]
+                        consignee_city=mill_info[destination]["city"]
+                        consignee_state=mill_info[destination]["state"]
+                        vessel_suzano,voyage_suzano=vessel.split("-")
+                        eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
                         if double_load:
                             bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                             bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
@@ -1106,12 +1119,19 @@ if authentication_status:
                             bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
                                                                          "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                          "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
+                            suzano_report.update{"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
+                                                 "Consignee State":consignee_state,"Release #":release_order_number,"Carrier":carrier_code,
+                                                 "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Warehouse":"OLYM","Vessel"=vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
+                                                 "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type"}
                         else:
                             bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                             bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                          "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                          "quantity":len(textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
-                            
+                            suzano_report.update{"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
+                                                 "Consignee State":consignee_state,"Release #":release_order_number,"Carrier":carrier_code,
+                                                 "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Warehouse":"OLYM","Vessel"=vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
+                                                 "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type"}
                      
                         bill_of_ladings=json.dumps(bill_of_ladings)
                         storage_client = storage.Client()
@@ -1119,6 +1139,11 @@ if authentication_status:
                         blob = bucket.blob(rf"terminal_bill_of_ladings.json")
                         blob.upload_from_string(bill_of_ladings)
                         
+                        suzano_report=json.dumps(suzano_report)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"suzano_report.json")
+                        blob.upload_from_string(suzano_report)
                         
                         terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",bill_of_lading_number,disabled=True)
                         
@@ -1268,7 +1293,7 @@ if authentication_status:
             Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
            
             mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
-            inv1,inv2,inv3=st.tabs(["DAILY ACTION","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
+            inv1,inv2,inv3,inv4=st.tabs(["DAILY ACTION","REPORTS","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
             with inv1:
                 data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                 bill_of_ladings=json.loads(data)
@@ -1286,7 +1311,7 @@ if authentication_status:
                        
                     st.dataframe(df_today)
 
-                
+            
                 with daily2:
                     enroute_vehicles={}
                     arrived_vehicles={}
@@ -1326,8 +1351,14 @@ if authentication_status:
 
                 with daily3:
                     st.table(arrived_vehicles.T)
-                    
+            
             with inv2:
+                
+
+
+
+                
+            with inv3:
                      
                 dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
                 df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Location","Warehouse_In"]]
@@ -1412,7 +1443,7 @@ if authentication_status:
                         
                         
                     st.table(filtered_zf)
-            with inv3:
+            with inv4:
                 mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
                 reformed_dict = {}
                 for outerKey, innerDict in mill_progress.items():
