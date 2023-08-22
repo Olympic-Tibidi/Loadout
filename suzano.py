@@ -1119,19 +1119,19 @@ if authentication_status:
                             bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
                                                                          "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                          "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
-                            suzano_report.update{"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
+                            suzano_report.update({"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
                                                  "Consignee State":consignee_state,"Release #":release_order_number,"Carrier":carrier_code,
                                                  "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Warehouse":"OLYM","Vessel"=vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
-                                                 "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type"}
+                                                 "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type"})
                         else:
                             bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                             bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                          "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                          "quantity":len(textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
-                            suzano_report.update{"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
+                            suzano_report.update({"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
                                                  "Consignee State":consignee_state,"Release #":release_order_number,"Carrier":carrier_code,
                                                  "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Warehouse":"OLYM","Vessel"=vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
-                                                 "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type"}
+                                                 "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type"})
                      
                         bill_of_ladings=json.dumps(bill_of_ladings)
                         storage_client = storage.Client()
