@@ -1179,8 +1179,11 @@ if authentication_status:
                             
                             process()
 
-                            suzano_report_keys=[int(i) for i in suzano_report.keys()]
-                            next_report_no=max(suzano_report_keys)
+                            try:
+                                suzano_report_keys=[int(i) for i in suzano_report.keys()]
+                                next_report_no=max(suzano_report_keys)
+                            except:
+                                next_report_no=1
                             if double_load:
                                 
                                 suzano_report.update({next_report_no:{"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
