@@ -1371,7 +1371,8 @@ if authentication_status:
                 try:
                     suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
                     suzano_report=json.loads(suzano_report_)
-                    st.dataframe(pd.DataFrame(suzano_report).T)
+                    suzano_report=pd.DataFrame(suzano_report).T
+                    st.dataframe(suzano_report)
                 except:
                     st.write("NO REPORTS RECORDED")
                 @st.cache
@@ -1379,12 +1380,12 @@ if authentication_status:
                     # IMPORTANT: Cache the conversion to prevent computation on every rerun
                     return df.to_csv().encode('utf-8')
                 
-                csv = convert_df(my_large_df)
+                csv = convert_df(suzano_report)
                 
                 st.download_button(
                     label="Download data as CSV",
                     data=csv,
-                    file_name='large_df.csv',
+                    file_name='daily report.csv',
                     mime='text/csv')
 
 
