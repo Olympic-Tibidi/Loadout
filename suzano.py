@@ -1371,7 +1371,7 @@ if authentication_status:
                 try:
                     suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
                     suzano_report=json.loads(suzano_report_)
-                    st.dataframe(pd.DataFrame(suzano_report))
+                    st.dataframe(pd.DataFrame(suzano_report).T)
                 except:
                     st.write("NO REPORTS RECORDED")
 
