@@ -1383,10 +1383,27 @@ if authentication_status:
                 
                 csv = convert_df(suzano_report)
                 
+                @st.cache
+                def convert_df_to_xlsx(df):
+                    # Save DataFrame to BytesIO as XLSX
+                    xlsx_io = pd.ExcelWriter(pd.io.common.BytesIO(), engine='xlsxwriter')
+                    df.to_excel(xlsx_io, index=False)
+                    xlsx_io.save()
+                    xlsx_data = xlsx_io.stream.getvalue()
+                    return xlsx_data
+                
+                xlsx_data = convert_df_to_xlsx(suzano_report)
+                
                 st.download_button(
-                    label="Download data as CSV",
+                    label="Download data as XLSX",
+                    data=xlsx_data,
+                    file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d").xlsx',
+                    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                )
+                st.download_button(
+                    label="DOWNLOAD REPOLRT AS CSV",
                     data=csv,
-                    file_name='daily report.csv',
+                    file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d").csv',
                     mime='text/csv')
 
 
