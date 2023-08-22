@@ -1365,9 +1365,12 @@ if authentication_status:
             
             with inv2:
                 st.markdown("REPORTS HERE")
-                suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
-                suzano_report=json.loads(suzano_report_)
-                st.dataframe(pd.DataFrame(suzano_report))
+                try:
+                    suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
+                    suzano_report=json.loads(suzano_report_)
+                    st.dataframe(pd.DataFrame(suzano_report))
+                except:
+                    st.write("NO REPORTS RECORDED")
 
 
 
