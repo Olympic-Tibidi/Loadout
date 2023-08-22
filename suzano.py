@@ -1130,8 +1130,8 @@ if authentication_status:
                                                                          "quantity":len(textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                             suzano_report.update({"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
                                                  "Consignee State":consignee_state,"Release #":release_order_number,"Carrier":carrier_code,
-                                                 "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Warehouse":"OLYM","Vessel"=vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
-                                                 "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type"})
+                                                 "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Warehouse":"OLYM","Vessel":vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
+                                                 "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type})
                      
                         bill_of_ladings=json.dumps(bill_of_ladings)
                         storage_client = storage.Client()
