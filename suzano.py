@@ -1397,7 +1397,7 @@ if authentication_status:
                 st.download_button(
                     label="Download data as XLSX",
                     data=xlsx_data,
-                    file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d").xlsx',
+                    file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.xlsx',
                     mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 )
                 st.download_button(
