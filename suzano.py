@@ -1374,18 +1374,18 @@ if authentication_status:
                     st.dataframe(pd.DataFrame(suzano_report).T)
                 except:
                     st.write("NO REPORTS RECORDED")
-                    @st.cache
-                    def convert_df(df):
-                        # IMPORTANT: Cache the conversion to prevent computation on every rerun
-                        return df.to_csv().encode('utf-8')
-                    
-                    csv = convert_df(my_large_df)
-                    
-                    st.download_button(
-                        label="Download data as CSV",
-                        data=csv,
-                        file_name='large_df.csv',
-                        mime='text/csv')
+                @st.cache
+                def convert_df(df):
+                    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+                    return df.to_csv().encode('utf-8')
+                
+                csv = convert_df(my_large_df)
+                
+                st.download_button(
+                    label="Download data as CSV",
+                    data=csv,
+                    file_name='large_df.csv',
+                    mime='text/csv')
 
 
 
