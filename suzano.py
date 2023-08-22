@@ -2047,23 +2047,32 @@ if authentication_status:
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
            
         mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
-        inv1,inv2,inv3=st.tabs(["DAILY ACTION","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
+        inv1,inv2,inv3,inv4=st.tabs(["DAILY ACTION","REPORTS","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
         with inv1:
             data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
             bill_of_ladings=json.loads(data)
             daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
             with daily1:
-                          
+                now=datetime.datetime.now()-datetime.timedelta(hours=7)
+                st.markdown(f"**SHIPPED TODAY ON {datetime.datetime.strftime(now.date(),'%b %d, %Y')}**")     
                 df_bill=pd.DataFrame(bill_of_ladings).T
                 df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","wrap","carrier_id","vehicle","quantity","issued"]]
-                df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY","ISSUED"]
-                st.dataframe(df_bill)
-            with daily2:
+                df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY (UNITS)","ISSUED"]
+                df_bill["Date"]=[None]+[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in df_bill["ISSUED"].values[1:]]
                 
+                df_today=df_bill[df_bill["Date"]==now.date()]
+                df_today.loc["TOTAL","QUANTITY (UNITS)"]=df_today["QUANTITY (UNITS)"].sum()
+                   
+                st.dataframe(df_today)
+
+        
+            with daily2:
+                enroute_vehicles={}
+                arrived_vehicles={}
                 for i in bill_of_ladings:
                     if i!="115240":
                         date_strings=bill_of_ladings[i]["issued"].split(" ")
-               
+                        
                         ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
                         ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
                         
@@ -2076,17 +2085,56 @@ if authentication_status:
                         combined_departure=datetime.datetime.combine(ship_date,ship_time)
                        
                         estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
-                        estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y - %H:%M")
+                        estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y -- %H:%M")
                         now=datetime.datetime.now()-datetime.timedelta(hours=7)
                         if estimated_arrival>now:
                             st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival_string}")
+                            enroute_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
+                                             "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}","ETA":estimated_arrival_string}
                         else:
                             with daily3:
                                 st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
-                                                                                 
+                                arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
+                                             "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}","ARRIVAL TIME":estimated_arrival_string}
+                                
+                arrived_vehicles=pd.DataFrame(arrived_vehicles)
+                arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')               
+                enroute_vehicles=pd.DataFrame(enroute_vehicles)
+                enroute_vehicles=enroute_vehicles.rename_axis('TRUCK NO')
+                st.dataframe(enroute_vehicles.T)                      
+                
+            with daily3:
+                st.table(arrived_vehicles.T)
+        
+        with inv2:
+            st.markdown("REPORTS HERE")
+            try:
+                suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
+                suzano_report=json.loads(suzano_report_)
+                suzano_report=pd.DataFrame(suzano_report).T
+                suzano_report=suzano_report[["Date Shipped","Vehicle", "Shipment ID #", "Consignee","Consignee City","Consignee State","Release #","Carrier","ETA","Ocean BOL#","Warehouse","Vessel","Voyage #","Grade","Quantity","Metric Ton", "ADMT","Mode of Transportation"]]
+                st.dataframe(suzano_report)
+            except:
+                st.write("NO REPORTS RECORDED")
+            @st.cache
+            def convert_df(df):
+                # IMPORTANT: Cache the conversion to prevent computation on every rerun
+                return df.to_csv().encode('utf-8')
+            
+            csv = convert_df(suzano_report)
+            
+            
+            st.download_button(
+                label="DOWNLOAD REPOLRT AS CSV",
+                data=csv,
+                file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                mime='text/csv')
+
+
+
 
             
-        with inv2:
+        with inv3:
                  
             dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
             df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Location","Warehouse_In"]]
@@ -2171,13 +2219,49 @@ if authentication_status:
                     
                     
                 st.table(filtered_zf)
-        with inv3:
+        with inv4:
             mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
             reformed_dict = {}
             for outerKey, innerDict in mill_progress.items():
                 for innerKey, values in innerDict.items():
                     reformed_dict[(outerKey,innerKey)] = values
-            st.dataframe(pd.DataFrame(reformed_dict).T)
+            mill_prog_col1,mill_prog_col2=st.columns([2,2])
+            with mill_prog_col1:
+                st.dataframe(pd.DataFrame(reformed_dict).T)
+            with mill_prog_col2:
+
+                requested_mill=st.selectbox("**SELECT MILL TO SEE PROGRESS**",mill_progress.keys())
+                def cust_business_days(start, end):
+                    business_days = pd.date_range(start=start, end=end, freq='B')
+                    return business_days
+                target=mill_progress[requested_mill]["SEP 2023"]["Planned"]
+                shipped=mill_progress[requested_mill]["SEP 2023"]["Shipped"]
+                daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
+                days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
+                days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
+                shipped=800
+                reference=daily_needed_rate*days_passed
+                
+               
+                fig = go.Figure(go.Indicator(
+                        domain = {'x': [0, 1], 'y': [0, 1]},
+                        value = shipped,
+                        mode = "gauge+number+delta",
+                        title={'text': f"<span style='font-weight:bold; color:blue;'>TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT</span>", 'font': {'size': 20}},
+                        delta = {'reference': reference},
+                        gauge = {'axis': {'range': [None, target]},
+                                 'steps' : [
+                                     {'range': [0, reference], 'color': "lightgray"},
+                                  ],
+                                 'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': target}}))
+
+                st.plotly_chart(fig)
+
+                st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
+                st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
+                st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
+
+        st.dataframe(pd.DataFrame(reformed_dict).T)
 elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
