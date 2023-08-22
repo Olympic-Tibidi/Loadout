@@ -1446,7 +1446,7 @@ if authentication_status:
                                      'steps' : [
                                          {'range': [0, reference], 'color': "lightgray"},
                                       ],
-                                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': {target}}}))
+                                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': {int(target)}}}))
 
                     st.plotly_chart(fig)
 
