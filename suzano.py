@@ -1403,7 +1403,7 @@ if authentication_status:
                 st.download_button(
                     label="DOWNLOAD REPOLRT AS CSV",
                     data=csv,
-                    file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d").csv',
+                    file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
                     mime='text/csv')
 
 
