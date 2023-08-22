@@ -1369,7 +1369,7 @@ if authentication_status:
                 st.markdown("REPORTS HERE")
                 suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
                 suzano_report=json.loads(suzano_report_)
-                st.dataframe(pd.DataFrame(suzano_report,index=").T)
+                st.dataframe(pd.DataFrame(suzano_report,index="Date Shipped").T)
 
 
 
