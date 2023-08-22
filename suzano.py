@@ -1499,7 +1499,7 @@ if authentication_status:
                     daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
                     days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
                     days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
-                    shipped=800
+                    #shipped=800
                     reference=daily_needed_rate*days_passed
                     
                    
