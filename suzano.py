@@ -302,10 +302,11 @@ authenticator = stauth.Authenticate(
 )
 
 name, authentication_status, username = authenticator.login('PORT OF OLYMPIA TOS LOGIN', 'main')
-st.title("PORT OF OLYMPIA TOS")
+
 if authentication_status:
     authenticator.logout('Logout', 'main')
     if username == 'ayilmaz' or username=='gatehouse':
+        st.subheader("PORT OF OLYMPIA TOS")
         st.write(f'Welcome *{name}*')
         select=st.sidebar.radio("SELECT FUNCTION",
             ('ADMIN', 'LOADOUT', 'INVENTORY'))
@@ -1528,6 +1529,7 @@ if authentication_status:
     ########################                                WAREHOUSE                            ####################
     
     elif username == 'warehouse':
+        st.subheader("PORT OF OLYMPIA TOS")
         st.write(f'Welcome *{name}*')
         bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
         bill_mapping=json.loads(bill_mapping)
@@ -2044,6 +2046,7 @@ if authentication_status:
         else:
             st.subheader("**Nothing dispatched!**")
     elif username == 'olysuzanodash':
+        st.subheader("PORT OF OLYMPIA TOS")
         st.write(f'Welcome *{name}*')
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
            
