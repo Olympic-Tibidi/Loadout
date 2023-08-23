@@ -1547,7 +1547,7 @@ if authentication_status:
                     st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
                     st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
                     st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
-                chosen_month=st.selectbox(["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
+                chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
                 mills = mill_progress.keys()
                 targets = [mill_progress[i][chosen_month]["Planned"] for i in mills]
                 shipped = [mill_progress[i][chosen_month]["Shipped"] for i in mills]
