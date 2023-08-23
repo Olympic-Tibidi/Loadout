@@ -501,15 +501,15 @@ if authentication_status:
                         
                         try:
                             release_order_database[release_order_number][sales_order_item]={"destination":destination,"total":quantity,"remaining":quantity}
-                            storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
-                            blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
-                            blob.upload_from_string(release_order_database)
+                            
                         except:
                             
                             release_order_database[release_order_number]={}
                             release_order_database[release_order_number][sales_order_item]={"destination":destination,"total":quantity,"remaining":quantity}
-                        
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
+                        blob.upload_from_string(release_order_database)
                         st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                         
                 with release_order_tab2:
@@ -1254,10 +1254,18 @@ if authentication_status:
                             bucket = storage_client.bucket("olym_suzano")
                             blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
                             blob.upload_from_string(json_data)
-    
-    
-    
-                            
+
+                            try:
+                                release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                                release_order_database=json.loads(release_order_database)
+                            except:
+                                release_order_database={}
+                            release_order_database=json.loads(release_order_database)
+                            release_order_database[current_release_order][current_sales_order]["remaining"]=release_order_database[current_release_order][current_sales_order]["remaining"]-len(loads)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
+                            blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
+                            blob.upload_from_string(release_order_database)
                             with open('placeholder.txt', 'r') as f:
                                 output_text = f.read()
                             st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
