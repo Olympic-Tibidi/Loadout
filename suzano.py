@@ -876,7 +876,7 @@ if authentication_status:
                     st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
                     st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
                     remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
-                    if remaining<10:
+                    if remaining<=10:
                         st.markdown(rf'**:red[CAUTION : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}]**')
                     st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
                     
@@ -1681,7 +1681,7 @@ if authentication_status:
                 st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
                 st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
                 remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
-                if remaining<10:
+                if remaining<=10:
                     st.markdown(rf'**:red[CAUTION : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}]**')
                 st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
                 
