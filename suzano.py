@@ -525,7 +525,7 @@ if authentication_status:
                         
                         for key in release_order_database:
                             st.write(key)
-                            for sales in key:
+                            for sales in release_order_database[key]:
                                 st.write(sales)
                                 if release_order_database[key][sales]["remaining"]>0:
                                     break
