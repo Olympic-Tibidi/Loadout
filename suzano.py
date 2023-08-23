@@ -524,7 +524,9 @@ if authentication_status:
                         completed_release_orders=[]
                         
                         for key in release_order_database:
+                            st.write(key)
                             for sales in key:
+                                st.write(sales)
                                 if release_order_database[key][sales]["remaining"]>0:
                                     break
                             st.write(f"{key} seems to be finished")
