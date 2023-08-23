@@ -524,13 +524,16 @@ if authentication_status:
                         completed_release_orders=[]
                         
                         for key in release_order_database:
+                            not_yet=0
                             st.write(key)
                             for sales in release_order_database[key]:
                                 st.write(sales)
                                 if release_order_database[key][sales]["remaining"]>0:
-                                    break
+                                    not_yet=1
                                 else:
-                                    st.write(f"{key} seems to be finished")
+                                    st.write(f"{key}{sales} seems to be finished")
+                            if not_yet==0:
+                                completed_release_orders.append[key]
                         
                         files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
                         files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]
