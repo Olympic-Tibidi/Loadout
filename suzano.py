@@ -1590,7 +1590,7 @@ if authentication_status:
                             ),
                             xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
                             yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
-                            title_font=dict(size=16)  # Increase title font size and weight
+                            title_font=dict(size=16),  # Increase title font size and weight
                              height=600,  # Adjust the height of the chart (in pixels)
                             width=800 
                         )
