@@ -533,7 +533,7 @@ if authentication_status:
                                 else:
                                     pass#st.write(f"{key}{sales} seems to be finished")
                             if not_yet==0:
-                                completed_release_orders.append[key]
+                                completed_release_orders.append(key)
                         
                         files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
                         files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]
