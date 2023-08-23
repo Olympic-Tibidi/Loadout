@@ -531,7 +531,7 @@ if authentication_status:
                                 if release_order_database[key][sales]["remaining"]>0:
                                     not_yet=1
                                 else:
-                                    #st.write(f"{key}{sales} seems to be finished")
+                                    pass#st.write(f"{key}{sales} seems to be finished")
                             if not_yet==0:
                                 completed_release_orders.append[key]
                         
