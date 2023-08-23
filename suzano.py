@@ -506,10 +506,11 @@ if authentication_status:
                             
                             release_order_database[release_order_number]={}
                             release_order_database[release_order_number][sales_order_item]={"destination":destination,"total":quantity,"remaining":quantity}
+                        release_orders_json=json.dumps(release_order_database)
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
-                        blob.upload_from_string(release_order_database)
+                        blob.upload_from_string(release_orders_json)
                         st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                         
                 with release_order_tab2:
@@ -1262,10 +1263,11 @@ if authentication_status:
                                 release_order_database={}
                             release_order_database=json.loads(release_order_database)
                             release_order_database[current_release_order][current_sales_order]["remaining"]=release_order_database[current_release_order][current_sales_order]["remaining"]-len(loads)
+                            release_orders_json=json.dumps(release_order_database)
                             storage_client = storage.Client()
                             bucket = storage_client.bucket("olym_suzano")
                             blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
-                            blob.upload_from_string(release_order_database)
+                            blob.upload_from_string(release_orders_json)
                             with open('placeholder.txt', 'r') as f:
                                 output_text = f.read()
                             st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
