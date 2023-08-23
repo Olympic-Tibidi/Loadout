@@ -434,7 +434,7 @@ if authentication_status:
                 except:
                     release_order_database={}
                 
-                #st.write(f'CURRENT RELEASE ORDERS : {list_files_in_folder("olym_suzano", "release_orders")[1:]}')
+              
                 release_order_tab1,release_order_tab2=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE"])
                 with release_order_tab1:
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
@@ -500,15 +500,15 @@ if authentication_status:
 
                         
                         try:
-                            release_order_database[release_order_number][sales_order_item]=temp[vessel][release_order_number]
+                            release_order_database[release_order_number][sales_order_item]={"destination":destination,"total":quantity,"remaining":quantity}
                             storage_client = storage.Client()
                             bucket = storage_client.bucket("olym_suzano")
                             blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
                             blob.upload_from_string(release_order_database)
                         except:
-                            pass
-                            #release_order_database[release_order_number]={}
-                            #release_order_database[release_order_number][sales_order_item]=temp[vessel][release_order_number]
+                            
+                            release_order_database[release_order_number]={}
+                            release_order_database[release_order_number][sales_order_item]={"destination":destination,"total":quantity,"remaining":quantity}
                         
                         st.write(f"Recorded Release Order - {release_order_number} for Item No: {sales_order_item}")
                         
@@ -516,12 +516,19 @@ if authentication_status:
                     
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
                     rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
-                    completed_release_orders=[]
+                    
                     
                     with rls_tab1:
                         
-                                    
-                        files_in_folder = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
+                        completed_release_orders=[]
+                        for key in release_order_database:
+                            for sales in key:
+                                if release_order_database[key][sales]["remaining"]<=0:
+                                    completed_release_orders.append(key)
+                            
+                        files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
+                        files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]
+                        
                         requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
                         
                         nofile=0
@@ -1931,7 +1938,7 @@ if authentication_status:
 
                         try:
                             suzano_report_keys=[int(i) for i in suzano_report.keys()]
-                            next_report_no=max(suzano_report_keys)
+                            next_report_no=max(suzano_report_keys)+1
                         except:
                             next_report_no=1
                         if double_load:
