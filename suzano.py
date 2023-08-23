@@ -1266,7 +1266,7 @@ if authentication_status:
                                 release_order_database=json.loads(release_order_database)
                             except:
                                 release_order_database={}
-                            release_order_database=json.loads(release_order_database)
+                           
                             release_order_database[current_release_order][current_sales_order]["remaining"]=release_order_database[current_release_order][current_sales_order]["remaining"]-len(loads)
                             release_orders_json=json.dumps(release_order_database)
                             storage_client = storage.Client()
