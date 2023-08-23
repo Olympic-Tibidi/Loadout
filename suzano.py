@@ -1547,7 +1547,50 @@ if authentication_status:
                     st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
                     st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
                     st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
-
+                mills = ["Mill A", "Mill B", "Mill C", "Mill D", "Mill E"]
+                targets = [1500, 2500, 1800, 2200, 2000]
+                shipped = [1200, 2200, 1600, 1800, 1900]
+                
+                # Create a figure with a horizontal bar chart
+                fig = go.Figure()
+                
+                for mill, target, shipped_qty in zip(mills, targets, shipped):
+                    fig.add_trace(
+                        go.Bar(
+                            y=[mill],
+                            x=[shipped_qty],  # Darker shade indicating shipped
+                            orientation="h",
+                            name="Shipped",
+                            marker=dict(color='rgba(0, 128, 0, 0.7)')
+                        )
+                    )
+                    fig.add_trace(
+                        go.Bar(
+                            y=[mill],
+                            x=[target],  # Lighter shade indicating target
+                            orientation="h",
+                            name="Target",
+                            marker=dict(color='rgba(0, 128, 0, 0.3)')
+                        )
+                    )
+                
+                # Customize the layout
+                fig.update_layout(
+                    barmode='stack',  # Stack the bars on top of each other
+                    xaxis_title="Quantity",
+                    yaxis_title="Mills",
+                    title="Monthly Targets and Shipped Quantities",
+                    legend=dict(
+                        x=1.0,
+                        y=1.0,
+                        xanchor="center",
+                        yanchor="top"
+                    )
+                )
+                
+                # Display the chart in Streamlit
+                st.plotly_chart(fig)
+                
 
 
 
