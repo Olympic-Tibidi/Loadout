@@ -1547,7 +1547,7 @@ if authentication_status:
                     st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
                     st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
                     st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
-                mills = ["Mill A", "Mill B", "Mill C", "Mill D", "Mill E"]
+                mills = mill_progress.keys()
                 targets = [1500, 2500, 1800, 2200, 2000]
                 shipped = [1200, 2200, 1600, 1800, 1900]
                 
@@ -1597,8 +1597,6 @@ if authentication_status:
     ########################                                WAREHOUSE                            ####################
     
     elif username == 'warehouse':
-        st.subheader("PORT OF OLYMPIA TOS")
-        st.write(f'Welcome *{name}*')
         bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
         bill_mapping=json.loads(bill_mapping)
         no_dispatch=0
@@ -2061,9 +2059,18 @@ if authentication_status:
                         blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
                         blob.upload_from_string(json_data)
 
-
-
-                        
+                        try:
+                            release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                            release_order_database=json.loads(release_order_database)
+                        except:
+                            release_order_database={}
+                       
+                        release_order_database[current_release_order][current_sales_order]["remaining"]=release_order_database[current_release_order][current_sales_order]["remaining"]-len(loads)
+                        release_orders_json=json.dumps(release_order_database)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
+                        blob.upload_from_string(release_orders_json)
                         with open('placeholder.txt', 'r') as f:
                             output_text = f.read()
                         st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
@@ -2077,7 +2084,7 @@ if authentication_status:
                         st.write(filename)
                         st.write(current_release_order,current_sales_order,destination,ocean_bill_of_lading,terminal_bill_of_lading,wrap)
                         subject = f'Suzano_EDI_{a}_{release_order_number}'
-                        body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}Destination : {destination}Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
+                        body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
                         st.write(body)           
                         sender = "warehouseoly@gmail.com"
                         #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
