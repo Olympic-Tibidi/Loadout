@@ -1183,7 +1183,7 @@ if authentication_status:
 
                             try:
                                 suzano_report_keys=[int(i) for i in suzano_report.keys()]
-                                next_report_no=max(suzano_report_keys)
+                                next_report_no=max(suzano_report_keys)+1
                             except:
                                 next_report_no=1
                             if double_load:
