@@ -521,13 +521,16 @@ if authentication_status:
                     with rls_tab1:
                         
                         completed_release_orders=[]
-                        for key in release_order_database:
-                            for sales in key:
-                                if release_order_database[key][sales]["remaining"]<=0:
-                                    completed_release_orders.append(key)
+                        try:
+                            for key in release_order_database:
+                                for sales in key:
+                                    if release_order_database[key][sales]["remaining"]<=0:
+                                        completed_release_orders.append(key)
                             
-                        files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
-                        files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]
+                            files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
+                            files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]
+                        except:
+                            files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
                         
                         requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
                         
