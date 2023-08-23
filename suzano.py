@@ -1580,7 +1580,7 @@ if authentication_status:
                             barmode='stack',  # Stack the bars on top of each other
                             xaxis_title="Quantity",
                             yaxis_title="Mills",
-                            title=f"Monthly Targets and Shipped Quantities - {selected_month}",
+                            title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
                             legend=dict(
                                 x=1.02,  # Move the legend to the right
                                 y=1.0,
