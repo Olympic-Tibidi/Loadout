@@ -530,6 +530,7 @@ if authentication_status:
                             
                             files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
                             files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]
+                            st.write(completed_release_orders)
                         except:
                             files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
                         
