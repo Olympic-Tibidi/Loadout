@@ -1577,19 +1577,22 @@ if authentication_status:
                 
                 # Customize the layout
                 fig.update_layout(
-                    barmode='stack',  # Stack the bars on top of each other
-                    xaxis_title="Quantity",
-                    yaxis_title="Mills",
-                    title="Monthly Targets and Shipped Quantities",
-                    legend=dict(
-                        x=1.0,
-                        y=1.0,
-                        xanchor="center",
-                        yanchor="top"
-                    )
-                )
-                
-                # Display the chart in Streamlit
+                            barmode='stack',  # Stack the bars on top of each other
+                            xaxis_title="Quantity",
+                            yaxis_title="Mills",
+                            title=f"Monthly Targets and Shipped Quantities - {selected_month}",
+                            legend=dict(
+                                x=1.02,  # Move the legend to the right
+                                y=1.0,
+                                xanchor="left",  # Adjust legend position
+                                yanchor="top",
+                                font=dict(size=12)  # Increase legend font size
+                            ),
+                            xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
+                            yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
+                            title_font=dict(size=16, weight="bold")  # Increase title font size and weight
+                        )
+
                 st.plotly_chart(fig)
                 
 
