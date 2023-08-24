@@ -1481,7 +1481,7 @@ if authentication_status:
                         
                         filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
                         
-                    filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
+                    filter_by=st.selectbox("SELECT FILTER",["Grade","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
                     #st.write(filter_by)
                     choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
                     
