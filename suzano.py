@@ -1442,16 +1442,16 @@ if authentication_status:
                         st.markdown(f"**TOTAL OVERALL = {(len(zf)+len(df))*2} tons**")
                     with inv_col2:
                         #st.write(items)
-                        inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
-                        shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
+                        inhouse=[df[df["Ocean B/L"]==i].shape[0]*2 for i in items]
+                        shipped=[zf[zf["Ocean B/L"]==i].shape[0]*2 for i in items]
                         
-                        wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique()[0] for i in items]
+                        wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique()[0]*2 for i in items]
                        # st.write(wrap_)
-                        tablo=pd.DataFrame({"Ocean B/L":items,"Wrap":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
+                        tablo=pd.DataFrame({"Ocean B/L":items,"Grade":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
                         total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
                         tablo = tablo.append(total_row, ignore_index=True)
                         tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
-             
+                        st.markdown("** IN METRIC TONS**)
                         st.dataframe(tablo)
                     if st.checkbox("CLICK TO SEE INVENTORY LIST"):
                         st.table(df)
