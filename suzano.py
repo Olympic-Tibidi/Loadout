@@ -2135,269 +2135,269 @@ if authentication_status:
         st.write(f'Welcome *{name}*')
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
            
-            mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
-            inv1,inv2,inv3,inv4=st.tabs(["DAILY ACTION","REPORTS","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
-            with inv1:
-                data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
-                bill_of_ladings=json.loads(data)
-                daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
-                with daily1:
-                    now=datetime.datetime.now()-datetime.timedelta(hours=7)
-                    st.markdown(f"**SHIPPED TODAY ON {datetime.datetime.strftime(now.date(),'%b %d, %Y')}**")     
-                    df_bill=pd.DataFrame(bill_of_ladings).T
-                    df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","wrap","carrier_id","vehicle","quantity","issued"]]
-                    df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY (UNITS)","ISSUED"]
-                    df_bill["Date"]=[None]+[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in df_bill["ISSUED"].values[1:]]
-                    
-                    df_today=df_bill[df_bill["Date"]==now.date()]
-                    df_today.loc["TOTAL","QUANTITY (UNITS)"]=df_today["QUANTITY (UNITS)"].sum()
+        mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
+        inv1,inv2,inv3,inv4=st.tabs(["DAILY ACTION","REPORTS","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
+        with inv1:
+            data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+            bill_of_ladings=json.loads(data)
+            daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
+            with daily1:
+                now=datetime.datetime.now()-datetime.timedelta(hours=7)
+                st.markdown(f"**SHIPPED TODAY ON {datetime.datetime.strftime(now.date(),'%b %d, %Y')}**")     
+                df_bill=pd.DataFrame(bill_of_ladings).T
+                df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","wrap","carrier_id","vehicle","quantity","issued"]]
+                df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","WRAP","CARRIER ID","VEHICLE NO","QUANTITY (UNITS)","ISSUED"]
+                df_bill["Date"]=[None]+[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in df_bill["ISSUED"].values[1:]]
+                
+                df_today=df_bill[df_bill["Date"]==now.date()]
+                df_today.loc["TOTAL","QUANTITY (UNITS)"]=df_today["QUANTITY (UNITS)"].sum()
+                   
+                st.dataframe(df_today)
+
+        
+            with daily2:
+                enroute_vehicles={}
+                arrived_vehicles={}
+                for i in bill_of_ladings:
+                    if i!="115240":
+                        date_strings=bill_of_ladings[i]["issued"].split(" ")
+                        
+                        ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
+                        ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
+                        
+                        #st.write(bill_of_ladings[i]["issued"])
+                        destination=bill_of_ladings[i]['destination']
+                        truck=bill_of_ladings[i]['vehicle']
+                        distance=mill_info[bill_of_ladings[i]['destination']]["distance"]
+                        hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
+                        minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
+                        combined_departure=datetime.datetime.combine(ship_date,ship_time)
                        
-                    st.dataframe(df_today)
-
-            
-                with daily2:
-                    enroute_vehicles={}
-                    arrived_vehicles={}
-                    for i in bill_of_ladings:
-                        if i!="115240":
-                            date_strings=bill_of_ladings[i]["issued"].split(" ")
-                            
-                            ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
-                            ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
-                            
-                            #st.write(bill_of_ladings[i]["issued"])
-                            destination=bill_of_ladings[i]['destination']
-                            truck=bill_of_ladings[i]['vehicle']
-                            distance=mill_info[bill_of_ladings[i]['destination']]["distance"]
-                            hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
-                            minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
-                            combined_departure=datetime.datetime.combine(ship_date,ship_time)
-                           
-                            estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
-                            estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y -- %H:%M")
-                            now=datetime.datetime.now()-datetime.timedelta(hours=7)
-                            if estimated_arrival>now:
-                                st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival_string}")
-                                enroute_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
-                                                 "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}","ETA":estimated_arrival_string}
-                            else:
-                                with daily3:
-                                    st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
-                                    arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
-                                                 "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}","ARRIVAL TIME":estimated_arrival_string}
-                                    
-                    arrived_vehicles=pd.DataFrame(arrived_vehicles)
-                    arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')               
-                    enroute_vehicles=pd.DataFrame(enroute_vehicles)
-                    enroute_vehicles=enroute_vehicles.rename_axis('TRUCK NO')
-                    st.dataframe(enroute_vehicles.T)                      
-                    
-                with daily3:
-                    st.table(arrived_vehicles.T)
-            
-            with inv2:
-                try:
-                    suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
-                    suzano_report=json.loads(suzano_report_)
-                    suzano_report=pd.DataFrame(suzano_report).T
-                    suzano_report=suzano_report[["Date Shipped","Vehicle", "Shipment ID #", "Consignee","Consignee City","Consignee State","Release #","Carrier","ETA","Ocean BOL#","Warehouse","Vessel","Voyage #","Grade","Quantity","Metric Ton", "ADMT","Mode of Transportation"]]
-                    st.dataframe(suzano_report)
-                    @st.cache
-                    def convert_df(df):
-                        # IMPORTANT: Cache the conversion to prevent computation on every rerun
-                        return df.to_csv().encode('utf-8')
-                    
-                    csv = convert_df(suzano_report)
-                    
-                
-                    st.download_button(
-                        label="DOWNLOAD REPORT AS CSV",
-                        data=csv,
-                        file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
-                        mime='text/csv')
-                except:
-                    st.write("NO REPORTS RECORDED")
-               
-
-
-
-
-                
-            with inv3:
-                     
-                dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-                df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Location","Warehouse_In"]]
-                zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
-                                                                 "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-                items=df["Ocean B/L"].unique().tolist()
-                
-                with dab1:
-                    
-                    inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
-                    with inv_col1:
-                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-                    with inv_col2:
-                        #st.write(items)
-                        inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
-                        shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
-                        
-                        wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique()[0] for i in items]
-                       # st.write(wrap_)
-                        tablo=pd.DataFrame({"Ocean B/L":items,"Wrap":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
-                        total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
-                        tablo = tablo.append(total_row, ignore_index=True)
-                        tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
-             
-                        st.dataframe(tablo)
-                    if st.checkbox("CLICK TO SEE INVENTORY LIST"):
-                        st.table(df)
-                with dab2:
-                    
-                    date_filter=st.checkbox("CLICK FOR DATE FILTER")
-                    if "disabled" not in st.session_state:
-                        st.session_state.visibility = "visible"
-                        st.session_state.disabled = True
-                    if date_filter:
-                        st.session_state.disabled=False
-                        
-                    else:
-                        st.session_state.disabled=True
-                        #min_value=min([i.date() for i in zf["Warehouse_Out"]])
-                    filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
-                    
-                    
-                    #st.write(zf)
-                    #zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("int")
-                    zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
-                    
-                    zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
-                    filtered_zf=zf.copy()
-                    if date_filter:
-                        filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
-                        
-                        filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
-                        
-                    filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
-                    #st.write(filter_by)
-                    choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
-                    
-                    
-                    col1,col2=st.columns([2,8])
-                    with col1:
-                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
-                    try:
-                        filtered_zf=filtered_zf[filtered_zf[filter_by]==choice]
-                        filtered_df=filtered_zf[filtered_zf[filter_by]==choice]
-                        
-                    except:
-                        filtered_zf=filtered_zf
-                        filtered_df=df.copy()
-                        
-                        pass
-                    with col2:
-                        if date_filter:
-                            st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+                        estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
+                        estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y -- %H:%M")
+                        now=datetime.datetime.now()-datetime.timedelta(hours=7)
+                        if estimated_arrival>now:
+                            st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival_string}")
+                            enroute_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
+                                             "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}","ETA":estimated_arrival_string}
                         else:
-                            st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
-                            st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
-                            st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
-                        
-                        
-                    st.table(filtered_zf)
-            with inv4:
-                mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
-                reformed_dict = {}
-                for outerKey, innerDict in mill_progress.items():
-                    for innerKey, values in innerDict.items():
-                        reformed_dict[(outerKey,innerKey)] = values
-                mill_prog_col1,mill_prog_col2=st.columns([2,4])
-                with mill_prog_col1:
-                    st.dataframe(pd.DataFrame(reformed_dict).T)
-                with mill_prog_col2:
-                    chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
-                    mills = mill_progress.keys()
-                    targets = [mill_progress[i][chosen_month]["Planned"] for i in mills]
-                    shipped = [mill_progress[i][chosen_month]["Shipped"] for i in mills]
-                    
-                    # Create a figure with a horizontal bar chart
-                    fig = go.Figure()
-                    
-                    for mill, target, shipped_qty in zip(mills, targets, shipped):
-                        fig.add_trace(
-                            go.Bar(
-                                y=[mill],
-                                x=[shipped_qty],  # Darker shade indicating shipped
-                                orientation="h",
-                                name="Shipped",
-                                marker=dict(color='rgba(0, 128, 0, 0.7)')
-                            )
-                        )
-                        fig.add_trace(
-                            go.Bar(
-                                y=[mill],
-                                x=[target],  # Lighter shade indicating target
-                                orientation="h",
-                                name="Target",
-                                marker=dict(color='rgba(0, 128, 0, 0.3)')
-                            )
-                        )
-                    
-                    # Customize the layout
-                    fig.update_layout(
-                                barmode='stack',  # Stack the bars on top of each other
-                                xaxis_title="Quantity",
-                                yaxis_title="Mills",
-                                title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
-                                legend=dict(
-                                    x=1.02,  # Move the legend to the right
-                                    y=1.0,
-                                    xanchor="left",  # Adjust legend position
-                                    yanchor="top",
-                                    font=dict(size=12)  # Increase legend font size
-                                ),
-                                xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
-                                yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
-                                title_font=dict(size=16),  # Increase title font size and weight
-                                 height=600,  # Adjust the height of the chart (in pixels)
-                                width=800 
-                            )
-    
-                    st.plotly_chart(fig)
-
-                requested_mill=st.selectbox("**SELECT MILL TO SEE PROGRESS**",mill_progress.keys())
-                def cust_business_days(start, end):
-                    business_days = pd.date_range(start=start, end=end, freq='B')
-                    return business_days
-                target=mill_progress[requested_mill]["SEP 2023"]["Planned"]
-                shipped=mill_progress[requested_mill]["SEP 2023"]["Shipped"]
-                daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
-                days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
-                days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
-                #shipped=800
-                reference=daily_needed_rate*days_passed
+                            with daily3:
+                                st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
+                                arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
+                                             "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}","ARRIVAL TIME":estimated_arrival_string}
+                                
+                arrived_vehicles=pd.DataFrame(arrived_vehicles)
+                arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')               
+                enroute_vehicles=pd.DataFrame(enroute_vehicles)
+                enroute_vehicles=enroute_vehicles.rename_axis('TRUCK NO')
+                st.dataframe(enroute_vehicles.T)                      
                 
-               
-                fig = go.Figure(go.Indicator(
-                        domain = {'x': [0, 1], 'y': [0, 1]},
-                        value = shipped,
-                        mode = "gauge+number+delta",
-                        title={'text': f"<span style='font-weight:bold; color:blue;'>TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT</span>", 'font': {'size': 20}},
-                        delta = {'reference': reference},
-                        gauge = {'axis': {'range': [None, target]},
-                                 'steps' : [
-                                     {'range': [0, reference], 'color': "lightgray"},
-                                  ],
-                                 'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': target}}))
+            with daily3:
+                st.table(arrived_vehicles.T)
+        
+        with inv2:
+            try:
+                suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
+                suzano_report=json.loads(suzano_report_)
+                suzano_report=pd.DataFrame(suzano_report).T
+                suzano_report=suzano_report[["Date Shipped","Vehicle", "Shipment ID #", "Consignee","Consignee City","Consignee State","Release #","Carrier","ETA","Ocean BOL#","Warehouse","Vessel","Voyage #","Grade","Quantity","Metric Ton", "ADMT","Mode of Transportation"]]
+                st.dataframe(suzano_report)
+                @st.cache
+                def convert_df(df):
+                    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+                    return df.to_csv().encode('utf-8')
+                
+                csv = convert_df(suzano_report)
+                
+            
+                st.download_button(
+                    label="DOWNLOAD REPORT AS CSV",
+                    data=csv,
+                    file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                    mime='text/csv')
+            except:
+                st.write("NO REPORTS RECORDED")
+           
+
+
+
+
+            
+        with inv3:
+                 
+            dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
+            df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Location","Warehouse_In"]]
+            zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Wrap","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
+                                                             "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
+            items=df["Ocean B/L"].unique().tolist()
+            
+            with dab1:
+                
+                inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
+                with inv_col1:
+                    st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+                    st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+                    st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                with inv_col2:
+                    #st.write(items)
+                    inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
+                    shipped=[zf[zf["Ocean B/L"]==i].shape[0] for i in items]
+                    
+                    wrap_=[df[df["Ocean B/L"]==i]["Wrap"].unique()[0] for i in items]
+                   # st.write(wrap_)
+                    tablo=pd.DataFrame({"Ocean B/L":items,"Wrap":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
+                    total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
+                    tablo = tablo.append(total_row, ignore_index=True)
+                    tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
+         
+                    st.dataframe(tablo)
+                if st.checkbox("CLICK TO SEE INVENTORY LIST"):
+                    st.table(df)
+            with dab2:
+                
+                date_filter=st.checkbox("CLICK FOR DATE FILTER")
+                if "disabled" not in st.session_state:
+                    st.session_state.visibility = "visible"
+                    st.session_state.disabled = True
+                if date_filter:
+                    st.session_state.disabled=False
+                    
+                else:
+                    st.session_state.disabled=True
+                    #min_value=min([i.date() for i in zf["Warehouse_Out"]])
+                filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
+                
+                
+                #st.write(zf)
+                #zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("int")
+                zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
+                
+                zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
+                filtered_zf=zf.copy()
+                if date_filter:
+                    filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+                    
+                    filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+                    
+                filter_by=st.selectbox("SELECT FILTER",["Wrap","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
+                #st.write(filter_by)
+                choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
+                
+                
+                col1,col2=st.columns([2,8])
+                with col1:
+                    st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
+                    st.markdown(f"**IN WAREHOUSE = {len(df)}**")
+                    st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                try:
+                    filtered_zf=filtered_zf[filtered_zf[filter_by]==choice]
+                    filtered_df=filtered_zf[filtered_zf[filter_by]==choice]
+                    
+                except:
+                    filtered_zf=filtered_zf
+                    filtered_df=df.copy()
+                    
+                    pass
+                with col2:
+                    if date_filter:
+                        st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+                    else:
+                        st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
+                        st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
+                        st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
+                    
+                    
+                st.table(filtered_zf)
+        with inv4:
+            mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
+            reformed_dict = {}
+            for outerKey, innerDict in mill_progress.items():
+                for innerKey, values in innerDict.items():
+                    reformed_dict[(outerKey,innerKey)] = values
+            mill_prog_col1,mill_prog_col2=st.columns([2,4])
+            with mill_prog_col1:
+                st.dataframe(pd.DataFrame(reformed_dict).T)
+            with mill_prog_col2:
+                chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
+                mills = mill_progress.keys()
+                targets = [mill_progress[i][chosen_month]["Planned"] for i in mills]
+                shipped = [mill_progress[i][chosen_month]["Shipped"] for i in mills]
+                
+                # Create a figure with a horizontal bar chart
+                fig = go.Figure()
+                
+                for mill, target, shipped_qty in zip(mills, targets, shipped):
+                    fig.add_trace(
+                        go.Bar(
+                            y=[mill],
+                            x=[shipped_qty],  # Darker shade indicating shipped
+                            orientation="h",
+                            name="Shipped",
+                            marker=dict(color='rgba(0, 128, 0, 0.7)')
+                        )
+                    )
+                    fig.add_trace(
+                        go.Bar(
+                            y=[mill],
+                            x=[target],  # Lighter shade indicating target
+                            orientation="h",
+                            name="Target",
+                            marker=dict(color='rgba(0, 128, 0, 0.3)')
+                        )
+                    )
+                
+                # Customize the layout
+                fig.update_layout(
+                            barmode='stack',  # Stack the bars on top of each other
+                            xaxis_title="Quantity",
+                            yaxis_title="Mills",
+                            title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
+                            legend=dict(
+                                x=1.02,  # Move the legend to the right
+                                y=1.0,
+                                xanchor="left",  # Adjust legend position
+                                yanchor="top",
+                                font=dict(size=12)  # Increase legend font size
+                            ),
+                            xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
+                            yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
+                            title_font=dict(size=16),  # Increase title font size and weight
+                             height=600,  # Adjust the height of the chart (in pixels)
+                            width=800 
+                        )
 
                 st.plotly_chart(fig)
 
-                st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
-                st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
-                st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
+            requested_mill=st.selectbox("**SELECT MILL TO SEE PROGRESS**",mill_progress.keys())
+            def cust_business_days(start, end):
+                business_days = pd.date_range(start=start, end=end, freq='B')
+                return business_days
+            target=mill_progress[requested_mill]["SEP 2023"]["Planned"]
+            shipped=mill_progress[requested_mill]["SEP 2023"]["Shipped"]
+            daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
+            days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
+            days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
+            #shipped=800
+            reference=daily_needed_rate*days_passed
+            
+           
+            fig = go.Figure(go.Indicator(
+                    domain = {'x': [0, 1], 'y': [0, 1]},
+                    value = shipped,
+                    mode = "gauge+number+delta",
+                    title={'text': f"<span style='font-weight:bold; color:blue;'>TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT</span>", 'font': {'size': 20}},
+                    delta = {'reference': reference},
+                    gauge = {'axis': {'range': [None, target]},
+                             'steps' : [
+                                 {'range': [0, reference], 'color': "lightgray"},
+                              ],
+                             'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': target}}))
+
+            st.plotly_chart(fig)
+
+            st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
+            st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
+            st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
 
         
 elif authentication_status == False:
