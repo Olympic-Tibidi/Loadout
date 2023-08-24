@@ -282,7 +282,7 @@ def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,
             list_of_ladings.append(int(key))
         bill_of_lading_number=max(list_of_ladings)+1
     except:
-        bill_of_lading_number=115240
+        bill_of_lading_number=11502400
     return bill_of_lading_number,bill_of_ladings
 
 pd.set_option('display.max_rows', None)
@@ -1284,12 +1284,12 @@ if authentication_status:
                             with open('placeholder.txt', 'r') as f:
                                 file_content = f.read()
                             newline="\n"
-                            filename = f'{a}{b}OLYM'
-                            file_name= f'{a}{b}OLYM.txt'
+                            filename = f'{bill_of_lading_number}'
+                            file_name= f'{bill_of_lading_number}.txt'
                             st.write(filename)
                             st.write(current_release_order,current_sales_order,destination,ocean_bill_of_lading,terminal_bill_of_lading,wrap)
-                            subject = f'Suzano_EDI_{a}_{release_order_number}'
-                            body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
+                            subject = f'Suzano_EDI_{a}_ R.O:{release_order_number}-Terminal BOL :{bill_of_lading_number}'-Destination : {destination}
+                            body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{2*len(loads)} tons {unitized} cargo were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
                             st.write(body)           
                             sender = "warehouseoly@gmail.com"
                             #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
@@ -1403,6 +1403,7 @@ if authentication_status:
                     suzano_report=pd.DataFrame(suzano_report).T
                     suzano_report=suzano_report[["Date Shipped","Vehicle", "Shipment ID #", "Consignee","Consignee City","Consignee State","Release #","Carrier","ETA","Ocean BOL#","Warehouse","Vessel","Voyage #","Grade","Quantity","Metric Ton", "ADMT","Mode of Transportation"]]
                     st.dataframe(suzano_report)
+                    
                     @st.cache
                     def convert_df(df):
                         # IMPORTANT: Cache the conversion to prevent computation on every rerun
@@ -1436,9 +1437,9 @@ if authentication_status:
                     
                     inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
                     with inv_col1:
-                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                        st.markdown(f"**IN WAREHOUSE = {len(df)*2} tons**")
+                        st.markdown(f"**TOTAL SHIPPED = {len(zf)*2} tons**")
+                        st.markdown(f"**TOTAL OVERALL = {(len(zf)+len(df))*2} tons**")
                     with inv_col2:
                         #st.write(items)
                         inhouse=[df[df["Ocean B/L"]==i].shape[0] for i in items]
