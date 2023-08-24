@@ -1451,7 +1451,7 @@ if authentication_status:
                         total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
                         tablo = tablo.append(total_row, ignore_index=True)
                         tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
-                        st.markdown(f"**IN METRIC TONS ( AS OF {datetime.datetime.strftime(datetime.datetime.now(),"%b %d,%y  %H:%M}**")
+                        st.markdown(f"**IN METRIC TONS ( AS OF {datetime.datetime.strftime(datetime.datetime.now(),'%b %d,%y  %H:%M')}**")
                         st.dataframe(tablo)
                     if st.checkbox("CLICK TO SEE INVENTORY LIST"):
                         st.table(df)
