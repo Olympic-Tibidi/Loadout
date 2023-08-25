@@ -1360,7 +1360,7 @@ if authentication_status:
                     enroute_vehicles={}
                     arrived_vehicles={}
                     for i in bill_of_ladings:
-                        if i!="115240":
+                        if i!="11502400":
                             date_strings=bill_of_ladings[i]["issued"].split(" ")
                             
                             ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
