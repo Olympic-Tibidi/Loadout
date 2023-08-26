@@ -1007,10 +1007,10 @@ if authentication_status:
         
                         placeholder = st.empty()
 
-                        load_input=placeholder.st.text_area("**LOADS**",value="",height=300,key=1)#[:-2]
+                        load_input=placeholder.text_area("**LOADS**",value="",height=300,key=1)#[:-2]
                         click_clear = st.button('clear text input', key=3)
                         if click_clear:
-                           load_input = placeholder.st.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
+                           load_input = placeholder.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
                         
                         if load_input is not None:
                             textsplit = load_input.splitlines()
