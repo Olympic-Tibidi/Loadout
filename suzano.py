@@ -1016,11 +1016,11 @@ if authentication_status:
                         
         
         
-                        placeholder = st.empty()
-                        load_input=placeholder.text_area("**LOADS**",value="",height=300,key=1)#[:-2]
+                        placeholder1 = st.empty()
+                        load_input=placeholder1.text_area("**LOADS**",value="",height=300,key=1)#[:-2]
                         click_clear = st.button('CLEAR SCANNED INPUTS', key=3)
                         if click_clear:
-                           load_input = placeholder.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
+                           load_input = placeholder1.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
                         
                         if load_input is not None:
                             textsplit = load_input.splitlines()
