@@ -1121,7 +1121,7 @@ if authentication_status:
                     
                 but_col1,but_col2=st.columns([2,2])
                 with but_col2:
-                    if st.button('SUBMIT EDI'):
+                    if st.button('**:blue[SUBMIT EDI]**'):
                         def gen_bill_of_lading():
                             data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                             bill_of_ladings=json.loads(data)
