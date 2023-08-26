@@ -1005,8 +1005,13 @@ if authentication_status:
                         
         
         
-                    
-                        load_input=st.text_area("**LOADS**",value="",height=300)#[:-3]
+                        placeholder = st.empty()
+
+                        load_input=placeholder.st.text_area("**LOADS**",value="",height=300,key=1)#[:-2]
+                        click_clear = st.button('clear text input', key=3)
+                        if click_clear:
+                           load_input = placeholder.st.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
+                        
                         if load_input is not None:
                             textsplit = load_input.splitlines()
                             textsplit=[i for i in textsplit if len(i)>8]
@@ -1317,7 +1322,7 @@ if authentication_status:
                             bucket = storage_client.bucket("olym_suzano")
                             blob = bucket.blob(rf"terminal_bill_of_ladings.json")
                             blob.upload_from_string(bill_of_ladings)
-                with but_col2:                 #################################    IF CLEARINJG ####################
+                with but_col2:                 #################################    IF CLEARING ####################
                    
                     if st.button("**CLEAR ENTRIES**"):
                         st.experimental_rerun()
