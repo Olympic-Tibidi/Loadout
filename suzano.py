@@ -1136,8 +1136,8 @@ if authentication_status:
                             return bill_of_lading_number,bill_of_ladings
                         #st.write(bill_of_lading_number)
                         
-                        edi_name= f'{a}{b}OLYM.txt'
-
+                        
+                        
                         mill_info_=gcp_download("olym_suzano",rf"mill_info.json")
                         mill_info=json.loads(mill_info_)
                         try:
@@ -1150,6 +1150,8 @@ if authentication_status:
                         consignee_state=mill_info[destination]["state"]
                         vessel_suzano,voyage_suzano=vessel.split("-")
                         eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
+                        
+                        file_name= f'{bill_of_lading_number}.txt'
                         if double_load:
                             bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                             bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
