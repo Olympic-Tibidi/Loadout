@@ -427,7 +427,8 @@ if authentication_status:
                             st.data_editor(filtered_df)
                           
             with admin_tab1:
-                
+                carrier_list_=gcp_download("olym_suzano",rf"carriers.json")
+                carrier_list=json.loads(carrier_list_)
                 try:
                     release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
                     release_order_database=json.loads(release_order_database)
@@ -462,7 +463,7 @@ if authentication_status:
                     tonnage=2*quantity
                     #queue=st.number_input("Place in Queue", min_value=1, max_value=20, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
                     transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
-                    carrier_code=st.text_input("Carrier Code")            
+                    carrier_code=st.selectbox("Carrier Code","[f"{key}-{item}" for key,item in carrier_list.items())            
                     
         
                     create_release_order=st.button("SUBMIT")
