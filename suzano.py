@@ -939,13 +939,13 @@ if authentication_status:
                     transport_type=placeholderv.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True,key=6)
                     vehicle_id=placeholderv.text_input("**:blue[Vehicle ID]**",value="",key=7)
                     foreman_quantity=placeholderv.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1,key=None, help=None, on_change=None, disabled=False, label_visibility="visible",key=8)
-                        click_clear1 = st.button('CLEAR VEHICLE-QUANTITY INPUTS', key=34)
-                        if click_clear1:
-                           carrier_code=placeholderv.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
-                           transport_sequential_number=placeholderv.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True,key=10)
-                           transport_type=placeholderv.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True,key=11)
-                           vehicle_id=placeholderv.text_input("**:blue[Vehicle ID]**",value="",key=12)
-                           foreman_quantity=placeholderv.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1,key=None, help=None, on_change=None, disabled=False, label_visibility="visible",key=13)
+                    click_clear1 = st.button('CLEAR VEHICLE-QUANTITY INPUTS', key=34)
+                    if click_clear1:
+                       carrier_code=placeholderv.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
+                       transport_sequential_number=placeholderv.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True,key=10)
+                       transport_type=placeholderv.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True,key=11)
+                       vehicle_id=placeholderv.text_input("**:blue[Vehicle ID]**",value="",key=12)
+                       foreman_quantity=placeholderv.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1,key=None, help=None, on_change=None, disabled=False, label_visibility="visible",key=13)
 
 
 
