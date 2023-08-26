@@ -934,7 +934,7 @@ if authentication_status:
                     
                 with col3: 
                     placeholder = st.empty()
-                    with placeholer.container():
+                    with placeholder.container():
                         
                         carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True,key=40)
                         transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True,key=51)
