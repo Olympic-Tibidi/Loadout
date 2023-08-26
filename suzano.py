@@ -1120,7 +1120,7 @@ if authentication_status:
                 
                     
                 but_col1,but_col2=st.columns([2,2])
-                with but_col1:
+                with but_col2:
                     if st.button('SUBMIT EDI'):
                         def gen_bill_of_lading():
                             data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
@@ -1334,10 +1334,10 @@ if authentication_status:
                             bucket = storage_client.bucket("olym_suzano")
                             blob = bucket.blob(rf"terminal_bill_of_ladings.json")
                             blob.upload_from_string(bill_of_ladings)
-                with but_col2:                 #################################    IF CLEARING ####################
-                   
-                    if st.button("**CLEAR ENTRIES**"):
-                        st.experimental_rerun()
+                with but_col1:                 #################################    IF CLEARING ####################
+                    pass
+                    #if st.button("**CLEAR ENTRIES**"):
+                   #     st.experimental_rerun()
                         
                             
         
