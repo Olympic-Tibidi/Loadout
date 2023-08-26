@@ -933,14 +933,23 @@ if authentication_status:
                         
                     
                 with col3: 
-                    carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True)
-                    transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
-                    transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
-                    vehicle_id=st.text_input("**:blue[Vehicle ID]**")
-                    foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1,key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+                    placeholderv = st.empty()
+                    carrier_code=placeholderv.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True,key=4)
+                    transport_sequential_number=placeholderv.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True,key=5)
+                    transport_type=placeholderv.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True,key=6)
+                    vehicle_id=placeholderv.text_input("**:blue[Vehicle ID]**",value="",key=7)
+                    foreman_quantity=placeholderv.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1,key=None, help=None, on_change=None, disabled=False, label_visibility="visible",key=8)
+                        click_clear1 = st.button('CLEAR VEHICLE-QUANTITY INPUTS', key=34)
+                        if click_clear1:
+                           carrier_code=placeholderv.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
+                           transport_sequential_number=placeholderv.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True,key=10)
+                           transport_type=placeholderv.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True,key=11)
+                           vehicle_id=placeholderv.text_input("**:blue[Vehicle ID]**",value="",key=12)
+                           foreman_quantity=placeholderv.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1,key=None, help=None, on_change=None, disabled=False, label_visibility="visible",key=13)
+
+
+
                 
-                    
-               
                 with col4:
                     updated_quantity=0
                     live_quantity=0
@@ -1006,9 +1015,8 @@ if authentication_status:
         
         
                         placeholder = st.empty()
-
                         load_input=placeholder.text_area("**LOADS**",value="",height=300,key=1)#[:-2]
-                        click_clear = st.button('clear text input', key=3)
+                        click_clear = st.button('CLEAR SCANNED INPUTS', key=3)
                         if click_clear:
                            load_input = placeholder.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
                         
