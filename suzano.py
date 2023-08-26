@@ -1413,7 +1413,7 @@ if authentication_status:
                     enroute_vehicles=enroute_vehicles.rename_axis('TRUCK NO')
                     st.dataframe(enroute_vehicles.T)                      
                     for i in enroute_vehicles:
-                        st.write(f"Truck No : {i} is Enroute to {enroute_vehicles["DESTINATION"]} at {enroute_vehicles["ETA"]})
+                        st.write(f"Truck No : {i} is Enroute to {enroute_vehicles['DESTINATION']} at {enroute_vehicles['ETA']}")
                 with daily3:
                     st.table(arrived_vehicles.T)
             
