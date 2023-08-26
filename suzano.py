@@ -427,7 +427,7 @@ if authentication_status:
                             st.data_editor(filtered_df)
                           
             with admin_tab1:
-                carrier_list_=gcp_download("olym_suzano",rf"carriers.json")
+                carrier_list_=gcp_download("olym_suzano",rf"carrier.json")
                 carrier_list=json.loads(carrier_list_)
                 try:
                     release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
