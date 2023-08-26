@@ -1006,7 +1006,7 @@ if authentication_status:
         
         
                     
-                        load_input=st.text_area("**LOADS**",height=300)#[:-3]
+                        load_input=st.text_area("**LOADS**",value="",height=300)#[:-3]
                         if load_input is not None:
                             textsplit = load_input.splitlines()
                             textsplit=[i for i in textsplit if len(i)>8]
