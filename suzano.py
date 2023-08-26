@@ -1215,7 +1215,7 @@ if authentication_status:
                             error=f"**:red[{quantity} loads on this truck. Please check. You planned for {foreman_quantity} loads!]** "
                             st.write(error)
                         if proceed:
-                            
+                            carrier_code=carrier_code.split("-")[0]
                             process()
 
                             try:
