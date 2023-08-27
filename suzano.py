@@ -518,7 +518,9 @@ if authentication_status:
                     
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
                     rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
-                    
+
+                    data=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                    release_order_dictionary=json.loads(data)
                     
                     with rls_tab1:
                         
@@ -536,18 +538,23 @@ if authentication_status:
                             if not_yet==0:
                                 completed_release_orders.append(key)
                         
-                        files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
-                        files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]
-                        #st.write(completed_release_orders)
+                        files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]   ### REMOVE json extension from name
+                        files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]        ###  CHECK IF COMPLETED
+                        release_order_dest_map={}
+                        for i in release_order_dictionary:
+                            for sales in release_order_dictionary[i]:
+                                release_order_dest_map[i]=release_order_dictionary[i][sales]["destination"]
                         
-                        files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]
+                        destinations_of_release_orders=[f"{i} to {release_order_dest_map[i]} for i in files_in_folder]
                         
-                        requested_file=st.selectbox("ACTIVE RELEASE ORDERS",files_in_folder)
-                        
+                                                                        
+                        requested_file_=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders)
+                        requested_file=requested_file_.split(" ")[0]
                         nofile=0
                         try:
                             data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
                             release_order_json = json.loads(data)
+                            
                             
                             target=release_order_json[vessel][requested_file]
                             destination=target['destination']
@@ -589,7 +596,7 @@ if authentication_status:
                         
                         
                         
-                        ###CLEAN DISPATCH
+                        ### END CLEAN DISPATCH
         
                         
                                               
