@@ -1158,17 +1158,17 @@ if authentication_status:
                             bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                             edi_name= f'{bill_of_lading_number}.txt'
                             bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
-                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                          "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                             bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
-                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                          "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                             
                         else:
                             bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                             edi_name= f'{bill_of_lading_number}.txt'
                             bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
-                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                          "quantity":len(textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                                             
                         bill_of_ladings=json.dumps(bill_of_ladings)
