@@ -929,6 +929,7 @@ if authentication_status:
                         ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
                         
                         batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
+                        grade=st.text_input("Grade",info[vessel][current_release_order][current_sales_order]["grade"],disabled=True)
                         #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
                    
                         
