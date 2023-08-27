@@ -168,7 +168,7 @@ def store_release_order_data(vessel,release_order_number,destination,sales_order
         sales_order_item: {
         "batch": batch,
         "ocean_bill_of_lading": ocean_bill_of_lading,
-        "wrap": wrap,
+        "grade": wrap,
         "dryness":dryness,
         "transport_type": transport_type,
         "carrier_code": carrier_code,
@@ -194,7 +194,7 @@ def edit_release_order_data(file,vessel,release_order_number,destination,sales_o
         file[vessel][release_order_number][sales_order_item]={}
     file[vessel][release_order_number][sales_order_item]["batch"]= batch
     file[vessel][release_order_number][sales_order_item]["ocean_bill_of_lading"]= ocean_bill_of_lading
-    file[vessel][release_order_number][sales_order_item]["wrap"]= wrap
+    file[vessel][release_order_number][sales_order_item]["grade"]= wrap
     file[vessel][release_order_number][sales_order_item]["dryness"]= dryness
     file[vessel][release_order_number][sales_order_item]["transport_type"]= transport_type
     file[vessel][release_order_number][sales_order_item]["carrier_code"]= carrier_code
