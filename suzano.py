@@ -364,7 +364,7 @@ if authentication_status:
                         df=pd.DataFrame(list(zip([i[5:] for i in temp[0]],[str(i)[13:15] for i in temp[7]],
                                   [str(i)[20:28] for i in temp[7]])),columns=["Lot","Lot Qty","Batch"])
                         df["Lot Qty"]=[int(int(i)/2) for i in df["Lot Qty"]]
-                        df["Wrap"]=[i[:3] for i in temp[1]]
+                        df["Grade"]=[i[:3] for i in temp[1]]
                         df["Vessel"]=[i[-12:] for i in temp[7]]
                         df["DryWeight"]=[int(i) for i in temp[8]]
                         df["ADMT"]=[int(i)/0.9/100000 for i in temp[8]]
@@ -385,7 +385,7 @@ if authentication_status:
                                     new_list.append(f"{df.loc[i,'Lot']}0{j}")
                                 lotq.append(df.loc[i,"Lot Qty"])
                                 batch.append(str(df.loc[i,"Batch"]))
-                                wrap.append(df.loc[i,"Wrap"])
+                                wrap.append(df.loc[i,"Grade"])
                                 vessel.append(df.loc[i,"Vessel"])
                                 DryWeight.append(df.loc[i,"DryWeight"])
                                 ADMT.append(df.loc[i,"ADMT"])
@@ -398,7 +398,7 @@ if authentication_status:
                         new_df["Carrier_Code"]=""
                         new_df["BL"]=""
                         bls=new_df["Batch"].value_counts()
-                        wraps=[new_df[new_df["Batch"]==k]["Wrap"].unique()[0] for k in bls.keys()]
+                        wraps=[new_df[new_df["Batch"]==k]["Grade"].unique()[0] for k in bls.keys()]
                         wrap_dict={"ISU":"Unwrapped","ISP":"Wrapped"}
                         col1, col2= st.columns([2,2])
                         with col1:
@@ -421,7 +421,7 @@ if authentication_status:
                         requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
                         if st.button("LOAD SHIPPING FILE"):
                             requested_shipping_file=gcp_csv_to_df("olym_suzano", requested_file)
-                            filtered_df=requested_shipping_file[["Lot","Lot Qty","Batch","Wrap","Ocean B/L","DryWeight","ADMT","Location",
+                            filtered_df=requested_shipping_file[["Lot","Lot Qty","Batch","Grade","Ocean B/L","DryWeight","ADMT","Location",
                                                                                       "Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code"]]
                             #st.data_editor(filtered_df, use_container_width=True)
                             st.data_editor(filtered_df)
@@ -454,7 +454,7 @@ if authentication_status:
                     destination=st.selectbox("SELECT DESTINATION",destination_list)
                     sales_order_item=st.text_input("Sales Order Item")
                     ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch_mapping.keys())
-                    wrap=st.text_input("Wrap",batch_mapping[ocean_bill_of_lading]["wrap"],disabled=True)
+                    wrap=st.text_input("Grade",batch_mapping[ocean_bill_of_lading]["wrap"],disabled=True)
                     batch=st.text_input("Batch No",batch_mapping[ocean_bill_of_lading]["batch"],disabled=True)
                     dryness=st.text_input("Dryness",batch_mapping[ocean_bill_of_lading]["dryness"],disabled=True)
                     admt=st.text_input("ADMT PER UNIT",round(int(batch_mapping[ocean_bill_of_lading]["dryness"])/90,6),disabled=True)
