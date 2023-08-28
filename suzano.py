@@ -1509,9 +1509,8 @@ if authentication_status:
                     filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
                     
                     
-                    #st.write(zf)
-                    #zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("int")
-                    zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
+                   
+                    zf[["Release_Order_Number","Carrier_Code","Terminal Bill Of Lading","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal Bill Of Lading","Vehicle_Id"]].astype("str")
                     
                     zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
                     filtered_zf=zf.copy()
@@ -1520,7 +1519,7 @@ if authentication_status:
                         
                         filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
                         
-                    filter_by=st.selectbox("SELECT FILTER",["Grade","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
+                    filter_by=st.selectbox("SELECT FILTER",["Grade","Ocean B/L","Release_Order_Number","Terminal Bill Of Lading","Carrier_Code","Vehicle_Id"])
                     #st.write(filter_by)
                     choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
                     
