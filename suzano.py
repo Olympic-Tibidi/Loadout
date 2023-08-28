@@ -1762,6 +1762,7 @@ if authentication_status:
                     current_ocean_bill_of_lading=ocean_bill_of_lading
                     next_ocean_bill_of_lading=info[vessel][next_release_order][next_sales_order]["ocean_bill_of_lading"]
                     batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
+                    grade=st.text_input("Grade",info[vessel][current_release_order][current_sales_order]["grade"],disabled=True)
                     
                     #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
                     pass
@@ -1771,29 +1772,43 @@ if authentication_status:
                     ocean_bill_of_lading=st.text_input("Ocean Bill Of Lading",info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"],disabled=True)
                     
                     batch=st.text_input("Batch",info[vessel][current_release_order][current_sales_order]["batch"],disabled=True)
+                    grade=st.text_input("Grade",info[vessel][current_release_order][current_sales_order]["grade"],disabled=True)
                     #terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",disabled=False)
                
                     
                 
             with col3: 
-                carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True)
-                transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True)
-                transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True)
-                vehicle_id=st.text_input("**:blue[Vehicle ID]**")
-                foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1,key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+                placeholder = st.empty()
+                with placeholder.container():
+                    
+                    carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True,key=40)
+                    transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True,key=51)
+                    transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True,key=6)
+                    vehicle_id=st.text_input("**:blue[Vehicle ID]**",value="",key=7)
+                    foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=8)
+                    click_clear1 = st.button('CLEAR VEHICLE-QUANTITY INPUTS', key=34)
+                if click_clear1:
+                     with placeholder.container():
+                         
+                       carrier_code=st.text_input("Carrier Code",info[vessel][current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
+                       transport_sequential_number=st.selectbox("Transport Sequential",["TRUCK","RAIL"],disabled=True,key=10)
+                       transport_type=st.selectbox("Transport Type",["TRUCK","RAIL"],disabled=True,key=11)
+                       vehicle_id=st.text_input("**:blue[Vehicle ID]**",value="",key=12)
+                       foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=13)
+
+
+
             
-                
-           
             with col4:
                 updated_quantity=0
                 live_quantity=0
                 if updated_quantity not in st.session_state:
                     st.session_state.updated_quantity=updated_quantity
                 def audit_unit(x):
-                        if len(x)==11:
-                            #st.write(bill_mapping[x[:-3]]["Batch"])
+                        if len(x)==10:
+                            #st.write(bill_mapping[x[:-2]]["Batch"])
                             #st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0])
-                            if bill_mapping[x[:-3]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-3]]["Batch"]!=batch:
+                            if bill_mapping[x[:-2]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-2]]["Batch"]!=batch:
                                 st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
                                 return False
                             
@@ -1804,10 +1819,10 @@ if authentication_status:
                             else:
                                 return True
                 def audit_split(release,sales):
-                        if len(x)==11:
-                            #st.write(bill_mapping[x[:-3]]["Batch"])
+                        if len(x)==10:
+                            #st.write(bill_mapping[x[:-2]]["Batch"])
                             
-                            if bill_mapping[x[:-3]]["Ocean_bl"]!=info[vessel][release][sales]["ocean_bill_of_lading"] and bill_mapping[x[:-3]]["Batch"]!=info[vessel][release][sales]["batch"]:
+                            if bill_mapping[x[:-2]]["Ocean_bl"]!=info[vessel][release][sales]["ocean_bill_of_lading"] and bill_mapping[x[:-2]]["Batch"]!=info[vessel][release][sales]["batch"]:
                                 st.write("**:red[WRONG B/L, DO NOT LOAD BELOW!]**")
                                 return False
                             if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
@@ -1848,8 +1863,12 @@ if authentication_status:
                     
     
     
-                
-                    load_input=st.text_area("**LOADS**",height=300)#[:-3]
+                    placeholder1 = st.empty()
+                    load_input=placeholder1.text_area("**LOADS**",value="",height=300,key=1)#[:-2]
+                    click_clear = st.button('CLEAR SCANNED INPUTS', key=3)
+                    if click_clear:
+                       load_input = placeholder1.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
+                    
                     if load_input is not None:
                         textsplit = load_input.splitlines()
                         textsplit=[i for i in textsplit if len(i)>8]
@@ -1946,8 +1965,8 @@ if authentication_status:
             
                 
             but_col1,but_col2=st.columns([2,2])
-            with but_col1:
-                if st.button('SUBMIT EDI'):
+            with but_col2:
+                if st.button('**:blue[SUBMIT EDI]**'):
                     def gen_bill_of_lading():
                         data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                         bill_of_ladings=json.loads(data)
@@ -1962,8 +1981,8 @@ if authentication_status:
                         return bill_of_lading_number,bill_of_ladings
                     #st.write(bill_of_lading_number)
                     
-                    edi_name= f'{a}{b}OLYM.txt'
-
+                    
+                    
                     mill_info_=gcp_download("olym_suzano",rf"mill_info.json")
                     mill_info=json.loads(mill_info_)
                     try:
@@ -1976,19 +1995,23 @@ if authentication_status:
                     consignee_state=mill_info[destination]["state"]
                     vessel_suzano,voyage_suzano=vessel.split("-")
                     eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
+                    
+                    
                     if double_load:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
+                        edi_name= f'{bill_of_lading_number}.txt'
                         bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
-                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                      "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                         bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
-                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                      "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                         
                     else:
                         bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
+                        edi_name= f'{bill_of_lading_number}.txt'
                         bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
-                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"wrap":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
                                                                      "quantity":len(textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                                         
                     bill_of_ladings=json.dumps(bill_of_ladings)
@@ -2041,6 +2064,9 @@ if authentication_status:
                         error=f"**:red[{quantity} loads on this truck. Please check. You planned for {foreman_quantity} loads!]** "
                         st.write(error)
                     if proceed:
+                        carrier_code=carrier_code.split("-")[0]
+
+
                         
                         process()
 
@@ -2128,12 +2154,12 @@ if authentication_status:
                         with open('placeholder.txt', 'r') as f:
                             file_content = f.read()
                         newline="\n"
-                        filename = f'{a}{b}OLYM'
-                        file_name= f'{a}{b}OLYM.txt'
+                        filename = f'{bill_of_lading_number}'
+                        file_name= f'{bill_of_lading_number}.txt'
                         st.write(filename)
                         st.write(current_release_order,current_sales_order,destination,ocean_bill_of_lading,terminal_bill_of_lading,wrap)
-                        subject = f'Suzano_EDI_{a}_{release_order_number}'
-                        body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline}Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{len(loads)} {unitized} loads were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
+                        subject = f'Suzano_EDI_{a}_ R.O:{release_order_number}-Terminal BOL :{bill_of_lading_number}-Destination : {destination}'
+                        body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline} Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Wrap : {wrap} {newline}{2*len(loads)} tons {unitized} cargo were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
                         st.write(body)           
                         sender = "warehouseoly@gmail.com"
                         #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
@@ -2160,9 +2186,17 @@ if authentication_status:
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"terminal_bill_of_ladings.json")
                         blob.upload_from_string(bill_of_ladings)
-            with but_col2:
-                if st.button("**CLEAR ENTRIES**"):
-                    pass
+            with but_col1:                 #################################    IF CLEARING ####################
+                pass
+                #if st.button("**CLEAR ENTRIES**"):
+               #     st.experimental_rerun()
+                    
+                        
+    
+        
+                    
+        else:
+            st.subheader("**Nothing dispatched!**")
                         
     
         
