@@ -1713,7 +1713,7 @@ if authentication_status:
                 st.markdown(rf'**Destination : {destination} .**')
                 st.markdown(rf'**Sales Order Item-{current_sales_order}**')
                 wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
-                wrap=info[vessel][current_release_order][current_sales_order]["wrap"]
+                wrap=info[vessel][current_release_order][current_sales_order]["grade"]
                 st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[wrap]}**')
                 unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
                 st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
