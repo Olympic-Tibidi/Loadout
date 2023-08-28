@@ -1521,7 +1521,7 @@ if authentication_status:
                         
                     filter_by=st.selectbox("SELECT FILTER",["Grade","Ocean B/L","Release_Order_Number","Terminal Bill Of Lading","Carrier_Code","Vehicle_Id"])
                     #st.write(filter_by)
-                    choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(i) for i in filtered_zf[filter_by].unique().tolist()])
+                    choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(j) for j in [str(i) for i in filtered_zf[filter_by].unique().tolist()]])
                     
                     
                     col1,col2=st.columns([2,8])
