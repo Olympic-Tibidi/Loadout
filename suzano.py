@@ -2200,8 +2200,7 @@ if authentication_status:
     
         
                     
-        else:
-            st.subheader("**Nothing dispatched!**")
+ 
     elif username == 'olysuzanodash':
         st.subheader("PORT OF OLYMPIA TOS")
         st.write(f'Welcome *{name}*')
