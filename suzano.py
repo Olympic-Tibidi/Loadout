@@ -1039,7 +1039,7 @@ if authentication_status:
                         if click_clear:
                            load_input = placeholder1.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
                         
-                        if load_input is not None:
+                        if load_input is not None or bale_load_input is not None:
                             textsplit = load_input.splitlines()
                             textsplit=[i for i in textsplit if len(i)>8]
                             updated_quantity=len(textsplit)
