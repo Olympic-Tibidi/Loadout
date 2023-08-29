@@ -1032,7 +1032,7 @@ if authentication_status:
                         
                         if st.button("BALES",key=11):
                             load_input=placeholder1.text_area("**LOADS**",value="",height=300,key=1)#[:-2]
-                            bale_load_input=placeholder2.text_area("**BALE LOADS**",value="",height=300,key=1)#[:-2]
+                            bale_load_input=placeholder2.text_area("**BALE LOADS**",value="",height=300,key=1111)#[:-2]
                         else:
                             load_input=placeholder1.text_area("**LOADS**",value="",height=300,key=111)#[:-2]
                             
