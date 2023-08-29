@@ -1028,7 +1028,7 @@ if authentication_status:
         
         
                         placeholder1 = st.empty()
-                        placeholder2=st.sempty()
+                        placeholder2=st.empty()
                         load_input=placeholder1.text_area("**LOADS**",value="",height=300,key=1)#[:-2]
                         if st.button("BALES",key=11):
                             bale_load_input=placeholder2.text_area("**BALE LOADS**",value="",height=300,key=1)#[:-2]
