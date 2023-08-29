@@ -231,7 +231,7 @@ def process():
             loadls.append("2DEV:"+next_release_order+" "*(10-len(next_release_order))+"000"+next_sales_order+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*16+str(2000))
     else:
         for k in loads:
-            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*16+str(2000))
+            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*16+str(quantity*2000))
         
     if double_load:
         number_of_lines=len(first_textsplit)+len(second_textsplit)+4
@@ -1055,8 +1055,8 @@ if authentication_status:
                         
                     quantity=st.number_input("**Scanned Quantity of Units**",st.session_state.updated_quantity, key=None, help=None, on_change=None, disabled=True, label_visibility="visible")
                     st.markdown(f"**{quantity*2} TONS - {round(quantity*2*2204.62,1)} Pounds**")
-                    #ADMT=st.text_input("ADMT",round(info[vessel][current_release_order][current_sales_order]["dryness"]/90,4)*updated_quantity,disabled=True)
-                    admt=round(float(info[vessel][current_release_order][current_sales_order]["dryness"])/90*updated_quantity*2,4)
+                    #ADMT=st.text_input("ADMT",round(info[vessel][current_release_order][current_sales_order]["dryness"]/90,4)*st.session_state.updated_quantity,disabled=True)
+                    admt=round(float(info[vessel][current_release_order][current_sales_order]["dryness"])/90*st.session_state.updated_quantity*2,4)
                     st.markdown(f"**ADMT= {admt} TONS**")
                     
        
@@ -1182,14 +1182,14 @@ if authentication_status:
                                                                          "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                             bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
                                                                          "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                         "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
+                                                                         "quantity":len(second_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
                             
                         else:
                             bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                             edi_name= f'{bill_of_lading_number}.txt'
                             bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                          "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                         "quantity":len(textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
+                                                                         "quantity":st.session_state.updated_quantity,"issued":f"{a_} {b_}","edi_no":edi_name} 
                                             
                         bill_of_ladings=json.dumps(bill_of_ladings)
                         storage_client = storage.Client()
@@ -1285,8 +1285,8 @@ if authentication_status:
                                 info[vessel][next_release_order][next_sales_order]["shipped"]=info[vessel][next_release_order][next_sales_order]["shipped"]+len(second_textsplit)
                                 info[vessel][next_release_order][next_sales_order]["remaining"]=info[vessel][next_release_order][next_sales_order]["remaining"]-len(second_textsplit)
                             else:
-                                info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+len(loads)
-                                info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-len(loads)
+                                info[vessel][current_release_order][current_sales_order]["shipped"]=info[vessel][current_release_order][current_sales_order]["shipped"]+quantity
+                                info[vessel][current_release_order][current_sales_order]["remaining"]=info[vessel][current_release_order][current_sales_order]["remaining"]-quantity
                             if info[vessel][current_release_order][current_sales_order]["remaining"]<=0:
                                 to_delete=[]
                                 for release in dispatched.keys():
@@ -1482,7 +1482,7 @@ if authentication_status:
                 df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
                 zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal Bill Of Lading",
                                                               "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-                st.write(zf)
+                
                 items=df["Ocean B/L"].unique().tolist()
                 
                 with dab1:
