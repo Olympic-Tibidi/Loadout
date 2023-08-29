@@ -998,6 +998,8 @@ if authentication_status:
                     flip=False 
                     first_load_input=None
                     second_load_input=None
+                    load_input=None
+                    bale_load_input=None
                     if double_load:
                         
                         try:
