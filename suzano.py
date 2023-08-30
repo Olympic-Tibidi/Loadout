@@ -1141,11 +1141,11 @@ if authentication_status:
                                 
                                 if audit_unit(x):
                                     if x in seen:
-                                        st.text_input(f"Unit No : {i+1}",x)
+                                        st.text_input(f"Unit No : {i+1}",x,key=12345)
                                         bale_faults.append(1)
                                         bale_fault_messaging[i+1]="This unit has been scanned TWICE!"
                                     else:
-                                        st.text_input(f"Unit No : {i+1}",x)
+                                        st.text_input(f"Unit No : {i+1}",x,key=1467)
                                         bale_faults.append(0)
                                 else:
                                     st.text_input(f"Unit No : {i+1}",x)
