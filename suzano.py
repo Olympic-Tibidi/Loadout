@@ -1158,6 +1158,8 @@ if authentication_status:
                         try:
                             for k in bale_textsplit:
                                 bale_loads.append(k)
+                        except:
+                            pass
                    
                 #st.write(faults)                  
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
