@@ -1386,7 +1386,7 @@ if authentication_status:
             Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
            
             mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
-            inv1,inv2,inv3,inv4=st.tabs(["DAILY ACTION","REPORTS","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
+            inv1,inv2,inv3,inv4,inv5=st.tabs(["DAILY ACTION","REPORTS","EDI BANK","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
             with inv1:
                 data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                 bill_of_ladings=json.loads(data)
@@ -1472,11 +1472,19 @@ if authentication_status:
                     st.write("NO REPORTS RECORDED")
                
 
-
+            with inv3:
+                edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
+                requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
+                try:
+                    requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
+                    st.text_area("EDI",requested_edi,height=400)
+                except:
+                    st.write("NO EDI FILES IN DIRECTORY")
+                
 
 
                 
-            with inv3:
+            with inv4:
                      
                 dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
                 df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
@@ -1561,7 +1569,7 @@ if authentication_status:
                         
                         
                     st.table(filtered_zf)
-            with inv4:
+            with inv5:
                 mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
                 reformed_dict = {}
                 for outerKey, innerDict in mill_progress.items():
