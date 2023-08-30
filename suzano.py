@@ -273,18 +273,18 @@ def process():
             f.write('\n')
 
         f.write(end)
-def generate_bill_of_lading(vessel,release_order,sales_order,carrier_id,vehicle,quantity):
+def gen_bill_of_lading():
     data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
     bill_of_ladings=json.loads(data)
     list_of_ladings=[]
     try:
         for key in bill_of_ladings:
-            list_of_ladings.append(int(key))
-        bill_of_lading_number=max(list_of_ladings)+1
+            if int(key) % 2 == 0:
+                list_of_ladings.append(int(key))
+        bill_of_lading_number=max(list_of_ladings)+2
     except:
         bill_of_lading_number=11502400
     return bill_of_lading_number,bill_of_ladings
-
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.options.mode.chained_assignment = None  # default='warn'
@@ -1096,6 +1096,7 @@ if authentication_status:
                                     second_faults.append(1)
         
                         loads=[]
+                        
                         for k in first_textsplit:
                             loads.append(k)
                         for l in second_textsplit:
@@ -1105,7 +1106,9 @@ if authentication_status:
                         
                     
                         faults=[]
+                        bale_faults=[]
                         fault_messaging={}
+                        bale_fault_messaging={}
                         if load_input is not None:
                             textsplit = load_input.splitlines()
                             
@@ -1127,9 +1130,34 @@ if authentication_status:
                                     st.text_input(f"Unit No : {i+1}",x)
                                     faults.append(1)
                                 seen.add(x)
+                        if bale_load_input is not None:
+                            bale_textsplit = bale_load_input.splitlines()
+                            
+                                
+                            bale_textsplit=[i for i in textsplit if len(i)>8]
+                           
+                            seen=set()
+                            for i,x in enumerate(bale_textsplit):
+                                
+                                if audit_unit(x):
+                                    if x in seen:
+                                        st.text_input(f"Unit No : {i+1}",x)
+                                        bale_faults.append(1)
+                                        bale_fault_messaging[i+1]="This unit has been scanned TWICE!"
+                                    else:
+                                        st.text_input(f"Unit No : {i+1}",x)
+                                        bale_faults.append(0)
+                                else:
+                                    st.text_input(f"Unit No : {i+1}",x)
+                                    bale_faults.append(1)
+                                seen.add(x)
                         loads=[]
+                        bale_loads=[]
                         for k in textsplit:
                             loads.append(k)
+                        try:
+                            for k in bale_textsplit:
+                                bale_loads.append(k)
                    
                 #st.write(faults)                  
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
@@ -1144,20 +1172,7 @@ if authentication_status:
                 but_col1,but_col2=st.columns([2,2])
                 with but_col2:
                     if st.button('**:blue[SUBMIT EDI]**'):
-                        def gen_bill_of_lading():
-                            data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
-                            bill_of_ladings=json.loads(data)
-                            list_of_ladings=[]
-                            try:
-                                for key in bill_of_ladings:
-                                    if int(key) % 2 == 0:
-                                        list_of_ladings.append(int(key))
-                                bill_of_lading_number=max(list_of_ladings)+2
-                            except:
-                                bill_of_lading_number=115240
-                            return bill_of_lading_number,bill_of_ladings
-                        #st.write(bill_of_lading_number)
-                        
+                     
                         
                         
                         mill_info_=gcp_download("olym_suzano",rf"mill_info.json")
