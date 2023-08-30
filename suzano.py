@@ -1236,7 +1236,7 @@ if authentication_status:
                             proceed=False
                             error="**:red[Please check Terminal Bill Of Lading. It should have 6 digits.]"
                             st.write(error)
-                        if quantity!=foreman_quantity:
+                        if quantity!=foreman_quantity+int(foreman_bale_quantity)/8:
                             proceed=False
                             error=f"**:red[{quantity} loads on this truck. Please check. You planned for {foreman_quantity} loads!]** "
                             st.write(error)
