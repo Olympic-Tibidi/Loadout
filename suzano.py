@@ -1124,7 +1124,7 @@ if authentication_status:
                                         faults.append(1)
                                         fault_messaging[i+1]="This unit has been scanned TWICE!"
                                     else:
-                                        st.markdown(f"**Unit No : {i+1}**",x,unsafe_allow_html=True)
+                                        st.markdown(f"**Unit No : {i+1}**",x)
                                         faults.append(0)
                                 else:
                                     st.markdown(f"**:red[Unit No : {i+1}]**",x)
