@@ -1114,20 +1114,20 @@ if authentication_status:
                             
                                 
                             textsplit=[i for i in textsplit if len(i)>8]
-                            #st.write(textsplit)
+                       
                             seen=set()
                             for i,x in enumerate(textsplit):
                                 
                                 if audit_unit(x):
                                     if x in seen:
-                                        st.text_input(f"Unit No : {i+1}",x)
+                                        st.markdown(f"**Unit No : {i+1}**",x)
                                         faults.append(1)
                                         fault_messaging[i+1]="This unit has been scanned TWICE!"
                                     else:
-                                        st.text_input(f"Unit No : {i+1}",x)
+                                        st.markdown(f"**Unit No : {i+1}**",x)
                                         faults.append(0)
                                 else:
-                                    st.text_input(f"Unit No : {i+1}",x)
+                                    st.markdown(f"**:red[Unit No : {i+1}]**",x)
                                     faults.append(1)
                                 seen.add(x)
                         if bale_load_input is not None:
@@ -1141,7 +1141,7 @@ if authentication_status:
                                 
                                 if audit_unit(x):
                                     if x in seen:
-                                        st.text_input(f"Unit No : {i+1}",x,key=12345)
+                                        st.markdown(f"Bale No : {i+1}",x,key=12345)
                                         bale_faults.append(1)
                                         bale_fault_messaging[i+1]="This unit has been scanned TWICE!"
                                     else:
