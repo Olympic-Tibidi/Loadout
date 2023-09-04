@@ -889,7 +889,7 @@ if authentication_status:
                     temp3={"<b>Total Units":quant_,"<b>Shipped Units":ship_,"<b>Remaining Units":remaining}
                     temp3=pd.DataFrame(temp3,columns=["Inquiry","Data"])
                     
-                    temp3.index=["Total","Shipped","Remaining"]
+                    #temp3.index=["Total","Shipped","Remaining"]
 
 
                     
