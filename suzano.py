@@ -862,12 +862,12 @@ if authentication_status:
                 info=json.loads(info)
                 
                 
-                if st.checkbox("CLICK TO LOAD MIXED SKU"):
-                    try:
-                        next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
-                        double_load=True
-                    except:
-                        st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
+                #if st.checkbox("CLICK TO LOAD MIXED SKU"):
+                #    try:
+                  #      next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
+                  #      double_load=True
+                 #   except:
+                   #     st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                     
                
                     
@@ -881,12 +881,12 @@ if authentication_status:
                     st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[wrap]}**')
                     unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
                     st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
-                    st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]}**')
-                    st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]}**')
+                    st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]} Units**')
+                    st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]} Units**')
                     remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
                     if remaining<=10:
-                        st.markdown(rf'**:red[CAUTION : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}]**')
-                    st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]}**')
+                        st.markdown(rf'**:red[CAUTION : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]} Units]**')
+                    st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]} Units**')
                     
                 with load_col2:
                     if double_load:
