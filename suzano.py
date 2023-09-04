@@ -903,6 +903,7 @@ if authentication_status:
                 temp={f"<b>Release Order #":current_release_order,"Destination":current_sales_order,"Ocean B/L":ocean_bill_of_,"Type":wrap_dict[wrap]}
                 #temp2={"Total Quantity":[f"{quant_} Units","Total Quantity (TONS)":quant_*2,"Total Shipped":ship_,"Remaining":
                 st.dataframe(pd.DataFrame(temp.items()))
+                st.write (pd.DataFrame(temp.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
                 
                 
                 with load_col2:
