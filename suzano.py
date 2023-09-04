@@ -896,7 +896,7 @@ if authentication_status:
                         #st.markdown(rf'**Release Order-{current_release_order}**')
                         #st.markdown(rf'**Destination : {destination}**')
                         #st.markdown(rf'**Sales Order Item-{current_sales_order}**')
-                        st.write (pd.DataFrame(temp.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        st.write (pd.DataFrame(temp.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                     with sub_load_col2:
                         st.write (pd.DataFrame(temp2.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
                         
