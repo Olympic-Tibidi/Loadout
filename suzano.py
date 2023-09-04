@@ -874,35 +874,41 @@ if authentication_status:
                 load_col1,load_col2,load_col3=st.columns([8,1,1])
                 
                 with load_col1:
+                    wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
+                    wrap=info[vessel][current_release_order][current_sales_order]["grade"]
+                    ocean_bill_of_=info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]
+                    #st.markdown(f'**Ocean Bill Of Lading : {ocean_bill_of_} - {wrap_dict[wrap]}**')
+                    unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
+                    #st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
+                    quant_=info[vessel][current_release_order][current_sales_order]["quantity"]
+                    ship_=info[vessel][current_release_order][current_sales_order]["shipped"]
+                    ship_bale=(ship_-math.floor(ship_))*8
+                    remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
+                    temp={f"<b>Release Order #":current_release_order,"<b>Destination":destination,"<b>Sales Order Item":current_sales_order}
+                    temp2={"<b>Ocean B/L":ocean_bill_of_","<b>Wrap":wrap_dict[wrap],"<b>Prep":unitized}
+
+
+                    
                     sub_load_col1,sub_load_col2,sub_load_col3=st.columns([3,3,4])
                     
                     with sub_load_col1:   
                         st.markdown(rf'**Release Order-{current_release_order}**')
                         st.markdown(rf'**Destination : {destination}**')
                         st.markdown(rf'**Sales Order Item-{current_sales_order}**')
+                        st.write (pd.DataFrame(temp.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
                     with sub_load_col2:
-                        wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
-                        wrap=info[vessel][current_release_order][current_sales_order]["grade"]
-                        ocean_bill_of_=info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]
-                        st.markdown(f'**Ocean Bill Of Lading : {ocean_bill_of_} - {wrap_dict[wrap]}**')
-                        unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
-                        st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
-                    with sub_load_col3:
-                        quant_=info[vessel][current_release_order][current_sales_order]["quantity"]
+                        st.write (pd.DataFrame(temp2.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
                         
-                    
-                        ship_=info[vessel][current_release_order][current_sales_order]["shipped"]
-                        ship_bale=(ship_-math.floor(ship_))*8
-                        remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
+                    with sub_load_col3:
+                        
                         st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons**')
                         st.markdown(rf'**Shipped : {ship_} Units - {ship_*2} Tons**')
                         
                         if remaining<=10:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
                         st.markdown(rf'**Remaining : {remaining} Units**')
-                temp={f"<b>Release Order #":current_release_order,"Destination":current_sales_order,"Ocean B/L":ocean_bill_of_,"Type":wrap_dict[wrap]}
-                #temp2={"Total Quantity":[f"{quant_} Units","Total Quantity (TONS)":quant_*2,"Total Shipped":ship_,"Remaining":
-                st.dataframe(pd.DataFrame(temp.items()).T)
+                
+                
                 st.write (pd.DataFrame(temp.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
                 
                 
