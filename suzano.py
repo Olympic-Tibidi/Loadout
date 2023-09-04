@@ -870,14 +870,15 @@ if authentication_status:
                    #     st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                     
                
-                st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
+                st.markdown(rf'**:blue[CURRENTLY WORKING] :**')
                 load_col1,load_col2,load_col3=st.columns([6,2,2])
                 
                 with load_col1:
-                    sub_load_col1,sub_load_col2,sub_load_col3=st.columns([2,4,2])
+                    sub_load_col1,sub_load_col2,sub_load_col3=st.columns([2,4,4])
                     
-                    with sub_load_col1:                        
-                        st.markdown(rf'**Destination : {destination} .**')
+                    with sub_load_col1:   
+                        st.markdown(rf'**Release Order-{current_release_order}**')
+                        st.markdown(rf'**Destination : {destination}**')
                         st.markdown(rf'**Sales Order Item-{current_sales_order}**')
                     with sub_load_col2:
                         wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
@@ -901,7 +902,7 @@ if authentication_status:
                         st.markdown(rf'**Remaining : {remaining} Units**')
                 temp={"Release Order #":current_release_order,"Sales Order Item":current_sales_order,"Ocean B/L":ocean_bill_of_,"Type":wrap_dict[wrap]}
                 #temp2={"Total Quantity":[f"{quant_} Units","Total Quantity (TONS)":quant_*2,"Total Shipped":ship_,"Remaining":
-                st.dataframe(pd.DataFrame(temp,columns=temp.keys()))
+                #st.dataframe(pd.DataFrame(temp,columns=temp.keys()))
                 
                 
                 with load_col2:
