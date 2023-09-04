@@ -891,7 +891,7 @@ if authentication_status:
                         
                     
                         ship_=info[vessel][current_release_order][current_sales_order]["shipped"]
-                        ship_bale=(ship__-math.floor(ship_))*8
+                        ship_bale=(ship_-math.floor(ship_))*8
                         remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
                         st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons**')
                         st.markdown(rf'**Shipped : {ship_} Units - {ship_*2} Tons**')
