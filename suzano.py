@@ -871,7 +871,7 @@ if authentication_status:
                     
                
                 st.markdown(rf'**:blue[CURRENTLY WORKING] :**')
-                load_col1,load_col2,load_col3=st.columns([6,2,2])
+                load_col1,load_col2,load_col3=st.columns([8,1,1])
                 
                 with load_col1:
                     sub_load_col1,sub_load_col2,sub_load_col3=st.columns([3,3,4])
