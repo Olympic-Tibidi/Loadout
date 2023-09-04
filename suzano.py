@@ -902,7 +902,7 @@ if authentication_status:
                         st.markdown(rf'**Remaining : {remaining} Units**')
                 temp={f"**Release Order #**":current_release_order,"Destination":current_sales_order,"Ocean B/L":ocean_bill_of_,"Type":wrap_dict[wrap]}
                 #temp2={"Total Quantity":[f"{quant_} Units","Total Quantity (TONS)":quant_*2,"Total Shipped":ship_,"Remaining":
-                st.dataframe(pd.DataFrame(temp.items())
+                st.dataframe(pd.DataFrame(temp.items()))
                 
                 
                 with load_col2:
