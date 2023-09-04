@@ -888,9 +888,10 @@ if authentication_status:
                         st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
                     with sub_load_col3:
                         quant_=info[vessel][current_release_order][current_sales_order]["quantity"]
-                        quant_bale=(quant_-math.floor(quant_))*8
-                        st.write(quant_bale)
+                        
+                    
                         ship_=info[vessel][current_release_order][current_sales_order]["shipped"]
+                        ship_bale=(ship__-math.floor(ship_))*8
                         remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
                         st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons**')
                         st.markdown(rf'**Shipped : {ship_} Units - {ship_*2} Tons**')
