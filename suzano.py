@@ -899,7 +899,7 @@ if authentication_status:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
                         st.markdown(rf'**Remaining : {remaining} Units**')
                 temp={"Release Order #":current_release_order,"Sales Order Item":current_sales_order,"Ocean B/L":ocean_bill_of_,"Type":wrap_dict[wrap]}
-                temp2={"Total Quantity":[f"{quant_} Units","Total Quantity (TONS)":quant_*2,"Total Shipped":ship_,"Remaining":
+                #temp2={"Total Quantity":[f"{quant_} Units","Total Quantity (TONS)":quant_*2,"Total Shipped":ship_,"Remaining":
                 st.dataframe(pd.DataFrame(temp)
                 
                 
