@@ -886,12 +886,15 @@ if authentication_status:
                         unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
                         st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
                     with sub_load_col3:
-                        st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]} Units**')
-                        st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]} Units**')
+                        quant_=info[vessel][current_release_order][current_sales_order]["quantity"]
+                        ship_=info[vessel][current_release_order][current_sales_order]["shipped"]
                         remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
+                        st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons **')
+                        st.markdown(rf'**Shipped : {ship_} Units - {ship_*2} Tons**')
+                        
                         if remaining<=10:
-                            st.markdown(rf'**:red[CAUTION : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]} Units]**')
-                        st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]} Units**')
+                            st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
+                        st.markdown(rf'**Remaining : {remaining} Units**')
                     
                 with load_col2:
                     if double_load:
