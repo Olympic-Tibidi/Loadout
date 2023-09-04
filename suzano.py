@@ -870,11 +870,11 @@ if authentication_status:
                    #     st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                     
                
-                    
-                load_col1,load_col2,load_col3=st.columns([6,2,2])
                 st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
+                load_col1,load_col2,load_col3=st.columns([6,2,2])
+                
                 with load_col1:
-                    sub_load_col1,sub_load_col2,sub_load_col3=st.columns([2,2,2])
+                    sub_load_col1,sub_load_col2,sub_load_col3=st.columns([2,4,2])
                     
                     with sub_load_col1:                        
                         st.markdown(rf'**Destination : {destination} .**')
