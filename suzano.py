@@ -882,11 +882,14 @@ if authentication_status:
                     with sub_load_col2:
                         wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
                         wrap=info[vessel][current_release_order][current_sales_order]["grade"]
-                        st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[wrap]}**')
+                        ocean_bill_of_=info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]
+                        st.markdown(f'**Ocean Bill Of Lading : {ocean_bill_of_} - {wrap_dict[wrap]}**')
                         unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
                         st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
                     with sub_load_col3:
                         quant_=info[vessel][current_release_order][current_sales_order]["quantity"]
+                        quant_bale=(quant_-math.floor(quant_))*8
+                        st.write(quant_bale)
                         ship_=info[vessel][current_release_order][current_sales_order]["shipped"]
                         remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
                         st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons**')
@@ -895,7 +898,11 @@ if authentication_status:
                         if remaining<=10:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
                         st.markdown(rf'**Remaining : {remaining} Units**')
-                    
+                temp={"Release Order #":current_release_order,"Sales Order Item":current_sales_order,"Ocean B/L":ocean_bill_of_,"Type":wrap_dict[wrap]}
+                temp2={"Total Quantity":[f"{quant_} Units","Total Quantity (TONS)":quant_*2,"Total Shipped":ship_,"Remaining":
+                
+                
+                
                 with load_col2:
                     if double_load:
                         
@@ -906,7 +913,10 @@ if authentication_status:
                             st.markdown(rf'**Total Quantity : {info[vessel][next_release_order][next_sales_order]["quantity"]}**')
                         except:
                             pass
-                      
+
+
+                ###############    LOADOUT DATA ENTRY    #########
+                
                 col1, col2,col3,col4,col5= st.columns([2,2,2,2,2])
                 
               
