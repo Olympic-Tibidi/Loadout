@@ -889,7 +889,7 @@ if authentication_status:
                         quant_=info[vessel][current_release_order][current_sales_order]["quantity"]
                         ship_=info[vessel][current_release_order][current_sales_order]["shipped"]
                         remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
-                        st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons **')
+                        st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons**')
                         st.markdown(rf'**Shipped : {ship_} Units - {ship_*2} Tons**')
                         
                         if remaining<=10:
