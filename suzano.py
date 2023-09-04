@@ -886,8 +886,9 @@ if authentication_status:
                     remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
                     temp={f"<b>Release Order #":current_release_order,"<b>Destination":destination,"<b>Sales Order Item":current_sales_order}
                     temp2={"<b>Ocean B/L":ocean_bill_of_,"<b>Type":wrap_dict[wrap],"<b>Prep":unitized}
-                    #temp3={"<b>Total Units":{"utnis":[quant_,quant_*2]},"<b>Shipped Units":ship_,"<b>Remaining Units":remaining}
-                    temp3={"Inquiry":{"Total","Shipped","Remaining"},"Units":{quant_,ship_,remaining}}
+                    temp3={"<b>Total Units":{"utnis":[quant_,quant_*2]},"<b>Shipped Units":ship_,"<b>Remaining Units":remaining}
+                    temp3=pd.DataFrame()
+                    temp3.index=["Total","Shipped","Remaining"]
 
 
                     
@@ -910,11 +911,7 @@ if authentication_status:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
                         #st.markdown(rf'**Remaining : {remaining} Units**')
                         st.write (pd.DataFrame(temp3.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
-                        st.write (pd.DataFrame(temp3.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
-                        
-                
-                
-                
+                                
                 
                 
                 with load_col2:
