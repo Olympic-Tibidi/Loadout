@@ -873,20 +873,24 @@ if authentication_status:
                     
                 load_col1,load_col2,load_col3=st.columns([4,4,2])
                 with load_col1:
-                    st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
-                    st.markdown(rf'**Destination : {destination} .**')
-                    st.markdown(rf'**Sales Order Item-{current_sales_order}**')
-                    wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
-                    wrap=info[vessel][current_release_order][current_sales_order]["grade"]
-                    st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[wrap]}**')
-                    unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
-                    st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
-                    st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]} Units**')
-                    st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]} Units**')
-                    remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
-                    if remaining<=10:
-                        st.markdown(rf'**:red[CAUTION : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]} Units]**')
-                    st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]} Units**')
+                    sub_load_col1,sub_load_col2,sub_load_col3=st.columns([2,2,2])
+                    with sub_load_col1:
+                        st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
+                        st.markdown(rf'**Destination : {destination} .**')
+                        st.markdown(rf'**Sales Order Item-{current_sales_order}**')
+                    with sub_load_col2:
+                        wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
+                        wrap=info[vessel][current_release_order][current_sales_order]["grade"]
+                        st.markdown(f'**Ocean Bill Of Lading : {info[vessel][current_release_order][current_sales_order]["ocean_bill_of_lading"]} - {wrap_dict[wrap]}**')
+                        unitized=info[vessel][current_release_order][current_sales_order]["unitized"]
+                        st.markdown(rf'**{info[vessel][current_release_order][current_sales_order]["unitized"]}**')
+                    with sub_load_col3:
+                        st.markdown(rf'**Total Quantity : {info[vessel][current_release_order][current_sales_order]["quantity"]} Units**')
+                        st.markdown(rf'**Shipped : {info[vessel][current_release_order][current_sales_order]["shipped"]} Units**')
+                        remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
+                        if remaining<=10:
+                            st.markdown(rf'**:red[CAUTION : Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]} Units]**')
+                        st.markdown(rf'**Remaining : {info[vessel][current_release_order][current_sales_order]["remaining"]} Units**')
                     
                 with load_col2:
                     if double_load:
