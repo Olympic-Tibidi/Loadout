@@ -885,8 +885,8 @@ if authentication_status:
                     ship_bale=(ship_-math.floor(ship_))*8
                     remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
                     temp={f"<b>Release Order #":current_release_order,"<b>Destination":destination,"<b>Sales Order Item":current_sales_order}
-                    temp2={"<b>Ocean B/L":ocean_bill_of_,"<b>Wrap":wrap_dict[wrap],"<b>Prep":unitized}
-                    temp3={"<b>Total Units":[quant_,quant_*2],"<b>Shipped Units":ship_,"<b>Remaining Units":remaining}
+                    temp2={"<b>Ocean B/L":ocean_bill_of_,"<b>Type":wrap_dict[wrap],"<b>Prep":unitized}
+                    temp3={"<b>Total Units":{"utnis":[quant_,quant_*2]},"<b>Shipped Units":ship_,"<b>Remaining Units":remaining}
 
 
                     
@@ -898,7 +898,7 @@ if authentication_status:
                         #st.markdown(rf'**Sales Order Item-{current_sales_order}**')
                         st.write (pd.DataFrame(temp.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                     with sub_load_col2:
-                        st.write (pd.DataFrame(temp2.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        st.write (pd.DataFrame(temp2.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                         
                     with sub_load_col3:
                         
@@ -908,7 +908,7 @@ if authentication_status:
                         if remaining<=10:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
                         #st.markdown(rf'**Remaining : {remaining} Units**')
-                        st.write (pd.DataFrame(temp3.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        st.write (pd.DataFrame(temp3.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                         
                 
                 
