@@ -910,7 +910,8 @@ if authentication_status:
                         if remaining<=10:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
                         #st.markdown(rf'**Remaining : {remaining} Units**')
-                        st.write (pd.DataFrame(temp3.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        #st.write (pd.DataFrame(temp3.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        st.write (pd.DataFrame(temp3,columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                                 
                 
                 
