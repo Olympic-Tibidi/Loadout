@@ -872,9 +872,10 @@ if authentication_status:
                
                     
                 load_col1,load_col2,load_col3=st.columns([6,2,2])
+                st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
                 with load_col1:
                     sub_load_col1,sub_load_col2,sub_load_col3=st.columns([2,2,2])
-                    st.markdown(rf'**:blue[CURRENTLY WORKING] : Release Order-{current_release_order}**')
+                    
                     with sub_load_col1:                        
                         st.markdown(rf'**Destination : {destination} .**')
                         st.markdown(rf'**Sales Order Item-{current_sales_order}**')
