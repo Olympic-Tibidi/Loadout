@@ -886,30 +886,33 @@ if authentication_status:
                     remaining=info[vessel][current_release_order][current_sales_order]["remaining"]                #######      DEFINED "REMAINING" HERE FOR CHECKS
                     temp={f"<b>Release Order #":current_release_order,"<b>Destination":destination,"<b>Sales Order Item":current_sales_order}
                     temp2={"<b>Ocean B/L":ocean_bill_of_,"<b>Wrap":wrap_dict[wrap],"<b>Prep":unitized}
+                    temp3={"<b>Total Units":quant_,"<b>Shipped Units":ship_,"Remaining Units":remaining}
 
 
                     
                     sub_load_col1,sub_load_col2,sub_load_col3=st.columns([3,3,4])
                     
                     with sub_load_col1:   
-                        st.markdown(rf'**Release Order-{current_release_order}**')
-                        st.markdown(rf'**Destination : {destination}**')
-                        st.markdown(rf'**Sales Order Item-{current_sales_order}**')
+                        #st.markdown(rf'**Release Order-{current_release_order}**')
+                        #st.markdown(rf'**Destination : {destination}**')
+                        #st.markdown(rf'**Sales Order Item-{current_sales_order}**')
                         st.write (pd.DataFrame(temp.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
                     with sub_load_col2:
                         st.write (pd.DataFrame(temp2.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
                         
                     with sub_load_col3:
                         
-                        st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons**')
-                        st.markdown(rf'**Shipped : {ship_} Units - {ship_*2} Tons**')
+                        #st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons**')
+                        #st.markdown(rf'**Shipped : {ship_} Units - {ship_*2} Tons**')
                         
                         if remaining<=10:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
                         st.markdown(rf'**Remaining : {remaining} Units**')
+                        st.write (pd.DataFrame(temp3.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        
                 
                 
-                st.write (pd.DataFrame(temp.items()).to_html (escape=False, index=False), unsafe_allow_html=True)
+                
                 
                 
                 with load_col2:
