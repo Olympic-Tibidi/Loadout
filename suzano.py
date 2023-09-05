@@ -1181,10 +1181,10 @@ if authentication_status:
                             for i,x in enumerate(bale_textsplit):
                                 
                                 if audit_unit(x):
-                                    st.write(f"Unit No : {i+1}",x)
+                                    st.write(f"**Unit No : {i+1}**",x)
                                     bale_faults.append(0)
                                 else:
-                                    #st.text_input(f"Unit No : {i+1}",x)
+                                    #st.text_input(f"Bale No : {i+1}",x)
                                     bale_faults.append(1)
                                 seen.add(x)
                         loads=[]
