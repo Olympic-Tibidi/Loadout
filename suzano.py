@@ -911,17 +911,17 @@ if authentication_status:
                         if remaining<=10:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
 
-                        a=pd.DataFrame(temp3.items(),columns=["Inquiry","Data"])
+                        a=pd.DataFrame(temp3.items(),columns=["UNITS","Data"])
                         a["Data"]=a["Data"].astype("int")
                         st.write (a.to_html (escape=False, index=False), unsafe_allow_html=True)
                    
                     with sub_load_col4:
-                        b=pd.DataFrame(temp4.items(),columns=["Inquiry","Data"])
+                        b=pd.DataFrame(temp4.items(),columns=["BALES","Data"])
                         b["Data"]=b["Data"].astype("int")
                         st.write (b.to_html (escape=False, index=False), unsafe_allow_html=True)
                         
                     with sub_load_col5:
-                        st.write (pd.DataFrame(temp5.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        st.write (pd.DataFrame(temp5.items(),columns=["TONNAGE","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                 
                 
                 with load_col2:
