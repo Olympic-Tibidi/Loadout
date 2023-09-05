@@ -916,7 +916,10 @@ if authentication_status:
                         st.write (a.to_html (escape=False, index=False), unsafe_allow_html=True)
                    
                     with sub_load_col4:
-                        st.write (pd.DataFrame(temp4.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        b=pd.DataFrame(temp4.items(),columns=["Inquiry","Data"])
+                        b["Data"]=b["Data"].astype("int")
+                        st.write (b.to_html (escape=False, index=False), unsafe_allow_html=True)
+                        
                     with sub_load_col5:
                         st.write (pd.DataFrame(temp5.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                 
