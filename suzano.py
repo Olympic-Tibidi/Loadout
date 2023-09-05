@@ -887,13 +887,12 @@ if authentication_status:
                     temp={f"<b>Release Order #":current_release_order,"<b>Destination":destination,"<b>Sales Order Item":current_sales_order}
                     temp2={"<b>Ocean B/L":ocean_bill_of_,"<b>Type":wrap_dict[wrap],"<b>Prep":unitized}
                     temp3={"<b>Total Units":quant_,"<b>Shipped Units":ship_,"<b>Remaining Units":remaining}
-                    temp3=pd.DataFrame(temp3,columns=["Inquiry","Data"])
+                    temp4={"<b>Total Bales":None,"<b>Shipped Bales":8*(ship_-math.floor(ship_)),"<b>Remaining Units":8*(remaining-math.floor(remaining)}
                     
-                    #temp3.index=["Total","Shipped","Remaining"]
 
 
                     
-                    sub_load_col1,sub_load_col2,sub_load_col3=st.columns([3,3,4])
+                    sub_load_col1,sub_load_col2,sub_load_col3,sub_load_col4=st.columns([3,3,3,3])
                     
                     with sub_load_col1:   
                         #st.markdown(rf'**Release Order-{current_release_order}**')
@@ -913,7 +912,9 @@ if authentication_status:
                         #st.markdown(rf'**Remaining : {remaining} Units**')
                         #st.write (pd.DataFrame(temp3.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                         st.write (pd.DataFrame(temp3,columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
-                                
+                   
+                    with sub_load_col3:
+                        st.write (pd.DataFrame(temp4,columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                 
                 
                 with load_col2:
