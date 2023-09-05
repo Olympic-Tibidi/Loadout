@@ -1140,7 +1140,8 @@ if authentication_status:
                             loads.append(k)
                         for l in second_textsplit:
                             loads.append(l)
-                    
+                            
+                    ####   IF NOT double load
                     else:
                         
                     
@@ -1170,6 +1171,7 @@ if authentication_status:
                                     faults.append(1)
                                 seen.add(x)
                         if bale_load_input is not None:
+                            st.write("yeah")
                             bale_textsplit = bale_load_input.splitlines()
                             
                                 
@@ -1187,7 +1189,7 @@ if authentication_status:
                                         st.text_input(f"Unit No : {i+1}",x)
                                         bale_faults.append(0)
                                 else:
-                                    st.text_input(f"Unit No : {i+1}",x)
+                                    #st.text_input(f"Unit No : {i+1}",x)
                                     bale_faults.append(1)
                                 seen.add(x)
                         loads=[]
