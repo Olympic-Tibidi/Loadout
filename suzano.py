@@ -888,7 +888,7 @@ if authentication_status:
                     temp={f"<b>Release Order #":current_release_order,"<b>Destination":destination,"<b>Sales Order Item":current_sales_order}
                     temp2={"<b>Ocean B/L":ocean_bill_of_,"<b>Type":wrap_dict[wrap],"<b>Prep":unitized}
                     temp3={"<b>Total Units":quant_,"<b>Shipped Units":ship_,"<b>Remaining Units":remaining}
-                    temp4={"<b>Total Bales":None,"<b>Shipped Bales":int(8*(ship_-math.floor(ship_))),"<b>Remaining Bales":int(8*(remaining-math.floor(remaining)))}
+                    temp4={"<b>Total Bales":0,"<b>Shipped Bales":int(8*(ship_-math.floor(ship_))),"<b>Remaining Bales":int(8*(remaining-math.floor(remaining)))}
                     temp5={"<b>Total Tonnage":int((quant_+int(8*(ship_-math.floor(ship_))))*8),"<b>Shipped Tonnage":int(8*(ship_-math.floor(ship_)))*0.250,"<b>Remaining Tonnage":int(8*(remaining-math.floor(remaining)))}
 
 
