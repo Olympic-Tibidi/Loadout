@@ -1171,7 +1171,7 @@ if authentication_status:
                                     faults.append(1)
                                 seen.add(x)
                         if bale_load_input is not None:
-                            st.write("yeah")
+                            #st.write("yeah")
                             bale_textsplit = bale_load_input.splitlines()
                             
                                 
@@ -1186,7 +1186,7 @@ if authentication_status:
                                         bale_faults.append(1)
                                         bale_fault_messaging[i+1]="This unit has been scanned TWICE!"
                                     else:
-                                        st.text_input(f"Unit No : {i+1}",x)
+                                        st.write(f"Unit No : {i+1}",x)
                                         bale_faults.append(0)
                                 else:
                                     #st.text_input(f"Unit No : {i+1}",x)
