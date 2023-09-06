@@ -1183,11 +1183,11 @@ if authentication_status:
                                         st.write(f"**Unit No : {i+1}**",x)
                                         faults.append(0)
                                 else:
-                                    st.markdown(f"**:red[Unit No : {i+1}]**",x)
+                                    st.markdown(f"**:red[Unit No : {i+1}]-{x}**"unsafe_allow_html=True)
                                     faults.append(1)
                                 seen.add(x)
                         if bale_load_input is not None:
-                            #st.write("yeah")
+                        
                             bale_textsplit = bale_load_input.splitlines()
                             
                                 
