@@ -563,23 +563,24 @@ if authentication_status:
                             requested_file_=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders)
                             requested_file=requested_file_.split(" ")[0]
                             nofile=0
-                            try:
-                                data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
-                                release_order_json = json.loads(data)
-                                
-                                
-                                target=release_order_json[vessel][requested_file]
-                                destination=target['destination']
-                                if len(target.keys())==0:
-                                    nofile=1
-                               
-                                number_of_sales_orders=len(target)    ##### WRONG CAUSE THERE IS NOW DESTINATION KEYS
-                        
-                            
-                            except:
-                                nofile=1
                         except:
                             st.write("NO RELEASE ORDERS YET")
+                        try:
+                            data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
+                            release_order_json = json.loads(data)
+                            
+                            
+                            target=release_order_json[vessel][requested_file]
+                            destination=target['destination']
+                            if len(target.keys())==0:
+                                nofile=1
+                           
+                            number_of_sales_orders=len(target)    ##### WRONG CAUSE THERE IS NOW DESTINATION KEYS
+                    
+                        
+                        except:
+                            nofile=1
+                        
                         rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
                         #### DISPATCHED CLEANUP  #######
                         
