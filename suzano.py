@@ -1173,7 +1173,7 @@ if authentication_status:
                        
                             seen=set()
                             for i,x in enumerate(textsplit):
-                                
+                                st.write(i,x)
                                 if audit_unit(x):
                                     if x in seen:
                                         st.markdown(f"**Unit No : {i+1}**",x)
