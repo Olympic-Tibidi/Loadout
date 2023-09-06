@@ -1578,7 +1578,7 @@ if authentication_status:
                         st.markdown(f"**IN METRIC TONS -- AS OF {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),'%b %d -  %H:%M')}**")
                         st.dataframe(tablo)
                     if st.checkbox("CLICK TO SEE INVENTORY LIST"):
-                        st.table(df)
+                        st.table(Inventory)
                 with dab2:
                     
                     date_filter=st.checkbox("CLICK FOR DATE FILTER")
