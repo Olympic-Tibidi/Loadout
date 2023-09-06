@@ -1197,10 +1197,10 @@ if authentication_status:
                             for i,x in enumerate(bale_textsplit):
                                 
                                 if audit_unit(x):
-                                    st.markdown(f"**Unit No : {i+1}-{x}**",unsafe_allow_html=True)
+                                    st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(0)
                                 else:
-                                    st.markdown(f"**Unit No : {i+1}-{x}**",unsafe_allow_html=True)
+                                    st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(1)
                                 seen.add(x)
                         loads=[]
