@@ -233,7 +233,7 @@ def process():
     else:
         for k in loads:
             loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*16+str(2000))
-        for k in loads:
+        for k in bale_loads:
             bale_loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*17+str(250))
         
     if double_load:
