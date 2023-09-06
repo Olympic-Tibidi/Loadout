@@ -527,7 +527,10 @@ if authentication_status:
                     rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
 
                     data=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
-                    release_order_dictionary=json.loads(data)
+                    try:
+                        release_order_dictionary=json.loads(data)
+                    except: 
+                        release_order_dictionary={}
                     
                     with rls_tab1:
                         
