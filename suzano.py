@@ -558,26 +558,28 @@ if authentication_status:
                                     release_order_dest_map[i]=release_order_dictionary[i][sales]["destination"]
                             
                             destinations_of_release_orders=[f"{i} to {release_order_dest_map[i]}" for i in files_in_folder]
+                        
+                                                                        
+                            requested_file_=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders)
+                            requested_file=requested_file_.split(" ")[0]
+                            nofile=0
+                            try:
+                                data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
+                                release_order_json = json.loads(data)
+                                
+                                
+                                target=release_order_json[vessel][requested_file]
+                                destination=target['destination']
+                                if len(target.keys())==0:
+                                    nofile=1
+                               
+                                number_of_sales_orders=len(target)    ##### WRONG CAUSE THERE IS NOW DESTINATION KEYS
+                        
+                            rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
+                            except:
+                                nofile=1
                         except:
                             st.write("NO RELEASE ORDERS YET")
-                                                                        
-                        requested_file_=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders)
-                        requested_file=requested_file_.split(" ")[0]
-                        nofile=0
-                        try:
-                            data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
-                            release_order_json = json.loads(data)
-                            
-                            
-                            target=release_order_json[vessel][requested_file]
-                            destination=target['destination']
-                            if len(target.keys())==0:
-                                nofile=1
-                           
-                            number_of_sales_orders=len(target)    ##### WRONG CAUSE THERE IS NOW DESTINATION KEYS
-                            rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
-                        except:
-                            nofile=1
                         
                         #### DISPATCHED CLEANUP  #######
                         
