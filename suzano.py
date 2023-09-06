@@ -1173,7 +1173,7 @@ if authentication_status:
                        
                             seen=set()
                             for i,x in enumerate(textsplit):
-                                st.write(i,x)
+                                
                                 if audit_unit(x):
                                     if x in seen:
                                         st.markdown(f"**Unit No : {i+1}-{x}**",unsafe_allow_html=True)
@@ -1200,7 +1200,7 @@ if authentication_status:
                                     st.markdown(f"**Unit No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(0)
                                 else:
-                                    #st.text_input(f"Bale No : {i+1}",x)
+                                    st.markdown(f"**Unit No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(1)
                                 seen.add(x)
                         loads=[]
