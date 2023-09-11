@@ -1562,7 +1562,7 @@ if authentication_status:
             with inv4:
                      
                 dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-                df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
+                df=Inventory[Inventory["Location"]=="OLYM"|Inventory["Location"]=="PARTIAL"][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
                 zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
                                                               "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
                 
