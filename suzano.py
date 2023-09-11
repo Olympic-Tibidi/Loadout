@@ -1565,7 +1565,7 @@ if authentication_status:
                 df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
                 zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
                                                               "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-                zf["Bales"]=[8-i for i in zf["Bales"] if i<8]
+                zf["Bales"]=[8-i if i<8 else i for i in zf["Bales"] ]
                 items=df["Ocean B/L"].unique().tolist()
                 
                 with dab1:
