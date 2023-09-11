@@ -913,12 +913,12 @@ if authentication_status:
                     temp={f"<b>Release Order #":current_release_order,"<b>Destination":destination,"<b>Sales Order Item":current_sales_order}
                     temp2={"<b>Ocean B/L":ocean_bill_of_,"<b>Type":wrap_dict[wrap],"<b>Prep":unitized}
                     temp3={"<b>Total Units":quant_,"<b>Shipped Units":ship_,"<b>Remaining Units":remaining}
-                    temp4={"<b>Total Bales":0,"<b>Shipped Bales":int(8*(ship_-math.floor(ship_))),"<b>Remaining Bales":int(8*(remaining-math.floor(remaining)))}
+                    #temp4={"<b>Total Bales":0,"<b>Shipped Bales":int(8*(ship_-math.floor(ship_))),"<b>Remaining Bales":int(8*(remaining-math.floor(remaining)))}
                     temp5={"<b>Total Tonnage":quant_*2,"<b>Shipped Tonnage":ship_*2,"<b>Remaining Tonnage":quant_*2-(ship_*2)}
 
 
                     
-                    sub_load_col1,sub_load_col2,sub_load_col3,sub_load_col4,sub_load_col5=st.columns([2,2,2,2,2])
+                    sub_load_col1,sub_load_col2,sub_load_col3,sub_load_col4=st.columns([2,2,2,2,2])
                     
                     with sub_load_col1:   
                         #st.markdown(rf'**Release Order-{current_release_order}**')
@@ -941,11 +941,7 @@ if authentication_status:
                         st.write (a.to_html (escape=False, index=False), unsafe_allow_html=True)
                    
                     with sub_load_col4:
-                        b=pd.DataFrame(temp4.items(),columns=["LOOSE BALES","Data"])
-                        b["Data"]=b["Data"].astype("int")
-                        st.write (b.to_html (escape=False, index=False), unsafe_allow_html=True)
-                        
-                    with sub_load_col5:
+                    
                         st.write (pd.DataFrame(temp5.items(),columns=["TONNAGE","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                 
                 
