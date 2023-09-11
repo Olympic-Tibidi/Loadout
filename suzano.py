@@ -2357,7 +2357,7 @@ if authentication_status:
     elif username == 'olysuzanodash':
         
         Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-       
+           
         mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
         inv1,inv2,inv3,inv4,inv5=st.tabs(["DAILY ACTION","REPORTS","EDI BANK","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
         with inv1:
@@ -2373,7 +2373,9 @@ if authentication_status:
                 df_bill["Date"]=[None]+[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in df_bill["ISSUED"].values[1:]]
                 
                 df_today=df_bill[df_bill["Date"]==now.date()]
+                df_today.insert(9,"TONNAGE",[i*2 for i in df_today["QUANTITY (UNITS)"]])
                 df_today.loc["TOTAL","QUANTITY (UNITS)"]=df_today["QUANTITY (UNITS)"].sum()
+                df_today.loc["TOTAL","TONNAGE"]=df_today["TONNAGE"].sum()
                    
                 st.dataframe(df_today)
 
@@ -2460,23 +2462,26 @@ if authentication_status:
         with inv4:
                  
             dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-            df=Inventory[Inventory["Location"]=="OLYM"][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
-            zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal Bill Of Lading",
+            df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
+            zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
                                                           "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-            
+            zf["Bales"]=[8-i if i<8 else i for i in zf["Bales"] ]
             items=df["Ocean B/L"].unique().tolist()
             
             with dab1:
                 
                 inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
                 with inv_col1:
-                    st.markdown(f"**IN WAREHOUSE = {len(df)*2} tons**")
-                    st.markdown(f"**TOTAL SHIPPED = {len(zf)*2} tons**")
-                    st.markdown(f"**TOTAL OVERALL = {(len(zf)+len(df))*2} tons**")
+                    wrh=df["Bales"].sum()*250/1000
+                    shp=zf["Bales"].sum()*250/1000
+                    
+                    st.markdown(f"**IN WAREHOUSE = {wrh} tons**")
+                    st.markdown(f"**TOTAL SHIPPED = {shp} tons**")
+                    st.markdown(f"**TOTAL OVERALL = {wrh+shp} tons**")
                 with inv_col2:
                     #st.write(items)
-                    inhouse=[df[df["Ocean B/L"]==i].shape[0]*2 for i in items]
-                    shipped=[zf[zf["Ocean B/L"]==i].shape[0]*2 for i in items]
+                    inhouse=[df[df["Ocean B/L"]==i]["Bales"].sum()*250/1000 for i in items]
+                    shipped=[zf[zf["Ocean B/L"]==i]["Bales"].sum()*250/1000 for i in items]
                     
                     wrap_=[df[df["Ocean B/L"]==i]["Grade"].unique()[0] for i in items]
                    # st.write(wrap_)
@@ -2487,7 +2492,7 @@ if authentication_status:
                     st.markdown(f"**IN METRIC TONS -- AS OF {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),'%b %d -  %H:%M')}**")
                     st.dataframe(tablo)
                 if st.checkbox("CLICK TO SEE INVENTORY LIST"):
-                    st.table(df)
+                    st.dataframe(df)
             with dab2:
                 
                 date_filter=st.checkbox("CLICK FOR DATE FILTER")
@@ -2504,7 +2509,7 @@ if authentication_status:
                 
                 
                
-                zf[["Release_Order_Number","Carrier_Code","Terminal Bill Of Lading","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal Bill Of Lading","Vehicle_Id"]].astype("str")
+                zf[["Release_Order_Number","Carrier_Code","Terminal Bill Of Lading","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
                 
                 zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
                 filtered_zf=zf.copy()
@@ -2513,7 +2518,7 @@ if authentication_status:
                     
                     filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
                     
-                filter_by=st.selectbox("SELECT FILTER",["Grade","Ocean B/L","Release_Order_Number","Terminal Bill Of Lading","Carrier_Code","Vehicle_Id"])
+                filter_by=st.selectbox("SELECT FILTER",["Grade","Ocean B/L","Release_Order_Number","Terminal B/L","Carrier_Code","Vehicle_Id"])
                 #st.write(filter_by)
                 choice=st.selectbox(f"Filter By {filter_by}",[f"ALL {filter_by.upper()}"]+[str(j) for j in [str(i) for i in filtered_zf[filter_by].unique().tolist()]])
                 
@@ -2632,7 +2637,6 @@ if authentication_status:
             st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
             st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
             st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
-        
 elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
