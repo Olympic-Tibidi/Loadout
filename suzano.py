@@ -1944,9 +1944,9 @@ if authentication_status:
                                 st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
                                 return False
                             
-                            if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
-                                st.write(":red[THIS BELOW UNIT HAS BEEN SHIPPED]")
-                                return False
+                            #if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
+                              #  st.write(":red[THIS BELOW UNIT HAS BEEN SHIPPED]")
+                              #  return False
                             
                             else:
                                 return True
