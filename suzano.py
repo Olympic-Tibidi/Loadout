@@ -1413,7 +1413,7 @@ if authentication_status:
                         st.write(body)           
                         sender = "warehouseoly@gmail.com"
                         #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                        recipients = ["afsiny@portolympia.com"]
+                        recipients = ["afsiny@portolympia.com","alexandras@portolympia.com"]
                         password = "xjvxkmzbpotzeuuv"
                 
                           # Replace with the actual file path
@@ -2319,7 +2319,7 @@ if authentication_status:
                     st.write(body)           
                     sender = "warehouseoly@gmail.com"
                     #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                    recipients = ["afsiny@portolympia.com"]
+                    recipients = ["afsiny@portolympia.com","alexandras@portolympia.com"]
                     password = "xjvxkmzbpotzeuuv"
             
                       # Replace with the actual file path
