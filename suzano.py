@@ -1581,7 +1581,7 @@ if authentication_status:
                     with inv_col2:
                         #st.write(items)
                         inhouse=[df[df["Ocean B/L"]==i]["Bales"].sum()*250/1000 for i in items]
-                        shipped=[zf[zf["Ocean B/L"]==i].shape[0]*2 for i in items]
+                        shipped=[df[df["Ocean B/L"]==i]["Bales"].sum()*250/1000 for i in items]
                         
                         wrap_=[df[df["Ocean B/L"]==i]["Grade"].unique()[0] for i in items]
                        # st.write(wrap_)
