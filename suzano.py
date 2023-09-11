@@ -1572,10 +1572,12 @@ if authentication_status:
                     
                     inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
                     with inv_col1:
+                        wrh=df["Bales"].sum()*250/1000
+                        shp=zf["Bales"].sum()*250/1000
                         st.write(df["Bales"].sum()*250/1000)
-                        st.markdown(f"**IN WAREHOUSE = {len(df)*2} tons**")
-                        st.markdown(f"**TOTAL SHIPPED = {len(zf)*2} tons**")
-                        st.markdown(f"**TOTAL OVERALL = {(len(zf)+len(df))*2} tons**")
+                        st.markdown(f"**IN WAREHOUSE = {wrh} tons**")
+                        st.markdown(f"**TOTAL SHIPPED = {shp} tons**")
+                        st.markdown(f"**TOTAL OVERALL = {wrh+shp} tons**")
                     with inv_col2:
                         #st.write(items)
                         inhouse=[df[df["Ocean B/L"]==i].shape[0]*2 for i in items]
