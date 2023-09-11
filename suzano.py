@@ -244,9 +244,7 @@ def process():
     end=f"9TRL:{end_initial}{number_of_lines}"
     Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
     for i in loads:
-        #st.write(i)
-        try:
-              
+        try:              
             Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
             Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
             Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
@@ -255,7 +253,18 @@ def process():
             Inventory.loc[Inventory["Lot"]==i,"Terminal Bill Of Lading"]=str(terminal_bill_of_lading)
         except:
             st.write("Check Unit Number,Unit Not In Inventory")
-        #st.write(vehicle_id)
+    for i in bale_loads:
+        try:
+            Inventory.loc[Inventory["Lot"]==i,"Location"]="PARTIAL"
+            Inventory.loc[Inventory["Lot"]==i,"Bales"]=Inventory.loc[Inventory["Lot"]==i,"Bales"].values[0]-1
+            Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
+            Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
+            Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
+            Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
+            Inventory.loc[Inventory["Lot"]==i,"Terminal Bill Of Lading"]=str(terminal_bill_of_lading)
+        except:
+            st.write("Check Unit Number,Unit Not In Inventory")
+        
 
         temp=Inventory.to_csv("temp.csv")
         upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
