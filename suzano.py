@@ -1466,6 +1466,7 @@ if authentication_status:
                     df_today=df_bill[df_bill["Date"]==now.date()]
                     df_today.insert(9,"TONNAGE",[i*2 for i in df_today["QUANTITY (UNITS)"]])
                     df_today.loc["TOTAL","QUANTITY (UNITS)"]=df_today["QUANTITY (UNITS)"].sum()
+                    df_today.loc["TOTAL","TONNAGE"]=df_today["TONNAGE"].sum()
                        
                     st.dataframe(df_today)
 
