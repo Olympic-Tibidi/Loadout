@@ -1562,8 +1562,8 @@ if authentication_status:
             with inv4:
                      
                 dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-                df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
-                zf=Inventory[Inventory["Location"]=="ON TRUCK"][["Lot","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
+                df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
+                zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
                                                               "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
                 
                 items=df["Ocean B/L"].unique().tolist()
@@ -1572,6 +1572,7 @@ if authentication_status:
                     
                     inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
                     with inv_col1:
+                        st.write(df["Bales"].sum()*250/1000)
                         st.markdown(f"**IN WAREHOUSE = {len(df)*2} tons**")
                         st.markdown(f"**TOTAL SHIPPED = {len(zf)*2} tons**")
                         st.markdown(f"**TOTAL OVERALL = {(len(zf)+len(df))*2} tons**")
