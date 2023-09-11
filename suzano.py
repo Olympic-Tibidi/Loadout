@@ -227,14 +227,14 @@ def process():
     bale_loadls=[]
     if double_load:
         for i in first_textsplit:
-            loadls.append("2DEV:"+current_release_order+" "*(10-len(current_release_order))+"000"+current_sales_order+a+tsn+i[:-3]+" "*(10-len(i[:-3]))+"0"*16+str(2000))
+            loadls.append("2DEV:"+current_release_order+" "*(10-len(current_release_order))+"000"+current_sales_order+a+tsn+i[:-2]+" "*(10-len(i[:-2]))+"0"*16+str(2000))
         for k in second_textsplit:
-            loadls.append("2DEV:"+next_release_order+" "*(10-len(next_release_order))+"000"+next_sales_order+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*16+str(2000))
+            loadls.append("2DEV:"+next_release_order+" "*(10-len(next_release_order))+"000"+next_sales_order+a+tsn+k[:-3]+" "*(10-len(k[:-2]))+"0"*16+str(2000))
     else:
         for k in loads:
-            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*16+str(2000))
+            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-2]+" "*(10-len(k[:-2]))+"0"*16+str(2000))
         for k in bale_loads:
-            bale_loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-3]+" "*(10-len(k[:-3]))+"0"*17+str(250))
+            bale_loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-2]+" "*(10-len(k[:-2]))+"0"*17+str(250))
         
     if double_load:
         number_of_lines=len(first_textsplit)+len(second_textsplit)+4
