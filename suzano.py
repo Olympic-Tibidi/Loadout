@@ -1018,16 +1018,11 @@ if authentication_status:
                         st.session_state.updated_quantity=updated_quantity
                     def audit_unit(x):
                             if len(x)==10:
-                                #st.write(bill_mapping[x[:-2]]["Batch"])
-                                #st.write(Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0])
+                              
                                 if bill_mapping[x[:-2]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[x[:-2]]["Batch"]!=batch:
-                                    st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
+                                    
                                     return False
-                                
-                               # if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
-                                  #  st.write(":red[THIS BELOW UNIT HAS BEEN SHIPPED]")
-                                 #   return False
-                                
+                                                                                
                                 else:
                                     return True
                     def audit_split(release,sales):
@@ -1037,9 +1032,6 @@ if authentication_status:
                                 if bill_mapping[x[:-2]]["Ocean_bl"]!=info[vessel][release][sales]["ocean_bill_of_lading"] and bill_mapping[x[:-2]]["Batch"]!=info[vessel][release][sales]["batch"]:
                                     st.write("**:red[WRONG B/L, DO NOT LOAD BELOW!]**")
                                     return False
-                               # if Inventory_Audit[Inventory_Audit["Lot"]==x]["Location"].iloc[0]!="OLYM":
-                                  #  st.write(":red[THIS BELOW UNIT HAS BEEN SHIPPED]")
-                                 #   return False
                                 else:
                                     return True
                     
@@ -1169,12 +1161,13 @@ if authentication_status:
                                     if x in seen:
                                         st.markdown(f"**:red[Unit No : {i+1}-{x}]**",unsafe_allow_html=True)
                                         faults.append(1)
-                                        fault_messaging[i+1]="This unit has been scanned TWICE!"
+                                        st.markdown("This unit has been scanned TWICE!")
                                     else:
                                         st.write(f"**Unit No : {i+1}-{x}**")
                                         faults.append(0)
                                 else:
                                     st.markdown(f"**:red[Unit No : {i+1}-{x}]**",unsafe_allow_html=True)
+                                    st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
                                     faults.append(1)
                                     
                                 seen.add(x)
@@ -1189,7 +1182,7 @@ if authentication_status:
                                     st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(0)
                                 else:
-                                    st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
+                                    st.markdown(f"**:red[Bale No : {i+1}-{x}]**",unsafe_allow_html=True)
                                     bale_faults.append(1)
                                 seen.add(x)
                         if double_load:
