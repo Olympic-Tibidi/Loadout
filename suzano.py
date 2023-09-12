@@ -1242,32 +1242,7 @@ if authentication_status:
                     eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
                     
                     
-                    if double_load:
-                        bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
-                        edi_name= f'{bill_of_lading_number}.txt'
-                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
-                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
-                        bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
-                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":len(second_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
-                        
-                    else:
-                        bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
-                        edi_name= f'{bill_of_lading_number}.txt'
-                        bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
-                                                                     "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":st.session_state.updated_quantity,"issued":f"{a_} {b_}","edi_no":edi_name,"loads":pure_loads} 
-                                        
-                    bill_of_ladings=json.dumps(bill_of_ladings)
-                    storage_client = storage.Client()
-                    bucket = storage_client.bucket("olym_suzano")
-                    blob = bucket.blob(rf"terminal_bill_of_ladings.json")
-                    blob.upload_from_string(bill_of_ladings)
                     
-                    
-                    
-                    terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",bill_of_lading_number,disabled=True)
                     
                     proceed=False
                     if double_load:
@@ -1300,10 +1275,7 @@ if authentication_status:
                         proceed=False
                         error="**:red[Please check Vehicle ID]"
                         st.write(error)
-                    if len(terminal_bill_of_lading)<6:
-                        proceed=False
-                        error="**:red[Please check Terminal Bill Of Lading. It should have 6 digits.]"
-                        st.write(error)
+                    
                     if quantity!=foreman_quantity+int(foreman_bale_quantity)/8:
                         proceed=False
                         error=f"**:red[{quantity} loads on this truck. Please check. You planned for {foreman_quantity} loads!]** "
@@ -1314,7 +1286,32 @@ if authentication_status:
 
                         
                         process()
-
+                        if double_load:
+                            bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
+                            edi_name= f'{bill_of_lading_number}.txt'
+                            bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
+                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                         "quantity":len(first_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
+                            bill_of_ladings[str(bill_of_lading_number+1)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":next_sales_order,
+                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                         "quantity":len(second_textsplit),"issued":f"{a_} {b_}","edi_no":edi_name} 
+                        
+                        else:
+                            bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
+                            edi_name= f'{bill_of_lading_number}.txt'
+                            bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
+                                                                         "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
+                                                                         "quantity":st.session_state.updated_quantity,"issued":f"{a_} {b_}","edi_no":edi_name,"loads":pure_loads} 
+                                            
+                        bill_of_ladings=json.dumps(bill_of_ladings)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket("olym_suzano")
+                        blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+                        blob.upload_from_string(bill_of_ladings)
+                        
+                        
+                        
+                        terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",bill_of_lading_number,disabled=True)
                         try:
                             suzano_report_keys=[int(i) for i in suzano_report.keys()]
                             next_report_no=max(suzano_report_keys)+1
@@ -1411,7 +1408,7 @@ if authentication_status:
                         recipients = ["afsiny@portolympia.com"]
                         password = "xjvxkmzbpotzeuuv"
                 
-                          # Replace with the actual file path
+              
                 
                 
                         with open('temp_file.txt', 'w') as f:
