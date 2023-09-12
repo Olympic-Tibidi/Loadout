@@ -1244,7 +1244,7 @@ if authentication_status:
                         
                         if quantity!=foreman_quantity+int(foreman_bale_quantity)/8:
                             proceed=False
-                            error=f"**:red[{quantity} loads on this truck. Please check. You planned for {foreman_quantity} loads!]** "
+                            error=f"**:red[{updated_quantity} units and {bale_updated_quantity} bales on this truck. Please check. You planned for {foreman_quantity} units and {foreman_bale_quantity} bales!]** "
                             st.write(error)
                         if proceed:
                             carrier_code=carrier_code.split("-")[0]
