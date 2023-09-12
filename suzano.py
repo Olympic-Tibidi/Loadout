@@ -1109,9 +1109,7 @@ if authentication_status:
                     
        
                     
-                    
-                st.write(pure_loads)    
-                    
+  
                  
                    
                 with col5:
