@@ -1239,7 +1239,7 @@ if authentication_status:
                             st.write(error)
                         if not vehicle_id: 
                             proceed=False
-                            error="**:red[Please check Vehicle ID]"
+                            error="**:red[Please check Vehicle ID]**"
                             st.write(error)
                         
                         if quantity!=foreman_quantity+int(foreman_bale_quantity)/8:
