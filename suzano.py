@@ -1260,8 +1260,6 @@ if authentication_status:
                             eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
                         
     
-                            
-                            process()
                             if double_load:
                                 bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                                 edi_name= f'{bill_of_lading_number}.txt'
@@ -1288,6 +1286,8 @@ if authentication_status:
                             
                             
                             terminal_bill_of_lading=st.text_input("Terminal Bill of Lading",bill_of_lading_number,disabled=True)
+                            process()
+                           
                             try:
                                 suzano_report_keys=[int(i) for i in suzano_report.keys()]
                                 next_report_no=max(suzano_report_keys)+1
