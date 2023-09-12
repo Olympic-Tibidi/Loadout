@@ -1158,6 +1158,8 @@ if authentication_status:
                         bale_faults=[]
                         fault_messaging={}
                         bale_fault_messaging={}
+                        textsplit={}
+                        bale_textsplit={}
                         if load_input is not None:
                             textsplit = load_input.splitlines()
                             
@@ -1196,15 +1198,14 @@ if authentication_status:
                                     st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(1)
                                 seen.add(x)
-                        loads=[]
-                        bale_loads=[]
+                        pure_loads={**{k:0 for k in textsplit},**{k:0 for k in bale_textsplit}}
+                        loads={**{k[:-2]:0 for k in textsplit},**{k[:-2]:0 for k in bale_textsplit}}
                         for k in textsplit:
-                            loads.append(k)
-                        try:
-                            for k in bale_textsplit:
-                                bale_loads.append(k)
-                        except:
-                            pass
+                            loads[k[:-2]]+=1
+                            pure_loads[k]+=1
+                        for k in bale_textsplit:
+                            loads[k[:-2]]+=0.125
+                            pure_loads[k]+=0.125
                    
                 #st.write(faults)                  
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
