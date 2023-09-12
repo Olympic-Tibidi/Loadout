@@ -1161,7 +1161,7 @@ if authentication_status:
                                     if x in seen:
                                         st.markdown(f"**:red[Unit No : {i+1}-{x}]**",unsafe_allow_html=True)
                                         faults.append(1)
-                                        st.markdown("**This unit has been scanned TWICE!**")
+                                        st.markdown("**:red[This unit has been scanned TWICE!]**")
                                         
                                     else:
                                         st.write(f"**Unit No : {i+1}-{x}**")
@@ -1180,7 +1180,7 @@ if authentication_status:
                             seen=set()
                             for i,x in enumerate(bale_textsplit):
                                 if x in textsplit:
-                                    st.write(f"This bale {i} in unit loads")
+                                    st.write(f"**:red[This number is scanned as a whole UNIT!]**")
                                     bale_faults.append(1)
                                 if audit_unit(x):
                                     st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
