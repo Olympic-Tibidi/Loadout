@@ -1194,6 +1194,25 @@ if authentication_status:
                                     st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(1)
                                 seen.add(x)
+                        if double_load:
+                            if 1 in first_faults or 1 in second_faults:
+                                st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
+                                for i in first_faults:
+                                    if i==1:
+                                        st.markdown(f"**:red[Check Unit Unit{first_faults.index(i)+1}]**")
+                                for i in second_faults:
+                                    if i==1:
+                                        st.markdown(f"**:red[Check Unit Unit{second_faults.index(i)+1}]**")
+                            else:
+                                proceed=True
+                        else:
+                            if 1 in faults:
+                                proceed=False
+                                for i in faults:
+                                    if i==1:
+                                        st.markdown(f"**:red[Check Unit {faults.index(i)+1}]**")
+                            else:
+                                proceed=True
                         loads={}
                         pure_loads={}
                         yes=True
@@ -1245,25 +1264,7 @@ if authentication_status:
                     
                     
                     proceed=False
-                    if double_load:
-                        if 1 in first_faults or 1 in second_faults:
-                            st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
-                            for i in first_faults:
-                                if i==1:
-                                    st.markdown(f"**:red[Check Unit Unit{first_faults.index(i)+1}]**")
-                            for i in second_faults:
-                                if i==1:
-                                    st.markdown(f"**:red[Check Unit Unit{second_faults.index(i)+1}]**")
-                        else:
-                            proceed=True
-                    else:
-                        if 1 in faults:
-                            proceed=False
-                            for i in faults:
-                                if i==1:
-                                    st.markdown(f"**:red[Check Unit {faults.index(i)+1}]**")
-                        else:
-                            proceed=True
+                    
                     if fault_messaging.keys():
                         for i in fault_messaging.keys():
                             error=f"**:red[Unitfault_messaging[i]]**"
