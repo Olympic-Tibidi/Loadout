@@ -1181,6 +1181,7 @@ if authentication_status:
                             for i,x in enumerate(bale_textsplit):
                                 if audit_unit(x):
                                     if x in textsplit:
+                                        st.markdown(f"**:red[Bale No : {i+1}-{x}]**",unsafe_allow_html=True)
                                         st.write(f"**:red[This number is scanned as a whole UNIT!]**")
                                         bale_faults.append(1)
                                     else:
