@@ -1195,14 +1195,10 @@ if authentication_status:
                            
                         loads={}
                         pure_loads={}
-                        yes=True
-                        if len(set(textsplit))!=len(textsplit):
+                        yes=False
+                        if 1 in faults or 1 in bale_faults:
                             yes=False
-                            st.write("Repeated Unit in Unit Entry")
-                        for i in bale_textsplit:
-                            if i in textsplit:
-                                st.write(f"This bale {i} in unit loads")
-                                yes=False
+                        
                         if yes:
                             pure_loads={**{k:0 for k in textsplit},**{k:0 for k in bale_textsplit}}
                             loads={**{k[:-2]:0 for k in textsplit},**{k[:-2]:0 for k in bale_textsplit}}
@@ -1226,28 +1222,14 @@ if authentication_status:
             
                 if st.button('**:blue[SUBMIT EDI]**'):
                  
-                    
-                    
-                    
-                    try:
-                        suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
-                        suzano_report=json.loads(suzano_report_)
-                    except:
-                        suzano_report={}
-                    consignee=destination.split("-")[0]
-                    consignee_city=mill_info[destination]["city"]
-                    consignee_state=mill_info[destination]["state"]
-                    vessel_suzano,voyage_suzano=vessel.split("-")
-                    eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
-                    
-                    
-                    
-                    
-                    proceed=False
-                    
+                    proceed=True
+                    if not yes:
+                        proceed=False
+                                 
                     if fault_messaging.keys():
                         for i in fault_messaging.keys():
-                            error=f"**:red[Unitfault_messaging[i]]**"
+                            error=f"**:red[Unit {fault_messaging[i]}]**"
+                            proceed=False
                     if remaining<0:
                         proceed=False
                         error="**:red[No more Items to ship on this Sales Order]"
@@ -1263,7 +1245,17 @@ if authentication_status:
                         st.write(error)
                     if proceed:
                         carrier_code=carrier_code.split("-")[0]
-
+                        try:
+                            suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
+                            suzano_report=json.loads(suzano_report_)
+                        except:
+                            suzano_report={}
+                        consignee=destination.split("-")[0]
+                        consignee_city=mill_info[destination]["city"]
+                        consignee_state=mill_info[destination]["state"]
+                        vessel_suzano,voyage_suzano=vessel.split("-")
+                        eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
+                    
 
                         
                         process()
