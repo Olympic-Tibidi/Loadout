@@ -1182,13 +1182,14 @@ if authentication_status:
                                 if x in textsplit:
                                     st.write(f"**:red[This number is scanned as a whole UNIT!]**")
                                     bale_faults.append(1)
-                                if audit_unit(x):
-                                    st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
-                                    bale_faults.append(0)
-                                else:
-                                    st.markdown(f"**:red[Bale No : {i+1}-{x}]**",unsafe_allow_html=True)
-                                    st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
-                                    bale_faults.append(1)
+                                else:                                    
+                                    if audit_unit(x):
+                                        st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
+                                        bale_faults.append(0)
+                                    else:
+                                        st.markdown(f"**:red[Bale No : {i+1}-{x}]**",unsafe_allow_html=True)
+                                        st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
+                                        bale_faults.append(1)
                                 seen.add(x)
                        
                            
