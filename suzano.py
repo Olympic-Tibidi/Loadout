@@ -232,39 +232,27 @@ def process():
             loadls.append("2DEV:"+next_release_order+" "*(10-len(next_release_order))+"000"+next_sales_order+a+tsn+k[:-3]+" "*(10-len(k[:-2]))+"0"*16+str(2000))
     else:
         for k in loads:
-            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-2]+" "*(10-len(k[:-2]))+"0"*16+str(2000))
-        for k in bale_loads:
-            bale_loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-2]+" "*(10-len(k[:-2]))+"0"*17+str(250))
+            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-2]+" "*(10-len(k[:-2]))+"0"*16+str(int(loads[k]*2000)))
+        
         
     if double_load:
         number_of_lines=len(first_textsplit)+len(second_textsplit)+4
     else:
-        number_of_lines=len(loads)+len(bale_loads)+3
+        number_of_lines=len(loads)+3
     end_initial="0"*(4-len(str(number_of_lines)))
     end=f"9TRL:{end_initial}{number_of_lines}"
     Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
     for i in loads:
         try:              
-            Inventory.loc[Inventory["Lot"]==i,"Location"]="ON TRUCK"
-            Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
-            Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
-            Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
-            Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
-            Inventory.loc[Inventory["Lot"]==i,"Terminal Bill Of Lading"]=str(terminal_bill_of_lading)
-        except:
-            st.write("Check Unit Number,Unit Not In Inventory")
-    for i in bale_loads:
-        try:
             Inventory.loc[Inventory["Lot"]==i,"Location"]="PARTIAL"
-            Inventory.loc[Inventory["Lot"]==i,"Bales"]=Inventory.loc[Inventory["Lot"]==i,"Bales"].values[0]-1
+            Inventory.loc[Inventory["Lot"]==i,"Bales"]=Inventory.loc[Inventory["Lot"]==i,"Bales"].values[0]-loads[i]*8
             Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
             Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
             Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
             Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
             Inventory.loc[Inventory["Lot"]==i,"Terminal Bill Of Lading"]=str(terminal_bill_of_lading)
         except:
-            st.write("Check Unit Number,Unit Not In Inventory")
-        
+            st.write("Check Unit Number,Unit Not In Inventory")         
 
         temp=Inventory.to_csv("temp.csv")
         upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
