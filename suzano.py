@@ -1183,6 +1183,7 @@ if authentication_status:
                                     bale_faults.append(0)
                                 else:
                                     st.markdown(f"**:red[Bale No : {i+1}-{x}]**",unsafe_allow_html=True)
+                                    st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
                                     bale_faults.append(1)
                                 seen.add(x)
                         if double_load:
