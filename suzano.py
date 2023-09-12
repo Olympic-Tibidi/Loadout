@@ -1179,11 +1179,8 @@ if authentication_status:
                                 seen.add(x)
                         if bale_load_input is not None:
                         
-                            bale_textsplit = bale_load_input.splitlines()
-                            
-                                
-                            bale_textsplit=[i for i in bale_textsplit if len(i)>8]
-                           
+                            bale_textsplit = bale_load_input.splitlines()                       
+                            bale_textsplit=[i for i in bale_textsplit if len(i)>8]                           
                             seen=set()
                             for i,x in enumerate(bale_textsplit):
                                 
@@ -1211,6 +1208,13 @@ if authentication_status:
                                 for i in faults:
                                     if i==1:
                                         st.markdown(f"**:red[Check Unit {faults.index(i)+1}]**")
+                            else:
+                                proceed=True
+                            if 1 in bale_faults:
+                                proceed=False
+                                for i in bale_faults:
+                                    if i==1:
+                                        st.markdown(f"**:red[Check Unit {bale_faults.index(i)+1}]**")
                             else:
                                 proceed=True
                         loads={}
