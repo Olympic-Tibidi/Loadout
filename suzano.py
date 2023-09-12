@@ -1179,7 +1179,7 @@ if authentication_status:
                             bale_textsplit=[i for i in bale_textsplit if len(i)>8]                           
                             seen=set()
                             for i,x in enumerate(bale_textsplit):
-                                if x in text_split:
+                                if x in textsplit:
                                     st.write(f"This bale {i} in unit loads")
                                     bale_faults.append(1)
                                 if audit_unit(x):
