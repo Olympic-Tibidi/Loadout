@@ -271,11 +271,7 @@ def process():
             
             f.write(i)
             f.write('\n')
-        for j in bale_loadls:
-            
-            f.write(j)
-            f.write('\n')
-
+       
         f.write(end)
 def gen_bill_of_lading():
     data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
@@ -825,6 +821,8 @@ if authentication_status:
             
             bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
             bill_mapping=json.loads(bill_mapping)
+            mill_info_=gcp_download("olym_suzano",rf"mill_info.json")
+            mill_info=json.loads(mill_info_)
             no_dispatch=0
             number=None
             if number not in st.session_state:
@@ -1113,7 +1111,7 @@ if authentication_status:
                  
                    
                 with col5:
-                    Inventory_Audit=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+                    #Inventory_Audit=gcp_csv_to_df("olym_suzano", "Inventory.csv")
                     #st.write(Inventory_Audit)
                     if double_load:
                         first_faults=[]
@@ -1231,8 +1229,7 @@ if authentication_status:
                  
                     
                     
-                    mill_info_=gcp_download("olym_suzano",rf"mill_info.json")
-                    mill_info=json.loads(mill_info_)
+                    
                     try:
                         suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
                         suzano_report=json.loads(suzano_report_)
@@ -1260,7 +1257,7 @@ if authentication_status:
                         edi_name= f'{bill_of_lading_number}.txt'
                         bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                      "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":st.session_state.updated_quantity,"issued":f"{a_} {b_}","edi_no":edi_name} 
+                                                                     "quantity":st.session_state.updated_quantity,"issued":f"{a_} {b_}","edi_no":edi_name,"loads"=pure_loads} 
                                         
                     bill_of_ladings=json.dumps(bill_of_ladings)
                     storage_client = storage.Client()
@@ -1388,8 +1385,7 @@ if authentication_status:
                         except:
                             release_order_database={}
                        
-                        release_order_database[current_release_order][current_sales_order]["remaining"]=release_order_database[current_release_order][current_sales_order]["remaining"]-len(loads)
-                        release_orders_json=json.dumps(release_order_database)
+                        release_order_database[current_release_order][current_sales_order]["remaining"]=release_order_database[current_release_order][current_sales_order]["remaining"]-quantity
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
@@ -1411,7 +1407,7 @@ if authentication_status:
                         st.write(body)           
                         sender = "warehouseoly@gmail.com"
                         #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                        recipients = ["afsiny@portolympia.com","alexandras@portolympia.com"]
+                        recipients = ["afsiny@portolympia.com"]
                         password = "xjvxkmzbpotzeuuv"
                 
                           # Replace with the actual file path
