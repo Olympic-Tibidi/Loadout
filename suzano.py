@@ -2138,7 +2138,7 @@ if authentication_status:
             if st.button('**:blue[SUBMIT EDI]**'):
              
                 
-                
+                st.write(pure_loads)
                 mill_info_=gcp_download("olym_suzano",rf"mill_info.json")
                 mill_info=json.loads(mill_info_)
                 try:
