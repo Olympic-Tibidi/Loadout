@@ -232,7 +232,7 @@ def process():
             loadls.append("2DEV:"+next_release_order+" "*(10-len(next_release_order))+"000"+next_sales_order+a+tsn+k[:-3]+" "*(10-len(k[:-2]))+"0"*16+str(2000))
     else:
         for k in loads:
-            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k[:-2]+" "*(10-len(k[:-2]))+"0"*16+str(int(loads[k]*2000)))
+            loadls.append("2DEV:"+release_order_number+" "*(10-len(release_order_number))+"000"+sales_order_item+a+tsn+k+" "*(10-len(k))+"0"*16+str(int(loads[k]*2000)))
         
         
     if double_load:
