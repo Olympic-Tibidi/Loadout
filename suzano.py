@@ -1390,7 +1390,7 @@ if authentication_status:
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
-                        blob.upload_from_string(release_orders_database)
+                        blob.upload_from_string(release_order_database)
                         with open('placeholder.txt', 'r') as f:
                             output_text = f.read()
                         st.markdown("**SUCCESS! EDI FOR THIS LOAD HAS BEEN SUBMITTED,THANK YOU**")
