@@ -1257,7 +1257,7 @@ if authentication_status:
                         edi_name= f'{bill_of_lading_number}.txt'
                         bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                      "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
-                                                                     "quantity":st.session_state.updated_quantity,"issued":f"{a_} {b_}","edi_no":edi_name,"loads"=pure_loads} 
+                                                                     "quantity":st.session_state.updated_quantity,"issued":f"{a_} {b_}","edi_no":edi_name,"loads":pure_loads} 
                                         
                     bill_of_ladings=json.dumps(bill_of_ladings)
                     storage_client = storage.Client()
