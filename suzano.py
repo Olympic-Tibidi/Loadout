@@ -1198,14 +1198,25 @@ if authentication_status:
                                     st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(1)
                                 seen.add(x)
-                        pure_loads={**{k:0 for k in textsplit},**{k:0 for k in bale_textsplit}}
-                        loads={**{k[:-2]:0 for k in textsplit},**{k[:-2]:0 for k in bale_textsplit}}
-                        for k in textsplit:
-                            loads[k[:-2]]+=1
-                            pure_loads[k]+=1
-                        for k in bale_textsplit:
-                            loads[k[:-2]]+=0.125
-                            pure_loads[k]+=0.125
+                        loads={}
+                        pure_loads={}
+                        yes=True
+                        if len(set(textsplit))!=len(textsplit):
+                            yes=False
+                            print("Repeated Unit in Unit Entry")
+                        for i in bale_textsplit:
+                            if i in textsplit:
+                                print(f"This bale {i} in unit loads")
+                                yes=False
+                        if yes:
+                            pure_loads={**{k:0 for k in textsplit},**{k:0 for k in bale_textsplit}}
+                            loads={**{k[:-2]:0 for k in textsplit},**{k[:-2]:0 for k in bale_textsplit}}
+                            for k in textsplit:
+                                loads[k[:-2]]+=1
+                                pure_loads[k]+=1
+                            for k in bale_textsplit:
+                                loads[k[:-2]]+=0.125
+                                pure_loads[k]+=0.125
                    
                 #st.write(faults)                  
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
