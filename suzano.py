@@ -1386,7 +1386,7 @@ if authentication_status:
                             release_order_database={}
                        
                         release_order_database[current_release_order][current_sales_order]["remaining"]=release_order_database[current_release_order][current_sales_order]["remaining"]-quantity
-                        release_orders_database=json.dumps(release_orders_database)
+                        release_order_database=json.dumps(release_order_database)
                         storage_client = storage.Client()
                         bucket = storage_client.bucket("olym_suzano")
                         blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
