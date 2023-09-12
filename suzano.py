@@ -1161,7 +1161,8 @@ if authentication_status:
                                     if x in seen:
                                         st.markdown(f"**:red[Unit No : {i+1}-{x}]**",unsafe_allow_html=True)
                                         faults.append(1)
-                                        st.markdown("This unit has been scanned TWICE!")
+                                        st.markdown("**This unit has been scanned TWICE!**")
+                                        
                                     else:
                                         st.write(f"**Unit No : {i+1}-{x}**")
                                         faults.append(0)
@@ -1169,6 +1170,7 @@ if authentication_status:
                                     st.markdown(f"**:red[Unit No : {i+1}-{x}]**",unsafe_allow_html=True)
                                     st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
                                     faults.append(1)
+                           
                                     
                                 seen.add(x)
                         if bale_load_input is not None:
@@ -1177,7 +1179,9 @@ if authentication_status:
                             bale_textsplit=[i for i in bale_textsplit if len(i)>8]                           
                             seen=set()
                             for i,x in enumerate(bale_textsplit):
-                                
+                                if x in text_split:
+                                    st.write(f"This bale {i} in unit loads")
+                                    bale_faults.append(1)
                                 if audit_unit(x):
                                     st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(0)
@@ -1186,41 +1190,17 @@ if authentication_status:
                                     st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
                                     bale_faults.append(1)
                                 seen.add(x)
-                        if double_load:
-                            if 1 in first_faults or 1 in second_faults:
-                                st.markdown(f"**:red[CAN NOT SUBMIT EDI!!] CHECK BELOW UNTIS**")
-                                for i in first_faults:
-                                    if i==1:
-                                        st.markdown(f"**:red[Check Unit Unit{first_faults.index(i)+1}]**")
-                                for i in second_faults:
-                                    if i==1:
-                                        st.markdown(f"**:red[Check Unit Unit{second_faults.index(i)+1}]**")
-                            else:
-                                proceed=True
-                        else:
-                            if 1 in faults:
-                                proceed=False
-                                for i in faults:
-                                    if i==1:
-                                        st.markdown(f"**:red[Check Unit {faults.index(i)+1}]**")
-                            else:
-                                proceed=True
-                            if 1 in bale_faults:
-                                proceed=False
-                                for i in bale_faults:
-                                    if i==1:
-                                        st.markdown(f"**:red[Check Unit {bale_faults.index(i)+1}]**")
-                            else:
-                                proceed=True
+                       
+                           
                         loads={}
                         pure_loads={}
                         yes=True
                         if len(set(textsplit))!=len(textsplit):
                             yes=False
-                            print("Repeated Unit in Unit Entry")
+                            st.write("Repeated Unit in Unit Entry")
                         for i in bale_textsplit:
                             if i in textsplit:
-                                print(f"This bale {i} in unit loads")
+                                st.write(f"This bale {i} in unit loads")
                                 yes=False
                         if yes:
                             pure_loads={**{k:0 for k in textsplit},**{k:0 for k in bale_textsplit}}
