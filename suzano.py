@@ -1235,9 +1235,10 @@ if authentication_status:
                             for k in bale_textsplit:
                                 loads[k[:-2]]+=0.125
                                 pure_loads[k]+=0.125
-                   
+                manual_time=False   
                 #st.write(faults)                  
                 if st.checkbox("Check for Manual Entry for Date/Time"):
+                    manual_time=True
                     file_date=st.date_input("File Date",datetime.datetime.today(),disabled=False,key="popo3")
                     a=datetime.datetime.strftime(file_date,"%Y%m%d")
                     a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
@@ -1292,8 +1293,10 @@ if authentication_status:
                             consignee_city=mill_info[destination]["city"]
                             consignee_state=mill_info[destination]["state"]
                             vessel_suzano,voyage_suzano=vessel.split("-")
-                            eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
-                        
+                            if manual_time:
+                                eta=datetime.datetime.strftime(file_date+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
+                            else:
+                                eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
     
                             if double_load:
                                 bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
