@@ -1241,7 +1241,7 @@ if authentication_status:
                     file_date=st.date_input("File Date",datetime.datetime.today(),disabled=False,key="popo3")
                     a=datetime.datetime.strftime(file_date,"%Y%m%d")
                     a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
-                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=60,disabled=False,key="popop")
+                    file_time = st.time_input('FileTime', datetime.datetime.today()-datetime.timedelta(hours=7),step=60,disabled=False,key="popop")
                     b=file_time.strftime("%H%M%S")
                     b_=datetime.datetime.strftime(file_time,"%H:%M:%S")
                 else:     
