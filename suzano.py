@@ -1489,7 +1489,7 @@ if authentication_status:
                     daily_suzano["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suzano_report["Date Shipped"]]
                     choose = st.radio(
                                     "Select Daily or Accumulative Report",
-                                    [":blue[DAILY]", "***ACCUMULATIVE***"])
+                                    ["**DAILY**", "**ACCUMULATIVE**"])
                     
                     st.dataframe(daily_suzano)
                     
