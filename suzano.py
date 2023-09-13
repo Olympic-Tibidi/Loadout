@@ -32,6 +32,7 @@ from yaml.loader import SafeLoader
 #from streamlit_extras.dataframe_explorer import dataframe_explorer
 import yaml
 from yaml.loader import SafeLoader
+import zipfile
 
 import plotly.graph_objects as go
 st.set_page_config(layout="wide")
@@ -335,9 +336,12 @@ if authentication_status:
                     st.write(i)
                     release_bank.append(json.loads(gcp_download("olym_suzano",  rf"release_orders/KIRKENES-2304/{i}")))
                 release_database=json.loads(gcp_download("olym_suzano",  rf"release_orders/RELEASE_ORDERS.json"))
+                
                 bill_of_ladings=json.loads(gcp_download("olym_suzano",  rf"terminal_bill_of_ladings.json"))
                 mill_progress=json.loads(gcp_download("olym_suzano",  rf"mill_progress.json"))
                 inv=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+                with zipfile.ZipFile("BackUP.zip", mode="a") as archive:
+                   archive.write(json.dumps(bill_of_ladings))
                 
             
                 st.text_area("RELEASE ORDER INDEX",release_database)
@@ -345,6 +349,7 @@ if authentication_status:
                 st.text_area("RELEASE ORDERS",release_bank)
                 st.text_area("DISPATCH",dispatch)
                 st.text_area("BILL OF LADINGS",bill_of_ladings)
+                st.dataframe("inv")
                 
                 #gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
         if select=="ADMIN" :
