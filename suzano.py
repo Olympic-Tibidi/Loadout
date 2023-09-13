@@ -1480,6 +1480,7 @@ if authentication_status:
             
             with inv2:
                 try:
+                    now=datetime.datetime.now()-datetime.timedelta(hours=7)
                     suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
                     suzano_report=json.loads(suzano_report_)
                     suzano_report=pd.DataFrame(suzano_report).T
@@ -1487,6 +1488,7 @@ if authentication_status:
                     suzano_report["Shipment ID #"]=[str(i) for i in suzano_report["Shipment ID #"]]
                     daily_suzano=suzano_report.copy()
                     daily_suzano["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suzano_report["Date Shipped"]]
+                    daily_suzano=daily_suzano[daily_suzano["Date"]==now.date()]
                     choose = st.radio(
                                     "Select Daily or Accumulative Report",
                                     ["DAILY", "ACCUMULATIVE"])
@@ -1500,7 +1502,7 @@ if authentication_status:
                         # IMPORTANT: Cache the conversion to prevent computation on every rerun
                         return df.to_csv().encode('utf-8')
                     
-                    csv = convert_df(suzano_report)
+                    csv = convert_df(daily_report)
                     
                 
                     st.download_button(
