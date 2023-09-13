@@ -1488,8 +1488,7 @@ if authentication_status:
                     daily_suzano=suzano_report.copy()
                     daily_suzano["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suzano_report["Date Shipped"]]
                     accum=st.toggle('TOGGLE FOR ACCUMULATIVE REPORT')
-                    if accum:
-                        st.dataframe(suzano_report)
+                    
                     st.dataframe(daily_suzano)
                     
                     @st.cache
