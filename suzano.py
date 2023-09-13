@@ -14,7 +14,8 @@ import os
 import io
 from io import StringIO
 from io import BytesIO
-import math
+from io import B
+import base64
 import streamlit_authenticator as stauth
 #from camera_input_live import camera_input_live
 import pandas as pd
