@@ -1528,7 +1528,7 @@ if authentication_status:
                 st.download_button(
                         label="DOWNLOAD EDI",
                         data=requested_edi,
-                        file_name=f'requested_edi_file.txt',
+                        file_name=f'{requested_edi_file}',
                         mime='text/csv')
 
 
