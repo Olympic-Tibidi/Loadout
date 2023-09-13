@@ -1597,7 +1597,7 @@ if authentication_status:
                                
                         
                     with col2:
-                        st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+                        st.markdown(f"**SHIPPED ON THIS DAY = {zf["Shipped"].sum()*0.125} TONS**")
                         
                            
                         
