@@ -338,10 +338,11 @@ if authentication_status:
                 release_database=json.loads(gcp_download("olym_suzano",  rf"release_orders/RELEASE_ORDERS.json"))
                 
                 bill_of_ladings=json.loads(gcp_download("olym_suzano",  rf"terminal_bill_of_ladings.json"))
+                bill_of_lading_j=json.dumps(bill_of_ladings)
                 mill_progress=json.loads(gcp_download("olym_suzano",  rf"mill_progress.json"))
                 inv=gcp_csv_to_df("olym_suzano", "Inventory.csv")
                 with zipfile.ZipFile("BackUP.zip", mode="a") as archive:
-                   archive.write(json.dumps(bill_of_ladings))
+                   archive.write(bill_of_lading_j)
                 
             
                 st.text_area("RELEASE ORDER INDEX",release_database)
