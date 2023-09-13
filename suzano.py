@@ -1238,7 +1238,7 @@ if authentication_status:
                    
                 #st.write(faults)                  
                 if st.checkbox("Check for Manual Entry for Date/Time"):
-                    file_date=st.date_input("File Date",datetime.datetime.today(),key="file_datesss",disabled=False,key="popo3")
+                    file_date=st.date_input("File Date",datetime.datetime.today(),disabled=False,key="popo3")
                     a=datetime.datetime.strftime(file_date,"%Y%m%d")
                     a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
                     file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=60,disabled=False,key="popop")
