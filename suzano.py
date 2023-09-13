@@ -330,7 +330,7 @@ if authentication_status:
                     st.write(i)
                     edis_bank.append(gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{i}"))
                 release_orders=list_cs_files_f("olym_suzano", rf"release_orders/KIRKENES-2304")
-                st.write(edis_bank)
+                st.text_area("EDI",edis_bank)
                 #gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
         if select=="ADMIN" :
             admin_tab1,admin_tab2,admin_tab3,admin_tab4,admin_tab5=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES","MILL SHIPMENTS"])
