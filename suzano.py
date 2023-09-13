@@ -445,6 +445,8 @@ if authentication_status:
             with admin_tab1:
                 carrier_list_=gcp_download("olym_suzano",rf"carrier.json")
                 carrier_list=json.loads(carrier_list_)
+                junk=gcp_download("olym_suzano",rf"junk_release.json")
+                junk=json.loads(junk)
                 try:
                     release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
                     release_order_database=json.loads(release_order_database)
@@ -460,7 +462,7 @@ if authentication_status:
                     batch_mapping=json.loads(batch_mapping)
                     if edit:
                         #release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders/{vessel}")))
-                        release_order_number=st.selectbox("SELECT RELEASE ORDER",([i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]))
+                        release_order_number=st.selectbox("SELECT RELEASE ORDER",([i for i in [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")] if i not in junk]))
                         po_number=st.text_input("PO No")
                     else:
                         
