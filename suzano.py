@@ -1487,7 +1487,7 @@ if authentication_status:
                     suzano_report["Shipment ID #"]=[str(i) for i in suzano_report["Shipment ID #"]]
                     daily_suzano=suzano_report.copy()
                     daily_suzano["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suzano_report["Date Shipped"]]
-                    if st.radio("TOGGLE FOR ACCUMULATIVE REPORT"):
+                    if st.toggle('TOGGLE FOR ACCUMULATIVE REPORT'):
                         st.dataframe(suzano_report)
                     st.dataframe(daily_suzano)
                     
@@ -1506,8 +1506,7 @@ if authentication_status:
                         mime='text/csv')
                 except:
                     st.write("NO REPORTS RECORDED")
-                daily_suzano=suzano_report.copy()
-               #daily_suzano["Date"]=[i.date() for i in suzano_report["Date Shipped"]]
+               
 
             with inv3:
                 edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
