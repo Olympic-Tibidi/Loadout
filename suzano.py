@@ -1528,7 +1528,7 @@ if authentication_status:
                 st.download_button(
                         label="DOWNLOAD EDI",
                         data=requested_edi,
-                        file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                        file_name=f'requested_edi_file.txt',
                         mime='text/csv')
 
 
