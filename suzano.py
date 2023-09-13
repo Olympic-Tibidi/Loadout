@@ -341,7 +341,8 @@ if authentication_status:
                 
                 bill_of_ladings=json.loads(gcp_download("olym_suzano",  rf"terminal_bill_of_ladings.json"))
                 bill_of_lading_j=json.dumps(bill_of_ladings)
-                mill_progress=json.loads(gcp_download("olym_suzano",  rf"mill_progress.json"))
+               
+                mill_progress_j=gcp_download("olym_suzano",  rf"mill_progress.json")
                 inv=gcp_csv_to_df("olym_suzano", "Inventory.csv")
                 invj=inv.to_csv("invj")
                 
@@ -349,8 +350,8 @@ if authentication_status:
                 
                 zipObj = ZipFile("sample.zip", "w")
                 # Add multiple files to the zip
-                zipObj.write("checkpoint")
-                zipObj.write("model_hyperparameters.json")
+                zipObj.write("bill_of_lading_j")
+                zipObj.write("mill_progress_j")
                 # close the Zip File
                 zipObj.close()
                 
