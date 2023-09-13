@@ -1510,7 +1510,7 @@ if authentication_status:
                         mime='text/csv')
                 except:
                     st.write("NO REPORTS RECORDED")
-                accum=st.toggle('TOGGLE FOR ACCUMULATIVE REPORT')
+                
 
             with inv3:
                 edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
