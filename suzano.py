@@ -245,7 +245,8 @@ def process():
     for i in loads:
         try:              
             Inventory.loc[Inventory["Lot"]==i,"Location"]="PARTIAL"
-            Inventory.loc[Inventory["Lot"]==i,"Bales"]=Inventory.loc[Inventory["Lot"]==i,"Bales"].values[0]-loads[i]*8
+            Inventory.loc[Inventory["Lot"]==i,"Shipped"]=Inventory.loc[Inventory["Lot"]==i,"Shipped"].values[0]+loads[i]*8
+            Inventory.loc[Inventory["Lot"]==i,"Remaining"]=Inventory.loc[Inventory["Lot"]==i,"Remaining"].values[0]-loads[i]*8
             Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
             Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
             Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
@@ -1536,7 +1537,7 @@ if authentication_status:
             with inv4:
                      
                 dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
-                df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
+                df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
                 zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
                                                               "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
                 zf["Bales"]=[8-i if i<8 else i for i in zf["Bales"] ]
@@ -1546,16 +1547,16 @@ if authentication_status:
                     
                     inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
                     with inv_col1:
-                        wrh=df["Bales"].sum()*250/1000
-                        shp=zf["Bales"].sum()*250/1000
+                        wrh=df["Remaining"].sum()*250/1000
+                        shp=zf["Shipped"].sum()*250/1000
                         
                         st.markdown(f"**IN WAREHOUSE = {wrh} tons**")
                         st.markdown(f"**TOTAL SHIPPED = {shp} tons**")
                         st.markdown(f"**TOTAL OVERALL = {wrh+shp} tons**")
                     with inv_col2:
                         #st.write(items)
-                        inhouse=[df[df["Ocean B/L"]==i]["Bales"].sum()*250/1000 for i in items]
-                        shipped=[zf[zf["Ocean B/L"]==i]["Bales"].sum()*250/1000 for i in items]
+                        inhouse=[df[df["Ocean B/L"]==i]["Remaining"].sum()*250/1000 for i in items]
+                        shipped=[zf[zf["Ocean B/L"]==i]["Shipped"].sum()*250/1000 for i in items]
                         
                         wrap_=[df[df["Ocean B/L"]==i]["Grade"].unique()[0] for i in items]
                        # st.write(wrap_)
