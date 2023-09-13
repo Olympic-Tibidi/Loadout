@@ -13,6 +13,7 @@ from google.cloud import storage
 import os
 import io
 from io import StringIO
+from io import BytesIO
 import math
 import streamlit_authenticator as stauth
 #from camera_input_live import camera_input_live
@@ -32,7 +33,7 @@ from yaml.loader import SafeLoader
 #from streamlit_extras.dataframe_explorer import dataframe_explorer
 import yaml
 from yaml.loader import SafeLoader
-import zipfile
+from zipfile import Zipfile
 
 import plotly.graph_objects as go
 st.set_page_config(layout="wide")
@@ -340,9 +341,28 @@ if authentication_status:
                 bill_of_ladings=json.loads(gcp_download("olym_suzano",  rf"terminal_bill_of_ladings.json"))
                 bill_of_lading_j=json.dumps(bill_of_ladings)
                 mill_progress=json.loads(gcp_download("olym_suzano",  rf"mill_progress.json"))
+               
+                b64 = base64.b64encode(csvAll.encode()).decode()
+                href = f'<a href="data:file/csvAll;base64,{b64}" download="all.csv">** ⯈ Download all results.**</a>'
+                st.markdown(href, unsafe_allow_html=True)
+                
                 inv=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-                with zipfile.ZipFile("BackUP.zip", mode="a") as archive:
-                   archive.write(bill_of_lading_j)
+                zipObj = ZipFile("sample.zip", "w")
+                # Add multiple files to the zip
+                zipObj.write("checkpoint")
+                zipObj.write("model_hyperparameters.json")
+                # close the Zip File
+                zipObj.close()
+                
+                ZipfileDotZip = "sample.zip"
+
+                with open(ZipfileDotZip, "rb") as f:
+                    bytes = f.read()
+                    b64 = io.base64.b64encode(bytes).decode()
+                    href = f"<a href=\"data:file/zip;base64,{b64}\" download='{ZipfileDotZip}.zip'>\
+                        Click last model weights\
+                    </a>"
+                st.sidebar.markdown(href, unsafe_allow_html=True)
                 
             
                 st.text_area("RELEASE ORDER INDEX",release_database)
