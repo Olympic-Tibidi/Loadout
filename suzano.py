@@ -324,9 +324,11 @@ if authentication_status:
                 dispatch=json.loads(dispatch)
              
                 edis=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
+                st.write(edis)
                 edis_bank=[]
                 for i in edis:
-                    edis_bank.append(json.loads(gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/i")))
+                    st.write(i)
+                    #edis_bank.append(json.loads(gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/i")))
                 release_orders=list_cs_files_f(olym_suzano, rf"release_orders/KIRKENES-2304")
                 gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
         if select=="ADMIN" :
