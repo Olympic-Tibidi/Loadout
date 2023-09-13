@@ -311,12 +311,24 @@ if authentication_status:
         st.subheader("PORT OF OLYMPIA TOS")
         st.write(f'Welcome *{name}*')
         select=st.sidebar.radio("SELECT FUNCTION",
-            ('ADMIN', 'LOADOUT', 'INVENTORY'))
+            ('ADMIN', 'LOADOUT', 'INVENTORY','DATA BACKUP'))
         
             #tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
             
-        
-            
+        if select=="DATA BACKUP" :
+            if st.button("BACKUP DATA"):
+                
+                bill_data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                admin_bill_of_ladings=json.loads(bill_data)
+                dispatch=gcp_download("olym_suzano",rf"dispatched.json")
+                dispatch=json.loads(dispatch)
+             
+                edis=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
+                edis_bank=[]
+                for i in edis:
+                    edis_bank.append(json.loads(gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/i")))
+                release_orders=list_cs_files_f(olym_suzano, rf"release_orders/KIRKENES-2304")
+                gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
         if select=="ADMIN" :
             admin_tab1,admin_tab2,admin_tab3,admin_tab4,admin_tab5=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES","MILL SHIPMENTS"])
             with admin_tab2:
