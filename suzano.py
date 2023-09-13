@@ -1570,16 +1570,7 @@ if authentication_status:
                         st.dataframe(df)
                 with dab2:
                     
-                    date_filter=st.checkbox("CLICK FOR DATE FILTER")
-                    if "disabled" not in st.session_state:
-                        st.session_state.visibility = "visible"
-                        st.session_state.disabled = True
-                    if date_filter:
-                        st.session_state.disabled=False
-                        
-                    else:
-                        st.session_state.disabled=True
-                        #min_value=min([i.date() for i in zf["Warehouse_Out"]])
+                    
                     filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
                     
                     
@@ -1605,8 +1596,7 @@ if authentication_status:
                             st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
                         else:
                             st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
-                            st.markdown(f"**IN WAREHOUSE = {len(filtered_df)}**")
-                            st.markdown(f"**TOTAL OVERALL = {len(filtered_zf)+len(filtered_df)}**")
+                           
                         
                         
                     st.table(filtered_zf)
