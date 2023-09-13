@@ -1486,7 +1486,7 @@ if authentication_status:
                     suzano_report=suzano_report[["Date Shipped","Vehicle", "Shipment ID #", "Consignee","Consignee City","Consignee State","Release #","Carrier","ETA","Ocean BOL#","Warehouse","Vessel","Voyage #","Grade","Quantity","Metric Ton", "ADMT","Mode of Transportation"]]
                     suzano_report["Shipment ID #"]=[str(i) for i in suzano_report["Shipment ID #"]]
                     daily_suzano=suzano_report.copy()
-                    daily_suzano["Date"]=i.date() for i in suzano_report["Date Shipped"]]
+                    daily_suzano["Date"]=[i.date() for i in suzano_report["Date Shipped"]]
                     st.dataframe(daily_suzano)
                     
                     @st.cache
@@ -1504,7 +1504,7 @@ if authentication_status:
                         mime='text/csv')
                 except:
                     st.write("NO REPORTS RECORDED")
-                daily_suzano=suzano_report[suzano_report["Date Shipped"].date==datetime.datetime.today().date]
+                #daily_suzano=suzano_report[suzano_report["Date Shipped"].date==datetime.datetime.today().date]
 
             with inv3:
                 edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
