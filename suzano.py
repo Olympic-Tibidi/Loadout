@@ -329,7 +329,7 @@ if authentication_status:
                 for i in edis:
                     st.write(i)
                     #edis_bank.append(json.loads(gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{i}")))
-                release_orders=list_cs_files_f(olym_suzano, rf"release_orders/KIRKENES-2304")
+                release_orders=list_cs_files_f("olym_suzano", rf"release_orders/KIRKENES-2304")
                 st.write(edis_bank)
                 gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
         if select=="ADMIN" :
