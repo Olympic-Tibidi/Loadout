@@ -350,7 +350,7 @@ if authentication_status:
                 
                 zipObj = ZipFile("sample.zip", "w")
                 # Add multiple files to the zip
-                zipObj.write("bill_of_lading_j")
+                zipObj.write(bill_of_lading_j)
                 zipObj.write("mill_progress_j")
                 # close the Zip File
                 zipObj.close()
