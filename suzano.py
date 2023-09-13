@@ -1596,9 +1596,8 @@ if authentication_status:
                     
                     col1,col2=st.columns([2,8])
                     with col1:
-                        st.markdown(f"**TOTAL SHIPPED = {len(zf)}**")
-                        st.markdown(f"**IN WAREHOUSE = {len(df)}**")
-                        st.markdown(f"**TOTAL OVERALL = {len(zf)+len(df)}**")
+                        st.dataframe(zf)
+                        
                                
                         
                     with col2:
