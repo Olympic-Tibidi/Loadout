@@ -1571,7 +1571,7 @@ if authentication_status:
                 with dab2:
                     
                     
-                    filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=st.session_state.disabled,key="filter_date")
+                    filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=False,key="filter_date")
                     
                     
                    
@@ -1579,10 +1579,10 @@ if authentication_status:
                     
                     zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
                     filtered_zf=zf.copy()
-                    if date_filter:
-                        filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+                    
+                    filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
                         
-                        filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+                    filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
                         
                     
                     col1,col2=st.columns([2,8])
