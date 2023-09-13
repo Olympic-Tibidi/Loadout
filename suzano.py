@@ -1486,7 +1486,7 @@ if authentication_status:
                     suzano_report=suzano_report[["Date Shipped","Vehicle", "Shipment ID #", "Consignee","Consignee City","Consignee State","Release #","Carrier","ETA","Ocean BOL#","Warehouse","Vessel","Voyage #","Grade","Quantity","Metric Ton", "ADMT","Mode of Transportation"]]
                     suzano_report["Shipment ID #"]=[str(i) for i in suzano_report["Shipment ID #"]]
                     daily_suzano=suzano_report.copy()
-                    daily_suzano["Date"]=[i.date() for i in suzano_report["Date Shipped"]]
+                    daily_suzano["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suzano_report["Date Shipped"]]
                     st.dataframe(daily_suzano)
                     
                     @st.cache
