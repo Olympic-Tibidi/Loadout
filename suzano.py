@@ -636,14 +636,14 @@ if authentication_status:
                             with rel_col1:
                                 
                                 st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                                st.markdown(f"**:blue[PO Number : {target['po_number']}]**")
+                                st.markdown(f"**:blue[PO Number] : {target['po_number']}**")
                                 if targets[0] in sales_orders_completed:
                                     st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
                                     target0_done=True
                                     
                                 else:
                                     st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
-                                st.markdown(f"**:blue[Destination : {target['destination']}]**")
+                                st.markdown(f"**:blue[Destination] : {target['destination']}**")
                                 st.write(f"        Total Quantity-Tonnage : {target[targets[0]]['quantity']} Units - {target[targets[0]]['tonnage']} Metric Tons")
                                 st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
                                 st.write(f"        Batch : {target[targets[0]]['batch']} WIRES : {target[targets[0]]['unitized']}")
