@@ -1536,7 +1536,7 @@ if authentication_status:
                 
             with inv4:
                      
-                dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
+                dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED BY DATE"])
                 df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
                 zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
                                                               "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
@@ -1584,7 +1584,7 @@ if authentication_status:
                     
                     
                    
-                    zf[["Release_Order_Number","Carrier_Code","Terminal Bill Of Lading","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
+                    zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
                     
                     zf["Warehouse_Out"]=[datetime.datetime.strptime(j,"%Y-%m-%d %H:%M:%S") for j in zf["Warehouse_Out"]]
                     filtered_zf=zf.copy()
