@@ -1592,10 +1592,8 @@ if authentication_status:
                                
                         
                     with col2:
-                        if date_filter:
-                            st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
-                        else:
-                            st.markdown(f"**TOTAL SHIPPED = {len(filtered_zf)}**")
+                        st.markdown(f"**SHIPPED ON THIS DAY = {len(filtered_zf)}**")
+                        
                            
                         
                         
