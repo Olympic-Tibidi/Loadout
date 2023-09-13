@@ -330,7 +330,7 @@ if authentication_status:
                 for i in edis:
                     st.write(i)
                     edis_bank.append(gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{i}"))
-                release_orders=list_cs_files_f("olym_suzano", rf"release_orders/KIRKENES-2304")
+                release_orders=list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304")
                 for i in release_orders:
                     st.write(i)
                     release_bank.append(json.loads(gcp_download("olym_suzano",  rf"release_orders/KIRKENES-2304/{i}")))
