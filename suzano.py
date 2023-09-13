@@ -34,7 +34,8 @@ from yaml.loader import SafeLoader
 #from streamlit_extras.dataframe_explorer import dataframe_explorer
 import yaml
 from yaml.loader import SafeLoader
-from zipfile import ZipFile
+import zipfile
+
 
 import plotly.graph_objects as go
 st.set_page_config(layout="wide")
