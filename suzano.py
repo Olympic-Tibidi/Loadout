@@ -1503,7 +1503,7 @@ if authentication_status:
                         mime='text/csv')
                 except:
                     st.write("NO REPORTS RECORDED")
-               
+                daily_suzano=suzano_report[suzano_report["Date Shipped"].date==datetime.datetime.today().date]
 
             with inv3:
                 edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
