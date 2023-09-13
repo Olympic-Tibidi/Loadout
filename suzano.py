@@ -1487,7 +1487,9 @@ if authentication_status:
                     suzano_report["Shipment ID #"]=[str(i) for i in suzano_report["Shipment ID #"]]
                     daily_suzano=suzano_report.copy()
                     daily_suzano["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suzano_report["Date Shipped"]]
-                    
+                    choose = st.radio(
+                                    "Select Daily or Accumulative Report",
+                                    [":blue[DAILY]", "***ACCUMULATIVE***"])
                     
                     st.dataframe(daily_suzano)
                     
