@@ -335,7 +335,14 @@ if authentication_status:
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
                 try:
                     requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
-                    st.text_area("EDI",requested_edi,height=400)
+                    st.text_area("EDI",requested_edi,height=400)                                
+                   
+                    st.download_button(
+                        label="DOWNLOAD EDI",
+                        data=requested_edi,
+                        file_name=f'{requested_edi_file}',
+                        mime='text/csv')
+
                 except:
                     st.write("NO EDI FILES IN DIRECTORY")
                                                                                  
