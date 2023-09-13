@@ -1485,7 +1485,7 @@ if authentication_status:
                     suzano_report=pd.DataFrame(suzano_report).T
                     suzano_report=suzano_report[["Date Shipped","Vehicle", "Shipment ID #", "Consignee","Consignee City","Consignee State","Release #","Carrier","ETA","Ocean BOL#","Warehouse","Vessel","Voyage #","Grade","Quantity","Metric Ton", "ADMT","Mode of Transportation"]]
                     suzano_report["Shipment ID #"]=[str(i) for i in suzano_report["Shipment ID #"]]
-                    daily_suzano=suzano_report[suzano_report["Date Shipped"].date==datetime.datetime.today().date]
+                    
                     st.dataframe(suzano_report)
                     
                     @st.cache
