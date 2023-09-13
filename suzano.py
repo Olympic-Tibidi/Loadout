@@ -560,7 +560,11 @@ if authentication_status:
                                 completed_release_orders.append(key)
                         
                         files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]   ### REMOVE json extension from name
+                        
+                        junk=gcp_download("olym_suzano",rf"junk_release.json")
+                        junk=json.loads(junk)
                         files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]        ###  CHECK IF COMPLETED
+                        files_in_folder=[i for i in files_in_folder if i not in junk]        ###  CHECK IF COMPLETED
                         release_order_dest_map={}
                         try:
                             
@@ -774,8 +778,7 @@ if authentication_status:
                                 if st.button("DELETE RELEASE ORDER ITEM!",key="laladg"):
                                     junk=gcp_download("olym_suzano",rf"junk_release.json")
                                     junk=json.loads(junk)
-                                    pass
-                                    #st.write(to_edit_d)
+                                   
                                     junk[requested_file]=1
                                     json_data = json.dumps(junk)
                                     storage_client = storage.Client()
