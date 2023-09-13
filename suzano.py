@@ -1416,7 +1416,7 @@ if authentication_status:
             Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
            
             mill_info=json.loads(gcp_download("olym_suzano",rf"mill_info.json"))
-            inv1,inv2,inv3,inv4,inv5=st.tabs(["DAILY ACTION","REPORTS","EDI BANK","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
+            inv1,inv2,inv3,inv4,inv5=st.tabs(["DAILY ACTION","SUZANO DAILY REPORTS","EDI BANK","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
             with inv1:
                 data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
                 bill_of_ladings=json.loads(data)
