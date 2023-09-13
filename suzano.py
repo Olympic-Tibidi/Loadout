@@ -1525,7 +1525,11 @@ if authentication_status:
                     st.text_area("EDI",requested_edi,height=400)
                 except:
                     st.write("NO EDI FILES IN DIRECTORY")
-                
+                st.download_button(
+                        label="DOWNLOAD EDI",
+                        data=requested_edi,
+                        file_name=f'OLYMPIA_DAILY_REPORT{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                        mime='text/csv')
 
 
                 
