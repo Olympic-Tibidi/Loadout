@@ -343,7 +343,7 @@ if authentication_status:
                 bill_of_lading_j=json.dumps(bill_of_ladings)
                 mill_progress=json.loads(gcp_download("olym_suzano",  rf"mill_progress.json"))
                 inv=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-                invj=inv.to_csv(inv)
+                invj=inv.to_csv("invj")
                 b64 = base64.b64encode(csvAll.encode()).decode()
                 href = f'<a href="data:file/invj(;base64,{b64}" download="all.csv">** ⯈ Download all results.**</a>'
                 st.markdown(href, unsafe_allow_html=True)
