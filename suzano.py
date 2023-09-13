@@ -252,7 +252,7 @@ def process():
             Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
             Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
             Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
-            Inventory.loc[Inventory["Lot"]==i,"Terminal Bill Of Lading"]=str(terminal_bill_of_lading)
+            Inventory.loc[Inventory["Lot"]==i,"Terminal B/L"]=str(terminal_bill_of_lading)
         except:
             st.write("Check Unit Number,Unit Not In Inventory")         
 
