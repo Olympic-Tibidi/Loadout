@@ -1591,18 +1591,18 @@ if authentication_status:
                         
                     
                     col1,col2=st.columns([2,8])
-                    with col1:
+                    with col2:
                         st.dataframe(zf)
                         
                                
                         
-                    with col2:
+                    with col1:
                         st.markdown(f"**SHIPPED ON THIS DAY = {zf['Shipped'].sum()*0.250} TONS**")
                         
                            
                         
                         
-                    st.table(filtered_zf)
+                   
             with inv5:
                 mill_progress=json.loads(gcp_download("olym_suzano",rf"mill_progress.json"))
                 reformed_dict = {}
