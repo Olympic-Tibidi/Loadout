@@ -1479,6 +1479,10 @@ if authentication_status:
                     st.table(arrived_vehicles.T)
             
             with inv2:
+                @st.cache
+                def convert_df(df):
+                    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+                    return df.to_csv().encode('utf-8')
                 try:
                     now=datetime.datetime.now()-datetime.timedelta(hours=7)
                     suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
@@ -1494,15 +1498,14 @@ if authentication_status:
                                     ["DAILY", "ACCUMULATIVE"])
                     if choose=="DAILY":
                         st.dataframe(daily_suzano)
+                        csv=convert_df(daily_suzano)
                     else:
                         st.dataframe(suzano_report)
+                        csv=convert_df(suzano_report)
                     
-                    @st.cache
-                    def convert_df(df):
-                        # IMPORTANT: Cache the conversion to prevent computation on every rerun
-                        return df.to_csv().encode('utf-8')
                     
-                    csv = convert_df(daily_report)
+                    
+                   
                     
                 
                     st.download_button(
