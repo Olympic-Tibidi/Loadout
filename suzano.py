@@ -320,6 +320,7 @@ if authentication_status:
             #tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
             
         if select=="DATA BACKUP" :
+            pass
             if st.button("BACKUP DATA"):
                 
                 bill_data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
