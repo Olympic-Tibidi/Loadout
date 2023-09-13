@@ -636,6 +636,7 @@ if authentication_status:
                             with rel_col1:
                                 
                                 st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                                st.markdown(f"**:blue[PO Number : {target['po_number']}]**")
                                 if targets[0] in sales_orders_completed:
                                     st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
                                     target0_done=True
