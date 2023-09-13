@@ -1538,9 +1538,9 @@ if authentication_status:
                      
                 dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED"])
                 df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
-                zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
+                zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
                                                               "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-                zf["Bales"]=[8-i if i<8 else i for i in zf["Bales"] ]
+           
                 items=df["Ocean B/L"].unique().tolist()
                 
                 with dab1:
@@ -1556,7 +1556,7 @@ if authentication_status:
                     with inv_col2:
                         #st.write(items)
                         inhouse=[df[df["Ocean B/L"]==i]["Remaining"].sum()*250/1000 for i in items]
-                        shipped=[zf[zf["Ocean B/L"]==i]["Shipped"].sum()*250/1000 for i in items]
+                        shipped=[df[df["Ocean B/L"]==i]["Shipped"].sum()*250/1000 for i in items]
                         
                         wrap_=[df[df["Ocean B/L"]==i]["Grade"].unique()[0] for i in items]
                        # st.write(wrap_)
