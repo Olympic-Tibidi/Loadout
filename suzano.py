@@ -255,7 +255,7 @@ def process():
             Inventory.loc[Inventory["Lot"]==i,"Terminal B/L"]=str(terminal_bill_of_lading)
         except:
             st.write("Check Unit Number,Unit Not In Inventory")         
-
+        
         temp=Inventory.to_csv("temp.csv")
         upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
     with open(f'placeholder.txt', 'w') as f:
@@ -334,11 +334,18 @@ if authentication_status:
                 for i in release_orders:
                     st.write(i)
                     release_bank.append(json.loads(gcp_download("olym_suzano",  rf"release_orders/KIRKENES-2304/{i}")))
-                release_database=json.loads(gcp_download("olym_suzano",  rf"release_orders/RELEASE_ORDER.json"))
+                release_database=json.loads(gcp_download("olym_suzano",  rf"release_orders/RELEASE_ORDERS.json"))
+                bill_of_ladings=json.loads(gcp_download("olym_suzano",  rf"terminal_bill_of_ladings.json"))
+                mill_progress=json.loads(gcp_download("olym_suzano",  rf"mill_progress.json"))
+                inv=gcp_csv_to_df("olym_suzano", "Inventory.csv")
+                
+            
                 st.text_area("RELEASE ORDER INDEX",release_database)
                 st.text_area("EDI",edis_bank)
-                st.text_area("Release Orders",release_bank)
+                st.text_area("RELEASE ORDERS",release_bank)
                 st.text_area("DISPATCH",dispatch)
+                st.text_area("BILL OF LADINGS",bill_of_ladings)
+                
                 #gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
         if select=="ADMIN" :
             admin_tab1,admin_tab2,admin_tab3,admin_tab4,admin_tab5=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES","MILL SHIPMENTS"])
