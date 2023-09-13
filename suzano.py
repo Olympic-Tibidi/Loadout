@@ -322,7 +322,7 @@ if authentication_status:
                 admin_bill_of_ladings=json.loads(bill_data)
                 dispatch=gcp_download("olym_suzano",rf"dispatched.json")
                 dispatch=json.loads(dispatch)
-             
+                
                 edis=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
                 st.write(edis)
                 edis_bank=[]
@@ -334,8 +334,11 @@ if authentication_status:
                 for i in release_orders:
                     st.write(i)
                     release_bank.append(json.loads(gcp_download("olym_suzano",  rf"release_orders/KIRKENES-2304/{i}")))
+                release_database=json.loads(gcp_download("olym_suzano",  rf"release_orders/RELEASE_ORDER.json"))
+                st.text_area("RELEASE ORDER INDEX",release_database)
                 st.text_area("EDI",edis_bank)
                 st.text_area("Release Orders",release_bank)
+                st.text_area("DISPATCH",dispatch)
                 #gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
         if select=="ADMIN" :
             admin_tab1,admin_tab2,admin_tab3,admin_tab4,admin_tab5=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES","MILL SHIPMENTS"])
