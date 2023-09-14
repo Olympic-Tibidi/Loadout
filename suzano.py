@@ -356,8 +356,8 @@ if authentication_status:
                 mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","UPLOAD SCHEDULE"])
                 with mill_tab1:
                     current_schedule=gcp_csv_to_df("olym_suzano", "truck_schedule.csv")
-                    dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule.index]
-                    current_schedule.index=dates
+                    #dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule.index]
+                    #current_schedule.index=dates
                     
                     st.dataframe(pd.DataFrame(current_schedule))
                 
