@@ -371,7 +371,7 @@ if authentication_status:
                             
                             else:
                                 current_schedule_str[i]=current_schedule_str[i]*20
-                        current_schedule_str["Total"]=current_schedule_str.loc[:,1:].sum(axis=0,skipna=True)
+                        current_schedule_str["Total"]=current_schedule_str.Iloc[:,1:].sum(axis=0,skipna=True)
                         st.dataframe(pd.DataFrame(current_schedule_str))
                                 
                     
