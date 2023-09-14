@@ -349,10 +349,10 @@ if authentication_status:
             with admin_tab5:
                 mill_shipments=gcp_download("olym_suzano",rf"mill_shipments.json")
                 mill_shipments=json.loads(mill_shipments)
-                mill_df=pd.DataFrame.from_dict(mill_shipments).T
-                mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
-                mill_df["New Product"]=mill_df["New Product"].astype(str)
-                st.table(mill_df)
+                #mill_df=pd.DataFrame.from_dict(mill_shipments).T
+                #mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
+                #mill_df["New Product"]=mill_df["New Product"].astype(str)
+                #st.table(mill_df)
                 uploaded_file = st.file_uploader("Choose a file",key="pdods")
                 if uploaded_file is not None:
                     
@@ -397,6 +397,8 @@ if authentication_status:
                         df.index=dates
                         df=df.astype(int)
                         df["Total"]=df.sum(axis=1)
+                    temp=df.to_csv("temp.csv")
+                    upload_cs_file("olym_suzano", 'temp.csv',"truck_schedule.csv") 
                     st.table(df)
 
             with admin_tab4:
