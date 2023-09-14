@@ -364,7 +364,7 @@ if authentication_status:
                     
                     current_schedule_str=current_schedule.copy()
                     #current_schedule_str.index = pd.to_datetime(current_schedule_str.index)
-                    dates=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%s") for i in current_schedule_str.index]#datetime.datetime.strftime(i,"%b %d,%A")
+                    dates=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S") for i in current_schedule_str.index]#datetime.datetime.strftime(i,"%b %d,%A")
                     #current_schedule_str.index=dates
                     
                     st.dataframe(pd.DataFrame(current_schedule_str))
