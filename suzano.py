@@ -353,6 +353,64 @@ if authentication_status:
                 mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
                 mill_df["New Product"]=mill_df["New Product"].astype(str)
                 st.table(mill_df)
+                uploaded_file = st.file_uploader("Choose a file")
+                if uploaded_file is not None:
+                    # To read file as bytes:
+                    bytes_data = uploaded_file.getvalue()
+                    #st.write(bytes_data)
+                
+                    # To convert to a string based IO:
+                    stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+                    #st.write(stringio)
+                
+                    # To read file as string:
+                    string_data = stringio.read()
+                    #st.write(string_data)
+                
+                    # Can be used wherever a "file-like" object is accepted:
+                    schedule = pd.read_excel(uploaded_file,header=None)
+                    schedule=schedule.dropna(0, how="all")
+                    schedule.reset_index(drop=True,inplace=True)
+                    locations=[ i for i in schedule["Truck Count"].unique() if i!='Total' and str(i)!="nan"]
+                    date_indexs=[]
+                    plan={}
+                    for j in range(1,6):
+                        
+                        for i in schedule.index:
+                            try:
+                                if schedule.loc[i,f"Unnamed: {j}"].date():
+                                    #print(i)
+                                    date_indexs.append(i)
+                    
+                            except:
+                                pass
+                        for i in date_indexs[:-1]:
+                            #print(i)
+                            for k in range(i+1,date_indexs[date_indexs.index(i)+1]):
+                                #print(k)
+                                if schedule.loc[k,"Truck Count"] in locations:
+                                    location=schedule.loc[k,"Truck Count"]
+                                    #print(location)
+                                    key=schedule.loc[i,f"Unnamed: {j}"]
+                                    #print(key)            
+                                    try:
+                                        plan[key][location]=schedule.loc[k,f"Unnamed: {j}"]
+                                    except:
+                                        plan[key]={}
+                                        plan[key][location]=schedule.loc[k,f"Unnamed: {j}"]
+                    
+                        for k in range(date_indexs[-1],len(schedule)):        
+                                if schedule.loc[k,"Truck Count"] in locations:
+                                    location=schedule.loc[k,"Truck Count"]
+                                    plan[schedule.loc[date_indexs[-1],f"Unnamed: {j}"]]={}
+                                    plan[schedule.loc[date_indexs[-1],f"Unnamed: {j}"]]={location:schedule.loc[k,f"Unnamed: {j}"]}
+                        df=pd.DataFrame(plan).T.sort_index().fillna("0")
+                        dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in df.index]
+                        df.index=dates
+                        df=df.astype(int)
+                        df["Total"]=df.sum(axis=1)
+                        st.dataframe(df)
+
             with admin_tab4:
                 st.markdown("SHIPMENT FILES")
                 shipment_tab1,shipment_tab2=st.tabs(["UPLOAD/PROCESS SHIPMENT FILE","SHIPMENT FILE DATABASE"])
