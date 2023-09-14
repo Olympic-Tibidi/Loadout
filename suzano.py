@@ -427,8 +427,8 @@ if authentication_status:
                             df=df.astype(int)
                             df["Total"]=df.sum(axis=1)
                             df.loc["Total"]=df.sum(axis=0)
-                            df=df.replace(0,"")
-                        st.table(df)
+                            df_v=df.replace(0,"")
+                        st.table(df_v)
                         if st.button("UPDATE DATABASE WITH NEW SCHEDULE",key="lolos"):
                             
                             temp=df.to_csv("temp.csv")
