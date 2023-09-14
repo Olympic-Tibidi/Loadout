@@ -368,7 +368,7 @@ if authentication_status:
                     #st.write(string_data)
                 
                     # Can be used wherever a "file-like" object is accepted:
-                    schedule = pd.read_csv(uploaded_file)
+                    schedule=pd.read_csv(uploaded_file,header=0,index_col=None)
                     schedule=schedule.dropna(0, how="all")
                     schedule.reset_index(drop=True,inplace=True)
                     locations=[ i for i in schedule["Truck Count"].unique() if i!='Total' and str(i)!="nan"]
