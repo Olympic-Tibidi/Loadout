@@ -353,7 +353,7 @@ if authentication_status:
                 mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
                 mill_df["New Product"]=mill_df["New Product"].astype(str)
                 st.table(mill_df)
-                uploaded_file = st.file_uploader("Choose a file")
+                uploaded_file = st.file_uploader("Choose a file",key="pdods")
                 if uploaded_file is not None:
                     # To read file as bytes:
                     bytes_data = uploaded_file.getvalue()
