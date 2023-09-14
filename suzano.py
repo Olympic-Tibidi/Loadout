@@ -357,17 +357,28 @@ if authentication_status:
                 mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","UPLOAD SCHEDULE"])
                 with mill_tab1:
                     choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])
-                    if choice=="TRUCKS":
-                        st.title("TRUCKS")
                     current_schedule.rename(columns={"Unnamed: 0":"Date"},inplace=True)  
                     current_schedule.set_index("Date",drop=True,inplace=True)
-                    
                     current_schedule_str=current_schedule.copy()
+                    if choice=="TRUCKS":
+                        st.markdown("**TRUCKS**")                        
+                        st.dataframe(pd.DataFrame(current_schedule_str))
+                    else:
+                        st.markdown("**TONS**")
+                        for i in current_schedule_str.columns:
+                            if i in ["Wauna, Oregon","Halsey, Oregon"]:
+                                current_schedule_str[i]=current_schedule_str[i]*28
+                            else:
+                                current_schedule_str[i]=current_schedule_str[i]*20
+                            st.dataframe(pd.DataFrame(current_schedule_str))
+                                
+                    
+                    
                     #current_schedule_str.index = pd.to_datetime(current_schedule_str.index)
                     #dates=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S") for i in current_schedule_str.index]#datetime.datetime.strftime(i,"%b %d,%A")
                     #current_schedule_str.index=dates
                     
-                    st.dataframe(pd.DataFrame(current_schedule_str))
+                    
                 
                 with mill_tab2:                    
                     uploaded_file = st.file_uploader("Choose a file",key="pdods")
