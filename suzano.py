@@ -359,7 +359,8 @@ if authentication_status:
                     choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])
                     if choice=="TRUCKS":
                         st.title("TRUCKS")
-                        
+                    current_schedule.rename(columns={"Unnamed: 0":"Date"},inplace=True)  
+                    currenst_schedule.set_index("Date",drop=True,inplace=True)
                     #dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule.index]
                     #current_schedule.index=dates
                     
