@@ -370,7 +370,7 @@ if authentication_status:
                                 current_schedule_str[i]=current_schedule_str[i]*28
                             else:
                                 current_schedule_str[i]=current_schedule_str[i]*20
-                            st.dataframe(pd.DataFrame(current_schedule_str))
+                        st.dataframe(pd.DataFrame(current_schedule_str))
                                 
                     
                     
