@@ -370,7 +370,7 @@ if authentication_status:
                                 current_schedule_str[i]=current_schedule_str[i]*28
                             else:
                                 current_schedule_str[i]=current_schedule_str[i]*20
-                            current_schedule_str["Total"]=current_schedule_str.sum(axis=1)
+                            current_schedule_str["Total"]=current_schedule_str.sum(axis=0)
                         st.dataframe(pd.DataFrame(current_schedule_str))
                                 
                     
