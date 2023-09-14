@@ -362,7 +362,7 @@ if authentication_status:
                     current_schedule.rename(columns={"Unnamed: 0":"Date"},inplace=True)  
                     current_schedule.set_index("Date",drop=True,inplace=True)
                     current_schedule_str=current_schedule.copy()
-                    dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule_str["Date]]
+                    dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule_str["Date"]]
                     current_schedule_str.index=dates
                     
                     st.dataframe(pd.DataFrame(current_schedule_str))
