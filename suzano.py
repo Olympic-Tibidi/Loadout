@@ -356,7 +356,7 @@ if authentication_status:
                 mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","UPLOAD SCHEDULE"])
                 with mill_tab1:
                     current_schedule=gcp_csv_to_df("olym_suzano", "truck_schedule.csv")
-                    st.dataframe(pd.DataFrame(current_schedule)
+                    st.dataframe(pd.DataFrame(current_schedule))
                 
                 with mill_tab2:                    
                     uploaded_file = st.file_uploader("Choose a file",key="pdods")
