@@ -355,6 +355,8 @@ if authentication_status:
                 #st.table(mill_df)
                 mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","UPLOAD SCHEDULE"])
                 with mill_tab1:
+                    st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])
+                    st.subheader("TRUCKS")
                     current_schedule=gcp_csv_to_df("olym_suzano", "truck_schedule.csv")
                     #dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule.index]
                     #current_schedule.index=dates
