@@ -397,7 +397,7 @@ if authentication_status:
                         df.index=dates
                         df=df.astype(int)
                         df["Total"]=df.sum(axis=1)
-                    st.dataframe(df)
+                    st.table(df)
 
             with admin_tab4:
                 st.markdown("SHIPMENT FILES")
