@@ -353,55 +353,61 @@ if authentication_status:
                 mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
                 mill_df["New Product"]=mill_df["New Product"].astype(str)
                 #st.table(mill_df)
-                uploaded_file = st.file_uploader("Choose a file",key="pdods")
-                if uploaded_file is not None:
-                    
-                    schedule=pd.read_excel(uploaded_file,header=0,index_col=None)
-                    schedule=schedule.dropna(0, how="all")
-                    schedule.reset_index(drop=True,inplace=True)
-                    locations=[ i for i in schedule["Truck Count"].unique() if i!='Total' and str(i)!="nan"]
-                    date_indexs=[]
-                    plan={}
-                    for j in range(1,6):
+                mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","UPLOAD SCHEDULE"])
+                with mill_tab1:
+                    current_schedule=gcp_csv_to_df("olym_suzano", "truck_schedule.csv")
+                    st.dataframe(pd.DataFrame(current_schedule)
+                
+                with mill_tab2:                    
+                    uploaded_file = st.file_uploader("Choose a file",key="pdods")
+                    if uploaded_file is not None:
                         
-                        for i in schedule.index:
-                            try:
-                                if schedule.loc[i,f"Unnamed: {j}"].date():
-                                    #print(i)
-                                    date_indexs.append(i)
-                    
-                            except:
-                                pass
-                        for i in date_indexs[:-1]:
-                            #print(i)
-                            for k in range(i+1,date_indexs[date_indexs.index(i)+1]):
-                                #print(k)
-                                if schedule.loc[k,"Truck Count"] in locations:
-                                    location=schedule.loc[k,"Truck Count"]
-                                    #print(location)
-                                    key=schedule.loc[i,f"Unnamed: {j}"]
-                                    #print(key)            
-                                    try:
-                                        plan[key][location]=schedule.loc[k,f"Unnamed: {j}"]
-                                    except:
-                                        plan[key]={}
-                                        plan[key][location]=schedule.loc[k,f"Unnamed: {j}"]
-                    
-                        for k in range(date_indexs[-1],len(schedule)):        
-                                if schedule.loc[k,"Truck Count"] in locations:
-                                    location=schedule.loc[k,"Truck Count"]
-                                    plan[schedule.loc[date_indexs[-1],f"Unnamed: {j}"]]={}
-                                    plan[schedule.loc[date_indexs[-1],f"Unnamed: {j}"]]={location:schedule.loc[k,f"Unnamed: {j}"]}
-                        df=pd.DataFrame(plan).T.sort_index().fillna("0")
-                        dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in df.index]
-                        df.index=dates
-                        df=df.astype(int)
-                        df["Total"]=df.sum(axis=1)
-                        df.loc["Total"]=df.sum(axis=0)
-                        df=df.replace(0,"")
-                    temp=df.to_csv("temp.csv")
-                    upload_cs_file("olym_suzano", 'temp.csv',"truck_schedule.csv") 
-                    st.table(df)
+                        schedule=pd.read_excel(uploaded_file,header=0,index_col=None)
+                        schedule=schedule.dropna(0, how="all")
+                        schedule.reset_index(drop=True,inplace=True)
+                        locations=[ i for i in schedule["Truck Count"].unique() if i!='Total' and str(i)!="nan"]
+                        date_indexs=[]
+                        plan={}
+                        for j in range(1,6):
+                            
+                            for i in schedule.index:
+                                try:
+                                    if schedule.loc[i,f"Unnamed: {j}"].date():
+                                        #print(i)
+                                        date_indexs.append(i)
+                        
+                                except:
+                                    pass
+                            for i in date_indexs[:-1]:
+                                #print(i)
+                                for k in range(i+1,date_indexs[date_indexs.index(i)+1]):
+                                    #print(k)
+                                    if schedule.loc[k,"Truck Count"] in locations:
+                                        location=schedule.loc[k,"Truck Count"]
+                                        #print(location)
+                                        key=schedule.loc[i,f"Unnamed: {j}"]
+                                        #print(key)            
+                                        try:
+                                            plan[key][location]=schedule.loc[k,f"Unnamed: {j}"]
+                                        except:
+                                            plan[key]={}
+                                            plan[key][location]=schedule.loc[k,f"Unnamed: {j}"]
+                        
+                            for k in range(date_indexs[-1],len(schedule)):        
+                                    if schedule.loc[k,"Truck Count"] in locations:
+                                        location=schedule.loc[k,"Truck Count"]
+                                        plan[schedule.loc[date_indexs[-1],f"Unnamed: {j}"]]={}
+                                        plan[schedule.loc[date_indexs[-1],f"Unnamed: {j}"]]={location:schedule.loc[k,f"Unnamed: {j}"]}
+                            df=pd.DataFrame(plan).T.sort_index().fillna("0")
+                            dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in df.index]
+                            df.index=dates
+                            df=df.astype(int)
+                            df["Total"]=df.sum(axis=1)
+                            df.loc["Total"]=df.sum(axis=0)
+                            df=df.replace(0,"")
+                        temp=df.to_csv("temp.csv")
+                        upload_cs_file("olym_suzano", 'temp.csv',"truck_schedule.csv") 
+                        st.table(df)
 
             with admin_tab4:
                 st.markdown("SHIPMENT FILES")
