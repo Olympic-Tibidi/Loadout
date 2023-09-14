@@ -366,12 +366,13 @@ if authentication_status:
                     else:
                         st.markdown("**TONS**")
                         for i in current_schedule_str.columns[:-1]:
+                            
                             if i in ["Wauna, Oregon","Halsey, Oregon"]:
                                 current_schedule_str[i]=current_schedule_str[i]*28
                             
                             else:
                                 current_schedule_str[i]=current_schedule_str[i]*20
-                        current_schedule_str["Total"]=current_schedule_str.iloc[:,1:].sum(axis=0,skipna=False)
+                        current_schedule_str["Total"]=current_schedule_str.sum(axis=0,skipna=False)
                         st.dataframe(pd.DataFrame(current_schedule_str))
                                 
                     
