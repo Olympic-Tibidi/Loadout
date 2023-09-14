@@ -416,11 +416,12 @@ if authentication_status:
                             df["Total"]=df.sum(axis=1)
                             df.loc["Total"]=df.sum(axis=0)
                             df=df.replace(0,"")
+                        st.table(df)
                         if st.button("UPDATE DATABASE WITH NEW SCHEDULE",key="lolos"):
                             
                             temp=df.to_csv("temp.csv")
                             upload_cs_file("olym_suzano", 'temp.csv',"truck_schedule.csv") 
-                            st.table(df)
+                            
 
             with admin_tab4:
                 st.markdown("SHIPMENT FILES")
