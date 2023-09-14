@@ -1193,8 +1193,8 @@ if authentication_status:
                         
                         click_clear = st.button('CLEAR SCANNED INPUTS', key=3)
                         if click_clear:
-                            load_input = placeholder1.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
-                            bale_load_input=placeholder2.text_area("**BALE LOADS**",value="",height=300,key=1121)#[:-2]
+                            load_input = placeholder1.text_area("**UNITS**",value="",height=300,key=2)#[:-2]
+                            bale_load_input=placeholder2.text_area("**INDIVIDUAL BALES**",value="",height=300,key=1121)#[:-2]
                         if load_input is not None :
                             textsplit = load_input.splitlines()
                             textsplit=[i for i in textsplit if len(i)>8]
@@ -2083,8 +2083,8 @@ if authentication_status:
                     
                     click_clear = st.button('CLEAR SCANNED INPUTS', key=3)
                     if click_clear:
-                        load_input = placeholder1.text_area("**LOADS**",value="",height=300,key=2)#[:-2]
-                        bale_load_input=placeholder2.text_area("**BALE LOADS**",value="",height=300,key=1121)#[:-2]
+                        load_input = placeholder1.text_area("**UNITS**",value="",height=300,key=2)#[:-2]
+                        bale_load_input=placeholder2.text_area("**INDIVIDUAL BALES**",value="",height=300,key=1121)#[:-2]
                     if load_input is not None :
                         textsplit = load_input.splitlines()
                         textsplit=[i for i in textsplit if len(i)>8]
