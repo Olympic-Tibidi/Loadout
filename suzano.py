@@ -421,6 +421,7 @@ if authentication_status:
                             
                             temp=df.to_csv("temp.csv")
                             upload_cs_file("olym_suzano", 'temp.csv',"truck_schedule.csv") 
+                            st.success('File Uploaded', icon="✅")
                             
 
             with admin_tab4:
