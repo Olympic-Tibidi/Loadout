@@ -361,10 +361,11 @@ if authentication_status:
                         st.title("TRUCKS")
                     current_schedule.rename(columns={"Unnamed: 0":"Date"},inplace=True)  
                     current_schedule.set_index("Date",drop=True,inplace=True)
-                    #dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule.index]
-                    #current_schedule.index=dates
+                    current_schedule_str=current_schedule.copy()
+                    dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule_str.index]
+                    current_schedule_str.index=dates
                     
-                    st.dataframe(pd.DataFrame(current_schedule))
+                    st.dataframe(pd.DataFrame(current_schedule_str))
                 
                 with mill_tab2:                    
                     uploaded_file = st.file_uploader("Choose a file",key="pdods")
