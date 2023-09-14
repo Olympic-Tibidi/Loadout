@@ -397,6 +397,8 @@ if authentication_status:
                         df.index=dates
                         df=df.astype(int)
                         df["Total"]=df.sum(axis=1)
+                        df.loc["Total"]=df.sum(axis=0)
+                        df=df.replace(0,"")
                     temp=df.to_csv("temp.csv")
                     upload_cs_file("olym_suzano", 'temp.csv',"truck_schedule.csv") 
                     st.table(df)
