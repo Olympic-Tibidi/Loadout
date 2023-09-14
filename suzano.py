@@ -394,6 +394,8 @@ if authentication_status:
                         schedule.reset_index(drop=True,inplace=True)
                         locations=[ i for i in schedule["Truck Count"].unique() if i!='Total' and str(i)!="nan"]
                         date_indexs=[]
+                        locations=[ i for i in schedule["SUZANO LOADOUT TRUCK SCHEDULE"].unique() if i!='Total' and str(i)!="nan"]
+                        date_indexs=[]
                         plan={}
                         for j in range(1,6):
                             
@@ -409,8 +411,8 @@ if authentication_status:
                                 #print(i)
                                 for k in range(i+1,date_indexs[date_indexs.index(i)+1]):
                                     #print(k)
-                                    if schedule.loc[k,"Truck Count"] in locations:
-                                        location=schedule.loc[k,"Truck Count"]
+                                    if schedule.loc[k,"SUZANO LOADOUT TRUCK SCHEDULE"] in locations:
+                                        location=schedule.loc[k,"SUZANO LOADOUT TRUCK SCHEDULE"]
                                         #print(location)
                                         key=schedule.loc[i,f"Unnamed: {j}"]
                                         #print(key)            
@@ -421,8 +423,8 @@ if authentication_status:
                                             plan[key][location]=schedule.loc[k,f"Unnamed: {j}"]
                         
                             for k in range(date_indexs[-1],len(schedule)):        
-                                    if schedule.loc[k,"Truck Count"] in locations:
-                                        location=schedule.loc[k,"Truck Count"]
+                                    if schedule.loc[k,"SUZANO LOADOUT TRUCK SCHEDULE"] in locations:
+                                        location=schedule.loc[k,"SUZANO LOADOUT TRUCK SCHEDULE"]
                                         plan[schedule.loc[date_indexs[-1],f"Unnamed: {j}"]]={}
                                         plan[schedule.loc[date_indexs[-1],f"Unnamed: {j}"]]={location:schedule.loc[k,f"Unnamed: {j}"]}
                             df=pd.DataFrame(plan).T.sort_index().fillna("0")
