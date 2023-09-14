@@ -392,7 +392,7 @@ if authentication_status:
                         schedule=pd.read_excel(uploaded_file,header=0,index_col=None)
                         schedule=schedule.dropna(0, how="all")
                         schedule.reset_index(drop=True,inplace=True)
-                        locations=[ i for i in schedule["Truck Count"].unique() if i!='Total' and str(i)!="nan"]
+                        locations=[ i for i in schedule[""SUZANO LOADOUT TRUCK SCHEDULE""].unique() if i!='Total' and str(i)!="nan"]
                         date_indexs=[]
                         locations=[ i for i in schedule["SUZANO LOADOUT TRUCK SCHEDULE"].unique() if i!='Total' and str(i)!="nan"]
                         date_indexs=[]
