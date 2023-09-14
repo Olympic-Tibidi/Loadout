@@ -360,8 +360,8 @@ if authentication_status:
                     if choice=="TRUCKS":
                         st.title("TRUCKS")
                         
-                    dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule.index]
-                    current_schedule.index=dates
+                    #dates=[datetime.datetime.strftime(i,"%b %d,%A") for i in current_schedule.index]
+                    #current_schedule.index=dates
                     
                     st.dataframe(pd.DataFrame(current_schedule))
                 
