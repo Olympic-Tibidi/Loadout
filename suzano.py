@@ -361,9 +361,11 @@ if authentication_status:
                         st.title("TRUCKS")
                     current_schedule.rename(columns={"Unnamed: 0":"Date"},inplace=True)  
                     current_schedule.set_index("Date",drop=True,inplace=True)
+                    
                     current_schedule_str=current_schedule.copy()
-                    dates=[i for i in current_schedule_str.index]#datetime.datetime.strftime(i,"%b %d,%A")
-                    current_schedule_str.index=dates
+                    current_schedule_str.index = pd.to_datetime(current_schedule_str.index)
+                    #dates=[i for i in current_schedule_str.index]#datetime.datetime.strftime(i,"%b %d,%A")
+                    #current_schedule_str.index=dates
                     
                     st.dataframe(pd.DataFrame(current_schedule_str))
                 
