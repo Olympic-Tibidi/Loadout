@@ -2152,7 +2152,8 @@ if authentication_status:
                     fault_messaging={}
                     bale_fault_messaging={}
                     textsplit={}
-                    bale_textsplit={}
+                    bale_textsplit
+                    yes=False
                     if load_input is not None:
                         textsplit = load_input.splitlines()
                         
@@ -2171,6 +2172,7 @@ if authentication_status:
                                 else:
                                     st.write(f"**Unit No : {i+1}-{x}**")
                                     faults.append(0)
+                                    yes=True
                             else:
                                 st.markdown(f"**:red[Unit No : {i+1}-{x}]**",unsafe_allow_html=True)
                                 st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
@@ -2179,7 +2181,7 @@ if authentication_status:
                                 
                             seen.add(x)
                     if bale_load_input is not None:
-                    
+                        yes=False
                         bale_textsplit = bale_load_input.splitlines()                       
                         bale_textsplit=[i for i in bale_textsplit if len(i)>8]                           
                         seen=set()
@@ -2192,6 +2194,7 @@ if authentication_status:
                                 else:
                                     st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(0)
+                                    yes=True
                             else:
                                 st.markdown(f"**:red[Bale No : {i+1}-{x}]**",unsafe_allow_html=True)
                                 st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
@@ -2201,9 +2204,11 @@ if authentication_status:
                        
                     loads={}
                     pure_loads={}
-                    yes=True
+                    
                     if 1 in faults or 1 in bale_faults:
                         yes=False
+                    else:
+                        yes=True
                     
                     if yes:
                         pure_loads={**{k:0 for k in textsplit},**{k:0 for k in bale_textsplit}}
