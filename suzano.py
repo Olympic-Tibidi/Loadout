@@ -1218,8 +1218,7 @@ if authentication_status:
                  
                    
                 with col5:
-                    #Inventory_Audit=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-                    #st.write(Inventory_Audit)
+                    
                     if double_load:
                         first_faults=[]
                         if first_load_input is not None:
@@ -2108,8 +2107,7 @@ if authentication_status:
              
                
             with col5:
-                #Inventory_Audit=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-                #st.write(Inventory_Audit)
+             
                 if double_load:
                     first_faults=[]
                     if first_load_input is not None:
@@ -2127,7 +2125,7 @@ if authentication_status:
                     if second_load_input is not None:
                         second_textsplit = second_load_input.splitlines()
                         second_textsplit = [i for i in second_textsplit if len(i)>8]
-                        #st.write(textsplit)
+                     
                         for i,x in enumerate(second_textsplit):
                             if audit_split(next_release_order,next_sales_order):
                                 st.text_input(f"Unit No : {len(first_textsplit)+1+i}",x)
