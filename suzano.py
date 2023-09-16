@@ -111,6 +111,13 @@ def gcp_download(bucket_name, source_file_name):
     blob = bucket.blob(source_file_name)
     data = blob.download_as_text()
     return data
+    
+def gcp_download_x(bucket_name, source_file_name,dest):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(source_file_name)
+    data = blob.download_as_bytes()
+    return data
 
 def gcp_csv_to_df(bucket_name, source_file_name):
     storage_client = storage.Client()
@@ -128,6 +135,14 @@ def upload_cs_file(bucket_name, source_file_name, destination_file_name):
     blob = bucket.blob(destination_file_name)
     blob.upload_from_filename(source_file_name)
     return True
+def upload_xl_file(bucket_name, uploaded_file, destination_blob_name):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+    uploaded_file.seek(0)
+
+    # Upload the file from the file object provided by st.file_uploader
+    blob.upload_from_file(uploaded_file)
 # define function that list files in the bucket
 def list_cs_files(bucket_name): 
     storage_client = storage.Client()
