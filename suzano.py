@@ -1726,95 +1726,279 @@ if authentication_status:
                         
                    
             with inv5:
-                mill_progress=json.loads(gcp_download(target_bucket,rf"mill_progress.json"))
-                reformed_dict = {}
-                for outerKey, innerDict in mill_progress.items():
-                    for innerKey, values in innerDict.items():
-                        reformed_dict[(outerKey,innerKey)] = values
-                mill_prog_col1,mill_prog_col2=st.columns([2,4])
-                with mill_prog_col1:
-                    st.dataframe(pd.DataFrame(reformed_dict).T)
-                with mill_prog_col2:
-                    chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
-                    mills = mill_progress.keys()
-                    targets = [mill_progress[i][chosen_month]["Planned"] for i in mills]
-                    shipped = [mill_progress[i][chosen_month]["Shipped"] for i in mills]
+                schedule=gcp_download_x(target_bucket,rf"truck_schedule.xlsx","schedule.xlsx")
+                schedule=pd.read_excel(schedule,sheet_name="SEPTEMBER",header=None,index_col=None)
+                report=json.loads(gcp_download(target_bucket,rf"suzano_report.json"))
+                locations=[ 'GP WAUNA - OR',
+                                 'GP HALSEY - OR',
+                                 'CLEARWATER - LEWISTON ID',
+                                 'KROGER - BC',
+                                 'WILLAMETTE FALLS - OR']  
+                
+                def process_schedule():
+                    class Mill:
+                        def __init__(self, location, date, number_of_trucks, truck_size):
+                            
+                            self.location = location
+                            self.date = date
+                            self.number_of_trucks = number_of_trucks
+                            self.truck_size = truck_size
+                            self.total=number_of_trucks*truck_size
+                            self.shipped_quantity = 0
+                            self.remaining=self.total
+                        def ship(self, quantity_shipped):
+                            if quantity_shipped <= self.remaining_quantity():
+                                self.shipped_quantity += quantity_shipped
+                            else:
+                                print("Error: Quantity exceeds remaining quantity.")
                     
-                    # Create a figure with a horizontal bar chart
-                    fig = go.Figure()
+                        def remaining_quantity(self):
+                            # Calculate the remaining quantity based on the number of trucks and shipped quantity
+                            return self.number_of_trucks * self.truck_size - self.shipped_quantity
                     
-                    for mill, target, shipped_qty in zip(mills, targets, shipped):
-                        fig.add_trace(
-                            go.Bar(
-                                y=[mill],
-                                x=[shipped_qty],  # Darker shade indicating shipped
-                                orientation="h",
-                                name="Shipped",
-                                marker=dict(color='rgba(0, 128, 0, 0.7)')
-                            )
-                        )
-                        fig.add_trace(
-                            go.Bar(
-                                y=[mill],
-                                x=[target],  # Lighter shade indicating target
-                                orientation="h",
-                                name="Target",
-                                marker=dict(color='rgba(0, 128, 0, 0.3)')
-                            )
-                        )
+                        def __str__(self):
+                            return f" Location: {self.location}, Date: {self.date}, " \
+                                   f"Trucks: {self.number_of_trucks}, Size: {self.truck_size}, " \
+                                   f"Shipped Quantity: {self.shipped_quantity}"
+                    consignee_dict={"Lewiston":'CLEARWATER - LEWISTON ID',"West  Linn":'WILLAMETTE FALLS - OR',
+                                    "Clatskanie":'GP WAUNA - OR',"Halsey":'GP HALSEY - OR',"New Westminster":'KROGER - BC'}
+                    locations=[ 'GP WAUNA - OR',
+                                 'GP HALSEY - OR',
+                                 'CLEARWATER - LEWISTON ID',
+                                 'KROGER - BC',
+                                 'WILLAMETTE FALLS - OR']       
+                    date_indexs=[]
+                    plan={}
+                    for i in schedule.index:
+                            try:
+                                if schedule.loc[i,1].date():
+                                    #print(i)
+                                    date_indexs.append(i)
+                            except:
+                                pass
+                    for j in range(1,6):
+                        
+                        
+                        for i in date_indexs[:-1]:
+                            #print(i)
+                            for k in range(i+1,date_indexs[date_indexs.index(i)+1]):
+                                #print(k)
+                                if schedule.loc[k,0] in locations:
+                                    location=schedule.loc[k,0]
+                                    #print(location)
+                                    key=schedule.loc[i,j]
+                                    #print(key)            
+                                    try:
+                                        plan[key][location]=schedule.loc[k,j]
+                                    except:
+                                        plan[key]={}
+                                        plan[key][location]=schedule.loc[k,j]
                     
-                    # Customize the layout
-                    fig.update_layout(
-                                barmode='stack',  # Stack the bars on top of each other
-                                xaxis_title="Quantity",
-                                yaxis_title="Mills",
-                                title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
-                                legend=dict(
-                                    x=1.02,  # Move the legend to the right
-                                    y=1.0,
-                                    xanchor="left",  # Adjust legend position
-                                    yanchor="top",
-                                    font=dict(size=12)  # Increase legend font size
-                                ),
-                                xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
-                                yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
-                                title_font=dict(size=16),  # Increase title font size and weight
-                                 height=600,  # Adjust the height of the chart (in pixels)
-                                width=800 
+                        for k in range(date_indexs[-1],len(schedule)):  
+                            
+                            if schedule.loc[k,0] in locations:
+                                location=schedule.loc[k,0]
+                                key=schedule.loc[date_indexs[-1],j]
+                                try:
+                                    plan[key][location]=schedule.loc[k,j]
+                                except:
+                                    plan[key]={}
+                                    plan[key][location]=schedule.loc[k,j]
+                                    
+                    df=pd.DataFrame(plan).T.sort_index()
+                    zf=df.copy()
+                    location_dict={'GP WAUNA - OR':{},'GP HALSEY - OR':{},'CLEARWATER - LEWISTON ID':{},
+                                   'KROGER - BC':{},'WILLAMETTE FALLS - OR':{}}
+                    
+                    for column in df.columns:
+                        for i in df.index:
+                            #print(i.to_pydatetime().date())
+                            if df.loc[i,column]>0:
+                                #print(df.loc[i,column])
+                                truck_size=28 if column in ['GP WAUNA - OR','GP HALSEY - OR'] else 20
+                                location_dict[column][i.to_pydatetime().date()]=Mill(column,i.to_pydatetime().date(),
+                                                                                     df.loc[i,column],truck_size)
+                    #df=df.replace(0,"")
+                    for i in df.columns:
+                        df[i]=[(0,j) if j is not None else "" for j in df[i].values ]
+    
+    
+                    for i in report:
+                        #print(datetime.datetime.strptime(report[i]["Date Shipped"],"%Y-%m-%d %H:%M:%S").date())
+                        #print(report[i]["Metric Ton"])
+                        where=consignee_dict[report[i]["Consignee City"]]
+                        when=datetime.datetime.strptime(report[i]["Date Shipped"],"%Y-%m-%d %H:%M:%S").date()
+                        qt=report[i]["Metric Ton"]
+                        #print(when)
+                        if location_dict[where][when]:
+                            
+                            location_dict[where][when].shipped_quantity+=qt
+                            location_dict[where][when].remaining-=qt
+                    for i in df.columns:
+                        for k in df.index:
+                            #print(k.date())
+                            try:
+                                shipped=location_dict[i][k.date()].shipped_quantity
+                                remaining=location_dict[i][k.date()].remaining
+                                truck_size=location_dict[i][k.date()].truck_size
+                                #print(truck_size)
+                                if shipped>0:
+                                    
+                                    if df.loc[k,i][1] >0:                                       
+                                        
+                                        a=(int(df.loc[k,i][0]+shipped/truck_size),df.loc[k,i][1])
+                                        df.at[k,i]=a
+                                        
+                                
+                            except:
+                                pass
+                        #print(location_dict[i])
+                    def color_coding(row):
+                        return ['color:red'] * len(row) if row['CLEARWATER - LEWISTON ID'] == (5,5) else ['color:green'] * len(row)
+                    #st.dataframe(df.style.apply(color_coding, axis=1))
+                    #df=df.style.applymap(lambda x: f"color: {'red' if isinstance(x,str) else 'black'}")
+                    return df,zf
+                
+
+                
+                mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","MILL PROGRESS"])
+                
+                with mill_tab2:
+                    mill_shipments=gcp_download(target_bucket,rf"mill_shipments.json")
+                    mill_shipments=json.loads(mill_shipments)
+                    mill_df=pd.DataFrame.from_dict(mill_shipments).T
+                    mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
+                    mill_df["New Product"]=mill_df["New Product"].astype(str)
+                    #st.table(mill_df)
+                
+                with mill_tab1:
+                    current_schedule,zf=process_schedule()
+                    current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
+                    def elementwise_sum(t1, t2,t3,t4,t5):
+                        return (t1[0] + t2[0]+ t3[0]+ t4[0]+ t5[0], t1[1] + t2[1]+ t3[1]+ t4[1]+ t5[1])
+                    truck_schedule=current_schedule.copy()
+                    ton_schedule=current_schedule.copy()
+                    truck_schedule["Total"]= truck_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                    choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])                   
+                   
+                    if choice=="TRUCKS":
+                        st.markdown("**TRUCKS - (Actual # of Loaded Trucks,Planned # of Trucks)**")                    
+                        st.table(truck_schedule)
+                    else:
+                        st.markdown("**TONS - (Actual Shipped Tonnage,Planned Tonnage)**")
+                        totals=[0]*len(ton_schedule)
+                        for ix in ton_schedule.index:
+                            for i in ton_schedule.columns:
+                                if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
+                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
+                             
+                                else:
+                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
+                        ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                    
+                        st.table(pd.DataFrame(ton_schedule))
+                                
+                    
+                    
+                    #current_schedule_str.index = pd.to_datetime(current_schedule_str.index)
+                    #dates=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S") for i in current_schedule_str.index]#datetime.datetime.strftime(i,"%b %d,%A")
+                    #current_schedule_str.index=dates
+                    
+                    
+                           
+                    
+                
+                with mill_tab2:
+                    
+                    mill_progress=json.loads(gcp_download(target_bucket,rf"mill_progress.json"))
+                    reformed_dict = {}
+                    for outerKey, innerDict in mill_progress.items():
+                        for innerKey, values in innerDict.items():
+                            reformed_dict[(outerKey,innerKey)] = values
+                    mill_prog_col1,mill_prog_col2=st.columns([2,4])
+                    with mill_prog_col1:
+                        st.dataframe(pd.DataFrame(reformed_dict).T)
+                    with mill_prog_col2:
+                        chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
+                        mills = mill_progress.keys()
+                        targets = [mill_progress[i][chosen_month]["Planned"] for i in mills]
+                        shipped = [mill_progress[i][chosen_month]["Shipped"] for i in mills]
+                        
+                        # Create a figure with a horizontal bar chart
+                        fig = go.Figure()
+                        
+                        for mill, target, shipped_qty in zip(mills, targets, shipped):
+                            fig.add_trace(
+                                go.Bar(
+                                    y=[mill],
+                                    x=[shipped_qty],  # Darker shade indicating shipped
+                                    orientation="h",
+                                    name="Shipped",
+                                    marker=dict(color='rgba(0, 128, 0, 0.7)')
+                                )
                             )
+                            fig.add_trace(
+                                go.Bar(
+                                    y=[mill],
+                                    x=[target],  # Lighter shade indicating target
+                                    orientation="h",
+                                    name="Target",
+                                    marker=dict(color='rgba(0, 128, 0, 0.3)')
+                                )
+                            )
+                        
+                        # Customize the layout
+                        fig.update_layout(
+                                    barmode='stack',  # Stack the bars on top of each other
+                                    xaxis_title="Quantity",
+                                    yaxis_title="Mills",
+                                    title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
+                                    legend=dict(
+                                        x=1.02,  # Move the legend to the right
+                                        y=1.0,
+                                        xanchor="left",  # Adjust legend position
+                                        yanchor="top",
+                                        font=dict(size=12)  # Increase legend font size
+                                    ),
+                                    xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
+                                    yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
+                                    title_font=dict(size=16),  # Increase title font size and weight
+                                     height=600,  # Adjust the height of the chart (in pixels)
+                                    width=800 
+                                )
+        
+                        st.plotly_chart(fig)
+    
+                    requested_mill=st.selectbox("**SELECT MILL TO SEE PROGRESS**",mill_progress.keys())
+                    def cust_business_days(start, end):
+                        business_days = pd.date_range(start=start, end=end, freq='B')
+                        return business_days
+                    target=mill_progress[requested_mill]["SEP 2023"]["Planned"]
+                    shipped=mill_progress[requested_mill]["SEP 2023"]["Shipped"]
+                    daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
+                    days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
+                    days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
+                    #shipped=800
+                    reference=daily_needed_rate*days_passed
+                    
+                   
+                    fig = go.Figure(go.Indicator(
+                            domain = {'x': [0, 1], 'y': [0, 1]},
+                            value = shipped,
+                            mode = "gauge+number+delta",
+                            title={'text': f"<span style='font-weight:bold; color:blue;'>TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT</span>", 'font': {'size': 20}},
+                            delta = {'reference': reference},
+                            gauge = {'axis': {'range': [None, target]},
+                                     'steps' : [
+                                         {'range': [0, reference], 'color': "lightgray"},
+                                      ],
+                                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': target}}))
     
                     st.plotly_chart(fig)
-
-                requested_mill=st.selectbox("**SELECT MILL TO SEE PROGRESS**",mill_progress.keys())
-                def cust_business_days(start, end):
-                    business_days = pd.date_range(start=start, end=end, freq='B')
-                    return business_days
-                target=mill_progress[requested_mill]["SEP 2023"]["Planned"]
-                shipped=mill_progress[requested_mill]["SEP 2023"]["Shipped"]
-                daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
-                days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
-                days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
-                #shipped=800
-                reference=daily_needed_rate*days_passed
-                
-               
-                fig = go.Figure(go.Indicator(
-                        domain = {'x': [0, 1], 'y': [0, 1]},
-                        value = shipped,
-                        mode = "gauge+number+delta",
-                        title={'text': f"<span style='font-weight:bold; color:blue;'>TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT</span>", 'font': {'size': 20}},
-                        delta = {'reference': reference},
-                        gauge = {'axis': {'range': [None, target]},
-                                 'steps' : [
-                                     {'range': [0, reference], 'color': "lightgray"},
-                                  ],
-                                 'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': target}}))
-
-                st.plotly_chart(fig)
-
-                st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
-                st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
-                st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
+    
+                    st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
+                    st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
+                    st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
                 
                 
 
@@ -2607,95 +2791,279 @@ if authentication_status:
                     
                
         with inv5:
-            mill_progress=json.loads(gcp_download(target_bucket,rf"mill_progress.json"))
-            reformed_dict = {}
-            for outerKey, innerDict in mill_progress.items():
-                for innerKey, values in innerDict.items():
-                    reformed_dict[(outerKey,innerKey)] = values
-            mill_prog_col1,mill_prog_col2=st.columns([2,4])
-            with mill_prog_col1:
-                st.dataframe(pd.DataFrame(reformed_dict).T)
-            with mill_prog_col2:
-                chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
-                mills = mill_progress.keys()
-                targets = [mill_progress[i][chosen_month]["Planned"] for i in mills]
-                shipped = [mill_progress[i][chosen_month]["Shipped"] for i in mills]
+            schedule=gcp_download_x(target_bucket,rf"truck_schedule.xlsx","schedule.xlsx")
+            schedule=pd.read_excel(schedule,sheet_name="SEPTEMBER",header=None,index_col=None)
+            report=json.loads(gcp_download(target_bucket,rf"suzano_report.json"))
+            locations=[ 'GP WAUNA - OR',
+                             'GP HALSEY - OR',
+                             'CLEARWATER - LEWISTON ID',
+                             'KROGER - BC',
+                             'WILLAMETTE FALLS - OR']  
+            
+            def process_schedule():
+                class Mill:
+                    def __init__(self, location, date, number_of_trucks, truck_size):
+                        
+                        self.location = location
+                        self.date = date
+                        self.number_of_trucks = number_of_trucks
+                        self.truck_size = truck_size
+                        self.total=number_of_trucks*truck_size
+                        self.shipped_quantity = 0
+                        self.remaining=self.total
+                    def ship(self, quantity_shipped):
+                        if quantity_shipped <= self.remaining_quantity():
+                            self.shipped_quantity += quantity_shipped
+                        else:
+                            print("Error: Quantity exceeds remaining quantity.")
                 
-                # Create a figure with a horizontal bar chart
-                fig = go.Figure()
+                    def remaining_quantity(self):
+                        # Calculate the remaining quantity based on the number of trucks and shipped quantity
+                        return self.number_of_trucks * self.truck_size - self.shipped_quantity
                 
-                for mill, target, shipped_qty in zip(mills, targets, shipped):
-                    fig.add_trace(
-                        go.Bar(
-                            y=[mill],
-                            x=[shipped_qty],  # Darker shade indicating shipped
-                            orientation="h",
-                            name="Shipped",
-                            marker=dict(color='rgba(0, 128, 0, 0.7)')
-                        )
-                    )
-                    fig.add_trace(
-                        go.Bar(
-                            y=[mill],
-                            x=[target],  # Lighter shade indicating target
-                            orientation="h",
-                            name="Target",
-                            marker=dict(color='rgba(0, 128, 0, 0.3)')
-                        )
-                    )
+                    def __str__(self):
+                        return f" Location: {self.location}, Date: {self.date}, " \
+                               f"Trucks: {self.number_of_trucks}, Size: {self.truck_size}, " \
+                               f"Shipped Quantity: {self.shipped_quantity}"
+                consignee_dict={"Lewiston":'CLEARWATER - LEWISTON ID',"West  Linn":'WILLAMETTE FALLS - OR',
+                                "Clatskanie":'GP WAUNA - OR',"Halsey":'GP HALSEY - OR',"New Westminster":'KROGER - BC'}
+                locations=[ 'GP WAUNA - OR',
+                             'GP HALSEY - OR',
+                             'CLEARWATER - LEWISTON ID',
+                             'KROGER - BC',
+                             'WILLAMETTE FALLS - OR']       
+                date_indexs=[]
+                plan={}
+                for i in schedule.index:
+                        try:
+                            if schedule.loc[i,1].date():
+                                #print(i)
+                                date_indexs.append(i)
+                        except:
+                            pass
+                for j in range(1,6):
+                    
+                    
+                    for i in date_indexs[:-1]:
+                        #print(i)
+                        for k in range(i+1,date_indexs[date_indexs.index(i)+1]):
+                            #print(k)
+                            if schedule.loc[k,0] in locations:
+                                location=schedule.loc[k,0]
+                                #print(location)
+                                key=schedule.loc[i,j]
+                                #print(key)            
+                                try:
+                                    plan[key][location]=schedule.loc[k,j]
+                                except:
+                                    plan[key]={}
+                                    plan[key][location]=schedule.loc[k,j]
                 
-                # Customize the layout
-                fig.update_layout(
-                            barmode='stack',  # Stack the bars on top of each other
-                            xaxis_title="Quantity",
-                            yaxis_title="Mills",
-                            title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
-                            legend=dict(
-                                x=1.02,  # Move the legend to the right
-                                y=1.0,
-                                xanchor="left",  # Adjust legend position
-                                yanchor="top",
-                                font=dict(size=12)  # Increase legend font size
-                            ),
-                            xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
-                            yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
-                            title_font=dict(size=16),  # Increase title font size and weight
-                             height=600,  # Adjust the height of the chart (in pixels)
-                            width=800 
+                    for k in range(date_indexs[-1],len(schedule)):  
+                        
+                        if schedule.loc[k,0] in locations:
+                            location=schedule.loc[k,0]
+                            key=schedule.loc[date_indexs[-1],j]
+                            try:
+                                plan[key][location]=schedule.loc[k,j]
+                            except:
+                                plan[key]={}
+                                plan[key][location]=schedule.loc[k,j]
+                                
+                df=pd.DataFrame(plan).T.sort_index()
+                zf=df.copy()
+                location_dict={'GP WAUNA - OR':{},'GP HALSEY - OR':{},'CLEARWATER - LEWISTON ID':{},
+                               'KROGER - BC':{},'WILLAMETTE FALLS - OR':{}}
+                
+                for column in df.columns:
+                    for i in df.index:
+                        #print(i.to_pydatetime().date())
+                        if df.loc[i,column]>0:
+                            #print(df.loc[i,column])
+                            truck_size=28 if column in ['GP WAUNA - OR','GP HALSEY - OR'] else 20
+                            location_dict[column][i.to_pydatetime().date()]=Mill(column,i.to_pydatetime().date(),
+                                                                                 df.loc[i,column],truck_size)
+                #df=df.replace(0,"")
+                for i in df.columns:
+                    df[i]=[(0,j) if j is not None else "" for j in df[i].values ]
+
+
+                for i in report:
+                    #print(datetime.datetime.strptime(report[i]["Date Shipped"],"%Y-%m-%d %H:%M:%S").date())
+                    #print(report[i]["Metric Ton"])
+                    where=consignee_dict[report[i]["Consignee City"]]
+                    when=datetime.datetime.strptime(report[i]["Date Shipped"],"%Y-%m-%d %H:%M:%S").date()
+                    qt=report[i]["Metric Ton"]
+                    #print(when)
+                    if location_dict[where][when]:
+                        
+                        location_dict[where][when].shipped_quantity+=qt
+                        location_dict[where][when].remaining-=qt
+                for i in df.columns:
+                    for k in df.index:
+                        #print(k.date())
+                        try:
+                            shipped=location_dict[i][k.date()].shipped_quantity
+                            remaining=location_dict[i][k.date()].remaining
+                            truck_size=location_dict[i][k.date()].truck_size
+                            #print(truck_size)
+                            if shipped>0:
+                                
+                                if df.loc[k,i][1] >0:                                       
+                                    
+                                    a=(int(df.loc[k,i][0]+shipped/truck_size),df.loc[k,i][1])
+                                    df.at[k,i]=a
+                                    
+                            
+                        except:
+                            pass
+                    #print(location_dict[i])
+                def color_coding(row):
+                    return ['color:red'] * len(row) if row['CLEARWATER - LEWISTON ID'] == (5,5) else ['color:green'] * len(row)
+                #st.dataframe(df.style.apply(color_coding, axis=1))
+                #df=df.style.applymap(lambda x: f"color: {'red' if isinstance(x,str) else 'black'}")
+                return df,zf
+            
+
+            
+            mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","MILL PROGRESS"])
+            
+            with mill_tab2:
+                mill_shipments=gcp_download(target_bucket,rf"mill_shipments.json")
+                mill_shipments=json.loads(mill_shipments)
+                mill_df=pd.DataFrame.from_dict(mill_shipments).T
+                mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
+                mill_df["New Product"]=mill_df["New Product"].astype(str)
+                #st.table(mill_df)
+            
+            with mill_tab1:
+                current_schedule,zf=process_schedule()
+                current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
+                def elementwise_sum(t1, t2,t3,t4,t5):
+                    return (t1[0] + t2[0]+ t3[0]+ t4[0]+ t5[0], t1[1] + t2[1]+ t3[1]+ t4[1]+ t5[1])
+                truck_schedule=current_schedule.copy()
+                ton_schedule=current_schedule.copy()
+                truck_schedule["Total"]= truck_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])                   
+               
+                if choice=="TRUCKS":
+                    st.markdown("**TRUCKS - (Actual # of Loaded Trucks,Planned # of Trucks)**")                    
+                    st.table(truck_schedule)
+                else:
+                    st.markdown("**TONS - (Actual Shipped Tonnage,Planned Tonnage)**")
+                    totals=[0]*len(ton_schedule)
+                    for ix in ton_schedule.index:
+                        for i in ton_schedule.columns:
+                            if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
+                                ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
+                         
+                            else:
+                                ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
+                    ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                
+                    st.table(pd.DataFrame(ton_schedule))
+                            
+                
+                
+                #current_schedule_str.index = pd.to_datetime(current_schedule_str.index)
+                #dates=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S") for i in current_schedule_str.index]#datetime.datetime.strftime(i,"%b %d,%A")
+                #current_schedule_str.index=dates
+                
+                
+                       
+                
+            
+            with mill_tab2:
+                
+                mill_progress=json.loads(gcp_download(target_bucket,rf"mill_progress.json"))
+                reformed_dict = {}
+                for outerKey, innerDict in mill_progress.items():
+                    for innerKey, values in innerDict.items():
+                        reformed_dict[(outerKey,innerKey)] = values
+                mill_prog_col1,mill_prog_col2=st.columns([2,4])
+                with mill_prog_col1:
+                    st.dataframe(pd.DataFrame(reformed_dict).T)
+                with mill_prog_col2:
+                    chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
+                    mills = mill_progress.keys()
+                    targets = [mill_progress[i][chosen_month]["Planned"] for i in mills]
+                    shipped = [mill_progress[i][chosen_month]["Shipped"] for i in mills]
+                    
+                    # Create a figure with a horizontal bar chart
+                    fig = go.Figure()
+                    
+                    for mill, target, shipped_qty in zip(mills, targets, shipped):
+                        fig.add_trace(
+                            go.Bar(
+                                y=[mill],
+                                x=[shipped_qty],  # Darker shade indicating shipped
+                                orientation="h",
+                                name="Shipped",
+                                marker=dict(color='rgba(0, 128, 0, 0.7)')
+                            )
                         )
+                        fig.add_trace(
+                            go.Bar(
+                                y=[mill],
+                                x=[target],  # Lighter shade indicating target
+                                orientation="h",
+                                name="Target",
+                                marker=dict(color='rgba(0, 128, 0, 0.3)')
+                            )
+                        )
+                    
+                    # Customize the layout
+                    fig.update_layout(
+                                barmode='stack',  # Stack the bars on top of each other
+                                xaxis_title="Quantity",
+                                yaxis_title="Mills",
+                                title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
+                                legend=dict(
+                                    x=1.02,  # Move the legend to the right
+                                    y=1.0,
+                                    xanchor="left",  # Adjust legend position
+                                    yanchor="top",
+                                    font=dict(size=12)  # Increase legend font size
+                                ),
+                                xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
+                                yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
+                                title_font=dict(size=16),  # Increase title font size and weight
+                                 height=600,  # Adjust the height of the chart (in pixels)
+                                width=800 
+                            )
+    
+                    st.plotly_chart(fig)
+
+                requested_mill=st.selectbox("**SELECT MILL TO SEE PROGRESS**",mill_progress.keys())
+                def cust_business_days(start, end):
+                    business_days = pd.date_range(start=start, end=end, freq='B')
+                    return business_days
+                target=mill_progress[requested_mill]["SEP 2023"]["Planned"]
+                shipped=mill_progress[requested_mill]["SEP 2023"]["Shipped"]
+                daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
+                days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
+                days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
+                #shipped=800
+                reference=daily_needed_rate*days_passed
+                
+               
+                fig = go.Figure(go.Indicator(
+                        domain = {'x': [0, 1], 'y': [0, 1]},
+                        value = shipped,
+                        mode = "gauge+number+delta",
+                        title={'text': f"<span style='font-weight:bold; color:blue;'>TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT</span>", 'font': {'size': 20}},
+                        delta = {'reference': reference},
+                        gauge = {'axis': {'range': [None, target]},
+                                 'steps' : [
+                                     {'range': [0, reference], 'color': "lightgray"},
+                                  ],
+                                 'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': target}}))
 
                 st.plotly_chart(fig)
 
-            requested_mill=st.selectbox("**SELECT MILL TO SEE PROGRESS**",mill_progress.keys())
-            def cust_business_days(start, end):
-                business_days = pd.date_range(start=start, end=end, freq='B')
-                return business_days
-            target=mill_progress[requested_mill]["SEP 2023"]["Planned"]
-            shipped=mill_progress[requested_mill]["SEP 2023"]["Shipped"]
-            daily_needed_rate=int(target/len(cust_business_days(datetime.date(2023,9,1),datetime.date(2023,10,1))))
-            days_passed=len(cust_business_days(datetime.date(2023,8,1),datetime.datetime.today()))
-            days_left=len(cust_business_days(datetime.datetime.today(),datetime.date(2023,9,1)))
-            #shipped=800
-            reference=daily_needed_rate*days_passed
-            
-           
-            fig = go.Figure(go.Indicator(
-                    domain = {'x': [0, 1], 'y': [0, 1]},
-                    value = shipped,
-                    mode = "gauge+number+delta",
-                    title={'text': f"<span style='font-weight:bold; color:blue;'>TONS SHIPPED TO {requested_mill} - SEPT TARGET {target} MT</span>", 'font': {'size': 20}},
-                    delta = {'reference': reference},
-                    gauge = {'axis': {'range': [None, target]},
-                             'steps' : [
-                                 {'range': [0, reference], 'color': "lightgray"},
-                              ],
-                             'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': target}}))
-
-            st.plotly_chart(fig)
-
-            st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
-            st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
-            st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
+                st.markdown(f"**SHOULD HAVE SHIPPED SO FAR : {reference} TONS (GRAY SHADE ON CHART)**")
+                st.markdown(f"**SHIPPED SO FAR : {shipped} TONS (GREEN LINE ON CHART) - DAYS PASSED : {days_passed}**")
+                st.markdown(f"**LEFT TO GO : {target-shipped} TONS (WHITE SHADE)- DAYS TO GO : {days_left}**")
 elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
