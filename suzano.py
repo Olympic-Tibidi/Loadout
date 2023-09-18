@@ -2563,7 +2563,7 @@ if authentication_status:
             b=(datetime.datetime.now()-datetime.timedelta(hours=7)).strftime("%H%M%S")
             b_=(datetime.datetime.now()-datetime.timedelta(hours=7)).strftime("%H:%M:%S")
             c=datetime.datetime.strftime(eta_date,"%Y%m%d")
-                
+            manual_time=False    
                 
                 
             if yes:
