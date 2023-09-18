@@ -2447,6 +2447,7 @@ if authentication_status:
             with col5:
              
                 if double_load:
+                    
                     first_faults=[]
                     if first_load_input is not None:
                         first_textsplit = first_load_input.splitlines()
@@ -2463,7 +2464,7 @@ if authentication_status:
                     if second_load_input is not None:
                         second_textsplit = second_load_input.splitlines()
                         second_textsplit = [i for i in second_textsplit if len(i)>8]
-                     
+                        #st.write(textsplit)
                         for i,x in enumerate(second_textsplit):
                             if audit_split(next_release_order,next_sales_order):
                                 st.text_input(f"Unit No : {len(first_textsplit)+1+i}",x)
@@ -2488,8 +2489,7 @@ if authentication_status:
                     fault_messaging={}
                     bale_fault_messaging={}
                     textsplit={}
-                    bale_textsplit
-                    yes=False
+                    bale_textsplit={}
                     if load_input is not None:
                         textsplit = load_input.splitlines()
                         
@@ -2508,7 +2508,6 @@ if authentication_status:
                                 else:
                                     st.write(f"**Unit No : {i+1}-{x}**")
                                     faults.append(0)
-                                    yes=True
                             else:
                                 st.markdown(f"**:red[Unit No : {i+1}-{x}]**",unsafe_allow_html=True)
                                 st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
@@ -2517,7 +2516,7 @@ if authentication_status:
                                 
                             seen.add(x)
                     if bale_load_input is not None:
-                        yes=False
+                    
                         bale_textsplit = bale_load_input.splitlines()                       
                         bale_textsplit=[i for i in bale_textsplit if len(i)>8]                           
                         seen=set()
@@ -2530,7 +2529,6 @@ if authentication_status:
                                 else:
                                     st.markdown(f"**Bale No : {i+1}-{x}**",unsafe_allow_html=True)
                                     bale_faults.append(0)
-                                    yes=True
                             else:
                                 st.markdown(f"**:red[Bale No : {i+1}-{x}]**",unsafe_allow_html=True)
                                 st.write(f"**:red[WRONG B/L, DO NOT LOAD UNIT {x}]**")
@@ -2540,11 +2538,9 @@ if authentication_status:
                        
                     loads={}
                     pure_loads={}
-                    
+                    yes=True
                     if 1 in faults or 1 in bale_faults:
                         yes=False
-                    else:
-                        yes=True
                     
                     if yes:
                         pure_loads={**{k:0 for k in textsplit},**{k:0 for k in bale_textsplit}}
@@ -2555,6 +2551,7 @@ if authentication_status:
                         for k in bale_textsplit:
                             loads[k[:-2]]+=0.125
                             pure_loads[k]+=0.125
+            manual_time=False   
             
                 
             a=datetime.datetime.strftime(file_date,"%Y%m%d")
