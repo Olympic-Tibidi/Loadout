@@ -1838,7 +1838,7 @@ if authentication_status:
                     for i in zf["Warehouse_Out"]:
                         
                         try:
-                            new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M"))
+                            new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S"))
                         except:                        
                             try:
                                 new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M"))
