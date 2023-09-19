@@ -1869,15 +1869,16 @@ if authentication_status:
                                     except:
                                         locations[dated_bill_of_ladings[i][0]]=dated_bill_of_ladings[i][1]*2
                                     #st.markdown(f"**{} Tons to {dated_bill_of_ladings[i][0]}**")
-                        st.write(dated_bill_of_ladings)
+                        
                         for i in locations:
                             st.markdown(f"**{locations[i]} Tons to {i}**")
-                        st.dataframe(filtered_zf)
+                            toplam+=locations[i]
+                        
                         
                                
                         
                     with col1:
-                        st.markdown(f"**SHIPPED ON THIS DAY = {filtered_zf['Shipped'].sum()*0.250} TONS**")
+                        st.markdown(f"**SHIPPED ON THIS DAY = {toplam} TONS**")
                         
                            
                         
