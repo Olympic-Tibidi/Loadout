@@ -700,7 +700,7 @@ if authentication_status:
                     dryness=st.text_input("Dryness",batch_mapping[ocean_bill_of_lading]["dryness"],disabled=True)
                     admt=st.text_input("ADMT PER UNIT",round(int(batch_mapping[ocean_bill_of_lading]["dryness"])/90,6),disabled=True)
                     unitized=st.selectbox("UNITIZED/DE-UNITIZED",["UNITIZED","DE-UNITIZED"],disabled=False)
-                    quantity=st.number_input("Quantity of Units", min_value=1, max_value=1500, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
+                    quantity=st.number_input("Quantity of Units", min_value=1, max_value=5000, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
                     tonnage=2*quantity
                     #queue=st.number_input("Place in Queue", min_value=1, max_value=20, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
                     transport_type=st.radio("Select Transport Type",("TRUCK","RAIL"))
