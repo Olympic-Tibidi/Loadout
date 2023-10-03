@@ -1921,6 +1921,7 @@ if authentication_status:
                         
                    
             with inv5:
+                
                 schedule=gcp_download_x(target_bucket,rf"truck_schedule.xlsx","schedule.xlsx")
                 
                 
@@ -2062,10 +2063,10 @@ if authentication_status:
                 
                 mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","MILL PROGRESS"])
                 
-                
-                
+                              
                 with mill_tab1:
-                    
+                    month=st.selectbox("SELECT MONTH",["SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"])
+                    schedule=pd.read_excel(schedule,sheet_name=month,header=None,index_col=None)
                     current_schedule,zf=process_schedule()
                     current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
                     def elementwise_sum(t1, t2,t3,t4,t5):
@@ -2109,6 +2110,10 @@ if authentication_status:
                         ton_schedule.loc["TOTAL"]=totals
                     
                         st.table(pd.DataFrame(ton_schedule))
+                
+                
+                
+               
                     
                     
                            
