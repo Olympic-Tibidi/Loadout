@@ -1071,11 +1071,25 @@ if authentication_status:
                                     pass#st.write(f"{key}{sales} seems to be finished")
                             if not_yet==0:
                                 completed_release_orders.append(key)
-                        st.write(completed_release_orders)
+                        
                         for completed in completed_release_orders:
                             data=gcp_download(target_bucket,rf"release_orders/{vessel}/{completed}.json")
                             comp_rel_order=json.loads(data)
-                            st.write(comp_rel_order)
+                            st.write(comp_rel_order.keys)
+                        completed_release_order_dest_map={}
+                        st.write(release_order_dictionary)
+                        for i in release_order_dictionary:
+                            
+                            for sales in release_order_dictionary[i]:
+                                if i not in completed_release_orders:
+                                    completed_release_order_dest_map[i]=release_order_dictionary[i][sales]["destination"]
+                        
+                        destinations_of_release_orders=[f"{i} to {completed_release_order_dest_map[i]}" for i in files_in_folder]
+                    
+                                                                    
+                        requested_file_=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders)
+                        requested_file=requested_file_.split(" ")[0]
+                        nofile=0
                         
                                 
         
