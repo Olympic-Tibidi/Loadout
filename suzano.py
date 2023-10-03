@@ -2973,7 +2973,7 @@ if authentication_status:
                 
                 
                 filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=False,key="filter_date")
-            
+        
                 zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
                
                 new_dates=[]
@@ -3027,8 +3027,10 @@ if authentication_status:
                     
                
         with inv5:
+            
             schedule=gcp_download_x(target_bucket,rf"truck_schedule.xlsx","schedule.xlsx")
-            schedule=pd.read_excel(schedule,sheet_name="SEPTEMBER",header=None,index_col=None)
+            
+            
             report=json.loads(gcp_download(target_bucket,rf"suzano_report.json"))
             locations=[ 'GP WAUNA - OR',
                              'GP HALSEY - OR',
@@ -3131,10 +3133,12 @@ if authentication_status:
                     when=datetime.datetime.strptime(report[i]["Date Shipped"],"%Y-%m-%d %H:%M:%S").date()
                     qt=report[i]["Metric Ton"]
                     #print(when)
-                    if location_dict[where][when]:
+                    try:
                         
                         location_dict[where][when].shipped_quantity+=qt
                         location_dict[where][when].remaining-=qt
+                    except:
+                        pass
                 for i in df.columns:
                     for k in df.index:
                         #print(k.date())
@@ -3156,16 +3160,19 @@ if authentication_status:
                     #print(location_dict[i])
                 def color_coding(row):
                     return ['color:red'] * len(row) if row['CLEARWATER - LEWISTON ID'] == (5,5) else ['color:green'] * len(row)
-                #st.dataframe(df.style.apply(color_coding, axis=1))
-                #df=df.style.applymap(lambda x: f"color: {'red' if isinstance(x,str) else 'black'}")
+                
+                df=df.loc[pd.notnull(df.index)]
+                zf=zf.loc[pd.notnull(zf.index)]
                 return df,zf
             
 
             
             mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","MILL PROGRESS"])
             
+                          
             with mill_tab1:
-                    
+                month=st.selectbox("SELECT MONTH",["SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"])
+                schedule=pd.read_excel(schedule,sheet_name=month,header=None,index_col=None)
                 current_schedule,zf=process_schedule()
                 current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
                 def elementwise_sum(t1, t2,t3,t4,t5):
@@ -3209,6 +3216,10 @@ if authentication_status:
                     ton_schedule.loc["TOTAL"]=totals
                 
                     st.table(pd.DataFrame(ton_schedule))
+            
+            
+            
+           
                 
                 
                        
