@@ -1073,16 +1073,15 @@ if authentication_status:
                                 completed_release_orders.append(key)
                         
                         for completed in completed_release_orders:
+                            st.write(completed
                             data=gcp_download(target_bucket,rf"release_orders/{vessel}/{completed}.json")
                             comp_rel_order=json.loads(data)
-                        st.write(completed)
+                        
                         completed_release_order_dest_map={}
-                        #st.write(release_order_dictionary)
+                  
                         for i in release_order_dictionary:
-                            
-                            for sales in release_order_dictionary[i]:
-                                if i not in completed_release_orders:
-                                    completed_release_order_dest_map[i]=release_order_dictionary[i][sales]["destination"]
+                            if i not in completed_release_orders:
+                                completed_release_order_dest_map[i]=release_order_dictionary[i][sales]["destination"]
                         st.write(completed_release_order_dest_map)
                         destinations_of_release_orders=[f"{i} to {completed_release_order_dest_map[i]}" for i in files_in_folder]
                     
