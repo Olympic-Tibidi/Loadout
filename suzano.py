@@ -363,7 +363,8 @@ if authentication_status:
                                                                                  
             with admin_tab5:
                 schedule=gcp_download_x(target_bucket,rf"truck_schedule.xlsx","schedule.xlsx")
-                schedule=pd.read_excel(schedule,sheet_name="SEPTEMBER",header=None,index_col=None)
+                
+                
                 report=json.loads(gcp_download(target_bucket,rf"suzano_report.json"))
                 locations=[ 'GP WAUNA - OR',
                                  'GP HALSEY - OR',
@@ -493,9 +494,69 @@ if authentication_status:
                         #print(location_dict[i])
                     def color_coding(row):
                         return ['color:red'] * len(row) if row['CLEARWATER - LEWISTON ID'] == (5,5) else ['color:green'] * len(row)
+                    
                     df=df.loc[pd.notnull(df.index)]
                     zf=zf.loc[pd.notnull(zf.index)]
                     return df,zf
+                
+
+                
+                mill_tab1,mill_tab2,mill_tab3=st.tabs(["CURRENT SCHEDULE","UPLOAD SCHEDULE","MILL PROGRESS"])
+                
+                with mill_tab3:
+                    mill_shipments=gcp_download(target_bucket,rf"mill_shipments.json")
+                    mill_shipments=json.loads(mill_shipments)
+                    mill_df=pd.DataFrame.from_dict(mill_shipments).T
+                    mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
+                    mill_df["New Product"]=mill_df["New Product"].astype(str)
+                    #st.table(mill_df)
+                
+                with mill_tab1:
+                    month=st.selectbox("SELECT MONTH",["SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"])
+                    schedule=pd.read_excel(schedule,sheet_name=month,header=None,index_col=None)
+                    current_schedule,zf=process_schedule()
+                    current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
+                    def elementwise_sum(t1, t2,t3,t4,t5):
+                        return (t1[0] + t2[0]+ t3[0]+ t4[0]+ t5[0], t1[1] + t2[1]+ t3[1]+ t4[1]+ t5[1])
+                    truck_schedule=current_schedule.copy()
+                    ton_schedule=current_schedule.copy()
+                    truck_schedule["Total"]= truck_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                    totals=[]
+                    for col in truck_schedule.columns:  
+                        total=(0,0)
+                        for ix in truck_schedule.index:
+                            total=(total[0]+truck_schedule.loc[ix,col][0],total[1]+truck_schedule.loc[ix,col][1])
+                        totals.append(total)
+                    
+                        
+                    truck_schedule.loc["TOTAL"]=totals
+                    choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])                   
+                   
+                    if choice=="TRUCKS":
+                        st.markdown("**TRUCKS - (Actual # of Loaded Trucks,Planned # of Trucks)**")                    
+                        st.table(truck_schedule)
+                    else:
+                        st.markdown("**TONS - (Actual Shipped Tonnage,Planned Tonnage)**")
+                        totals=[0]*len(ton_schedule)
+                        for ix in ton_schedule.index:
+                            for i in ton_schedule.columns:
+                                if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
+                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
+                             
+                                else:
+                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
+                        ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                        totals=[]
+                        for col in ton_schedule.columns:  
+                            total=(0,0)
+                            for ix in ton_schedule.index:
+                                total=(total[0]+ton_schedule.loc[ix,col][0],total[1]+ton_schedule.loc[ix,col][1])
+                            totals.append(total)
+                    
+                        
+                        ton_schedule.loc["TOTAL"]=totals
+                    
+                        st.table(pd.DataFrame(ton_schedule))
                 
 
                 
