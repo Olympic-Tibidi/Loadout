@@ -1057,8 +1057,21 @@ if authentication_status:
                         else:
                             st.write("NO RELEASE ORDERS IN DATABASE")
                     with rls_tab2:
-                        pass
-                        #sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
+                        data=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                        completed_release_orders=[]
+                        
+                        for key in release_order_database:
+                            not_yet=0
+                            #st.write(key)
+                            for sales in release_order_database[key]:
+                                #st.write(sales)
+                                if release_order_database[key][sales]["remaining"]>0:
+                                    not_yet=1
+                                else:
+                                    pass#st.write(f"{key}{sales} seems to be finished")
+                            if not_yet==0:
+                                completed_release_orders.append(key)
+                        st.write(completed_release_orders)
                         
                                 
         
