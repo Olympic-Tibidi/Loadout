@@ -1075,7 +1075,7 @@ if authentication_status:
                         for completed in completed_release_orders:
                             data=gcp_download(target_bucket,rf"release_orders/{vessel}/{completed}.json")
                             comp_rel_order=json.loads(data)
-                            st.write(comp_rel_order.keys)
+                            st.write(completed)
                         completed_release_order_dest_map={}
                         st.write(release_order_dictionary)
                         for i in release_order_dictionary:
