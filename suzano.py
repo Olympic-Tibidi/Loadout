@@ -1057,7 +1057,7 @@ if authentication_status:
                         else:
                             st.write("NO RELEASE ORDERS IN DATABASE")
                     with rls_tab2:
-                        data=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                        data=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                         completed_release_orders=[]
                         
                         for key in release_order_database:
@@ -1072,6 +1072,10 @@ if authentication_status:
                             if not_yet==0:
                                 completed_release_orders.append(key)
                         st.write(completed_release_orders)
+                        for completed in completed_release_orders:
+                            data=gcp_download(target_bucket,rf"release_orders/{vessel}/{requested_file}.json")
+                            comp_rel_order=json.loads(data)
+                            st.write(comp_rel_order)
                         
                                 
         
