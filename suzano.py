@@ -1073,7 +1073,7 @@ if authentication_status:
                                 completed_release_orders.append(key)
                         st.write(completed_release_orders)
                         for completed in completed_release_orders:
-                            data=gcp_download(target_bucket,rf"release_orders/{vessel}/{requested_file}.json")
+                            data=gcp_download(target_bucket,rf"release_orders/{vessel}/{completed}.json")
                             comp_rel_order=json.loads(data)
                             st.write(comp_rel_order)
                         
