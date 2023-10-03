@@ -1087,7 +1087,7 @@ if authentication_status:
                         destinations_of_release_orders=[f"{i} to {completed_release_order_dest_map[i]}" for i in files_in_folder]
                     
                                                                     
-                        requested_file_=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders,key="other")
+                        requested_file_=st.selectbox("COMPLETED RELEASE ORDERS",destinations_of_release_orders,key=16)
                         requested_file=requested_file_.split(" ")[0]
                         nofile=0
                         
