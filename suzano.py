@@ -2126,96 +2126,99 @@ if authentication_status:
                     
                 
                 with mill_tab2:
-                    current_schedule,zf=process_schedule()
+                    try:
+                        current_schedule,zf=process_schedule()
                     
-                    mill_progress=json.loads(gcp_download(target_bucket,rf"mill_progress.json"))
-                    
-                    current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
-                    
-                    def elementwise_sum(t1, t2,t3,t4,t5):
-                        return (t1[0] + t2[0]+ t3[0]+ t4[0]+ t5[0], t1[1] + t2[1]+ t3[1]+ t4[1]+ t5[1])
-                    ton_schedule=current_schedule.copy()
-                    totals=[0]*len(ton_schedule)
-                    for ix in ton_schedule.index:
-                        for i in ton_schedule.columns:
-                            if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
-                                ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
-                         
-                            else:
-                                ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
-                    ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
-                    totals=[]
-                    for col in ton_schedule.columns:  
-                        total=(0,0)
+                        mill_progress=json.loads(gcp_download(target_bucket,rf"mill_progress.json"))
+                        
+                        current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
+                        
+                        def elementwise_sum(t1, t2,t3,t4,t5):
+                            return (t1[0] + t2[0]+ t3[0]+ t4[0]+ t5[0], t1[1] + t2[1]+ t3[1]+ t4[1]+ t5[1])
+                        ton_schedule=current_schedule.copy()
+                        totals=[0]*len(ton_schedule)
                         for ix in ton_schedule.index:
-                            total=(total[0]+ton_schedule.loc[ix,col][0],total[1]+ton_schedule.loc[ix,col][1])
-                        totals.append(total)
-                
+                            for i in ton_schedule.columns:
+                                if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
+                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
+                             
+                                else:
+                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
+                        ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                        totals=[]
+                        for col in ton_schedule.columns:  
+                            total=(0,0)
+                            for ix in ton_schedule.index:
+                                total=(total[0]+ton_schedule.loc[ix,col][0],total[1]+ton_schedule.loc[ix,col][1])
+                            totals.append(total)
                     
-                    ton_schedule.loc["TOTAL"]=totals
-                   
-
-                    mill_update={}
-                    for i in ton_schedule.columns:
-                        mill_update[i]={"SHIPPED (TONS)":ton_schedule.loc["TOTAL",i][0],"SCHEDULED (TONS)":ton_schedule.loc["TOTAL",i][1]}
-                    
-                    chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
-                    mill_prog_col1,mill_prog_col2=st.columns([2,4])
-                    
-                    with mill_prog_col1:
-                        st.dataframe(pd.DataFrame(mill_update).T)
-                    with mill_prog_col2:
                         
-                        mills = [i for i in ton_schedule.columns if i!="Total"]
-                        targets = [mill_update[i]["SCHEDULED (TONS)"] for i in mills]
-                        shipped = [mill_update[i]["SHIPPED (TONS)"] for i in mills]
+                        ton_schedule.loc["TOTAL"]=totals
+                       
+    
+                        mill_update={}
+                        for i in ton_schedule.columns:
+                            mill_update[i]={"SHIPPED (TONS)":ton_schedule.loc["TOTAL",i][0],"SCHEDULED (TONS)":ton_schedule.loc["TOTAL",i][1]}
                         
-                        # Create a figure with a horizontal bar chart
-                        fig = go.Figure()
+                        chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
+                        mill_prog_col1,mill_prog_col2=st.columns([2,4])
                         
-                        for mill, target, shipped_qty in zip(mills, targets, shipped):
-                            fig.add_trace(
-                                go.Bar(
-                                    y=[mill],
-                                    x=[shipped_qty],  # Darker shade indicating shipped
-                                    orientation="h",
-                                    name="Shipped",
-                                    text=[shipped_qty],
-                                    marker=dict(color='rgba(0, 128, 0, 0.7)')
+                        with mill_prog_col1:
+                            st.dataframe(pd.DataFrame(mill_update).T)
+                        with mill_prog_col2:
+                            
+                            mills = [i for i in ton_schedule.columns if i!="Total"]
+                            targets = [mill_update[i]["SCHEDULED (TONS)"] for i in mills]
+                            shipped = [mill_update[i]["SHIPPED (TONS)"] for i in mills]
+                            
+                            # Create a figure with a horizontal bar chart
+                            fig = go.Figure()
+                            
+                            for mill, target, shipped_qty in zip(mills, targets, shipped):
+                                fig.add_trace(
+                                    go.Bar(
+                                        y=[mill],
+                                        x=[shipped_qty],  # Darker shade indicating shipped
+                                        orientation="h",
+                                        name="Shipped",
+                                        text=[shipped_qty],
+                                        marker=dict(color='rgba(0, 128, 0, 0.7)')
+                                    )
                                 )
-                            )
-                            fig.add_trace(
-                                go.Bar(
-                                    y=[mill],
-                                    x=[target],  # Lighter shade indicating target
-                                    orientation="h",
-                                    name="Target",
-                                    text=[target],
-                                    marker=dict(color='rgba(0, 128, 0, 0.3)')
+                                fig.add_trace(
+                                    go.Bar(
+                                        y=[mill],
+                                        x=[target],  # Lighter shade indicating target
+                                        orientation="h",
+                                        name="Target",
+                                        text=[target],
+                                        marker=dict(color='rgba(0, 128, 0, 0.3)')
+                                    )
                                 )
-                            )
-                        
-                        # Customize the layout
-                        fig.update_layout(
-                                    barmode='stack',  # Stack the bars on top of each other
-                                    xaxis_title="Quantity",
-                                    yaxis_title="Mills",
-                                    title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
-                                    legend=dict(
-                                        x=1.02,  # Move the legend to the right
-                                        y=1.0,
-                                        xanchor="left",  # Adjust legend position
-                                        yanchor="top",
-                                        font=dict(size=12)  # Increase legend font size
-                                    ),
-                                    xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
-                                    yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
-                                    title_font=dict(size=16),  # Increase title font size and weight
-                                     height=600,  # Adjust the height of the chart (in pixels)
-                                    width=800 
-                                )
-        
-                        st.plotly_chart(fig)
+                            
+                            # Customize the layout
+                            fig.update_layout(
+                                        barmode='stack',  # Stack the bars on top of each other
+                                        xaxis_title="Quantity",
+                                        yaxis_title="Mills",
+                                        title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
+                                        legend=dict(
+                                            x=1.02,  # Move the legend to the right
+                                            y=1.0,
+                                            xanchor="left",  # Adjust legend position
+                                            yanchor="top",
+                                            font=dict(size=12)  # Increase legend font size
+                                        ),
+                                        xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
+                                        yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
+                                        title_font=dict(size=16),  # Increase title font size and weight
+                                         height=600,  # Adjust the height of the chart (in pixels)
+                                        width=800 
+                                    )
+            
+                            st.plotly_chart(fig)
+                    except:
+                        pass
                 
                 
 
