@@ -3271,62 +3271,62 @@ if authentication_status:
                         totals=[]
                         for col in truck_schedule.columns:  
                             total=(0,0)
-                                for ix in truck_schedule.index:
-                                    total=(total[0]+truck_schedule.loc[ix,col][0],total[1]+truck_schedule.loc[ix,col][1])
+                            for ix in truck_schedule.index:
+                                total=(total[0]+truck_schedule.loc[ix,col][0],total[1]+truck_schedule.loc[ix,col][1])
                                 totals.append(total)
                             
                                 
-                            truck_schedule.loc["TOTAL"]=totals
-                            choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])                   
-                           
-                            if choice=="TRUCKS":
-                                st.markdown("**TRUCKS - (Actual # of Loaded Trucks,Planned # of Trucks)**")                    
-                                st.table(truck_schedule)
-                            else:
-                                st.markdown("**TONS - (Actual Shipped Tonnage,Planned Tonnage)**")
-                                totals=[0]*len(ton_schedule)
+                        truck_schedule.loc["TOTAL"]=totals
+                        choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])                   
+                       
+                        if choice=="TRUCKS":
+                            st.markdown("**TRUCKS - (Actual # of Loaded Trucks,Planned # of Trucks)**")                    
+                            st.table(truck_schedule)
+                        else:
+                            st.markdown("**TONS - (Actual Shipped Tonnage,Planned Tonnage)**")
+                            totals=[0]*len(ton_schedule)
+                            for ix in ton_schedule.index:
+                                for i in ton_schedule.columns:
+                                    if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
+                                        ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
+                                 
+                                    else:
+                                        ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
+                            ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                            totals=[]
+                            for col in ton_schedule.columns:  
+                                total=(0,0)
                                 for ix in ton_schedule.index:
-                                    for i in ton_schedule.columns:
-                                        if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
-                                            ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
-                                     
-                                        else:
-                                            ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
-                                ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
-                                totals=[]
-                                for col in ton_schedule.columns:  
-                                    total=(0,0)
-                                    for ix in ton_schedule.index:
-                                        total=(total[0]+ton_schedule.loc[ix,col][0],total[1]+ton_schedule.loc[ix,col][1])
-                                    totals.append(total)
-                            
-                                
-                                ton_schedule.loc["TOTAL"]=totals
-                            
-                                st.table(pd.DataFrame(ton_schedule))
-                        except:
-                            pass
+                                    total=(total[0]+ton_schedule.loc[ix,col][0],total[1]+ton_schedule.loc[ix,col][1])
+                                totals.append(total)
                         
+                            
+                            ton_schedule.loc["TOTAL"]=totals
                         
+                            st.table(pd.DataFrame(ton_schedule))
+                    except:
+                        pass
                     
-                    with mill_tab2:                    
-                        
-                        
-                        uploaded_file = st.file_uploader("Choose a file",key="pdods")
-                        if uploaded_file is not None:
-                            schedule=pd.ExcelFile(uploaded_file)
-                            st.write(schedule.sheet_names)                        
-                            schedule=pd.read_excel(uploaded_file,sheet_name="SEPTEMBER",header=None,index_col=None)
-                            schedule=schedule.dropna(0, how="all")
-                            schedule.reset_index(drop=True,inplace=True)
-                            df,zf=process_schedule()
-                            st.write(df)
-        
-                            if st.button("UPDATE DATABASE WITH NEW SCHEDULE",key="lolos"):
-                                
-                                #temp=zf.to_excel("temp.csv")
-                                upload_xl_file(target_bucket, uploaded_file,"truck_schedule.xlsx") 
-                                st.success('File Uploaded', icon="✅")
+                    
+                
+                with mill_tab2:                    
+                    
+                    
+                    uploaded_file = st.file_uploader("Choose a file",key="pdods")
+                    if uploaded_file is not None:
+                        schedule=pd.ExcelFile(uploaded_file)
+                        st.write(schedule.sheet_names)                        
+                        schedule=pd.read_excel(uploaded_file,sheet_name="SEPTEMBER",header=None,index_col=None)
+                        schedule=schedule.dropna(0, how="all")
+                        schedule.reset_index(drop=True,inplace=True)
+                        df,zf=process_schedule()
+                        st.write(df)
+    
+                        if st.button("UPDATE DATABASE WITH NEW SCHEDULE",key="lolos"):
+                            
+                            #temp=zf.to_excel("temp.csv")
+                            upload_xl_file(target_bucket, uploaded_file,"truck_schedule.xlsx") 
+                            st.success('File Uploaded', icon="✅")
 elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
