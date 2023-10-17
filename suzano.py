@@ -335,6 +335,63 @@ if authentication_status:
             #tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
             
         if select=="DATA BACKUP" :
+            def download_files_in_folder(bucket, folder_name, output_directory):
+                blob_iterator = bucket.list_blobs(prefix=folder_name)
+            
+                for blob in blob_iterator:
+                    # Skip folders (objects ending with '/')
+                    if blob.name.endswith('/'):
+                        continue
+            
+                    # Download the file to the specified output directory
+                    output_path = os.path.join(output_directory, os.path.basename(blob.name))
+                    blob.download_to_filename(output_path)
+
+            if st.button("BACKUP DATA"):
+                st.write("OK")
+                client = storage.Client()
+                bucket = client.bucket(target_bucket)
+            
+                list_files_to_download = ['dispatched.json','terminal_bill_of_ladings.json','truck_schedule.xlsx','suzano_report.json',
+                                          'mill_progress.json', 'Inventory.csv']
+                
+                # Create a temporary directory to store the downloaded files
+                with st.spinner("Downloading files..."):
+                    for file_to_download in list_files_to_download:
+                        blob = bucket.blob(file_to_download)
+                        blob.download_to_filename(f'./{blob.name}')
+                
+                # Create a zip archive of the downloaded files
+                with zipfile.ZipFile('downloaded_files.zip', 'w') as zipf:
+                    for file_to_download in list_files_to_download:
+                        zipf.write(file_to_download)
+            
+                # Provide a download button for the zip file
+            with open('downloaded_files.zip', 'rb') as zip_file:
+                zip_file_binary = zip_file.read()
+            st.download_button(
+                label="Download All Files",
+                data=zip_file_binary,
+                file_name='downloaded_files.zip',
+                key='download_button'
+            )
+            client = storage.Client()
+            bucket = client.bucket(target_bucket)
+            list_folders_to_download = ['EDIS/', 'release_orders/']
+            str_folder_name_on_gcs = 'EDIS/'
+
+            # Create the directory locally
+            Path(str_folder_name_on_gcs).mkdir(parents=True, exist_ok=True)
+            
+            blobs = bucket.list_blobs(prefix=str_folder_name_on_gcs)
+            for blob in blobs:
+                if not blob.name.endswith('/'):
+                    # This blob is not a directory!
+                    print(f'Downloading file [{blob.name}]')
+                    blob.download_to_filename(f'./{blob.name}')
+            with zipfile.ZipFile('downloaded_folders.zip', 'w') as zipf:
+                    for file_to_download in list_files_to_download:
+                        zipf.write(file_to_download)
             pass
             if st.button("BACKUP DATA"):
                 pass
