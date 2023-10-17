@@ -3007,99 +3007,107 @@ if authentication_status:
 
             
         with inv4:
-                 
-            dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED BY DATE"])
-            df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
-            zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
-                                                          "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-       
-            items=df["Ocean B/L"].unique().tolist()
+            maintenance=True
+            if maintenance:
+                st.title("CURRENTLY IN MAINTENANCE, PLEASE CHECK BACK LATER")
+            else:
+                
+                dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED BY DATE"])
+                df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
+                zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
+                                                              "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
+           
+                items=df["Ocean B/L"].unique().tolist()
+                
+                with dab1:
+                    
+                    inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
+                    with inv_col1:
+                        wrh=df["Remaining"].sum()*250/1000
+                        shp=zf["Shipped"].sum()*250/1000
+                        
+                        st.markdown(f"**IN WAREHOUSE = {wrh} tons**")
+                        st.markdown(f"**TOTAL SHIPPED = {shp} tons**")
+                        st.markdown(f"**TOTAL OVERALL = {wrh+shp} tons**")
+                        
+                    with inv_col2:
+                        #st.write(items)
+                        inhouse=[df[df["Ocean B/L"]==i]["Remaining"].sum()*250/1000 for i in items]
+                        shipped=[df[df["Ocean B/L"]==i]["Shipped"].sum()*250/1000 for i in items]
+                        
+                        wrap_=[df[df["Ocean B/L"]==i]["Grade"].unique()[0] for i in items]
+                       # st.write(wrap_)
+                        tablo=pd.DataFrame({"Ocean B/L":items,"Grade":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
+                        total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
+                        tablo = tablo.append(total_row, ignore_index=True)
+                        tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
+                        st.markdown(f"**IN METRIC TONS -- AS OF {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),'%b %d -  %H:%M')}**")
+                        st.dataframe(tablo)
+                    if st.checkbox("CLICK TO SEE INVENTORY LIST",key="23223"):
+                        st.dataframe(df)
+                with dab2:
+                    
+                    
+                    filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=False,key="filter_date")
             
-            with dab1:
-                
-                inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
-                with inv_col1:
-                    wrh=df["Remaining"].sum()*250/1000
-                    shp=zf["Shipped"].sum()*250/1000
-                    
-                    st.markdown(f"**IN WAREHOUSE = {wrh} tons**")
-                    st.markdown(f"**TOTAL SHIPPED = {shp} tons**")
-                    st.markdown(f"**TOTAL OVERALL = {wrh+shp} tons**")
-                    
-                with inv_col2:
-                    #st.write(items)
-                    inhouse=[df[df["Ocean B/L"]==i]["Remaining"].sum()*250/1000 for i in items]
-                    shipped=[df[df["Ocean B/L"]==i]["Shipped"].sum()*250/1000 for i in items]
-                    
-                    wrap_=[df[df["Ocean B/L"]==i]["Grade"].unique()[0] for i in items]
-                   # st.write(wrap_)
-                    tablo=pd.DataFrame({"Ocean B/L":items,"Grade":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
-                    total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
-                    tablo = tablo.append(total_row, ignore_index=True)
-                    tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
-                    st.markdown(f"**IN METRIC TONS -- AS OF {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),'%b %d -  %H:%M')}**")
-                    st.dataframe(tablo)
-                if st.checkbox("CLICK TO SEE INVENTORY LIST",key="23223"):
-                    st.dataframe(df)
-            with dab2:
-                
-                
-                filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=False,key="filter_date")
-        
-                zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
-               
-                new_dates=[]
-                for i in zf["Warehouse_Out"]:
-                    
-                    try:
-                        new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S"))
-                    except:                        
+                    zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
+                   
+                    new_dates=[]
+                    for i in zf["Warehouse_Out"]:
+                        
                         try:
-                            new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M"))
-                        except:
-                            new_dates.append(datetime.datetime.strptime(i,"%m/%d/%Y %H:%M"))
-                zf["Warehouse_Out"]=new_dates
-                filtered_zf=zf.copy()
-                
-                filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+                            new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S"))
+                        except:                        
+                            try:
+                                new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M"))
+                            except:
+                                new_dates.append(datetime.datetime.strptime(i,"%m/%d/%Y %H:%M"))
+                    zf["Warehouse_Out"]=new_dates
+                    filtered_zf=zf.copy()
                     
-                filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+                    filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+                        
+                    filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+                        
                     
-                
-                col1,col2=st.columns([2,8])
-                with col2:
-                    
-                    dated_bill_of_ladings={}
-                    locations={}
-                    for i in bill_of_ladings:
-                        dated_bill_of_ladings[bill_of_ladings[i]["issued"]]=[bill_of_ladings[i]["destination"],bill_of_ladings[i]["quantity"]]
-                   # st.write(dated_bill_of_ladings)
-                    toplam=0
-                    for i in dated_bill_of_ladings:                            
-                        if i is not None:
-                            if datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date()==filter_date:
-                                try:
-                                    locations[dated_bill_of_ladings[i][0]]+=dated_bill_of_ladings[i][1]*2
-                                except:
-                                    locations[dated_bill_of_ladings[i][0]]=dated_bill_of_ladings[i][1]*2
-                                #st.markdown(f"**{} Tons to {dated_bill_of_ladings[i][0]}**")
-                    
-                    for i in locations:
-                        st.markdown(f"**{locations[i]} Tons to {i}**")
-                        toplam+=locations[i]
-                    
-                    
-                           
-                    
-                with col1:
-                    st.markdown(f"**SHIPPED ON THIS DAY = {toplam} TONS**")
+                    col1,col2=st.columns([2,8])
+                    with col2:
+                        
+                        dated_bill_of_ladings={}
+                        locations={}
+                        for i in bill_of_ladings:
+                            dated_bill_of_ladings[bill_of_ladings[i]["issued"]]=[bill_of_ladings[i]["destination"],bill_of_ladings[i]["quantity"]]
+                       # st.write(dated_bill_of_ladings)
+                        toplam=0
+                        for i in dated_bill_of_ladings:                            
+                            if i is not None:
+                                if datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date()==filter_date:
+                                    try:
+                                        locations[dated_bill_of_ladings[i][0]]+=dated_bill_of_ladings[i][1]*2
+                                    except:
+                                        locations[dated_bill_of_ladings[i][0]]=dated_bill_of_ladings[i][1]*2
+                                    #st.markdown(f"**{} Tons to {dated_bill_of_ladings[i][0]}**")
+                        
+                        for i in locations:
+                            st.markdown(f"**{locations[i]} Tons to {i}**")
+                            toplam+=locations[i]
+                        
+                        
+                               
+                        
+                    with col1:
+                        st.markdown(f"**SHIPPED ON THIS DAY = {toplam} TONS**")
                     
                        
                     
                     
                
         with inv5:
-            
+            maintenance=True
+            if maintenance:
+                st.title("CURRENTLY IN MAINTENANCE, PLEASE CHECK BACK LATER")
+            else:
+                
             schedule=gcp_download_x(target_bucket,rf"truck_schedule.xlsx","schedule.xlsx")
                 
                 
@@ -3263,62 +3271,62 @@ if authentication_status:
                     totals=[]
                     for col in truck_schedule.columns:  
                         total=(0,0)
-                        for ix in truck_schedule.index:
-                            total=(total[0]+truck_schedule.loc[ix,col][0],total[1]+truck_schedule.loc[ix,col][1])
-                        totals.append(total)
-                    
-                        
-                    truck_schedule.loc["TOTAL"]=totals
-                    choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])                   
-                   
-                    if choice=="TRUCKS":
-                        st.markdown("**TRUCKS - (Actual # of Loaded Trucks,Planned # of Trucks)**")                    
-                        st.table(truck_schedule)
-                    else:
-                        st.markdown("**TONS - (Actual Shipped Tonnage,Planned Tonnage)**")
-                        totals=[0]*len(ton_schedule)
-                        for ix in ton_schedule.index:
-                            for i in ton_schedule.columns:
-                                if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
-                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
-                             
-                                else:
-                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
-                        ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
-                        totals=[]
-                        for col in ton_schedule.columns:  
-                            total=(0,0)
-                            for ix in ton_schedule.index:
-                                total=(total[0]+ton_schedule.loc[ix,col][0],total[1]+ton_schedule.loc[ix,col][1])
+                            for ix in truck_schedule.index:
+                                total=(total[0]+truck_schedule.loc[ix,col][0],total[1]+truck_schedule.loc[ix,col][1])
                             totals.append(total)
-                    
                         
-                        ton_schedule.loc["TOTAL"]=totals
-                    
-                        st.table(pd.DataFrame(ton_schedule))
-                except:
-                    pass
-                
-                
-            
-            with mill_tab2:                    
-                
-                
-                uploaded_file = st.file_uploader("Choose a file",key="pdods")
-                if uploaded_file is not None:
-                    schedule=pd.ExcelFile(uploaded_file)
-                    st.write(schedule.sheet_names)                        
-                    schedule=pd.read_excel(uploaded_file,sheet_name="SEPTEMBER",header=None,index_col=None)
-                    schedule=schedule.dropna(0, how="all")
-                    schedule.reset_index(drop=True,inplace=True)
-                    df,zf=process_schedule()
-                    st.write(df)
-
-                    if st.button("UPDATE DATABASE WITH NEW SCHEDULE",key="lolos"):
+                            
+                        truck_schedule.loc["TOTAL"]=totals
+                        choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])                   
+                       
+                        if choice=="TRUCKS":
+                            st.markdown("**TRUCKS - (Actual # of Loaded Trucks,Planned # of Trucks)**")                    
+                            st.table(truck_schedule)
+                        else:
+                            st.markdown("**TONS - (Actual Shipped Tonnage,Planned Tonnage)**")
+                            totals=[0]*len(ton_schedule)
+                            for ix in ton_schedule.index:
+                                for i in ton_schedule.columns:
+                                    if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
+                                        ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
+                                 
+                                    else:
+                                        ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
+                            ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                            totals=[]
+                            for col in ton_schedule.columns:  
+                                total=(0,0)
+                                for ix in ton_schedule.index:
+                                    total=(total[0]+ton_schedule.loc[ix,col][0],total[1]+ton_schedule.loc[ix,col][1])
+                                totals.append(total)
                         
-                        #temp=zf.to_excel("temp.csv")
-                        upload_xl_file(target_bucket, uploaded_file,"truck_schedule.xlsx") 
-                        st.success('File Uploaded', icon="✅")
+                            
+                            ton_schedule.loc["TOTAL"]=totals
+                        
+                            st.table(pd.DataFrame(ton_schedule))
+                    except:
+                        pass
+                    
+                    
+                
+                with mill_tab2:                    
+                    
+                    
+                    uploaded_file = st.file_uploader("Choose a file",key="pdods")
+                    if uploaded_file is not None:
+                        schedule=pd.ExcelFile(uploaded_file)
+                        st.write(schedule.sheet_names)                        
+                        schedule=pd.read_excel(uploaded_file,sheet_name="SEPTEMBER",header=None,index_col=None)
+                        schedule=schedule.dropna(0, how="all")
+                        schedule.reset_index(drop=True,inplace=True)
+                        df,zf=process_schedule()
+                        st.write(df)
+    
+                        if st.button("UPDATE DATABASE WITH NEW SCHEDULE",key="lolos"):
+                            
+                            #temp=zf.to_excel("temp.csv")
+                            upload_xl_file(target_bucket, uploaded_file,"truck_schedule.xlsx") 
+                            st.success('File Uploaded', icon="✅")
 elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
