@@ -1892,269 +1892,319 @@ if authentication_status:
 
                 
             with inv4:
-                     
-                dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED BY DATE"])
-                df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
-                zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
-                                                              "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
-           
-                items=df["Ocean B/L"].unique().tolist()
+                maintenance=True
+                if maintenance:
+                    st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
+                else:
+                    
+                    dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED BY DATE"])
+                    df=Inventory[(Inventory["Location"]=="OLYM")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Location","Warehouse_In"]]
+                    zf=Inventory[(Inventory["Location"]=="ON TRUCK")|(Inventory["Location"]=="PARTIAL")][["Lot","Bales","Shipped","Remaining","Batch","Ocean B/L","Grade","DryWeight","ADMT","Release_Order_Number","Carrier_Code","Terminal B/L",
+                                                                  "Vehicle_Id","Warehouse_In","Warehouse_Out"]]
+               
+                    items=df["Ocean B/L"].unique().tolist()
+                    
+                    with dab1:
+                        
+                        inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
+                        with inv_col1:
+                            wrh=df["Remaining"].sum()*250/1000
+                            shp=zf["Shipped"].sum()*250/1000
+                            
+                            st.markdown(f"**IN WAREHOUSE = {wrh} tons**")
+                            st.markdown(f"**TOTAL SHIPPED = {shp} tons**")
+                            st.markdown(f"**TOTAL OVERALL = {wrh+shp} tons**")
+                            
+                        with inv_col2:
+                            #st.write(items)
+                            inhouse=[df[df["Ocean B/L"]==i]["Remaining"].sum()*250/1000 for i in items]
+                            shipped=[df[df["Ocean B/L"]==i]["Shipped"].sum()*250/1000 for i in items]
+                            
+                            wrap_=[df[df["Ocean B/L"]==i]["Grade"].unique()[0] for i in items]
+                           # st.write(wrap_)
+                            tablo=pd.DataFrame({"Ocean B/L":items,"Grade":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
+                            total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
+                            tablo = tablo.append(total_row, ignore_index=True)
+                            tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
+                            st.markdown(f"**IN METRIC TONS -- AS OF {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),'%b %d -  %H:%M')}**")
+                            st.dataframe(tablo)
+                        if st.checkbox("CLICK TO SEE INVENTORY LIST",key="23223"):
+                            st.dataframe(df)
+                    with dab2:
+                        
+                        
+                        filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=False,key="filter_date")
                 
-                with dab1:
-                    
-                    inv_col1,inv_col2,inv_col3=st.columns([2,6,2])
-                    with inv_col1:
-                        wrh=df["Remaining"].sum()*250/1000
-                        shp=zf["Shipped"].sum()*250/1000
-                        
-                        st.markdown(f"**IN WAREHOUSE = {wrh} tons**")
-                        st.markdown(f"**TOTAL SHIPPED = {shp} tons**")
-                        st.markdown(f"**TOTAL OVERALL = {wrh+shp} tons**")
-                        
-                    with inv_col2:
-                        #st.write(items)
-                        inhouse=[df[df["Ocean B/L"]==i]["Remaining"].sum()*250/1000 for i in items]
-                        shipped=[df[df["Ocean B/L"]==i]["Shipped"].sum()*250/1000 for i in items]
-                        
-                        wrap_=[df[df["Ocean B/L"]==i]["Grade"].unique()[0] for i in items]
-                       # st.write(wrap_)
-                        tablo=pd.DataFrame({"Ocean B/L":items,"Grade":wrap_,"In Warehouse":inhouse,"Shipped":shipped},index=[i for i in range(1,len(items)+1)])
-                        total_row={"Ocean B/L":"TOTAL","In Warehouse":sum(inhouse),"Shipped":sum(shipped)}
-                        tablo = tablo.append(total_row, ignore_index=True)
-                        tablo["TOTAL"] = tablo.loc[:, ["In Warehouse", "Shipped"]].sum(axis=1)
-                        st.markdown(f"**IN METRIC TONS -- AS OF {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),'%b %d -  %H:%M')}**")
-                        st.dataframe(tablo)
-                    if st.checkbox("CLICK TO SEE INVENTORY LIST",key="23223"):
-                        st.dataframe(df)
-                with dab2:
-                    
-                    
-                    filter_date=st.date_input("Choose Warehouse OUT Date",datetime.datetime.today(),min_value=None, max_value=None,disabled=False,key="filter_date")
-            
-                    zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
-                   
-                    new_dates=[]
-                    for i in zf["Warehouse_Out"]:
-                        
-                        try:
-                            new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S"))
-                        except:                        
+                        zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]]=zf[["Release_Order_Number","Carrier_Code","Terminal B/L","Vehicle_Id"]].astype("str")
+                       
+                        new_dates=[]
+                        for i in zf["Warehouse_Out"]:
+                            
                             try:
-                                new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M"))
-                            except:
-                                new_dates.append(datetime.datetime.strptime(i,"%m/%d/%Y %H:%M"))
-                    zf["Warehouse_Out"]=new_dates
-                    filtered_zf=zf.copy()
-                    
-                    filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+                                new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S"))
+                            except:                        
+                                try:
+                                    new_dates.append(datetime.datetime.strptime(i,"%Y-%m-%d %H:%M"))
+                                except:
+                                    new_dates.append(datetime.datetime.strptime(i,"%m/%d/%Y %H:%M"))
+                        zf["Warehouse_Out"]=new_dates
+                        filtered_zf=zf.copy()
                         
-                    filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+                        filtered_zf["Warehouse_Out"]=[i.date() for i in filtered_zf["Warehouse_Out"]]
+                            
+                        filtered_zf=filtered_zf[filtered_zf["Warehouse_Out"]==filter_date]
+                            
                         
-                    
-                    col1,col2=st.columns([2,8])
-                    with col2:
-                        
-                        dated_bill_of_ladings={}
-                        locations={}
-                        for i in bill_of_ladings:
-                            dated_bill_of_ladings[bill_of_ladings[i]["issued"]]=[bill_of_ladings[i]["destination"],bill_of_ladings[i]["quantity"]]
-                       # st.write(dated_bill_of_ladings)
-                        toplam=0
-                        for i in dated_bill_of_ladings:                            
-                            if i is not None:
-                                if datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date()==filter_date:
-                                    try:
-                                        locations[dated_bill_of_ladings[i][0]]+=dated_bill_of_ladings[i][1]*2
-                                    except:
-                                        locations[dated_bill_of_ladings[i][0]]=dated_bill_of_ladings[i][1]*2
-                                    #st.markdown(f"**{} Tons to {dated_bill_of_ladings[i][0]}**")
-                        
-                        for i in locations:
-                            st.markdown(f"**{locations[i]} Tons to {i}**")
-                            toplam+=locations[i]
-                        
-                        
-                               
-                        
-                    with col1:
-                        st.markdown(f"**SHIPPED ON THIS DAY = {toplam} TONS**")
+                        col1,col2=st.columns([2,8])
+                        with col2:
+                            
+                            dated_bill_of_ladings={}
+                            locations={}
+                            for i in bill_of_ladings:
+                                dated_bill_of_ladings[bill_of_ladings[i]["issued"]]=[bill_of_ladings[i]["destination"],bill_of_ladings[i]["quantity"]]
+                           # st.write(dated_bill_of_ladings)
+                            toplam=0
+                            for i in dated_bill_of_ladings:                            
+                                if i is not None:
+                                    if datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date()==filter_date:
+                                        try:
+                                            locations[dated_bill_of_ladings[i][0]]+=dated_bill_of_ladings[i][1]*2
+                                        except:
+                                            locations[dated_bill_of_ladings[i][0]]=dated_bill_of_ladings[i][1]*2
+                                        #st.markdown(f"**{} Tons to {dated_bill_of_ladings[i][0]}**")
+                            
+                            for i in locations:
+                                st.markdown(f"**{locations[i]} Tons to {i}**")
+                                toplam+=locations[i]
+                            
+                            
+                                   
+                            
+                        with col1:
+                            st.markdown(f"**SHIPPED ON THIS DAY = {toplam} TONS**")
                         
                            
                         
                         
                    
             with inv5:
-                
-                schedule=gcp_download_x(target_bucket,rf"truck_schedule.xlsx","schedule.xlsx")
-                
-                
-                report=json.loads(gcp_download(target_bucket,rf"suzano_report.json"))
-                locations=[ 'GP WAUNA - OR',
-                                 'GP HALSEY - OR',
-                                 'CLEARWATER - LEWISTON ID',
-                                 'KROGER - BC',
-                                 'WILLAMETTE FALLS - OR']  
-                
-                def process_schedule():
-                    class Mill:
-                        def __init__(self, location, date, number_of_trucks, truck_size):
-                            
-                            self.location = location
-                            self.date = date
-                            self.number_of_trucks = number_of_trucks
-                            self.truck_size = truck_size
-                            self.total=number_of_trucks*truck_size
-                            self.shipped_quantity = 0
-                            self.remaining=self.total
-                        def ship(self, quantity_shipped):
-                            if quantity_shipped <= self.remaining_quantity():
-                                self.shipped_quantity += quantity_shipped
-                            else:
-                                print("Error: Quantity exceeds remaining quantity.")
+                maintenance=True
+                if maintenance:
+                    st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
+                else:
                     
-                        def remaining_quantity(self):
-                            # Calculate the remaining quantity based on the number of trucks and shipped quantity
-                            return self.number_of_trucks * self.truck_size - self.shipped_quantity
+                
+                    schedule=gcp_download_x(target_bucket,rf"truck_schedule.xlsx","schedule.xlsx")
                     
-                        def __str__(self):
-                            return f" Location: {self.location}, Date: {self.date}, " \
-                                   f"Trucks: {self.number_of_trucks}, Size: {self.truck_size}, " \
-                                   f"Shipped Quantity: {self.shipped_quantity}"
-                    consignee_dict={"Lewiston":'CLEARWATER - LEWISTON ID',"West  Linn":'WILLAMETTE FALLS - OR',
-                                    "Clatskanie":'GP WAUNA - OR',"Halsey":'GP HALSEY - OR',"New Westminster":'KROGER - BC'}
+                    
+                    report=json.loads(gcp_download(target_bucket,rf"suzano_report.json"))
                     locations=[ 'GP WAUNA - OR',
-                                 'GP HALSEY - OR',
-                                 'CLEARWATER - LEWISTON ID',
-                                 'KROGER - BC',
-                                 'WILLAMETTE FALLS - OR']       
-                    date_indexs=[]
-                    plan={}
-                    for i in schedule.index:
-                            try:
-                                if schedule.loc[i,1].date():
-                                    #print(i)
-                                    date_indexs.append(i)
-                            except:
-                                pass
-                    for j in range(1,6):
+                                     'GP HALSEY - OR',
+                                     'CLEARWATER - LEWISTON ID',
+                                     'KROGER - BC',
+                                     'WILLAMETTE FALLS - OR']  
+                    
+                    def process_schedule():
+                        class Mill:
+                            def __init__(self, location, date, number_of_trucks, truck_size):
+                                
+                                self.location = location
+                                self.date = date
+                                self.number_of_trucks = number_of_trucks
+                                self.truck_size = truck_size
+                                self.total=number_of_trucks*truck_size
+                                self.shipped_quantity = 0
+                                self.remaining=self.total
+                            def ship(self, quantity_shipped):
+                                if quantity_shipped <= self.remaining_quantity():
+                                    self.shipped_quantity += quantity_shipped
+                                else:
+                                    print("Error: Quantity exceeds remaining quantity.")
                         
+                            def remaining_quantity(self):
+                                # Calculate the remaining quantity based on the number of trucks and shipped quantity
+                                return self.number_of_trucks * self.truck_size - self.shipped_quantity
                         
-                        for i in date_indexs[:-1]:
-                            #print(i)
-                            for k in range(i+1,date_indexs[date_indexs.index(i)+1]):
-                                #print(k)
+                            def __str__(self):
+                                return f" Location: {self.location}, Date: {self.date}, " \
+                                       f"Trucks: {self.number_of_trucks}, Size: {self.truck_size}, " \
+                                       f"Shipped Quantity: {self.shipped_quantity}"
+                        consignee_dict={"Lewiston":'CLEARWATER - LEWISTON ID',"West  Linn":'WILLAMETTE FALLS - OR',
+                                        "Clatskanie":'GP WAUNA - OR',"Halsey":'GP HALSEY - OR',"New Westminster":'KROGER - BC'}
+                        locations=[ 'GP WAUNA - OR',
+                                     'GP HALSEY - OR',
+                                     'CLEARWATER - LEWISTON ID',
+                                     'KROGER - BC',
+                                     'WILLAMETTE FALLS - OR']       
+                        date_indexs=[]
+                        plan={}
+                        for i in schedule.index:
+                                try:
+                                    if schedule.loc[i,1].date():
+                                        #print(i)
+                                        date_indexs.append(i)
+                                except:
+                                    pass
+                        for j in range(1,6):
+                            
+                            
+                            for i in date_indexs[:-1]:
+                                #print(i)
+                                for k in range(i+1,date_indexs[date_indexs.index(i)+1]):
+                                    #print(k)
+                                    if schedule.loc[k,0] in locations:
+                                        location=schedule.loc[k,0]
+                                        #print(location)
+                                        key=schedule.loc[i,j]
+                                        #print(key)            
+                                        try:
+                                            plan[key][location]=schedule.loc[k,j]
+                                        except:
+                                            plan[key]={}
+                                            plan[key][location]=schedule.loc[k,j]
+                        
+                            for k in range(date_indexs[-1],len(schedule)):  
+                                
                                 if schedule.loc[k,0] in locations:
                                     location=schedule.loc[k,0]
-                                    #print(location)
-                                    key=schedule.loc[i,j]
-                                    #print(key)            
+                                    key=schedule.loc[date_indexs[-1],j]
                                     try:
                                         plan[key][location]=schedule.loc[k,j]
                                     except:
                                         plan[key]={}
                                         plan[key][location]=schedule.loc[k,j]
-                    
-                        for k in range(date_indexs[-1],len(schedule)):  
-                            
-                            if schedule.loc[k,0] in locations:
-                                location=schedule.loc[k,0]
-                                key=schedule.loc[date_indexs[-1],j]
-                                try:
-                                    plan[key][location]=schedule.loc[k,j]
-                                except:
-                                    plan[key]={}
-                                    plan[key][location]=schedule.loc[k,j]
-                                    
-                    df=pd.DataFrame(plan).T.sort_index()
-                    zf=df.copy()
-                    location_dict={'GP WAUNA - OR':{},'GP HALSEY - OR':{},'CLEARWATER - LEWISTON ID':{},
-                                   'KROGER - BC':{},'WILLAMETTE FALLS - OR':{}}
-                    
-                    for column in df.columns:
-                        for i in df.index:
-                            #print(i.to_pydatetime().date())
-                            if df.loc[i,column]>0:
-                                #print(df.loc[i,column])
-                                truck_size=28 if column in ['GP WAUNA - OR','GP HALSEY - OR'] else 20
-                                location_dict[column][i.to_pydatetime().date()]=Mill(column,i.to_pydatetime().date(),
-                                                                                     df.loc[i,column],truck_size)
-                    #df=df.replace(0,"")
-                    for i in df.columns:
-                        df[i]=[(0,j) if j is not None else "" for j in df[i].values ]
-    
-    
-                    for i in report:
-                        #print(datetime.datetime.strptime(report[i]["Date Shipped"],"%Y-%m-%d %H:%M:%S").date())
-                        #print(report[i]["Metric Ton"])
-                        where=consignee_dict[report[i]["Consignee City"]]
-                        when=datetime.datetime.strptime(report[i]["Date Shipped"],"%Y-%m-%d %H:%M:%S").date()
-                        qt=report[i]["Metric Ton"]
-                        #print(when)
-                        try:
-                            
-                            location_dict[where][when].shipped_quantity+=qt
-                            location_dict[where][when].remaining-=qt
-                        except:
-                            pass
-                    for i in df.columns:
-                        for k in df.index:
-                            #print(k.date())
+                                        
+                        df=pd.DataFrame(plan).T.sort_index()
+                        zf=df.copy()
+                        location_dict={'GP WAUNA - OR':{},'GP HALSEY - OR':{},'CLEARWATER - LEWISTON ID':{},
+                                       'KROGER - BC':{},'WILLAMETTE FALLS - OR':{}}
+                        
+                        for column in df.columns:
+                            for i in df.index:
+                                #print(i.to_pydatetime().date())
+                                if df.loc[i,column]>0:
+                                    #print(df.loc[i,column])
+                                    truck_size=28 if column in ['GP WAUNA - OR','GP HALSEY - OR'] else 20
+                                    location_dict[column][i.to_pydatetime().date()]=Mill(column,i.to_pydatetime().date(),
+                                                                                         df.loc[i,column],truck_size)
+                        #df=df.replace(0,"")
+                        for i in df.columns:
+                            df[i]=[(0,j) if j is not None else "" for j in df[i].values ]
+        
+        
+                        for i in report:
+                            #print(datetime.datetime.strptime(report[i]["Date Shipped"],"%Y-%m-%d %H:%M:%S").date())
+                            #print(report[i]["Metric Ton"])
+                            where=consignee_dict[report[i]["Consignee City"]]
+                            when=datetime.datetime.strptime(report[i]["Date Shipped"],"%Y-%m-%d %H:%M:%S").date()
+                            qt=report[i]["Metric Ton"]
+                            #print(when)
                             try:
-                                shipped=location_dict[i][k.date()].shipped_quantity
-                                remaining=location_dict[i][k.date()].remaining
-                                truck_size=location_dict[i][k.date()].truck_size
-                                #print(truck_size)
-                                if shipped>0:
-                                    
-                                    if df.loc[k,i][1] >0:                                       
-                                        
-                                        a=(int(df.loc[k,i][0]+shipped/truck_size),df.loc[k,i][1])
-                                        df.at[k,i]=a
-                                        
                                 
+                                location_dict[where][when].shipped_quantity+=qt
+                                location_dict[where][when].remaining-=qt
                             except:
                                 pass
-                        #print(location_dict[i])
-                    def color_coding(row):
-                        return ['color:red'] * len(row) if row['CLEARWATER - LEWISTON ID'] == (5,5) else ['color:green'] * len(row)
+                        for i in df.columns:
+                            for k in df.index:
+                                #print(k.date())
+                                try:
+                                    shipped=location_dict[i][k.date()].shipped_quantity
+                                    remaining=location_dict[i][k.date()].remaining
+                                    truck_size=location_dict[i][k.date()].truck_size
+                                    #print(truck_size)
+                                    if shipped>0:
+                                        
+                                        if df.loc[k,i][1] >0:                                       
+                                            
+                                            a=(int(df.loc[k,i][0]+shipped/truck_size),df.loc[k,i][1])
+                                            df.at[k,i]=a
+                                            
+                                    
+                                except:
+                                    pass
+                            #print(location_dict[i])
+                        def color_coding(row):
+                            return ['color:red'] * len(row) if row['CLEARWATER - LEWISTON ID'] == (5,5) else ['color:green'] * len(row)
+                        
+                        df=df.loc[pd.notnull(df.index)]
+                        zf=zf.loc[pd.notnull(zf.index)]
+                        return df,zf
                     
-                    df=df.loc[pd.notnull(df.index)]
-                    zf=zf.loc[pd.notnull(zf.index)]
-                    return df,zf
-                
-
-                
-                mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","MILL PROGRESS"])
-                
-                              
-                with mill_tab1:
-                    month=st.selectbox("SELECT MONTH",["SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"])
-                    schedule=pd.read_excel(schedule,sheet_name=month,header=None,index_col=None)
-                    try:
-                        
-                        current_schedule,zf=process_schedule()
-                        current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
-                        def elementwise_sum(t1, t2,t3,t4,t5):
-                            return (t1[0] + t2[0]+ t3[0]+ t4[0]+ t5[0], t1[1] + t2[1]+ t3[1]+ t4[1]+ t5[1])
-                        truck_schedule=current_schedule.copy()
-                        ton_schedule=current_schedule.copy()
-                        truck_schedule["Total"]= truck_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
-                        totals=[]
-                        for col in truck_schedule.columns:  
-                            total=(0,0)
-                            for ix in truck_schedule.index:
-                                total=(total[0]+truck_schedule.loc[ix,col][0],total[1]+truck_schedule.loc[ix,col][1])
-                            totals.append(total)
-                        
+    
+                    
+                    mill_tab1,mill_tab2=st.tabs(["CURRENT SCHEDULE","MILL PROGRESS"])
+                    
+                                  
+                    with mill_tab1:
+                        month=st.selectbox("SELECT MONTH",["SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"])
+                        schedule=pd.read_excel(schedule,sheet_name=month,header=None,index_col=None)
+                        try:
                             
-                        truck_schedule.loc["TOTAL"]=totals
-                        choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])                   
-                       
-                        if choice=="TRUCKS":
-                            st.markdown("**TRUCKS - (Actual # of Loaded Trucks,Planned # of Trucks)**")                    
-                            st.table(truck_schedule)
-                        else:
-                            st.markdown("**TONS - (Actual Shipped Tonnage,Planned Tonnage)**")
+                            current_schedule,zf=process_schedule()
+                            current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
+                            def elementwise_sum(t1, t2,t3,t4,t5):
+                                return (t1[0] + t2[0]+ t3[0]+ t4[0]+ t5[0], t1[1] + t2[1]+ t3[1]+ t4[1]+ t5[1])
+                            truck_schedule=current_schedule.copy()
+                            ton_schedule=current_schedule.copy()
+                            truck_schedule["Total"]= truck_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                            totals=[]
+                            for col in truck_schedule.columns:  
+                                total=(0,0)
+                                for ix in truck_schedule.index:
+                                    total=(total[0]+truck_schedule.loc[ix,col][0],total[1]+truck_schedule.loc[ix,col][1])
+                                totals.append(total)
+                            
+                                
+                            truck_schedule.loc["TOTAL"]=totals
+                            choice=st.radio("TRUCK LOADS OR TONS",["TRUCKS","TONS"])                   
+                           
+                            if choice=="TRUCKS":
+                                st.markdown("**TRUCKS - (Actual # of Loaded Trucks,Planned # of Trucks)**")                    
+                                st.table(truck_schedule)
+                            else:
+                                st.markdown("**TONS - (Actual Shipped Tonnage,Planned Tonnage)**")
+                                totals=[0]*len(ton_schedule)
+                                for ix in ton_schedule.index:
+                                    for i in ton_schedule.columns:
+                                        if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
+                                            ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
+                                     
+                                        else:
+                                            ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
+                                ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
+                                totals=[]
+                                for col in ton_schedule.columns:  
+                                    total=(0,0)
+                                    for ix in ton_schedule.index:
+                                        total=(total[0]+ton_schedule.loc[ix,col][0],total[1]+ton_schedule.loc[ix,col][1])
+                                    totals.append(total)
+                            
+                                
+                                ton_schedule.loc["TOTAL"]=totals
+                            
+                                st.table(pd.DataFrame(ton_schedule))
+                        except:
+                            pass
+                    
+                    
+                   
+                        
+                        
+                               
+                        
+                    
+                    with mill_tab2:
+                        try:
+                            current_schedule,zf=process_schedule()
+                        
+                            mill_progress=json.loads(gcp_download(target_bucket,rf"mill_progress.json"))
+                            
+                            current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
+                            
+                            def elementwise_sum(t1, t2,t3,t4,t5):
+                                return (t1[0] + t2[0]+ t3[0]+ t4[0]+ t5[0], t1[1] + t2[1]+ t3[1]+ t4[1]+ t5[1])
+                            ton_schedule=current_schedule.copy()
                             totals=[0]*len(ton_schedule)
                             for ix in ton_schedule.index:
                                 for i in ton_schedule.columns:
@@ -2173,112 +2223,71 @@ if authentication_status:
                         
                             
                             ton_schedule.loc["TOTAL"]=totals
-                        
-                            st.table(pd.DataFrame(ton_schedule))
-                    except:
-                        pass
-                
-                
-               
-                    
-                    
                            
-                    
-                
-                with mill_tab2:
-                    try:
-                        current_schedule,zf=process_schedule()
-                    
-                        mill_progress=json.loads(gcp_download(target_bucket,rf"mill_progress.json"))
-                        
-                        current_schedule.index=[datetime.datetime.strftime(i,"%B %d,%A") for i in current_schedule.index]
-                        
-                        def elementwise_sum(t1, t2,t3,t4,t5):
-                            return (t1[0] + t2[0]+ t3[0]+ t4[0]+ t5[0], t1[1] + t2[1]+ t3[1]+ t4[1]+ t5[1])
-                        ton_schedule=current_schedule.copy()
-                        totals=[0]*len(ton_schedule)
-                        for ix in ton_schedule.index:
+        
+                            mill_update={}
                             for i in ton_schedule.columns:
-                                if i in [ 'GP WAUNA - OR','GP HALSEY - OR']:
-                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*28,ton_schedule.loc[ix,i][1]*28)
-                             
-                                else:
-                                    ton_schedule.at[ix,i]=(ton_schedule.loc[ix,i][0]*20,ton_schedule.loc[ix,i][1]*20)
-                        ton_schedule["Total"]= ton_schedule.apply(lambda row: elementwise_sum(row['GP WAUNA - OR'], row['CLEARWATER - LEWISTON ID'],row['GP HALSEY - OR'],row['KROGER - BC'], row['WILLAMETTE FALLS - OR']),axis=1)
-                        totals=[]
-                        for col in ton_schedule.columns:  
-                            total=(0,0)
-                            for ix in ton_schedule.index:
-                                total=(total[0]+ton_schedule.loc[ix,col][0],total[1]+ton_schedule.loc[ix,col][1])
-                            totals.append(total)
-                    
-                        
-                        ton_schedule.loc["TOTAL"]=totals
-                       
-    
-                        mill_update={}
-                        for i in ton_schedule.columns:
-                            mill_update[i]={"SHIPPED (TONS)":ton_schedule.loc["TOTAL",i][0],"SCHEDULED (TONS)":ton_schedule.loc["TOTAL",i][1]}
-                        
-                        chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
-                        mill_prog_col1,mill_prog_col2=st.columns([2,4])
-                        
-                        with mill_prog_col1:
-                            st.dataframe(pd.DataFrame(mill_update).T)
-                        with mill_prog_col2:
+                                mill_update[i]={"SHIPPED (TONS)":ton_schedule.loc["TOTAL",i][0],"SCHEDULED (TONS)":ton_schedule.loc["TOTAL",i][1]}
                             
-                            mills = [i for i in ton_schedule.columns if i!="Total"]
-                            targets = [mill_update[i]["SCHEDULED (TONS)"] for i in mills]
-                            shipped = [mill_update[i]["SHIPPED (TONS)"] for i in mills]
+                            chosen_month=st.selectbox("SELECT MONTH",["SEP 2023","OCT 2023","NOV 2023","DEC 2023"])
+                            mill_prog_col1,mill_prog_col2=st.columns([2,4])
                             
-                            # Create a figure with a horizontal bar chart
-                            fig = go.Figure()
-                            
-                            for mill, target, shipped_qty in zip(mills, targets, shipped):
-                                fig.add_trace(
-                                    go.Bar(
-                                        y=[mill],
-                                        x=[shipped_qty],  # Darker shade indicating shipped
-                                        orientation="h",
-                                        name="Shipped",
-                                        text=[shipped_qty],
-                                        marker=dict(color='rgba(0, 128, 0, 0.7)')
+                            with mill_prog_col1:
+                                st.dataframe(pd.DataFrame(mill_update).T)
+                            with mill_prog_col2:
+                                
+                                mills = [i for i in ton_schedule.columns if i!="Total"]
+                                targets = [mill_update[i]["SCHEDULED (TONS)"] for i in mills]
+                                shipped = [mill_update[i]["SHIPPED (TONS)"] for i in mills]
+                                
+                                # Create a figure with a horizontal bar chart
+                                fig = go.Figure()
+                                
+                                for mill, target, shipped_qty in zip(mills, targets, shipped):
+                                    fig.add_trace(
+                                        go.Bar(
+                                            y=[mill],
+                                            x=[shipped_qty],  # Darker shade indicating shipped
+                                            orientation="h",
+                                            name="Shipped",
+                                            text=[shipped_qty],
+                                            marker=dict(color='rgba(0, 128, 0, 0.7)')
+                                        )
                                     )
-                                )
-                                fig.add_trace(
-                                    go.Bar(
-                                        y=[mill],
-                                        x=[target],  # Lighter shade indicating target
-                                        orientation="h",
-                                        name="Target",
-                                        text=[target],
-                                        marker=dict(color='rgba(0, 128, 0, 0.3)')
+                                    fig.add_trace(
+                                        go.Bar(
+                                            y=[mill],
+                                            x=[target],  # Lighter shade indicating target
+                                            orientation="h",
+                                            name="Target",
+                                            text=[target],
+                                            marker=dict(color='rgba(0, 128, 0, 0.3)')
+                                        )
                                     )
-                                )
-                            
-                            # Customize the layout
-                            fig.update_layout(
-                                        barmode='stack',  # Stack the bars on top of each other
-                                        xaxis_title="Quantity",
-                                        yaxis_title="Mills",
-                                        title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
-                                        legend=dict(
-                                            x=1.02,  # Move the legend to the right
-                                            y=1.0,
-                                            xanchor="left",  # Adjust legend position
-                                            yanchor="top",
-                                            font=dict(size=12)  # Increase legend font size
-                                        ),
-                                        xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
-                                        yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
-                                        title_font=dict(size=16),  # Increase title font size and weight
-                                         height=600,  # Adjust the height of the chart (in pixels)
-                                        width=800 
-                                    )
-            
-                            st.plotly_chart(fig)
-                    except:
-                        pass
+                                
+                                # Customize the layout
+                                fig.update_layout(
+                                            barmode='stack',  # Stack the bars on top of each other
+                                            xaxis_title="Quantity",
+                                            yaxis_title="Mills",
+                                            title=f"Monthly Targets and Shipped Quantities - {chosen_month}",
+                                            legend=dict(
+                                                x=1.02,  # Move the legend to the right
+                                                y=1.0,
+                                                xanchor="left",  # Adjust legend position
+                                                yanchor="top",
+                                                font=dict(size=12)  # Increase legend font size
+                                            ),
+                                            xaxis=dict(tickfont=dict(size=10)),  # Increase x-axis tick label font size
+                                            yaxis=dict(tickfont=dict(size=12)),  # Increase y-axis tick label font size
+                                            title_font=dict(size=16),  # Increase title font size and weight
+                                             height=600,  # Adjust the height of the chart (in pixels)
+                                            width=800 
+                                        )
+                
+                                st.plotly_chart(fig)
+                        except:
+                            pass
                 
                 
 
