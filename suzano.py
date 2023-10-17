@@ -1658,7 +1658,7 @@ if authentication_status:
                                
                                 suzano_report.update({next_report_no:{"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
                                                      "Consignee State":consignee_state,"Release #":release_order_number,"Carrier":carrier_code,
-                                                     "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Batch#":ocean_bol_to_batch[ocean_bill_of_lading],
+                                                     "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Batch#":batch,
                                                      "Warehouse":"OLYM","Vessel":vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
                                                      "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type}})
                                 suzano_report=json.dumps(suzano_report)
@@ -2785,7 +2785,8 @@ if authentication_status:
                            
                             suzano_report.update({next_report_no:{"Date Shipped":f"{a_} {b_}","Vehicle":vehicle_id, "Shipment ID #": bill_of_lading_number, "Consignee":consignee,"Consignee City":consignee_city,
                                                  "Consignee State":consignee_state,"Release #":release_order_number,"Carrier":carrier_code,
-                                                 "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Warehouse":"OLYM","Vessel":vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
+                                                 "ETA":eta,"Ocean BOL#":ocean_bill_of_lading,"Batch#":batch,
+                                                                  "Warehouse":"OLYM","Vessel":vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
                                                  "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type}})
                             suzano_report=json.dumps(suzano_report)
                             storage_client = storage.Client()
