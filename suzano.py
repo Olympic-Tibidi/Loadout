@@ -367,8 +367,7 @@ if authentication_status:
                         zipf.write(file_to_download)
             
                 # Provide a download button for the zip file
-            with open('downloaded_files.zip', 'rb') as zip_file:
-                zip_file_binary = zip_file.read()
+            
             st.download_button(
                 label="Download All Files",
                 data=zip_file_binary,
