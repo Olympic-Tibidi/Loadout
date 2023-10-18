@@ -361,12 +361,7 @@ if authentication_status:
                         blob = bucket.blob(file_to_download)
                         blob.download_to_filename(f'./{blob.name}')
                 
-                # Create a zip archive of the downloaded files
-                with zipfile.ZipFile('downloaded_files.zip', 'w') as zipf:
-                    for file_to_download in list_files_to_download:
-                        zipf.write(file_to_download)
-            
-                # Provide a download button for the zip file
+                
             
             st.download_button(
                 label="Download All Files",
