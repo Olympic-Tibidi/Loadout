@@ -1776,6 +1776,7 @@ if authentication_status:
                 with daily2:
                     enroute_vehicles={}
                     arrived_vehicles={}
+                    today_arrived_vehicles={}
                     for i in bill_of_ladings:
                         if i!="11502400":
                             date_strings=bill_of_ladings[i]["issued"].split(" ")
