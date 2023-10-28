@@ -1795,24 +1795,39 @@ if authentication_status:
                             estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y -- %H:%M")
                             now=datetime.datetime.now()-datetime.timedelta(hours=7)
                             if estimated_arrival>now:
-                                #st.write(f"Truck No : {truck} is Enroute to {destination} with ETA {estimated_arrival_string}")
+                                
                                 enroute_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
                                                  "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}","ETA":estimated_arrival_string}
+                            elif estimated_arrival.date()==now.date() and estimated_arrival<now:
+                                today_arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
+                                                 "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}",
+                                                                 "ARRIVAL TIME":estimated_arrival_string}
                             else:
-                                with daily3:
-                                    #st.write(f"Truck No : {truck} arrived at {destination} at {estimated_arrival_string}")
-                                    arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
-                                                 "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}","ARRIVAL TIME":estimated_arrival_string}
-                             
+                                
+                                arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
+                                                 "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}",
+                                                                 "ARRIVAL TIME":estimated_arrival_string,"ARRIVAL":estimated_arrival}
+                                        
                     arrived_vehicles=pd.DataFrame(arrived_vehicles)
-                    arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')               
+                    arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')
+                    arrived_vehicles=arrived_vehicles.T
+                    arrived_vehicles=arrived_vehicles.sort_values(by="ARRIVAL")
+                    today_arrived_vehicles=pd.DataFrame(today_arrived_vehicles)
+                    today_arrived_vehicles=today_arrived_vehicles.rename_axis('TRUCK NO')
                     enroute_vehicles=pd.DataFrame(enroute_vehicles)
                     enroute_vehicles=enroute_vehicles.rename_axis('TRUCK NO')
                     st.dataframe(enroute_vehicles.T)                      
                     for i in enroute_vehicles:
                         st.write(f"Truck No : {i} is Enroute to {enroute_vehicles[i]['DESTINATION']} at {enroute_vehicles[i]['ETA']}")
                 with daily3:
-                    st.table(arrived_vehicles.T)
+                    select = st.radio(
+                                    "Select Today's Arrived Vehicles or All Delivered Vehicles",
+                                    ["TODAY'S ARRIVALS", "ALL ARRIVALS"])
+                    if select=="TODAY'S ARRIVALS":
+                        st.table(today_arrived_vehicles.T)
+                    if select=="ALL ARRIVALS":
+                        
+                        st.table(arrived_vehicles.drop(columns=['ARRIVAL']))
             
             with inv2:
                 @st.cache
