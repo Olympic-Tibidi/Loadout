@@ -33,7 +33,8 @@ import yaml
 from yaml.loader import SafeLoader
 #from streamlit_extras.dataframe_explorer import dataframe_explorer
 import math
-
+import plotly.express as px               #to create interactive charts
+import plotly.graph_objects as go         #to create interactive charts
 import zipfile
 
 
