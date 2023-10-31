@@ -1779,7 +1779,18 @@ if authentication_status:
                     data=csv_weekly,
                     file_name=f'WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
                     mime='text/csv')
-                
+                    
+                    weekly_shipments = zf.groupby('destination').resample('W').size().unstack(level=0)
+                    weekly_shipments = weekly_shipments.reset_index()
+                    melted_df = pd.melt(weekly_shipments, id_vars='WEEK', var_name='Destination', value_name='Number of Shipments')
+                    fig = px.bar(melted_df, x='WEEK', y='Number of Shipments', color='Destination',
+                                 title='Weekly Shipments per Location',
+                                 labels={'Number of Shipments': 'Number of Shipments', 'issued': 'Week'})
+                    
+                    # Update x-axis to show only the date
+                    #fig.update_xaxes(dtick='M1', tickformat='%Y-%m-%d')
+                    
+                    st.plotly(fig)
                 
 
 
