@@ -1773,7 +1773,12 @@ if authentication_status:
                     resampled_quantity["WEEK"][:-1]=[i.strftime("%Y-%m-%d") for i in resampled_quantity["WEEK"][:-1]]
                     resampled_quantity.set_index("WEEK",drop=True,inplace=True)
                     st.dataframe(resampled_quantity)
-                
+                    csv_weekly=convert_df(resampled_quantity)
+                    st.download_button(
+                    label="DOWNLOAD WEEKLY REPORT AS CSV",
+                    data=csv_weekly,
+                    file_name=f'WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                    mime='text/csv')
                 
                 
 
@@ -2643,7 +2648,7 @@ if authentication_status:
                 csv_weekly=convert_df(resampled_quantity)
                 st.download_button(
                     label="DOWNLOAD WEEKLY REPORT AS CSV",
-                    data=csv,
+                    data=csv_weekly,
                     file_name=f'WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
                     mime='text/csv')
 elif authentication_status == False:
