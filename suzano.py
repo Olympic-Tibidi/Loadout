@@ -261,22 +261,7 @@ def process():
         number_of_lines=len(loads)+3
     end_initial="0"*(4-len(str(number_of_lines)))
     end=f"9TRL:{end_initial}{number_of_lines}"
-    Inventory=gcp_csv_to_df("olym_suzano", "Inventory.csv")
-    for i in loads:
-        try:              
-            Inventory.loc[Inventory["Lot"]==i,"Location"]="PARTIAL"
-            Inventory.loc[Inventory["Lot"]==i,"Shipped"]=Inventory.loc[Inventory["Lot"]==i,"Shipped"].values[0]+loads[i]*8
-            Inventory.loc[Inventory["Lot"]==i,"Remaining"]=Inventory.loc[Inventory["Lot"]==i,"Remaining"].values[0]-loads[i]*8
-            Inventory.loc[Inventory["Lot"]==i,"Warehouse_Out"]=datetime.datetime.combine(file_date,file_time)
-            Inventory.loc[Inventory["Lot"]==i,"Vehicle_Id"]=str(vehicle_id)
-            Inventory.loc[Inventory["Lot"]==i,"Release_Order_Number"]=str(release_order_number)
-            Inventory.loc[Inventory["Lot"]==i,"Carrier_Code"]=str(carrier_code)
-            Inventory.loc[Inventory["Lot"]==i,"Terminal B/L"]=str(terminal_bill_of_lading)
-        except:
-            st.write("Check Unit Number,Unit Not In Inventory")         
-        
-        temp=Inventory.to_csv("temp.csv")
-        upload_cs_file("olym_suzano", 'temp.csv',"Inventory.csv") 
+     
     with open(f'placeholder.txt', 'w') as f:
         f.write(line1)
         f.write('\n')
