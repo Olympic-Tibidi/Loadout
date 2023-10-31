@@ -1869,6 +1869,22 @@ if authentication_status:
                 maintenance=True
                 if maintenance:
                     st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
+                    bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+                    pd.read_json(fr"C:\Users\afsin\Desktop\BACKUP\terminal_bill_of_ladings.json").T
+                    
+                    zf=df.copy()
+                    zf['WEEK'] = pd.to_datetime(zf['issued'])
+                    zf.set_index('WEEK', inplace=True)
+                    def sum_quantity(x):
+                        return x.resample('W')['quantity'].sum()*2
+                    resampled_quantity = zf.groupby('destination').apply(sum_quantity).unstack(level=0)
+                    resampled_quantity=resampled_quantity.fillna(0)
+                    resampled_quantity.loc["TOTAL"]=resampled_quantity.sum(axis=0)
+                    resampled_quantity["TOTAL"]=resampled_quantity.sum(axis=1)
+                    resampled_quantity=resampled_quantity.reset_index()
+                    resampled_quantity["WEEK"][:-1]=[i.strftime("%Y-%m-%d") for i in resampled_quantity["WEEK"][:-1]]
+                    resampled_quantity.set_index("WEEK",drop=True,inplace=True)
+                    st.table(resampled_quantity)
                 else:
                     
                     dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED BY DATE"])
