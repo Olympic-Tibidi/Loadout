@@ -1872,7 +1872,7 @@ if authentication_status:
                     inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                     pd.read_json(inv_bill_of_ladings).T
                     
-                    zf=df.copy()
+                    zf=inv_bill_of_ladings.copy()
                     zf['WEEK'] = pd.to_datetime(zf['issued'])
                     zf.set_index('WEEK', inplace=True)
                     def sum_quantity(x):
