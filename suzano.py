@@ -1763,6 +1763,7 @@ if authentication_status:
                     zf=inv_bill_of_ladings.copy()
                     zf['WEEK'] = pd.to_datetime(zf['issued'])
                     zf.set_index('WEEK', inplace=True)
+                    
                     def sum_quantity(x):
                         return x.resample('W')['quantity'].sum()*2
                     resampled_quantity = zf.groupby('destination').apply(sum_quantity).unstack(level=0)
@@ -1782,6 +1783,7 @@ if authentication_status:
                     
                     weekly_shipments = zf.groupby('destination').resample('W').size().unstack(level=0)
                     weekly_shipments = weekly_shipments.reset_index()
+                    st.dataframe(weekly_shipments)
                     melted_df = pd.melt(weekly_shipments, id_vars='WEEK', var_name='Destination', value_name='Number of Shipments')
                     fig = px.bar(melted_df, x='WEEK', y='Number of Shipments', color='Destination',
                                  title='Weekly Shipments per Location',
