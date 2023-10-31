@@ -1656,7 +1656,7 @@ if authentication_status:
                 inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
                 maintenance=True
                 if maintenance:
-                    st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
+                    st.title("CURRENTLY UNDER MAINTENANCE, CHECK BACK LATER")
                     
                     
                     
@@ -2526,7 +2526,7 @@ if authentication_status:
         with inv4:
             maintenance=True
             if maintenance:
-                st.title("CURRENTLY IN MAINTENANCE, PLEASE CHECK BACK LATER")
+                st.title("CURRENTLY UNDER MAINTENANCE, PLEASE CHECK BACK LATER")
             else:
                 
                 dab1,dab2=st.tabs(["IN WAREHOUSE","SHIPPED BY DATE"])
@@ -2640,6 +2640,12 @@ if authentication_status:
                 resampled_quantity["WEEK"][:-1]=[i.strftime("%Y-%m-%d") for i in resampled_quantity["WEEK"][:-1]]
                 resampled_quantity.set_index("WEEK",drop=True,inplace=True)
                 st.dataframe(resampled_quantity)
+                csv_weekly=convert_df(resampled_quantity)
+                st.download_button(
+                    label="DOWNLOAD WEEKLY REPORT AS CSV",
+                    data=csv,
+                    file_name=f'WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                    mime='text/csv')
 elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
