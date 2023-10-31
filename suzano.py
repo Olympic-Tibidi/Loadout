@@ -2649,7 +2649,7 @@ if authentication_status:
                 st.download_button(
                     label="DOWNLOAD WEEKLY REPORT AS CSV",
                     data=csv_weekly,
-                    file_name=f'WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                    file_name=f'OLYMPIA WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
                     mime='text/csv')
 elif authentication_status == False:
     st.error('Username/password is incorrect')
