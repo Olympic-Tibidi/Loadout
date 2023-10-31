@@ -2673,6 +2673,24 @@ if authentication_status:
                     data=csv_weekly,
                     file_name=f'OLYMPIA WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
                     mime='text/csv')
+                zf['issued'] = pd.to_datetime(zf['issued'])                   
+                   
+                weekly_tonnage = zf.groupby(['destination', pd.Grouper(key='issued', freq='W')])['quantity'].sum() * 2  # Assuming 2 tons per quantity
+                weekly_tonnage = weekly_tonnage.reset_index()                   
+              
+                weekly_tonnage = weekly_tonnage.rename(columns={'issued': 'WEEK', 'quantity': 'Tonnage'})
+              
+                fig = px.bar(weekly_tonnage, x='WEEK', y='Tonnage', color='destination',
+                             title='Weekly Shipments Tonnage per Location',
+                             labels={'Tonnage': 'Tonnage (in Tons)', 'WEEK': 'Week'})
+             
+                fig.update_layout(width=1000, height=700)  # You can adjust the width and height values as needed
+                
+                st.plotly_chart(fig)
+
+
+
+
 elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
