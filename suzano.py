@@ -1788,7 +1788,7 @@ if authentication_status:
                     fig = px.bar(melted_df, x='WEEK', y='Number of Shipments', color='Destination',
                                  title='Weekly Shipments per Location',
                                  labels={'Number of Shipments': 'Number of Shipments', 'issued': 'Week'})
-                    fig.update_layout(width=800, height=600)  # You can adjust the width and height values as needed
+                    fig.update_layout(width=1000, height=700)  # You can adjust the width and height values as needed
 
                     # Update x-axis to show only the date
                     #fig.update_xaxes(dtick='M1', tickformat='%Y-%m-%d')
