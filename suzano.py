@@ -1793,7 +1793,7 @@ if authentication_status:
                     # Update x-axis to show only the date
                     #fig.update_xaxes(dtick='M1', tickformat='%Y-%m-%d')
                     
-                    st.plotly(fig)
+                    st.plotly_chart(fig)
                 
 
 
