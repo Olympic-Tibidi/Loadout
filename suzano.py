@@ -1783,40 +1783,25 @@ if authentication_status:
                     mime='text/csv')
 
 
-                    # Convert 'issued' column to datetime if it's not already in datetime format
-                    zf['issued'] = pd.to_datetime(zf['issued'])
-                    
-                    # Group by 'WEEK', 'destination' and sum the 'quantity' for each group
+                   
+                    zf['issued'] = pd.to_datetime(zf['issued'])                   
+                   
                     weekly_tonnage = zf.groupby(['destination', pd.Grouper(key='issued', freq='W')])['quantity'].sum() * 2  # Assuming 2 tons per quantity
-                    weekly_tonnage = weekly_tonnage.reset_index()
-                    
-                    # Renaming columns for clarity
+                    weekly_tonnage = weekly_tonnage.reset_index()                   
+                  
                     weekly_tonnage = weekly_tonnage.rename(columns={'issued': 'WEEK', 'quantity': 'Tonnage'})
-                    
-                    # Plotting using Plotly
+                  
                     fig = px.bar(weekly_tonnage, x='WEEK', y='Tonnage', color='destination',
                                  title='Weekly Shipments Tonnage per Location',
                                  labels={'Tonnage': 'Tonnage (in Tons)', 'WEEK': 'Week'})
-                    
-                    # Set the size of the chart
-                    fig.update_layout(width=800, height=600)  # You can adjust the width and height values as needed
-                    
-                    st.plotly_chart(fig)
-
-
-                    
-                    weekly_shipments = zf.groupby('destination').resample('W').size().unstack(level=0)
-                    weekly_shipments = weekly_shipments.reset_index()
-                    melted_df = pd.melt(weekly_shipments, id_vars='WEEK', var_name='Destination', value_name='Number of Shipments')
-                    fig = px.bar(melted_df, x='WEEK', y='Number of Shipments', color='Destination',
-                                 title='Weekly Shipments per Location',
-                                 labels={'Number of Shipments': 'Number of Shipments', 'issued': 'Week'})
+                 
                     fig.update_layout(width=1000, height=700)  # You can adjust the width and height values as needed
-
-                    # Update x-axis to show only the date
-                    #fig.update_xaxes(dtick='M1', tickformat='%Y-%m-%d')
                     
                     st.plotly_chart(fig)
+
+
+                    
+                   
                 
 
 
