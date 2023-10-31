@@ -1781,6 +1781,26 @@ if authentication_status:
                     data=csv_weekly,
                     file_name=f'WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
                     mime='text/csv')
+
+
+                    weekly_shipments = zf.groupby('destination').resample('W').size().unstack(level=0)
+                    weekly_shipments = weekly_shipments.reset_index()
+                    weekly_shipments['quantity_in_tons'] = weekly_shipments['quantity'] * 2  # Assuming 2 tons per quantity
+
+                    melted_df = pd.melt(weekly_shipments, id_vars='WEEK', var_name='Destination', value_name='Quantity in Tons')
+                    
+                    fig = px.bar(melted_df, x='WEEK', y='Quantity in Tons', color='Destination',
+                                 title='Weekly Shipments per Location (in Tons)',
+                                 labels={'Quantity in Tons': 'Tonnage (in Tons)', 'issued': 'Week'})
+                    
+                    # Update x-axis to show only the date
+                    # fig.update_xaxes(dtick='M1', tickformat='%Y-%m-%d')
+                    
+                    # Set the size of the chart
+                    fig.update_layout(width=800, height=600)  # You can adjust the width and height values as needed
+                    st.plotly_chart(fig)
+
+
                     
                     weekly_shipments = zf.groupby('destination').resample('W').size().unstack(level=0)
                     weekly_shipments = weekly_shipments.reset_index()
