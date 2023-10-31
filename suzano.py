@@ -466,12 +466,17 @@ if authentication_status:
                             st.data_editor(filtered_df)
                           
             with admin_tab1:
-                carrier_list_=gcp_download("olym_suzano",rf"carrier.json")
+                carrier_list_=gcp_download(target_bucket,rf"carrier.json")
                 carrier_list=json.loads(carrier_list_)
-                junk=gcp_download("olym_suzano",rf"junk_release.json")
+                junk=gcp_download(target_bucket,rf"junk_release.json")
                 junk=json.loads(junk)
+                mill_shipments=gcp_download(target_bucket,rf"mill_shipments.json")
+                mill_shipments=json.loads(mill_shipments)
+                mill_df=pd.DataFrame.from_dict(mill_shipments).T
+                mill_df["Terminal Code"]=mill_df["Terminal Code"].astype(str)
+                mill_df["New Product"]=mill_df["New Product"].astype(str)
                 try:
-                    release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                    release_order_database=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                     release_order_database=json.loads(release_order_database)
                 except:
                     release_order_database={}
@@ -481,10 +486,10 @@ if authentication_status:
                 with release_order_tab1:
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"])
                     edit=st.checkbox("CHECK TO ADD TO EXISTING RELEASE ORDER")
-                    batch_mapping=gcp_download("olym_suzano",rf"batch_mapping.json")
+                    batch_mapping=gcp_download(target_bucket,rf"batch_mapping.json")
                     batch_mapping=json.loads(batch_mapping)
                     if edit:
-                        #release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder("olym_suzano", "release_orders/{vessel}")))
+                        #release_order_number=st.selectbox("SELECT RELEASE ORDER",(list_files_in_folder(target_bucket, "release_orders/{vessel}")))
                         release_order_number=st.selectbox("SELECT RELEASE ORDER",([i for i in [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")] if i not in junk]))
                         po_number=st.text_input("PO No")
                     else:
