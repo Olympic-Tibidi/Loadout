@@ -1869,8 +1869,8 @@ if authentication_status:
                 maintenance=True
                 if maintenance:
                     st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
-                    bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                    pd.read_json(fr"C:\Users\afsin\Desktop\BACKUP\terminal_bill_of_ladings.json").T
+                    inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+                    pd.read_json(inv_bill_of_ladings).T
                     
                     zf=df.copy()
                     zf['WEEK'] = pd.to_datetime(zf['issued'])
