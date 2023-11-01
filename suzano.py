@@ -2487,34 +2487,34 @@ if authentication_status:
             
         with inv4:
             inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
-                maintenance=False
-                if maintenance:
-                    st.title("CURRENTLY UNDER MAINTENANCE, CHECK BACK LATER")
-                else:
-                    kf=inv_bill_of_ladings.iloc[1:].copy()
-                    kf['issued'] = pd.to_datetime(kf['issued'])
-                    kf['Date'] = kf['issued'].dt.date
-                    kf['Date'] = pd.to_datetime(kf['Date'])
-                    # Create a date range from the minimum to maximum date in the 'issued' column
-                    date_range = pd.date_range(start=kf['Date'].min(), end=kf['Date'].max(), freq='D')
-                    
-                    # Create a DataFrame with the date range
-                    date_df = pd.DataFrame({'Date': date_range})
-                    # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
-                    merged_df = pd.merge(date_df, kf, how='left', on='Date')
-                    merged_df['quantity'].fillna(0, inplace=True)
-                    merged_df_grouped=merged_df.groupby('Date')[['quantity']].sum()
-                    merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
-                    merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
-                    merged_df_grouped["Remaining_Units"]=[9200-i for i in merged_df_grouped['Accumulated_Quantity']]
-                    merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
-                    merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
-                                                      'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
-                    merged_df_grouped=merged_df_grouped.reset_index()
-                    merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
-                    merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
-                    st.dataframe(merged_df_grouped)
+            inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
+            maintenance=False
+            if maintenance:
+                st.title("CURRENTLY UNDER MAINTENANCE, CHECK BACK LATER")
+            else:
+                kf=inv_bill_of_ladings.iloc[1:].copy()
+                kf['issued'] = pd.to_datetime(kf['issued'])
+                kf['Date'] = kf['issued'].dt.date
+                kf['Date'] = pd.to_datetime(kf['Date'])
+                # Create a date range from the minimum to maximum date in the 'issued' column
+                date_range = pd.date_range(start=kf['Date'].min(), end=kf['Date'].max(), freq='D')
+                
+                # Create a DataFrame with the date range
+                date_df = pd.DataFrame({'Date': date_range})
+                # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
+                merged_df = pd.merge(date_df, kf, how='left', on='Date')
+                merged_df['quantity'].fillna(0, inplace=True)
+                merged_df_grouped=merged_df.groupby('Date')[['quantity']].sum()
+                merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
+                merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
+                merged_df_grouped["Remaining_Units"]=[9200-i for i in merged_df_grouped['Accumulated_Quantity']]
+                merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
+                merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
+                                                  'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
+                merged_df_grouped=merged_df_grouped.reset_index()
+                merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
+                merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
+                st.dataframe(merged_df_grouped)
                     
                        
                     
