@@ -1680,7 +1680,7 @@ if authentication_status:
                                                       'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
                     merged_df_grouped=merged_df_grouped.reset_index()
                     merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
-                    =merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
+                    merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
                     st.dataframe(merged_df_grouped)
                                         
                         
