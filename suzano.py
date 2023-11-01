@@ -1682,7 +1682,12 @@ if authentication_status:
                     merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
                     merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
                     st.dataframe(merged_df_grouped)
-                                        
+                    csv_inventory=convert_df(merged_df_grouped)
+                    st.download_button(
+                        label="DOWNLOAD INVENTORY REPORT AS CSV",
+                        data=csv_inventory,
+                        file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                        mime='text/csv')            
                         
                            
                         
@@ -2515,7 +2520,12 @@ if authentication_status:
                 merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
                 merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
                 st.dataframe(merged_df_grouped)
-                    
+                csv_inventory=convert_df(merged_df_grouped)
+                st.download_button(
+                        label="DOWNLOAD INVENTORY REPORT AS CSV",
+                        data=csv_inventory,
+                        file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                        mime='text/csv')            
                        
                     
                     
