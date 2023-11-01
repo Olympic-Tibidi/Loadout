@@ -1678,6 +1678,8 @@ if authentication_status:
                     merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
                     merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
                                                       'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
+                    merged_df_grouped=merged_df_grouped.reset_index()
+                    merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
                     st.dataframe(merged_df_grouped)
                                         
                         
