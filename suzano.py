@@ -803,17 +803,17 @@ if authentication_status:
                                     
                                     json_data = json.dumps(to_edit_d)
                                     storage_client = storage.Client()
-                                    bucket = storage_client.bucket("olym_suzano")
+                                    bucket = storage_client.bucket(target_bucket)
                                     blob = bucket.blob(rf"release_orders/{vessel}/{requested_file}.json")
                                     blob.upload_from_string(json_data)
                                 if st.button("DELETE RELEASE ORDER ITEM!",key="laladg"):
-                                    junk=gcp_download("olym_suzano",rf"junk_release.json")
+                                    junk=gcp_download(target_bucket,rf"junk_release.json")
                                     junk=json.loads(junk)
                                    
                                     junk[requested_file]=1
                                     json_data = json.dumps(junk)
                                     storage_client = storage.Client()
-                                    bucket = storage_client.bucket("olym_suzano")
+                                    bucket = storage_client.bucket(target_bucket)
                                     blob = bucket.blob(rf"junk_release.json")
                                     blob.upload_from_string(json_data)
                                            
@@ -822,12 +822,12 @@ if authentication_status:
                                     dispatch={}
                                     json_data = json.dumps(dispatch)
                                     storage_client = storage.Client()
-                                    bucket = storage_client.bucket("olym_suzano")
+                                    bucket = storage_client.bucket(target_bucket)
                                     blob = bucket.blob(rf"dispatched.json")
                                     blob.upload_from_string(json_data)
                                     st.markdown(f"**CLEARED ALL DISPATCHES**")   
                             with dol3:
-                                dispatch=gcp_download("olym_suzano",rf"dispatched.json")
+                                dispatch=gcp_download(target_bucket,rf"dispatched.json")
                                 dispatch=json.loads(dispatch)
                                 try:
                                     item=st.selectbox("CHOOSE ITEM",dispatch.keys())
