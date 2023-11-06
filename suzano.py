@@ -955,7 +955,7 @@ if authentication_status:
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"release_orders/mf_numbers.json")
                             blob.upload_from_string(mf_data)
-                        st.write(pd.DataFrame(mf_numbers))
+                        st.dataframe(pd.DataFrame(mf_numbers))
                         
                                 
         
