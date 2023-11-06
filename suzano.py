@@ -610,8 +610,7 @@ if authentication_status:
                 with release_order_tab2:
                     
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
-                    rls_tab1,rls_tab2=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS"])
-
+                    rls_tab1,rls_tab2,rls_tab3=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS","ENTER MF NUMBERS"])
                     data=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
                     try:
                         release_order_dictionary=json.loads(data)
@@ -935,6 +934,28 @@ if authentication_status:
                         requested_file_=st.selectbox("COMPLETED RELEASE ORDERS",destinations_of_completed_release_orders,key=16)
                         requested_file=requested_file_.split(" ")[0]
                         nofile=0
+                    with rls_tab3:
+                        mf_numbers_=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
+                        mf_numbers=json.loads(mf_numbers_)
+                        
+                        vessel_mf=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="lalala")
+                        release_order_number_mf=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders,key="tatata")
+                        input_mf_numbers=st.text_area("**ENTER MF NUMBERS**",height=100,key="juy")
+                        if input_mf_numbers is not None:
+                            input_mf_numbers = input_mf_numbers.splitlines()
+                            input_mf_numbers=[i for i in input_mf_numbers if len(i)==10]
+                        st.write(input_mf_numbers)
+                        if st.button("SUBMIT MF NUMBERS",key="ioeru" ):
+                            if release_order_number_mf[:7] not in mf_numbers[vessel_mf].keys():
+                                mf_numbers[vessel_mf][release_order_number_mf[:7]]=[]
+                            mf_numbers[vessel_mf][release_order_number_mf[:7]]+=input_mf_numbers
+                            mf_numbers[vessel_mf][release_order_number_mf[:7]]=list(set(mf_numbers[vessel_mf][release_order_number_mf[:7]]))
+                            mf_data=json.dumps(mf_numbers)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket(target_bucket)
+                            blob = bucket.blob(rf"release_orders/mf_numbers.json")
+                            blob.upload_from_string(mf_data)
+                        st.write(mf_numbers)
                         
                                 
         
