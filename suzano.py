@@ -944,7 +944,7 @@ if authentication_status:
                         if input_mf_numbers is not None:
                             input_mf_numbers = input_mf_numbers.splitlines()
                             input_mf_numbers=[i for i in input_mf_numbers if len(i)==10]
-                        st.write(input_mf_numbers)
+                        #st.write(input_mf_numbers)
                         if st.button("SUBMIT MF NUMBERS",key="ioeru" ):
                             if release_order_number_mf[:7] not in mf_numbers[vessel_mf].keys():
                                 mf_numbers[vessel_mf][release_order_number_mf[:7]]=[]
@@ -955,7 +955,7 @@ if authentication_status:
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"release_orders/mf_numbers.json")
                             blob.upload_from_string(mf_data)
-                        st.write(mf_numbers)
+                        st.write(pd.DataFrame(mf_numbers))
                         
                                 
         
