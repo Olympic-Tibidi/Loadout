@@ -937,7 +937,7 @@ if authentication_status:
                     with rls_tab3:
                         mf_numbers_=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
                         mf_numbers=json.loads(mf_numbers_)
-                        
+                        gp_release_orders=[i for i in release_order_database if release_order_database[i]["001"]["destination"] in ["GP-Clatskanie,OR","GP-Halsey,OR"] and release_order_database[i]["001"]["remaining"]>2]
                         vessel_mf=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="lalala")
                         release_order_number_mf=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders,key="tatata")
                         input_mf_numbers=st.text_area("**ENTER MF NUMBERS**",height=100,key="juy")
@@ -950,6 +950,15 @@ if authentication_status:
                                 mf_numbers[vessel_mf][release_order_number_mf[:7]]=[]
                             mf_numbers[vessel_mf][release_order_number_mf[:7]]+=input_mf_numbers
                             mf_numbers[vessel_mf][release_order_number_mf[:7]]=list(set(mf_numbers[vessel_mf][release_order_number_mf[:7]]))
+                            mf_data=json.dumps(mf_numbers)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket(target_bucket)
+                            blob = bucket.blob(rf"release_orders/mf_numbers.json")
+                            blob.upload_from_string(mf_data)
+                        if st.button("REMOVE MF NUMBERS",key="ioerssu" ):
+                            for i in input_mf_numbers:
+                                if i in mf_numbers[vessel_mf][release_order_number_mf[:7]]:
+                                    mf_numbers[vessel_mf][release_order_number_mf[:7]].remove(i)
                             mf_data=json.dumps(mf_numbers)
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
