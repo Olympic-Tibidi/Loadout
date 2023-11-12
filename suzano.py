@@ -465,17 +465,16 @@ if authentication_status:
                                 st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
                         with col2:
                             if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
-                                #st.write(list_cs_files("olym_suzano"))
                                 temp=new_df.to_csv("temp.csv")
-                                upload_cs_file("olym_suzano", 'temp.csv',rf"shipping_files/{gemi}-{voyage}-shipping_file.csv") 
+                                upload_cs_file(target_bucket, 'temp.csv',rf"shipping_files/{gemi}-{voyage}-shipping_file.csv") 
                                 st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
                         st.dataframe(new_df)
                     with shipment_tab2:
                         folder_name = "olym_suzano/shipping_files"  # Replace this with the folder path you want to read
-                        files_in_folder = list_files_in_folder("olym_suzano", "shipping_files")
+                        files_in_folder = list_files_in_folder(target_bucket, "shipping_files")
                         requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
                         if st.button("LOAD SHIPPING FILE"):
-                            requested_shipping_file=gcp_csv_to_df("olym_suzano", requested_file)
+                            requested_shipping_file=gcp_csv_to_df(target_bucket,requested_file)
                             filtered_df=requested_shipping_file[["Lot","Lot Qty","Batch","Grade","Ocean B/L","DryWeight","ADMT","Location",
                                                                                       "Warehouse_In","Warehouse_Out","Vehicle_Id","Release_Order_Number","Carrier_Code"]]
                             #st.data_editor(filtered_df, use_container_width=True)
@@ -568,6 +567,7 @@ if authentication_status:
                             
                             temp=store_release_order_data(vessel,release_order_number,destination,po_number,sales_order_item,batch,ocean_bill_of_lading,wrap,dryness,unitized,quantity,tonnage,transport_type,carrier_code)
                      
+                        
                         try:
                             junk=gcp_download(target_bucket,rf"release_orders/{vessel}/junk_release.json")
                         except:
@@ -611,7 +611,7 @@ if authentication_status:
                     
                     vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304"],key="other")
                     rls_tab1,rls_tab2,rls_tab3=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS","ENTER MF NUMBERS"])
-                    data=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                    data=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")  #################
                     try:
                         release_order_dictionary=json.loads(data)
                     except: 
@@ -633,9 +633,9 @@ if authentication_status:
                             if not_yet==0:
                                 completed_release_orders.append(key)
                         
-                        files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder("olym_suzano", rf"release_orders/KIRKENES-2304/")]   ### REMOVE json extension from name
+                        files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder(target_bucket, rf"release_orders/{vessel}/")]   ### REMOVE json extension from name
                         
-                        junk=gcp_download("olym_suzano",rf"junk_release.json")
+                        junk=gcp_download(target_bucket,rf"junk_release.json")
                         junk=json.loads(junk)
                         files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]        ###  CHECK IF COMPLETED
                         files_in_folder=[i for i in files_in_folder if i not in junk.keys()]        ###  CHECK IF COMPLETED
@@ -655,7 +655,7 @@ if authentication_status:
                         except:
                             st.write("NO RELEASE ORDERS YET")
                         try:
-                            data=gcp_download("olym_suzano",rf"release_orders/{vessel}/{requested_file}.json")
+                            data=gcp_download(target_bucket,rf"release_orders/{vessel}/{requested_file}.json")
                             release_order_json = json.loads(data)
                             
                             
@@ -675,7 +675,7 @@ if authentication_status:
                         #### DISPATCHED CLEANUP  #######
                         
                         try:
-                            dispatched=gcp_download("olym_suzano",rf"dispatched.json")
+                            dispatched=gcp_download(target_bucket,rf"dispatched.json")
                             dispatched=json.loads(dispatched)
                             #st.write(dispatched)
                         except:
@@ -692,7 +692,7 @@ if authentication_status:
                            
                             json_data = json.dumps(dispatched)
                             storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
+                            bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"dispatched.json")
                             blob.upload_from_string(json_data)
                         except:
