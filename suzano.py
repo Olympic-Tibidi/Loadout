@@ -1797,7 +1797,7 @@ if authentication_status:
                             mime='text/csv')            
                     with inv4tab2: 
                         st.write(Inventory)
-                        st.write(f'Unaccounted Units Registered" : {Inventory[Inventory["Accounted"]==False]["Bales"]/8} Units')
+                        st.write(f'Unaccounted Units Registered" : {Inventory[Inventory["Accounted"]==False]["Bales"].sum()/8} Units')
                         
                         
                         
