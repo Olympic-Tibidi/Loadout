@@ -370,14 +370,14 @@ if authentication_status:
         if select=="ADMIN" :
             admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES"])
             with admin_tab2:
-                bill_data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+                bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
                 st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:])
             with admin_tab3:
-                edi_files=list_files_in_subfolder("olym_suzano", rf"EDIS/KIRKENES-2304/")
+                edi_files=list_files_in_subfolder(target_bucket, rf"EDIS/KIRKENES-2304/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
                 try:
-                    requested_edi=gcp_download("olym_suzano", rf"EDIS/KIRKENES-2304/{requested_edi_file}")
+                    requested_edi=gcp_download(target_bucket, rf"EDIS/KIRKENES-2304/{requested_edi_file}")
                     st.text_area("EDI",requested_edi,height=400)                                
                    
                     st.download_button(
@@ -1803,7 +1803,10 @@ if authentication_status:
                                 for unit in line.keys():
                                     kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Shipped"]=kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Shipped"]+line[unit]*8
                                     kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Remaining"]=kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Remaining"]-line[unit]*8
-                            st.write(kirkenes_updated)
+                            
+                            st.write(kirkenes_updated
+                            temp=new_df.to_csv("temp.csv")
+                            upload_cs_file(target_bucket, 'temp.csv',rf"kirkenes_updated.csv") 
                         no_of_unaccounted=Inventory[Inventory["Accounted"]==False]["Bales"].sum()/8
                         st.write(f'**Unaccounted Units Registered : {no_of_unaccounted} Units/{no_of_unaccounted*2} Tons**')
                         
