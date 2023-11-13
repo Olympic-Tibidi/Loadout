@@ -1798,7 +1798,7 @@ if authentication_status:
                     with inv4tab2:
                         kirkenes_updated=gcp_csv_to_df(target_bucket,rf"kirkenes_updated.csv")
                         st.write(kirkenes_updated)
-                        if st.button("RUN INVENTORY CHECK",key="tyuris"):
+                        if st.button("CLICK TO RE-RUN INVENTORY",key="tyuris"):
                             kirkenes_updated=Inventory.copy()
                             for line in inv_bill_of_ladings.loads[1:]:
                                 for unit in line.keys():
@@ -1810,9 +1810,13 @@ if authentication_status:
                             upload_cs_file(target_bucket, 'temp.csv',rf"kirkenes_updated.csv") 
                         no_of_unaccounted=Inventory[Inventory["Accounted"]==False]["Bales"].sum()/8
                         st.write(f'**Unaccounted Units Registered : {no_of_unaccounted} Units/{no_of_unaccounted*2} Tons**')
-                        
-                        
-                        
+                        temp1=kirkenes_updated.groupby("Ocean B/L")[["Bales","Shipped","Remaining"]].sum()/8
+                        temp=df.groupby("ocean_bill_of_lading")[["quantity"]].sum()
+                        temp.insert(0,"Total",temp1.Bales.values)
+                        temp["Remaining"]=temp.Total-temp.quantity
+                        temp.columns=["Total","Shipped","Remaining"]
+                        st.subheader("BY Ocean BOL,Units")
+                        st.dataframe(temp)
                    
             with inv5:
                 inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
