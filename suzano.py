@@ -989,7 +989,7 @@ if authentication_status:
             if number not in st.session_state:
                 st.session_state.number=number
             try:
-                dispatched=gcp_download("olym_suzano","dispatched.json")
+                dispatched=gcp_download(target_bucket,"dispatched.json")
                 dispatched=json.loads(dispatched)
             except:
                 no_dispatch=1
@@ -1030,7 +1030,7 @@ if authentication_status:
                 except:
                     
                     pass
-                info=gcp_download("olym_suzano",rf"release_orders/{vessel}/{work_order}.json")
+                info=gcp_download(target_bucket,rf"release_orders/{vessel}/{work_order}.json")
                 info=json.loads(info)
                 
                 
@@ -1614,7 +1614,7 @@ if authentication_status:
                 
                         
         if select=="INVENTORY" :
-            Inventory=gcp_csv_to_df(target_bucket, "Inventory.csv")
+            Inventory=gcp_csv_to_df(target_bucket, "kirkenes_with_ghosts_found.csv")
             data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
             bill_of_ladings=json.loads(data)
             mill_info=json.loads(gcp_download(target_bucket,rf"mill_info.json"))
@@ -1755,6 +1755,7 @@ if authentication_status:
             with inv4:
                 inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
+                st.write(Inventory)
                 maintenance=False
                 if maintenance:
                     st.title("CURRENTLY UNDER MAINTENANCE, CHECK BACK LATER")
