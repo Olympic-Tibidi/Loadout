@@ -1804,7 +1804,7 @@ if authentication_status:
                                     kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Shipped"]=kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Shipped"]+line[unit]*8
                                     kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Remaining"]=kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Remaining"]-line[unit]*8
                             
-                            st.write(kirkenes_updated
+                            st.write(kirkenes_updated)
                             temp=new_df.to_csv("temp.csv")
                             upload_cs_file(target_bucket, 'temp.csv',rf"kirkenes_updated.csv") 
                         no_of_unaccounted=Inventory[Inventory["Accounted"]==False]["Bales"].sum()/8
