@@ -1797,6 +1797,13 @@ if authentication_status:
                             mime='text/csv')            
                     with inv4tab2: 
                         st.write(Inventory)
+                        if st.button("RUN INVENTORY CHECK",key="tyuris):
+                            kirkenes_updated=Inventory.copy()
+                            for line in inv_bill_of_ladings.loads[1:]:
+                                for unit in line.keys():
+                                    kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Shipped"]=kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Shipped"]+line[unit]*8
+                                    kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Remaining"]=kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Remaining"]-line[unit]*8
+                            st.write(kirkenes_updated)
                         no_of_unaccounted=Inventory[Inventory["Accounted"]==False]["Bales"].sum()/8
                         st.write(f'**Unaccounted Units Registered : {no_of_unaccounted} Units/{no_of_unaccounted*2} Tons**')
                         
