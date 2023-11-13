@@ -1796,7 +1796,7 @@ if authentication_status:
                             file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
                             mime='text/csv')            
                     with inv4tab2:
-                        kirkenes_updated=gcp_csv_to_df(target_bucket,requested_file)
+                        kirkenes_updated=gcp_csv_to_df(target_bucket,rf"kirkenes_updated.csv")
                         st.write(kirkenes_updated)
                         if st.button("RUN INVENTORY CHECK",key="tyuris"):
                             kirkenes_updated=Inventory.copy()
