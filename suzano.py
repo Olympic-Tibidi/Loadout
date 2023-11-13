@@ -1761,9 +1761,9 @@ if authentication_status:
                 if maintenance:
                     st.title("CURRENTLY UNDER MAINTENANCE, CHECK BACK LATER")
 
-                inv4tab1,inv4tab2=st.tabs("DAILY SHIPMENT REPORT","INVENTORY")
-                
+                               
                 else:
+                    inv4tab1,inv4tab2=st.tabs("DAILY SHIPMENT REPORT","INVENTORY")
                     with inv4tab1:
                         
                         kf=inv_bill_of_ladings.iloc[1:].copy()
