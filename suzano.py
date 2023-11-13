@@ -1763,7 +1763,7 @@ if authentication_status:
 
                                
                 else:
-                    inv4tab1,inv4tab2=st.tabs("DAILY SHIPMENT REPORT","INVENTORY")
+                    inv4tab1,inv4tab2=st.tabs(["DAILY SHIPMENT REPORT","INVENTORY"])
                     with inv4tab1:
                         
                         kf=inv_bill_of_ladings.iloc[1:].copy()
