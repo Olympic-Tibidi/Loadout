@@ -1816,8 +1816,14 @@ if authentication_status:
                         temp["Remaining"]=temp.Total-temp.quantity
                         temp.columns=["Total","Shipped","Remaining"]
                         temp.loc["TOTAL"]=temp.sum(axis=0)
-                        st.subheader("BY Ocean BOL,Units")
-                        st.dataframe(temp)
+                        tempo=temp*2
+                        inv_col1,inv_col2=st.columns([2,2])
+                        with inv_col1:
+                            st.subheader("By Ocean BOL,UNITS")
+                            st.dataframe(temp)
+                        with inv_col2:
+                            st.subheader("By Ocean BOL,TONS")
+                            st.dataframe(tempo)
                    
             with inv5:
                 inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
