@@ -1815,6 +1815,7 @@ if authentication_status:
                         temp.insert(0,"Total",temp1.Bales.values)
                         temp["Remaining"]=temp.Total-temp.quantity
                         temp.columns=["Total","Shipped","Remaining"]
+                        temp.loc["TOTAL"]=temp.sum(axis=0)
                         st.subheader("BY Ocean BOL,Units")
                         st.dataframe(temp)
                    
