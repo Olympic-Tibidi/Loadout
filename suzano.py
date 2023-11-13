@@ -1797,7 +1797,7 @@ if authentication_status:
                             mime='text/csv')            
                     with inv4tab2: 
                         st.write(Inventory)
-                        if st.button("RUN INVENTORY CHECK",key="tyuris):
+                        if st.button("RUN INVENTORY CHECK",key="tyuris"):
                             kirkenes_updated=Inventory.copy()
                             for line in inv_bill_of_ladings.loads[1:]:
                                 for unit in line.keys():
