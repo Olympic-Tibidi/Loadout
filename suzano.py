@@ -475,8 +475,7 @@ if authentication_status:
                         requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
                         if st.button("LOAD SHIPPING FILE"):
                             requested_shipping_file=gcp_csv_to_df(target_bucket,requested_file)
-                            filtered_df=requested_shipping_file[["Lot","Lot Qty","Batch","Grade","Ocean B/L","DryWeight","ADMT","Location",
-                                                                                      "Warehouse_In"]]
+                            filtered_df=requested_shipping_file[["Lot","Lot Qty","Batch","Grade","Ocean B/L","DryWeight","ADMT"]]
                             #st.data_editor(filtered_df, use_container_width=True)
                             st.data_editor(filtered_df)
                           
