@@ -1797,7 +1797,7 @@ if authentication_status:
                             mime='text/csv')            
                     with inv4tab2:
                         kirkenes_updated=gcp_csv_to_df(target_bucket,rf"kirkenes_updated.csv")
-                        kirkenes_updated["Batch"].astype(str)
+                        kirkenes_updated["Batch"]=kirkenes_updated["Batch"].astype(str)
                         st.write(kirkenes_updated)
                         if st.button("CLICK TO RE-RUN INVENTORY",key="tyuris"):
                             kirkenes_updated=gcp_csv_to_df(target_bucket,rf"kirkenes_with_ghosts_found.csv")
