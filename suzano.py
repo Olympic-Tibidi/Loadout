@@ -1797,9 +1797,10 @@ if authentication_status:
                             mime='text/csv')            
                     with inv4tab2:
                         kirkenes_updated=gcp_csv_to_df(target_bucket,rf"kirkenes_updated.csv")
+                        kirkenes_updated["Batch"].astype(str)
                         st.write(kirkenes_updated)
                         if st.button("CLICK TO RE-RUN INVENTORY",key="tyuris"):
-                            kirkenes_updated=Inventory.copy()
+                            kirkenes_updated=gcp_csv_to_df(target_bucket,rf"kirkenes_with_ghosts_found.csv")
                             for line in inv_bill_of_ladings.loads[1:]:
                                 for unit in line.keys():
                                     kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Shipped"]=kirkenes_updated.loc[kirkenes_updated["Lot"]==unit[:-2],"Shipped"]+line[unit]*8
