@@ -1718,6 +1718,7 @@ if authentication_status:
                     if choose=="DAILY":
                         daily_suzano_=daily_suzano_.reset_index(drop=True)
                         daily_suzano_.index=[i+1 for i in daily_suzano_.index]
+                        daily_suzano_.loc["TOTAL"]=daily_suzano_[["Quantity","Metric Ton","ADMT"]].sum()
                         st.dataframe(daily_suzano_)
                         csv=convert_df(daily_suzano_)
                     elif choose=="FIND BY DATE":
@@ -1725,7 +1726,7 @@ if authentication_status:
                         filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
                         filtered_suzano=filtered_suzano.reset_index(drop=True)
                         filtered_suzano.index=[i+1 for i in filtered_suzano.index]
-                        filtered_suzano.loc["TOTAL"]=filtered_suzano[["Quantity","Metric Ton"]].sum()
+                        filtered_suzano.loc["TOTAL"]=filtered_suzano[["Quantity","Metric Ton","ADMT"]].sum()
                         st.dataframe(filtered_suzano)
                         csv=convert_df(filtered_suzano)
                     else:
@@ -2630,11 +2631,17 @@ if authentication_status:
                                 "Select Daily or Accumulative Report",
                                 ["DAILY", "ACCUMULATIVE", "FIND BY DATE"])
                 if choose=="DAILY":
+                    daily_suzano_=daily_suzano_.reset_index(drop=True)
+                    daily_suzano_.index=[i+1 for i in daily_suzano_.index]
+                    daily_suzano_.loc["TOTAL"]=daily_suzano_[["Quantity","Metric Ton","ADMT"]].sum()
                     st.dataframe(daily_suzano_)
                     csv=convert_df(daily_suzano_)
                 elif choose=="FIND BY DATE":
                     required_date=st.date_input("CHOOSE DATE",key="dssar")
                     filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
+                    filtered_suzano=filtered_suzano.reset_index(drop=True)
+                    filtered_suzano.index=[i+1 for i in filtered_suzano.index]
+                    filtered_suzano.loc["TOTAL"]=filtered_suzano[["Quantity","Metric Ton","ADMT"]].sum()
                     st.dataframe(filtered_suzano)
                     csv=convert_df(filtered_suzano)
                 else:
