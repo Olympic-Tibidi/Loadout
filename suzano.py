@@ -1730,7 +1730,7 @@ if authentication_status:
                         filtered_suzano.loc["TOTAL"]=filtered_suzano[["Quantity","Metric Ton","ADMT"]].sum()
                         st.dataframe(filtered_suzano)
                         csv=convert_df(filtered_suzano)
-                        file_name=f'OLYMPIA_SHIPMENT_REPORT{datetime.datetime.strftime(required_date,"%Y_%m_%d")}.csv'
+                        file_name=f'OLYMPIA_SHIPMENT_REPORT-{datetime.datetime.strftime(required_date,"%m %d,%Y")}.csv'
                     else:
                         st.dataframe(suzano_report)
                         csv=convert_df(suzano_report)
