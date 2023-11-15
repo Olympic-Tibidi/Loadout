@@ -1610,7 +1610,7 @@ if authentication_status:
             
                     
                         
-        
+        ##########################################################################
         
                 
                         
@@ -1780,7 +1780,7 @@ if authentication_status:
                         merged_df = pd.merge(date_df, kf, how='left', on='Date')
                         merged_df['quantity'].fillna(0, inplace=True)
                         merged_df['Shipped Tonnage']=merged_df['quantity']*2
-                        merged_df_grouped=merged_df.groupby('Date')[['quantity']].sum()
+                        merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
                         merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
                         merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
                         merged_df_grouped["Remaining_Units"]=[9200-i for i in merged_df_grouped['Accumulated_Quantity']]
