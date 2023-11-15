@@ -1779,6 +1779,7 @@ if authentication_status:
                         # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
                         merged_df = pd.merge(date_df, kf, how='left', on='Date')
                         merged_df['quantity'].fillna(0, inplace=True)
+                        merged_df['Shipped Tonnage']=merged_df['quantity']*2
                         merged_df_grouped=merged_df.groupby('Date')[['quantity']].sum()
                         merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
                         merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
