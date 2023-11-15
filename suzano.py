@@ -1711,13 +1711,18 @@ if authentication_status:
                     suzano_report["Batch#"]=[str(i) for i in suzano_report["Batch#"]]
                     daily_suzano=suzano_report.copy()
                     daily_suzano["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suzano_report["Date Shipped"]]
-                    daily_suzano=daily_suzano[daily_suzano["Date"]==now.date()]
+                    daily_suzano_=daily_suzano[daily_suzano["Date"]==now.date()]
                     choose = st.radio(
                                     "Select Daily or Accumulative Report",
-                                    ["DAILY", "ACCUMULATIVE"])
+                                    ["DAILY", "ACCUMULATIVE", "FIND BY DATE"])
                     if choose=="DAILY":
-                        st.dataframe(daily_suzano)
-                        csv=convert_df(daily_suzano)
+                        st.dataframe(daily_suzano_)
+                        csv=convert_df(daily_suzano_)
+                    elif choose=="FIND BY DATE":
+                        required_date=st.date_input("CHOOSE DATE",key="dssar")
+                        filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
+                        st.dataframe(filtered_suzano)
+                        csv=convert_df(filtered_suzano)
                     else:
                         st.dataframe(suzano_report)
                         csv=convert_df(suzano_report)
@@ -2684,7 +2689,8 @@ if authentication_status:
                     # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
                     merged_df = pd.merge(date_df, kf, how='left', on='Date')
                     merged_df['quantity'].fillna(0, inplace=True)
-                    merged_df_grouped=merged_df.groupby('Date')[['quantity']].sum()
+                    merged_df['Shipped Tonnage']=merged_df['quantity']*2
+                    merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
                     merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
                     merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
                     merged_df_grouped["Remaining_Units"]=[9200-i for i in merged_df_grouped['Accumulated_Quantity']]
