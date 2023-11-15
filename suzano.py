@@ -1725,7 +1725,7 @@ if authentication_status:
                         filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
                         filtered_suzano=filtered_suzano.reset_index(drop=True)
                         filtered_suzano.index=[i+1 for i in filtered_suzano.index]
-                        filtered_suzano.loc["TOTAL"]=filtered_suzano.sum()
+                        filtered_suzano.loc["TOTAL"]=filtered_suzano[["Quantity","Metric Ton"]].sum()
                         st.dataframe(filtered_suzano)
                         csv=convert_df(filtered_suzano)
                     else:
