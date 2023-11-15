@@ -1734,7 +1734,7 @@ if authentication_status:
                     else:
                         st.dataframe(suzano_report)
                         csv=convert_df(suzano_report)
-                        file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv'
+                        file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv'
                     
                     
                     
