@@ -1721,6 +1721,8 @@ if authentication_status:
                     elif choose=="FIND BY DATE":
                         required_date=st.date_input("CHOOSE DATE",key="dssar")
                         filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
+                        filtered_suzano=filtered_suzano.reset_index(drop=True)
+                        filtered_suzano.index=[i+1 for i in filtered_suzano.index]
                         st.dataframe(filtered_suzano)
                         csv=convert_df(filtered_suzano)
                     else:
@@ -2620,17 +2622,22 @@ if authentication_status:
                 suzano_report["Batch#"]=[str(i) for i in suzano_report["Batch#"]]
                 daily_suzano=suzano_report.copy()
                 daily_suzano["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suzano_report["Date Shipped"]]
-                daily_suzano=daily_suzano[daily_suzano["Date"]==now.date()]
+                daily_suzano_=daily_suzano[daily_suzano["Date"]==now.date()]
                 choose = st.radio(
                                 "Select Daily or Accumulative Report",
-                                ["DAILY", "ACCUMULATIVE"])
+                                ["DAILY", "ACCUMULATIVE", "FIND BY DATE"])
                 if choose=="DAILY":
-                    st.dataframe(daily_suzano)
-                    csv=convert_df(daily_suzano)
+                    st.dataframe(daily_suzano_)
+                    csv=convert_df(daily_suzano_)
+                elif choose=="FIND BY DATE":
+                    required_date=st.date_input("CHOOSE DATE",key="dssar")
+                    filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
+                    st.dataframe(filtered_suzano)
+                    csv=convert_df(filtered_suzano)
                 else:
                     st.dataframe(suzano_report)
                     csv=convert_df(suzano_report)
-                
+            
                 
                 
                
