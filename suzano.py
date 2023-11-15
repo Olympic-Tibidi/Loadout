@@ -1721,7 +1721,7 @@ if authentication_status:
                         daily_suzano_.loc["TOTAL"]=daily_suzano_[["Quantity","Metric Ton","ADMT"]].sum()
                         st.dataframe(daily_suzano_)
                         csv=convert_df(daily_suzano_)
-                        file_name=f'OLYMPIA_DAILY_REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m %d,%Y")}.csv'
+                        file_name=f'OLYMPIA_DAILY_REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m-%d,%Y")}.csv'
                     elif choose=="FIND BY DATE":
                         required_date=st.date_input("CHOOSE DATE",key="dssar")
                         filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
@@ -1730,11 +1730,11 @@ if authentication_status:
                         filtered_suzano.loc["TOTAL"]=filtered_suzano[["Quantity","Metric Ton","ADMT"]].sum()
                         st.dataframe(filtered_suzano)
                         csv=convert_df(filtered_suzano)
-                        file_name=f'OLYMPIA_SHIPMENT_REPORT-{datetime.datetime.strftime(required_date,"%m %d,%Y")}.csv'
+                        file_name=f'OLYMPIA_SHIPMENT_REPORT-{datetime.datetime.strftime(required_date,"%m-%d,%Y")}.csv'
                     else:
                         st.dataframe(suzano_report)
                         csv=convert_df(suzano_report)
-                        file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv'
+                        file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m-%d,%Y")}.csv'
                     
                     
                     
@@ -2639,7 +2639,7 @@ if authentication_status:
                     daily_suzano_.loc["TOTAL"]=daily_suzano_[["Quantity","Metric Ton","ADMT"]].sum()
                     st.dataframe(daily_suzano_)
                     csv=convert_df(daily_suzano_)
-                    file_name=f'OLYMPIA_DAILY_REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m %d,%Y")}.csv'
+                    file_name=f'OLYMPIA_DAILY_REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m-%d,%Y")}.csv'
                 elif choose=="FIND BY DATE":
                     required_date=st.date_input("CHOOSE DATE",key="dssar")
                     filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
@@ -2648,11 +2648,11 @@ if authentication_status:
                     filtered_suzano.loc["TOTAL"]=filtered_suzano[["Quantity","Metric Ton","ADMT"]].sum()
                     st.dataframe(filtered_suzano)
                     csv=convert_df(filtered_suzano)
-                    file_name=f'OLYMPIA_SHIPMENT_REPORT-{datetime.datetime.strftime(required_date,"%m %d,%Y")}.csv'
+                    file_name=f'OLYMPIA_SHIPMENT_REPORT-{datetime.datetime.strftime(required_date,"%m-%d,%Y")}.csv'
                 else:
                     st.dataframe(suzano_report)
                     csv=convert_df(suzano_report)
-                    file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv'
+                    file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m-%d,%Y")}.csv'
                 
                 
                 
