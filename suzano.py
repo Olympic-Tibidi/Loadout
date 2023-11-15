@@ -337,7 +337,7 @@ if authentication_status:
             
         if select=="DATA BACKUP" :
             a,b=gen_bill_of_lading()
-            st.write(a)
+            #st.write(a)
             def download_files_in_folder(bucket, folder_name, output_directory):
                 blob_iterator = bucket.list_blobs(prefix=folder_name)
             
