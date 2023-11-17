@@ -376,7 +376,32 @@ if authentication_status:
             with admin_tab2:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
-                st.dataframe(pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:])
+                admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
+                #st.dataframe(admin_bill_of_ladings)
+                now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
+                    
+                daily_admin_bill_of_ladings=admin_bill_of_ladings.copy()
+                daily_admin_bill_of_ladings["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["Issued"]]
+                daily_admin_bill_of_ladings_=daily_admin_bill_of_ladings[daily_admin_bill_of_ladings["Date"]==now.date()]
+                choose = st.radio(
+                                "Select Today's Bill of Ladings or choose by Date or choose ALL",
+                                ["DAILY", "ACCUMULATIVE", "FIND BY DATE"],key="wewas")
+                if choose=="DAILY":
+                    
+                    st.dataframe(daily_admin_bill_of_ladings_)
+                    csv=convert_df(daily_admin_bill_of_ladings_)
+                    file_name=f'OLYMPIA_DAILY_BILL_OF_LADINGS-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
+                elif choose=="FIND BY DATE":
+                    required_date=st.date_input("CHOOSE DATE",key="dssar")
+                    filtered_daily_admin_bill_of_ladings=daily_admin_bill_of_ladings[daily_admin_bill_of_ladings["Date"]==required_date]
+                    
+                    st.dataframe(filtered_daily_admin_bill_of_ladings)
+                    csv=convert_df(filtered_daily_admin_bill_of_ladings)
+                    file_name=f'OLYMPIA_BILL_OF_LADINGS_FOR-{datetime.datetime.strftime(required_date,"%m-%d,%Y")}.csv'
+                else:
+                    st.dataframe(admin_bill_of_ladings)
+                    csv=convert_df(admin_bill_of_ladings)
+                    file_name=f'OLYMPIA_ALL_BILL_OF_LADINGS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
             with admin_tab3:
                 edi_files=list_files_in_subfolder(target_bucket, rf"EDIS/KIRKENES-2304/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
@@ -1704,7 +1729,7 @@ if authentication_status:
                     # IMPORTANT: Cache the conversion to prevent computation on every rerun
                     return df.to_csv().encode('utf-8')
                 try:
-                    now=datetime.datetime.now()-datetime.timedelta(hours=7)
+                    now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
                     suzano_report_=gcp_download(target_bucket,rf"suzano_report.json")
                     suzano_report=json.loads(suzano_report_)
                     suzano_report=pd.DataFrame(suzano_report).T
