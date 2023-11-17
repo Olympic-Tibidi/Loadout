@@ -42,7 +42,10 @@ import plotly.graph_objects as go
 st.set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
+
 target_bucket="olym_suzano"
+utc_difference=8
+
 def check_password():
     """Returns `True` if the user had a correct password."""
 
@@ -1118,11 +1121,11 @@ if authentication_status:
                 with col1:
                 
                     terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
-                    file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates",disabled=True)
+                    file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=utc_difference),key="file_dates",disabled=True)
                     if file_date not in st.session_state:
                         st.session_state.file_date=file_date
-                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=60,disabled=False)
-                    delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="delivery_date",disabled=True)
+                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=utc_difference),step=60,disabled=False)
+                    delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=utc_difference),key="delivery_date",disabled=True)
                     eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
                     
                 with col2:
@@ -1401,7 +1404,7 @@ if authentication_status:
                     file_date=st.date_input("File Date",datetime.datetime.today(),disabled=False,key="popo3")
                     a=datetime.datetime.strftime(file_date,"%Y%m%d")
                     a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
-                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=60,disabled=False,key="popop")
+                    file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=utc_difference),step=60,disabled=False,key="popop")
                     b=file_time.strftime("%H%M%S")
                     b_=file_time.strftime("%H:%M:%S")
                     c=datetime.datetime.strftime(eta_date,"%Y%m%d")
@@ -1410,8 +1413,8 @@ if authentication_status:
                     a=datetime.datetime.strftime(file_date,"%Y%m%d")
                     a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
                     b=file_time.strftime("%H%M%S")
-                    b=(datetime.datetime.now()-datetime.timedelta(hours=7)).strftime("%H%M%S")
-                    b_=(datetime.datetime.now()-datetime.timedelta(hours=7)).strftime("%H:%M:%S")
+                    b=(datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).strftime("%H%M%S")
+                    b_=(datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).strftime("%H:%M:%S")
                     c=datetime.datetime.strftime(eta_date,"%Y%m%d")
                     
                     
@@ -1444,7 +1447,7 @@ if authentication_status:
                         if proceed:
                             carrier_code=carrier_code.split("-")[0]
                             try:
-                                suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
+                                suzano_report_=gcp_download(target_bucket,rf"suzano_report.json")
                                 suzano_report=json.loads(suzano_report_)
                             except:
                                 suzano_report={}
@@ -1453,9 +1456,9 @@ if authentication_status:
                             consignee_state=mill_info[destination]["state"]
                             vessel_suzano,voyage_suzano=vessel.split("-")
                             if manual_time:
-                                eta=datetime.datetime.strftime(file_date+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
+                                eta=datetime.datetime.strftime(file_date+datetime.timedelta(hours=mill_info[destination]['hours']-utc_difference)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
                             else:
-                                eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
+                                eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-utc_difference)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
     
                             if double_load:
                                 bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
@@ -1535,18 +1538,18 @@ if authentication_status:
                                 
                                 json_data = json.dumps(dispatched)
                                 storage_client = storage.Client()
-                                bucket = storage_client.bucket("olym_suzano")
+                                bucket = storage_client.bucket(target_bucket)
                                 blob = bucket.blob(rf"dispatched.json")
                                 blob.upload_from_string(json_data)       
                             
                             json_data = json.dumps(info)
                             storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
+                            bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
                             blob.upload_from_string(json_data)
     
                             try:
-                                release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                                release_order_database=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                                 release_order_database=json.loads(release_order_database)
                             except:
                                 release_order_database={}
@@ -1554,7 +1557,7 @@ if authentication_status:
                             release_order_database[current_release_order][current_sales_order]["remaining"]=release_order_database[current_release_order][current_sales_order]["remaining"]-quantity
                             release_order_database=json.dumps(release_order_database)
                             storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
+                            bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
                             blob.upload_from_string(release_order_database)
                             with open('placeholder.txt', 'r') as f:
@@ -1720,7 +1723,7 @@ if authentication_status:
                         daily_suzano_.loc["TOTAL"]=daily_suzano_[["Quantity","Metric Ton","ADMT"]].sum()
                         st.dataframe(daily_suzano_)
                         csv=convert_df(daily_suzano_)
-                        file_name=f'OLYMPIA_DAILY_REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m-%d,%Y")}.csv'
+                        file_name=f'OLYMPIA_DAILY_REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                     elif choose=="FIND BY DATE":
                         required_date=st.date_input("CHOOSE DATE",key="dssar")
                         filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
@@ -1733,7 +1736,7 @@ if authentication_status:
                     else:
                         st.dataframe(suzano_report)
                         csv=convert_df(suzano_report)
-                        file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m-%d,%Y")}.csv'
+                        file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                     
                     
                     
@@ -1808,7 +1811,7 @@ if authentication_status:
                         st.download_button(
                             label="DOWNLOAD INVENTORY REPORT AS CSV",
                             data=csv_inventory,
-                            file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                            file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
                             mime='text/csv')            
                     with inv4tab2:
                         kirkenes_updated=gcp_csv_to_df(target_bucket,rf"kirkenes_updated.csv")
@@ -1867,7 +1870,7 @@ if authentication_status:
                     st.download_button(
                     label="DOWNLOAD WEEKLY REPORT AS CSV",
                     data=csv_weekly,
-                    file_name=f'WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                    file_name=f'WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
                     mime='text/csv')
 
 
@@ -1897,9 +1900,9 @@ if authentication_status:
     ########################                                WAREHOUSE                            ####################
     
     elif username == 'warehouse':
-        bill_mapping=gcp_download("olym_suzano","bill_mapping.json")
+        bill_mapping=gcp_download(target_bucket,"bill_mapping.json")
         bill_mapping=json.loads(bill_mapping)
-        mill_info_=gcp_download("olym_suzano",rf"mill_info.json")
+        mill_info_=gcp_download(target_bucket,rf"mill_info.json")
         mill_info=json.loads(mill_info_)
         mf_numbers_for_load=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
         mf_numbers_for_load=json.loads(mf_numbers_for_load)
@@ -1908,7 +1911,7 @@ if authentication_status:
         if number not in st.session_state:
             st.session_state.number=number
         try:
-            dispatched=gcp_download("olym_suzano","dispatched.json")
+            dispatched=gcp_download(target_bucket,"dispatched.json")
             dispatched=json.loads(dispatched)
         except:
             no_dispatch=1
@@ -2037,11 +2040,11 @@ if authentication_status:
             with col1:
             
                 terminal_code=st.text_input("Terminal Code","OLYM",disabled=True)
-                file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="file_dates",disabled=True)
+                file_date=st.date_input("File Date",datetime.datetime.today()-datetime.timedelta(hours=utc_difference),key="file_dates",disabled=True)
                 if file_date not in st.session_state:
                     st.session_state.file_date=file_date
-                file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=60,disabled=False)
-                delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=7),key="delivery_date",disabled=True)
+                file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=utc_difference),step=60,disabled=False)
+                delivery_date=st.date_input("Delivery Date",datetime.datetime.today()-datetime.timedelta(hours=utc_difference),key="delivery_date",disabled=True)
                 eta_date=st.date_input("ETA Date (For Trucks same as delivery date)",delivery_date,key="eta_date",disabled=True)
                 
             with col2:
@@ -2138,7 +2141,7 @@ if authentication_status:
                 if double_load:
                     
                     try:
-                        next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
+                        next_item=gcp_download(target_bucket,rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
                         
                         first_load_input=st.text_area("**FIRST SKU LOADS**",height=300)
                         first_quantity=0
@@ -2320,7 +2323,7 @@ if authentication_status:
                 file_date=st.date_input("File Date",datetime.datetime.today(),disabled=False,key="popo3")
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
                 a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
-                file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=7),step=60,disabled=False,key="popop")
+                file_time = st.time_input('FileTime', datetime.datetime.now()-datetime.timedelta(hours=utc_difference),step=60,disabled=False,key="popop")
                 b=file_time.strftime("%H%M%S")
                 b_=file_time.strftime("%H:%M:%S")
                 c=datetime.datetime.strftime(eta_date,"%Y%m%d")
@@ -2363,7 +2366,7 @@ if authentication_status:
                     if proceed:
                         carrier_code=carrier_code.split("-")[0]
                         try:
-                            suzano_report_=gcp_download("olym_suzano",rf"suzano_report.json")
+                            suzano_report_=gcp_download(target_bucket,rf"suzano_report.json")
                             suzano_report=json.loads(suzano_report_)
                         except:
                             suzano_report={}
@@ -2372,9 +2375,9 @@ if authentication_status:
                         consignee_state=mill_info[destination]["state"]
                         vessel_suzano,voyage_suzano=vessel.split("-")
                         if manual_time:
-                            eta=datetime.datetime.strftime(file_date+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
+                            eta=datetime.datetime.strftime(file_date+datetime.timedelta(hours=mill_info[destination]['hours']-utc_difference)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
                         else:
-                            eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-7)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
+                            eta=datetime.datetime.strftime(datetime.datetime.now()+datetime.timedelta(hours=mill_info[destination]['hours']-utc_difference)+datetime.timedelta(minutes=mill_info[destination]['minutes']+30),"%Y-%m-%d  %H:%M:%S")
 
                         if double_load:
                             bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
@@ -2426,7 +2429,7 @@ if authentication_status:
                                                  "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type}})
                             suzano_report=json.dumps(suzano_report)
                             storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
+                            bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"suzano_report.json")
                             blob.upload_from_string(suzano_report)
 
@@ -2460,12 +2463,12 @@ if authentication_status:
                         
                         json_data = json.dumps(info)
                         storage_client = storage.Client()
-                        bucket = storage_client.bucket("olym_suzano")
+                        bucket = storage_client.bucket(target_bucket)
                         blob = bucket.blob(rf"release_orders/{vessel}/{current_release_order}.json")
                         blob.upload_from_string(json_data)
 
                         try:
-                            release_order_database=gcp_download("olym_suzano",rf"release_orders/RELEASE_ORDERS.json")
+                            release_order_database=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                             release_order_database=json.loads(release_order_database)
                         except:
                             release_order_database={}
@@ -2473,7 +2476,7 @@ if authentication_status:
                         release_order_database[current_release_order][current_sales_order]["remaining"]=release_order_database[current_release_order][current_sales_order]["remaining"]-quantity
                         release_order_database=json.dumps(release_order_database)
                         storage_client = storage.Client()
-                        bucket = storage_client.bucket("olym_suzano")
+                        bucket = storage_client.bucket(target_bucket)
                         blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
                         blob.upload_from_string(release_order_database)
                         with open('placeholder.txt', 'r') as f:
@@ -2540,7 +2543,7 @@ if authentication_status:
             
             daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
             with daily1:
-                now=datetime.datetime.now()-datetime.timedelta(hours=7)
+                now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
                 st.markdown(f"**SHIPPED TODAY ON {datetime.datetime.strftime(now.date(),'%b %d, %Y')} - Indexed By Terminal Bill Of Lading**")     
                 df_bill=pd.DataFrame(bill_of_ladings).T
                 df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","grade","carrier_id","vehicle","quantity","issued"]]
@@ -2638,7 +2641,7 @@ if authentication_status:
                     daily_suzano_.loc["TOTAL"]=daily_suzano_[["Quantity","Metric Ton","ADMT"]].sum()
                     st.dataframe(daily_suzano_)
                     csv=convert_df(daily_suzano_)
-                    file_name=f'OLYMPIA_DAILY_REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m-%d,%Y")}.csv'
+                    file_name=f'OLYMPIA_DAILY_REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                 elif choose=="FIND BY DATE":
                     required_date=st.date_input("CHOOSE DATE",key="dssar")
                     filtered_suzano=daily_suzano[daily_suzano["Date"]==required_date]
@@ -2651,7 +2654,7 @@ if authentication_status:
                 else:
                     st.dataframe(suzano_report)
                     csv=convert_df(suzano_report)
-                    file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%m-%d,%Y")}.csv'
+                    file_name=f'OLYMPIA_ALL_SHIPMENTS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                 
                 
                 
@@ -2727,7 +2730,7 @@ if authentication_status:
                     st.download_button(
                         label="DOWNLOAD INVENTORY REPORT AS CSV",
                         data=csv_inventory,
-                        file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                        file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
                         mime='text/csv')            
                 with inv4tab2:
                     kirkenes_updated=gcp_csv_to_df(target_bucket,rf"kirkenes_updated.csv")
@@ -2788,7 +2791,7 @@ if authentication_status:
                 st.download_button(
                     label="DOWNLOAD WEEKLY REPORT AS CSV",
                     data=csv_weekly,
-                    file_name=f'OLYMPIA WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%Y_%m_%d")}.csv',
+                    file_name=f'OLYMPIA WEEKLY SHIPMENT REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
                     mime='text/csv')
                 zf['issued'] = pd.to_datetime(zf['issued'])                   
                    
