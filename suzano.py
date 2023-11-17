@@ -299,7 +299,7 @@ def process():
        
         f.write(end)
 def gen_bill_of_lading():
-    data=gcp_download("olym_suzano",rf"terminal_bill_of_ladings.json")
+    data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
     bill_of_ladings=json.loads(data)
     list_of_ladings=[]
     try:
@@ -339,7 +339,7 @@ if authentication_status:
             #tab1,tab2,tab3,tab4= st.tabs(["UPLOAD SHIPMENT FILE","ENTER LOADOUT DATA","INVENTORY","CAPTURE"])
             
         if select=="DATA BACKUP" :
-            st.write(datetime.datetime.now()-datetime.timedelta(hours=8))
+            st.write(datetime.datetime.now()-datetime.timedelta(hours=utc_difference))
             def download_files_in_folder(bucket, folder_name, output_directory):
                 blob_iterator = bucket.list_blobs(prefix=folder_name)
             
@@ -2332,8 +2332,8 @@ if authentication_status:
                 a=datetime.datetime.strftime(file_date,"%Y%m%d")
                 a_=datetime.datetime.strftime(file_date,"%Y-%m-%d")
                 b=file_time.strftime("%H%M%S")
-                b=(datetime.datetime.now()-datetime.timedelta(hours=7)).strftime("%H%M%S")
-                b_=(datetime.datetime.now()-datetime.timedelta(hours=7)).strftime("%H:%M:%S")
+                b=(datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).strftime("%H%M%S")
+                b_=(datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).strftime("%H:%M:%S")
                 c=datetime.datetime.strftime(eta_date,"%Y%m%d")
                 
                 
