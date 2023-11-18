@@ -403,15 +403,15 @@ if authentication_status:
                         
                     
                     lab_col1,lab_col2,lab_col3,lab_col4=st.columns([1,1,2,6])
-                                        
-                    with lab_col1:
-                        st.write(" ")
-                        st.write(" ")
-                        with lab_col4:
+                    with lab_col4:
                             
                             st.write(" ")
                             st.write(" ")
-                            st.write(" ")
+                                          
+                    with lab_col1:
+                        st.write(" ")
+                        st.write(" ")
+                        
                         foreman=st.checkbox("FOREMAN")
                         
                         if foreman:
