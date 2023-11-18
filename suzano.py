@@ -377,7 +377,7 @@ if authentication_status:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
                 admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
-                st.dataframe(admin_bill_of_ladings)
+                #st.dataframe(admin_bill_of_ladings)
                 use=True
                 if use:
                     now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
