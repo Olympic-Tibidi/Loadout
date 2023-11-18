@@ -310,6 +310,13 @@ def gen_bill_of_lading():
     except:
         bill_of_lading_number=11502400
     return bill_of_lading_number,bill_of_ladings
+
+def convert_df(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv().encode('utf-8')
+
+
+
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.options.mode.chained_assignment = None  # default='warn'
@@ -377,7 +384,10 @@ if authentication_status:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
                 admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
-                #st.dataframe(admin_bill_of_ladings)
+                @st.cache
+                def convert_df(df):
+                    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+                    return df.to_csv().encode('utf-8')
                 use=True
                 if use:
                     now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
