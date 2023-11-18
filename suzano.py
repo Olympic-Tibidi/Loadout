@@ -565,7 +565,7 @@ if authentication_status:
                             for i in ranks:
                                 
                                 with lab_col4:
-                                    st.markdown(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
+                                    st.write(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -574,7 +574,7 @@ if authentication_status:
                             for i in ranks:
                                 
                                  with lab_col4:
-                                    st.markdown(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
+                                    st.write(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -583,7 +583,7 @@ if authentication_status:
                             for i in ranks:
                                 
                                  with lab_col4:
-                                    st.markdown(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
+                                    st.write(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
