@@ -383,16 +383,16 @@ if authentication_status:
             with admin_tab5:
                 labor_issue=True
                 if labor_issue:
-                    ranks={"FOREMAN":{"qt":None,"shift":None,"hours":None,"ot":None},
-                           "CLERK":{"qt":None,"shift":None,"hours":None,"ot":None},
-                           "TRACTOR-SEMI-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None},
-                           "UTILITY LIFT DRIVER":{"qt":None,"shift":None,"hours":None,"ot":None},
-                           "LIFT TRUCK HEAVY":{"qt":None,"shift":None,"hours":None,"ot":None},
-                           "BASIC CLERK-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None},
-                           "LINESMAN":{"qt":None,"shift":None,"hours":None,"ot":None}}
+                    ranks={"FOREMAN":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
+                           "CLERK":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
+                           "TRACTOR-SEMI-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
+                           "UTILITY LIFT DRIVER":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
+                           "LIFT TRUCK HEAVY":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
+                           "BASIC CLERK-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
+                           "LINESMAN":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None}}
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
-                    st.write(pd.DataFrame.from_dict(assessment_rates))
+                    st.write(assessment_rates)
                     lab_col5,lab_col6,lab_col7=st.columns([3,3,4])
                     with lab_col5:
                         shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
@@ -542,6 +542,11 @@ if authentication_status:
                                     ot=st.number_input("OT",step=1,key="1150381")
                                     ranks["TRACTOR-SEMI-DOCK"]["ot"]=ot
                         
+                        if shift=="DAY":
+                            for i in ranks:
+                                hour_wage=ranks[i]
+                                ot_wage=
+                
                         st.write(ranks)
                             
                         
