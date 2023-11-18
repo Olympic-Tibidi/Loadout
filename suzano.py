@@ -424,7 +424,7 @@ if authentication_status:
                                     ranks["FOREMAN"]["ot_wage"]=ot*ranks["FOREMAN"][shift]["ot"]
                                 ranks["FOREMAN"]["cost"]=ranks["FOREMAN"]["standard_wage"]+ranks["FOREMAN"]["ot_wage"]
                                 with lab_col4:
-                                    st.write(f"Standard: $ {ranks["FOREMAN"]['standard_wage']}, OT: $ {ranks["FOREMAN"]['ot_wage']}")
+                                    st.write(f"Standard: $ {ranks['FOREMAN']['standard_wage']}, OT: $ {ranks['FOREMAN']['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -463,7 +463,7 @@ if authentication_status:
                                     ranks["CLERK"]["ot_wage"]=ot*ranks["CLERK"][shift]["ot"]
                                 ranks["CLERK"]["cost"]=ranks["CLERK"]["standard_wage"]+ranks["CLERK"]["ot_wage"]
                                 with lab_col4:
-                                    st.write(f'Standard: $ {ranks["CLERK"]['standard_wage']}, OT: $ {ranks["CLERK"]['ot_wage']}')
+                                    st.write(f"Standard: $ {ranks['CLERK']['standard_wage']}, OT: $ {ranks['CLERK']['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                    # st.write(" ")
