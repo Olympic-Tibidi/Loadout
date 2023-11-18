@@ -417,11 +417,11 @@ if authentication_status:
                                 with a1:
                                     hours=st.number_input("HOURS",step=1,key="1150369")
                                     ranks["FOREMAN"]["hours"]=hours
-                                    ranks["FOREMAN"]["standard_wage"]=hours*ranks["FOREMAN"][shift]["hr"]*hours
+                                    ranks["FOREMAN"]["standard_wage"]=hours*ranks["FOREMAN"][shift]["hr"]
                                 with a2:
                                     ot=st.number_input("OT",step=1,key="1150370")
                                     ranks["FOREMAN"]["ot"]=ot
-                                    ranks["FOREMAN"]["ot_wage"]=hours*ranks["FOREMAN"][shift]["ot"]*hours
+                                    ranks["FOREMAN"]["ot_wage"]=ot*ranks["FOREMAN"][shift]["ot"]
                                 ranks["FOREMAN"]["cost"]=ranks["FOREMAN"]["standard_wage"]+ranks["FOREMAN"]["ot_wage"]
                         elif not foreman:
                             with lab_col2:
@@ -451,11 +451,11 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150372")
                                     ranks["CLERK"]["hours"]=hours
-                                    ranks["CLERK"]["standard_wage"]=hours*ranks["CLERK"][shift]["hr"]*hours
+                                    ranks["CLERK"]["standard_wage"]=hours*ranks["CLERK"][shift]["hr"]
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150373")
                                     ranks["CLERK"]["ot"]=ot
-                                    ranks["CLERK"]["ot_wage"]=hours*ranks["CLERK"][shift]["ot"]*hours
+                                    ranks["CLERK"]["ot_wage"]=ot*ranks["CLERK"][shift]["ot"]
                                 ranks["CLERK"]["cost"]=ranks["CLERK"]["standard_wage"]+ranks["CLERK"]["ot_wage"]
                         elif not clerk:
                             with lab_col2:
@@ -486,11 +486,11 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150375")
                                     ranks["LIFT TRUCK HEAVY"]["hours"]=hours
-                                    ranks["LIFT TRUCK HEAVY"]["standard_wage"]=hours*ranks["LIFT TRUCK HEAVY"][shift]["hr"]*hours
+                                    ranks["LIFT TRUCK HEAVY"]["standard_wage"]=hours*ranks["LIFT TRUCK HEAVY"][shift]["hr"]
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150376")
                                     ranks["LIFT TRUCK HEAVY"]["ot"]=ot
-                                    ranks["LIFT TRUCK HEAVY"]["ot_wage"]=hours*ranks["LIFT TRUCK HEAVY"][shift]["ot"]*hours
+                                    ranks["LIFT TRUCK HEAVY"]["ot_wage"]=ot*ranks["LIFT TRUCK HEAVY"][shift]["ot"]
                                 ranks["LIFT TRUCK HEAVY"]["cost"]=ranks["LIFT TRUCK HEAVY"]["standard_wage"]+ranks["LIFT TRUCK HEAVY"]["ot_wage"]
                         elif not heavy:
                             with lab_col2:
@@ -518,11 +518,11 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150378")
                                     ranks["UTILITY LIFT DRIVER"]["hours"]=hours
-                                    ranks["UTILITY LIFT DRIVER"]["standard_wage"]=hours*ranks["UTILITY LIFT DRIVER"][shift]["hr"]*hours
+                                    ranks["UTILITY LIFT DRIVER"]["standard_wage"]=hours*ranks["UTILITY LIFT DRIVER"][shift]["hr"]
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150379")
                                     ranks["UTILITY LIFT DRIVER"]["ot"]=ot
-                                    ranks["UTILITY LIFT DRIVER"]["ot_wage"]=hours*ranks["UTILITY LIFT DRIVER"][shift]["ot"]*hours
+                                    ranks["UTILITY LIFT DRIVER"]["ot_wage"]=ot*ranks["UTILITY LIFT DRIVER"][shift]["ot"]
                                 ranks["UTILITY LIFT DRIVER"]["cost"]=ranks["UTILITY LIFT DRIVER"]["standard_wage"]+ranks["UTILITY LIFT DRIVER"]["ot_wage"]
                         elif not ut:
                             with lab_col2:
@@ -550,11 +550,11 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150380")
                                     ranks["TRACTOR-SEMI-DOCK"]["hours"]=hours
-                                    ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]=hours*ranks["TRACTOR-SEMI-DOCK"][shift]["hr"]*hours
+                                    ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]=hours*ranks["TRACTOR-SEMI-DOCK"][shift]["hr"]
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150381")
                                     ranks["TRACTOR-SEMI-DOCK"]["ot"]=ot
-                                    ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]=hours*ranks["TRACTOR-SEMI-DOCK"][shift]["ot"]*hours
+                                    ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]=ot*ranks["TRACTOR-SEMI-DOCK"][shift]["ot"]
                                 ranks["TRACTOR-SEMI-DOCK"]["cost"]=ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]+ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]
                             
                         if shift=="DAY":
