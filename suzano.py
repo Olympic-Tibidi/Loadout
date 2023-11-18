@@ -419,7 +419,13 @@ if authentication_status:
                                     ot=st.number_input("OT",step=1,key="1150370")
                                     ranks["FOREMAN"]["ot"]=ot
                         elif not foreman:
+                            with lab_col2:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
                             with lab_col3:
+                                st.write(" ")
+                                st.write(" ")
                                 st.write(" ")
                             
                         st.write(" ")
@@ -439,8 +445,15 @@ if authentication_status:
                                     ot=st.number_input("OT",step=1,key="1150373")
                                     ranks["CLERK"]["ot"]=ot
                         elif not clerk:
+                            with lab_col2:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
                             with lab_col3:
                                 st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
@@ -458,7 +471,13 @@ if authentication_status:
                                     ot=st.number_input("OT",step=1,key="1150376")
                                     ranks["LIFT TRUCK HEAVY"]["ot"]=ot
                         elif not heavy:
+                            with lab_col2:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
                             with lab_col3:
+                                st.write(" ")
+                                st.write(" ")
                                 st.write(" ")
                         st.write(" ")
                         st.write(" ")  
@@ -477,7 +496,13 @@ if authentication_status:
                                     ot=st.number_input("OT",step=1,key="1150379")
                                     ranks["UTILITY LIFT DRIVER"]["ot"]=ot
                         elif not ut:
+                            with lab_col2:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
                             with lab_col3:
+                                st.write(" ")
+                                st.write(" ")
                                 st.write(" ")
                         st.write(" ")
                         st.write(" ")
