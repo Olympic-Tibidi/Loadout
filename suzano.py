@@ -386,9 +386,11 @@ if authentication_status:
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
                     st.write(pd.DataFrame.from_dict(assessment_rates))
-                    lab_col1,lab_col2,lab_col3=st.columns([2,2,6])
-                    shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"])
                     
+                    shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
+                    
+                    lab_col1,lab_col2,lab_col3=st.columns([3,3,4])
+                                        
                     with lab_col1:
                         st.write(" ")
                         st.write(" ")
