@@ -550,8 +550,24 @@ if authentication_status:
                                 ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]
                                 ranks[i]["cost"]=(hour_wage+ot_wage)*ranks[i]["qt"]
                                 total_cost+=(hour_wage+ot_wage)*ranks[i]["qt"]
+                        if shift=="NIGHT":
+                            total_cost=0
+                            for i in ranks:
+                                
+                                hour_wage=assessment_rates[i]["2nd"]*ranks[i]["hours"]
+                                ot_wage=assessment_rates[i]["2ndot"]*ranks[i]["ot"]
+                                ranks[i]["cost"]=(hour_wage+ot_wage)*ranks[i]["qt"]
+                                total_cost+=(hour_wage+ot_wage)*ranks[i]["qt"]
+                        elif shift=="WEEKEND":
+                            total_cost=0
+                            for i in ranks:
+                                
+                                hour_wage=assessment_rates[i]["wknd"]*ranks[i]["hours"]
+                                ot_wage=assessment_rates[i]["wkndot"]*ranks[i]["ot"]
+                                ranks[i]["cost"]=(hour_wage+ot_wage)*ranks[i]["qt"]
+                                total_cost+=(hour_wage+ot_wage)*ranks[i]["qt"]
                         with lab_col4:
-                            st.subheader(f"     TOTAL COST FOR SHIFT:$ {round(total_cost,2)}")
+                            st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(total_cost,2)}")
                             
                         
                         
