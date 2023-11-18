@@ -392,6 +392,18 @@ if authentication_status:
                     if foreman:
                         with lab_col2:
                             number_of_foreman=st.number_input("How Many?",step=1)
+                    st.write(" ")
+                    st.write(" ")
+                    clerk=st.checkbox("CLERK")
+                    if clerk:
+                        with lab_col2:
+                            number_of_clerk=st.number_input("How Many?",step=1)
+                    st.write(" ")
+                    st.write(" ")
+                    heavy=st.checkbox("HEAVY")
+                    if heavy:
+                        with lab_col2:
+                            number_of_heavy=st.number_input("How Many?",step=1)
                             
                         
                         
