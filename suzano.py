@@ -379,7 +379,13 @@ if authentication_status:
             
               
         if select=="ADMIN" :
-            admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES"])
+            admin_tab1,admin_tab2,admin_tab3,admin_tab4,admin_tab5=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES","LABOR"])
+            with admin_tab5:
+                assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
+                assessment_rates=json.loads(bill_data)
+                st.write(pd.DataFrame.from_dict(assessment_rates))
+            
+            
             with admin_tab2:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
