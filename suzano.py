@@ -541,31 +541,40 @@ if authentication_status:
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150381")
                                     ranks["TRACTOR-SEMI-DOCK"]["ot"]=ot
-                        
+                            
                         if shift=="DAY":
                             total_cost=0
                             for i in ranks:
                                 
-                                hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]
-                                ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]
-                                ranks[i]["cost"]=(hour_wage+ot_wage)*ranks[i]["qt"]
-                                total_cost+=(hour_wage+ot_wage)*ranks[i]["qt"]
+                                hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]*ranks[i]["qt"]
+                                ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]*ranks[i]["qt"]
+                                ranks[i]["cost"]=hour_wage+ot_wage
+                                total_cost+=hour_wage+ot_wage
+                                with lab_col4:
+                                    st.markdown(f"Standard: $ {round(hour_wage,2)}")
+                                    st.markdown(f"OT: $ {round(ot_wage,2)}")
                         if shift=="NIGHT":
                             total_cost=0
                             for i in ranks:
                                 
-                                hour_wage=assessment_rates[i]["2nd"]*ranks[i]["hours"]
-                                ot_wage=assessment_rates[i]["2ndot"]*ranks[i]["ot"]
-                                ranks[i]["cost"]=(hour_wage+ot_wage)*ranks[i]["qt"]
-                                total_cost+=(hour_wage+ot_wage)*ranks[i]["qt"]
+                                hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]*ranks[i]["qt"]
+                                ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]*ranks[i]["qt"]
+                                ranks[i]["cost"]=hour_wage+ot_wage
+                                total_cost+=hour_wage+ot_wage
+                                with lab_col4:
+                                    st.markdown(f"Standard: $ {round(hour_wage,2)}")
+                                    st.markdown(f"OT: $ {round(ot_wage,2)}")
                         elif shift=="WEEKEND":
                             total_cost=0
                             for i in ranks:
                                 
-                                hour_wage=assessment_rates[i]["wknd"]*ranks[i]["hours"]
-                                ot_wage=assessment_rates[i]["wkndot"]*ranks[i]["ot"]
-                                ranks[i]["cost"]=(hour_wage+ot_wage)*ranks[i]["qt"]
-                                total_cost+=(hour_wage+ot_wage)*ranks[i]["qt"]
+                                hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]*ranks[i]["qt"]
+                                ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]*ranks[i]["qt"]
+                                ranks[i]["cost"]=hour_wage+ot_wage
+                                total_cost+=hour_wage+ot_wage
+                                with lab_col4:
+                                    st.markdown(f"Standard: $ {round(hour_wage,2)}")
+                                    st.markdown(f"OT: $ {round(ot_wage,2)}")
                     with lab_col7:
                         st.markdown("**WAGES**")
                         with lab_col4:
