@@ -386,10 +386,11 @@ if authentication_status:
                 st.write(pd.DataFrame.from_dict(assessment_rates))
                 lab_col1,lab_col2=st.columns([2,2])
                 with lab_col1:
+                    st.write(" ")
                     foreman=st.checkbox("FOREMAN")
                     if foreman:
                         with lab_col2:
-                            number_of_foreman=st.number_input(step=1)
+                            number_of_foreman=st.number_input("How Many?",step=1)
                             
                         
                         
