@@ -383,13 +383,13 @@ if authentication_status:
             with admin_tab5:
                 labor_issue=True
                 if labor_issue:
-                    ranks={"FOREMAN":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
-                           "CLERK":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
-                           "TRACTOR-SEMI-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
-                           "UTILITY LIFT DRIVER":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
-                           "LIFT TRUCK HEAVY":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
-                           "BASIC CLERK-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None},
-                           "LINESMAN":{"qt":None,"shift":None,"hours":None,"ot":None,"cost":None}}
+                    ranks={"FOREMAN":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
+                           "CLERK":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
+                           "TRACTOR-SEMI-DOCK":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
+                           "UTILITY LIFT DRIVER":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
+                           "LIFT TRUCK HEAVY":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
+                           "BASIC CLERK-DOCK":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
+                           "LINESMAN":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0}}
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
                     st.write(assessment_rates)
