@@ -384,7 +384,12 @@ if authentication_status:
                 assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                 assessment_rates=json.loads(assessment_rates)
                 st.write(pd.DataFrame.from_dict(assessment_rates))
-                gang=st.multiselect("Select Ranks",assessment_rates.keys())
+                foreman = st.toggle('FOREMAN')
+                if foreman:
+                    st.write('Feature activated!')
+                clerk = st.toggle('CLERK')
+                if foreman:
+                    st.write('Feature activated!')
             
             
             with admin_tab2:
