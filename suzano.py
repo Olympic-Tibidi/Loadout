@@ -551,7 +551,7 @@ if authentication_status:
                                 ranks[i]["cost"]=(hour_wage+ot_wage)*ranks[i]["qt"]
                                 total_cost+=(hour_wage+ot_wage)*ranks[i]["qt"]
                         with lab_col4:
-                            st.subheader(f"TOTAL COST FOR SHIFT:{total_cost}")
+                            st.subheader(f"     TOTAL COST FOR SHIFT:$ {round(total_cost,2)}")
                             
                         
                         
