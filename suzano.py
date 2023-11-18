@@ -545,7 +545,7 @@ if authentication_status:
                         if shift=="DAY":
                             for i in ranks:
                                 hour_wage=ranks[i]
-                                ot_wage=
+                               
                 
                         st.write(ranks)
                             
