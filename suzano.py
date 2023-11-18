@@ -387,8 +387,12 @@ if authentication_status:
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
                     st.write(pd.DataFrame.from_dict(assessment_rates))
-                    
-                    shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
+                    lab_col4,lab_col5,lab_col6=st.columns([3,3,4])
+                    with lab_col4:
+                        shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
+                    with lab_col5:
+                        st.markdown("HOURS/OT")
+                        
                     ranks={"FOREMAN":0,"CLERK":0,"TRACTOR-SEMI-DOCK":0,"UTILITY LIFT DRIVER":0,"LIFT TRUCK HEAVY":0,"BASIC CLERK-DOCK":0,"LINESMAN":0}
                     lab_col1,lab_col2,lab_col3=st.columns([1,1,8])
                                         
