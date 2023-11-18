@@ -420,13 +420,9 @@ if authentication_status:
                                     ranks["FOREMAN"]["ot"]=ot
                         elif not foreman:
                             with lab_col2:
-                                st.write(" ")
-                                st.write(" ")
-                                st.write(" ")
+                                st.write("\n\n\n\n\n")
                             with lab_col3:
-                                st.write(" ")
-                                st.write(" ")
-                                st.write(" ")
+                                st.write("\n\n\n\n\n")
                             
                         st.write(" ")
                         st.write(" ")
@@ -446,13 +442,9 @@ if authentication_status:
                                     ranks["CLERK"]["ot"]=ot
                         elif not clerk:
                             with lab_col2:
-                                st.write(" ")
-                                st.write(" ")
-                                st.write(" ")
+                                st.write("\n\n\n\n\n")
                             with lab_col3:
-                                st.write(" ")
-                                st.write(" ")
-                                st.write(" ")
+                                st.write("\n\n\n\n\n")
                                 
                         st.write(" ")
                         st.write(" ")
@@ -472,13 +464,9 @@ if authentication_status:
                                     ranks["LIFT TRUCK HEAVY"]["ot"]=ot
                         elif not heavy:
                             with lab_col2:
-                                st.write(" ")
-                                st.write(" ")
-                                st.write(" ")
+                                st.write("\n\n\n\n\n")
                             with lab_col3:
-                                st.write(" ")
-                                st.write(" ")
-                                st.write(" ")
+                                st.write("\n\n\n\n\n")
                         st.write(" ")
                         st.write(" ")  
                         st.write(" ")
@@ -497,13 +485,9 @@ if authentication_status:
                                     ranks["UTILITY LIFT DRIVER"]["ot"]=ot
                         elif not ut:
                             with lab_col2:
-                                st.write(" ")
-                                st.write(" ")
-                                st.write(" ")
+                                st.write("\n\n\n\n\n")
                             with lab_col3:
-                                st.write(" ")
-                                st.write(" ")
-                                st.write(" ")
+                                st.write("\n\n\n\n\n")
                         st.write(" ")
                         st.write(" ")
                         tractor_semi=st.checkbox("TRACTOR-SEMI")
