@@ -565,7 +565,7 @@ if authentication_status:
                             for i in ranks:
                                 
                                 with lab_col4:
-                                    st.write(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
+                                    st.write(f"Standard: $ {ranks[i]['standard_wage']}, OT: $ {ranks[i]['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -574,7 +574,7 @@ if authentication_status:
                             for i in ranks:
                                 
                                  with lab_col4:
-                                    st.write(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
+                                    st.write(f"Standard: $ {ranks[i]['standard_wage']}, OT: $ {ranks[i]['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -583,14 +583,14 @@ if authentication_status:
                             for i in ranks:
                                 
                                  with lab_col4:
-                                    st.write(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
+                                    st.write(f"Standard: $ {ranks[i]['standard_wage']}, OT: $ {ranks[i]['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
                     with lab_col7:
                         st.markdown("**WAGES**")
                         with lab_col4:
-                            st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(total_cost,2)}")
+                            st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(sum([key["cost"] for key in ranks]),2)}")
                             
                         
                         
