@@ -383,16 +383,6 @@ if authentication_status:
             with admin_tab5:
                 labor_issue=True
                 if labor_issue:
-                    
-                    assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
-                    assessment_rates=json.loads(assessment_rates)
-                    st.write(pd.DataFrame.from_dict(assessment_rates))
-                    lab_col5,lab_col6,lab_col7=st.columns([3,3,4])
-                    with lab_col5:
-                        shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
-                    with lab_col6:
-                        st.markdown("HOURS/OT")
-                        
                     ranks={"FOREMAN":{"qt":None,"shift":None,"hours":None,"ot":None},
                            "CLERK":{"qt":None,"shift":None,"hours":None,"ot":None},
                            "TRACTOR-SEMI-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None},
@@ -400,6 +390,18 @@ if authentication_status:
                            "LIFT TRUCK HEAVY":{"qt":None,"shift":None,"hours":None,"ot":None},
                            "BASIC CLERK-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None},
                            "LINESMAN":{"qt":None,"shift":None,"hours":None,"ot":None}}
+                    assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
+                    assessment_rates=json.loads(assessment_rates)
+                    st.write(pd.DataFrame.from_dict(assessment_rates))
+                    lab_col5,lab_col6,lab_col7=st.columns([3,3,4])
+                    with lab_col5:
+                        shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
+                        for i in ranks:
+                            ranks[i]["shift"]=shift
+                    with lab_col6:
+                        st.markdown("HOURS/OT")
+                        
+                    
                     lab_col1,lab_col2,lab_col3,lab_col4=st.columns([1,1,2,6])
                                         
                     with lab_col1:
