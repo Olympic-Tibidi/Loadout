@@ -408,15 +408,15 @@ if authentication_status:
                         foreman=st.checkbox("FOREMAN")
                         if foreman:
                             with lab_col2:
-                                number_of_foreman=st.number_input("How Many?",step=1)
+                                number_of_foreman=st.number_input("How Many?",step=1,key="1150368")
                                 ranks["FOREMAN"]["qt"]=number_of_foreman
                             with lab_col3:
                                 a1,a2=st.columns([2,2])
                                 with a1:
-                                    hours=st.number_input("HOURS",step=1)
+                                    hours=st.number_input("HOURS",step=1,key="1150369")
                                     ranks["FOREMAN"]["hours"]=hours
                                 with a2:
-                                    ot=st.number_input("OT",step=1)
+                                    ot=st.number_input("OT",step=1,key="1150370")
                                     ranks["FOREMAN"]["ot"]=ot
                         st.write(" ")
                         st.write(" ")
@@ -424,15 +424,15 @@ if authentication_status:
                         clerk=st.checkbox("CLERK")
                         if clerk:
                             with lab_col2:
-                                number_of_clerk=st.number_input("How Many?",step=1,key="isuada")
+                                number_of_clerk=st.number_input("How Many?",step=1,key="115071")
                                 ranks["CLERK"]["qt"]=number_of_clerk
                             with lab_col3:
                                 b1,b2=st.columns([2,2])
                                 with b1:
-                                    hours=st.number_input("HOURS",step=1)
+                                    hours=st.number_input("HOURS",step=1,key="1150372")
                                     ranks["CLERK"]["hours"]=hours
                                 with b2:
-                                    ot=st.number_input("OT",step=1)
+                                    ot=st.number_input("OT",step=1,key="1150373")
                                     ranks["CLERK"]["ot"]=ot
                         st.write(" ")
                         st.write(" ")
@@ -440,17 +440,32 @@ if authentication_status:
                         heavy=st.checkbox("HEAVY")
                         if heavy:
                             with lab_col2:
-                                number_of_heavy=st.number_input("How Many?",step=1,key="isuada2")
+                                number_of_heavy=st.number_input("How Many?",step=1,key="11503748")
                                 ranks["LIFT TRUCK HEAVY"]=number_of_heavy
-                                
+                            with lab_col3:
+                                b1,b2=st.columns([2,2])
+                                with b1:
+                                    hours=st.number_input("HOURS",step=1,key="1150375")
+                                    ranks["LIFT TRUCK HEAVY"]["hours"]=hours
+                                with b2:
+                                    ot=st.number_input("OT",step=1,key="1150376")
+                                    ranks["LIFT TRUCK HEAVY"]["ot"]=ot
                         st.write(" ")
                         st.write(" ")  
                         st.write(" ")
                         ut=st.checkbox("UT")
                         if ut:
                             with lab_col2:
-                                number_of_ut=st.number_input("How Many?",step=1,key="isuada3")
+                                number_of_ut=st.number_input("How Many?",step=1,key="1150377")
                                 ranks["UTILITY LIFT DRIVER"]=number_of_ut
+                            with lab_col3:
+                                b1,b2=st.columns([2,2])
+                                with b1:
+                                    hours=st.number_input("HOURS",step=1,key="1150378")
+                                    ranks["LIFT TRUCK HEAVY"]["hours"]=hours
+                                with b2:
+                                    ot=st.number_input("OT",step=1,key="1150379")
+                                    ranks["LIFT TRUCK HEAVY"]["ot"]=ot
                         st.write(" ")
                         st.write(" ")
                         tractor_semi=st.checkbox("TRACTOR-SEMI")
@@ -459,7 +474,14 @@ if authentication_status:
                                 number_of_tractor_semi=st.number_input("How Many?",step=1,key="isuada4")
                                 ranks["TRACTOR-SEMI-DOCK"]=number_of_tractor_semi
 
-                        
+                            with lab_col3:
+                                b1,b2=st.columns([2,2])
+                                with b1:
+                                    hours=st.number_input("HOURS",step=1,key="1150380")
+                                    ranks["LIFT TRUCK HEAVY"]["hours"]=hours
+                                with b2:
+                                    ot=st.number_input("OT",step=1,key="1150381")
+                                    ranks["LIFT TRUCK HEAVY"]["ot"]=ot
                         
                         
                             
