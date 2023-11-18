@@ -393,7 +393,13 @@ if authentication_status:
                     with lab_col6:
                         st.markdown("HOURS/OT")
                         
-                    ranks={"FOREMAN":0,"CLERK":0,"TRACTOR-SEMI-DOCK":0,"UTILITY LIFT DRIVER":0,"LIFT TRUCK HEAVY":0,"BASIC CLERK-DOCK":0,"LINESMAN":0}
+                    ranks={"FOREMAN":{"qt":None,"shift":None,"hours":None,"ot":None},
+                           "CLERK":{"qt":None,"shift":None,"hours":None,"ot":None},
+                           "TRACTOR-SEMI-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None},
+                           "UTILITY LIFT DRIVER":{"qt":None,"shift":None,"hours":None,"ot":None},
+                           "LIFT TRUCK HEAVY":{"qt":None,"shift":None,"hours":None,"ot":None},
+                           "BASIC CLERK-DOCK":{"qt":None,"shift":None,"hours":None,"ot":None},
+                           "LINESMAN":{"qt":None,"shift":None,"hours":None,"ot":None}}
                     lab_col1,lab_col2,lab_col3,lab_col4=st.columns([1,1,2,6])
                                         
                     with lab_col1:
@@ -403,13 +409,15 @@ if authentication_status:
                         if foreman:
                             with lab_col2:
                                 number_of_foreman=st.number_input("How Many?",step=1)
-                                ranks["FOREMAN"]=number_of_foreman
+                                ranks["FOREMAN"]["qt"]=number_of_foreman
                             with lab_col3:
                                 a1,a2=st.columns([2,2])
                                 with a1:
-                                    st.number_input("HOURS",step=1)
+                                    hours=st.number_input("HOURS",step=1)
+                                    ranks["FOREMAN"]["hours"]=hours
                                 with a2:
-                                    st.number_input("OT",step=1)
+                                    ot=st.number_input("OT",step=1)
+                                    ranks["FOREMAN"]["ot"]=ot
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
@@ -417,7 +425,15 @@ if authentication_status:
                         if clerk:
                             with lab_col2:
                                 number_of_clerk=st.number_input("How Many?",step=1,key="isuada")
-                                ranks["CLERK"]=number_of_clerk
+                                ranks["CLERK"]["qt"]=number_of_clerk
+                            with lab_col3:
+                                b1,b2=st.columns([2,2])
+                                with b1:
+                                    hours=st.number_input("HOURS",step=1)
+                                    ranks["CLERK"]["hours"]=hours
+                                with b2:
+                                    ot=st.number_input("OT",step=1)
+                                    ranks["CLERK"]["ot"]=ot
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
