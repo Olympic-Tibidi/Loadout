@@ -383,13 +383,13 @@ if authentication_status:
             with admin_tab5:
                 labor_issue=True
                 if labor_issue:
-                    ranks={"FOREMAN":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
-                           "CLERK":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
-                           "TRACTOR-SEMI-DOCK":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
-                           "UTILITY LIFT DRIVER":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
-                           "LIFT TRUCK HEAVY":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
-                           "BASIC CLERK-DOCK":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0},
-                           "LINESMAN":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0}}
+                    ranks={"FOREMAN":{"code":"129","DAY":{"hr":74.04,"ot":111.06},"NIGHT":{"hr":98.72,"ot":111.06},"WEEKEND":{"hr":111.06,"ot":111.06},"qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0},
+                           "CLERK":{"code":"115","DAY":{"hr":57.52,"ot":86.28},"NIGHT":{"hr":76.69,"ot":86.28},"WEEKEND":{"hr":86.28,"ot":86.28},"qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0},
+                           "TRACTOR-SEMI-DOCK":{"code":"036","DAY":{"hr":55.25,"ot":82.88},"NIGHT":{"hr":73.67,"ot":82.88},"WEEKEND":{"hr":82.88,"ot":82.88},"qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0},
+                           "UTILITY LIFT DRIVER":{"code":"037","DAY":{"hr":74.04,"ot":111.06},"NIGHT":{"hr":98.72,"ot":111.06},"WEEKEND":{"hr":111.06,"ot":111.06},"qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0},
+                           "LIFT TRUCK HEAVY":{"code":"055","DAY":{"hr":57.52,"ot":86.28},"NIGHT":{"hr":76.69,"ot":86.28},"WEEKEND":{"hr":86.28,"ot":86.28},"qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0},
+                           "BASIC CLERK-DOCK":{"code":"101","DAY":{"hr":52.85,"ot":79.28},"NIGHT":{"hr":70.47,"ot":79.28},"WEEKEND":{"hr":79.28,"ot":79.28},"qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0},
+                           "LINESMAN":{"code":"213","DAY":{"hr":52.85,"ot":79.28},"NIGHT":{"hr":70.47,"ot":79.28},"WEEKEND":{"hr":79.28,"ot":79.28},"qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0}}
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
                     st.write(assessment_rates)
@@ -417,10 +417,12 @@ if authentication_status:
                                 with a1:
                                     hours=st.number_input("HOURS",step=1,key="1150369")
                                     ranks["FOREMAN"]["hours"]=hours
+                                    ranks["FOREMAN"]["standard_wage"]=hours*ranks["FOREMAN"][shift]["hr"]*hours
                                 with a2:
                                     ot=st.number_input("OT",step=1,key="1150370")
                                     ranks["FOREMAN"]["ot"]=ot
-                                
+                                    ranks["FOREMAN"]["ot_wage"]=hours*ranks["FOREMAN"][shift]["ot"]*hours
+                                ranks["FOREMAN"]["cost"]=ranks["FOREMAN"]["standard_wage"]+ranks["FOREMAN"]["ot_wage"]
                         elif not foreman:
                             with lab_col2:
                                 st.write(" ")
@@ -449,9 +451,12 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150372")
                                     ranks["CLERK"]["hours"]=hours
+                                    ranks["CLERK"]["standard_wage"]=hours*ranks["CLERK"][shift]["hr"]*hours
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150373")
                                     ranks["CLERK"]["ot"]=ot
+                                    ranks["CLERK"]["ot_wage"]=hours*ranks["CLERK"][shift]["ot"]*hours
+                                ranks["CLERK"]["cost"]=ranks["CLERK"]["standard_wage"]+ranks["CLERK"]["ot_wage"]
                         elif not clerk:
                             with lab_col2:
                                 st.write(" ")
@@ -481,9 +486,12 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150375")
                                     ranks["LIFT TRUCK HEAVY"]["hours"]=hours
+                                    ranks["LIFT TRUCK HEAVY"]["standard_wage"]=hours*ranks["LIFT TRUCK HEAVY"][shift]["hr"]*hours
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150376")
                                     ranks["LIFT TRUCK HEAVY"]["ot"]=ot
+                                    ranks["LIFT TRUCK HEAVY"]["ot_wage"]=hours*ranks["LIFT TRUCK HEAVY"][shift]["ot"]*hours
+                                ranks["LIFT TRUCK HEAVY"]["cost"]=ranks["LIFT TRUCK HEAVY"]["standard_wage"]+ranks["LIFT TRUCK HEAVY"]["ot_wage"]
                         elif not heavy:
                             with lab_col2:
                                 st.write(" ")
@@ -510,9 +518,12 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150378")
                                     ranks["UTILITY LIFT DRIVER"]["hours"]=hours
+                                    ranks["UTILITY LIFT DRIVER"]["standard_wage"]=hours*ranks["UTILITY LIFT DRIVER"][shift]["hr"]*hours
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150379")
                                     ranks["UTILITY LIFT DRIVER"]["ot"]=ot
+                                    ranks["UTILITY LIFT DRIVER"]["ot_wage"]=hours*ranks["UTILITY LIFT DRIVER"][shift]["ot"]*hours
+                                ranks["UTILITY LIFT DRIVER"]["cost"]=ranks["UTILITY LIFT DRIVER"]["standard_wage"]+ranks["UTILITY LIFT DRIVER"]["ot_wage"]
                         elif not ut:
                             with lab_col2:
                                 st.write(" ")
@@ -539,21 +550,20 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150380")
                                     ranks["TRACTOR-SEMI-DOCK"]["hours"]=hours
+                                    ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]=hours*ranks["TRACTOR-SEMI-DOCK"][shift]["hr"]*hours
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150381")
                                     ranks["TRACTOR-SEMI-DOCK"]["ot"]=ot
+                                    ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]=hours*ranks["TRACTOR-SEMI-DOCK"][shift]["ot"]*hours
+                                ranks["TRACTOR-SEMI-DOCK"]["cost"]=ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]+ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]
                             
                         if shift=="DAY":
                             total_cost=0
                             for i in ranks:
                                 
-                                hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]*ranks[i]["qt"]
-                                ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]*ranks[i]["qt"]
-                                ranks[i]["cost"]=hour_wage+ot_wage
-                                total_cost+=hour_wage+ot_wage
                                 with lab_col4:
-                                    st.markdown(f"Standard: $ {round(hour_wage,2)}")
-                                    st.markdown(f"OT: $ {round(ot_wage,2)}")
+                                    st.markdown(f"Standard: $ {ranks[i]["standard_wage"]}")
+                                    st.markdown(f"OT: $ {ranks[i]["ot_wage"]}")
                         if shift=="NIGHT":
                             total_cost=0
                             for i in ranks:
