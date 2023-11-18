@@ -392,7 +392,7 @@ if authentication_status:
                            "LINESMAN":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0}}
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
-                    st.write(assessment_rates)
+                    #st.write(assessment_rates)
                     lab_col5,lab_col6,lab_col7=st.columns([3,3,4])
                     with lab_col5:
                         shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
@@ -566,6 +566,8 @@ if authentication_status:
                                 ot_wage=assessment_rates[i]["wkndot"]*ranks[i]["ot"]
                                 ranks[i]["cost"]=(hour_wage+ot_wage)*ranks[i]["qt"]
                                 total_cost+=(hour_wage+ot_wage)*ranks[i]["qt"]
+                    with lab_col7:
+                        st.markdown("**WAGES**")
                         with lab_col4:
                             st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(total_cost,2)}")
                             
