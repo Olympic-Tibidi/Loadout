@@ -456,7 +456,9 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
+                                st.write(" ")
                             with lab_col3:
+                                st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
@@ -538,7 +540,7 @@ if authentication_status:
                                     ot=st.number_input("OT",step=1,key="1150381")
                                     ranks["TRACTOR-SEMI-DOCK"]["ot"]=ot
                         
-                        
+                        st.write(ranks)
                             
                         
                         
