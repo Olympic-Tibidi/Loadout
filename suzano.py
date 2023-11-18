@@ -567,7 +567,7 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                 with lab_col8:
-                                    st.markdown("ranks["UTILITY LIFT DRIVER"]["state"]+ranks["UTILITY LIFT DRIVER"]["pma"]")
+                                    st.markdown(ranks["UTILITY LIFT DRIVER"]["state"]+ranks["UTILITY LIFT DRIVER"]["pma"])
                         elif not ut:
                             with lab_col2:
                                 st.write(" ")
@@ -608,7 +608,7 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                 with lab_col8:
-                                    st.markdown("ranks["TRACTOR-SEMI-DOCK"]["state"]+ranks["TRACTOR-SEMI-DOCK"]["pma"]")
+                                    st.markdown(ranks["TRACTOR-SEMI-DOCK"]["state"]+ranks["TRACTOR-SEMI-DOCK"]["pma"])
                         
                     with lab_col7:
                         st.markdown("**WAGES**")
