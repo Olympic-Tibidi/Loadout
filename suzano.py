@@ -389,7 +389,7 @@ if authentication_status:
                     st.write(pd.DataFrame.from_dict(assessment_rates))
                     
                     shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
-                    
+                    ranks={"FOREMAN":0,"CLERK":0,"TRACTOR-SEMI-DOCK":0,"UTILITY LIFT DRIVER":0,"LIFT TRUCK HEAVY":0,"BASIC CLERK-DOCK":0,"LINESMAN":0}
                     lab_col1,lab_col2,lab_col3=st.columns([2,1,8])
                                         
                     with lab_col1:
@@ -399,6 +399,7 @@ if authentication_status:
                         if foreman:
                             with lab_col2:
                                 number_of_foreman=st.number_input("How Many?",step=1)
+                                ranks["FOREMAN"]=number_of_foreman
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
@@ -406,6 +407,7 @@ if authentication_status:
                         if clerk:
                             with lab_col2:
                                 number_of_clerk=st.number_input("How Many?",step=1,key="isuada")
+                                ranks["CLERK"]=number_of_clerk
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
@@ -413,20 +415,25 @@ if authentication_status:
                         if heavy:
                             with lab_col2:
                                 number_of_heavy=st.number_input("How Many?",step=1,key="isuada2")
+                                ranks["LIFT TRUCK HEAVY"]=number_of_heavy
                                 
                         st.write(" ")
-                        st.write(" ")                        
+                        st.write(" ")  
+                        st.write(" ")
                         ut=st.checkbox("UT")
                         if ut:
                             with lab_col2:
                                 number_of_ut=st.number_input("How Many?",step=1,key="isuada3")
-                                
+                                ranks["UTILITY LIFT DRIVER"]=number_of_ut
+                        st.write(" ")
                         st.write(" ")
                         st.write(" ")
                         tractor_semi=st.checkbox("TRACTOR-SEMI")
                         if tractor_semi:
                             with lab_col2:
                                 number_of_tractor_semi=st.number_input("How Many?",step=1,key="isuada4")
+                                ranks["TRACTOR-SEMI-DOCK"]=number_of_tractor_semi
+
                         
                         
                         
