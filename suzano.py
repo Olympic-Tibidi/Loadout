@@ -463,7 +463,7 @@ if authentication_status:
                                     ranks["CLERK"]["ot_wage"]=ot*ranks["CLERK"][shift]["ot"]
                                 ranks["CLERK"]["cost"]=ranks["CLERK"]["standard_wage"]+ranks["CLERK"]["ot_wage"]
                                 with lab_col4:
-                                    st.write(f"Standard: $ {ranks["CLERK"]['standard_wage']}, OT: $ {ranks["CLERK"]['ot_wage']}")
+                                    st.write(f'Standard: $ {ranks["CLERK"]['standard_wage']}, OT: $ {ranks["CLERK"]['ot_wage']}')
                                     st.write(" ")
                                     st.write(" ")
                                    # st.write(" ")
@@ -503,7 +503,7 @@ if authentication_status:
                                     ranks["LIFT TRUCK HEAVY"]["ot_wage"]=ot*ranks["LIFT TRUCK HEAVY"][shift]["ot"]
                                 ranks["LIFT TRUCK HEAVY"]["cost"]=ranks["LIFT TRUCK HEAVY"]["standard_wage"]+ranks["LIFT TRUCK HEAVY"]["ot_wage"]
                                 with lab_col4:
-                                    st.write(f"Standard: $ {ranks["LIFT TRUCK HEAVY"]['standard_wage']}, OT: $ {ranks["LIFT TRUCK HEAVY"]['ot_wage']}")
+                                    st.write(f"Standard: $ {ranks['LIFT TRUCK HEAVY']['standard_wage']}, OT: $ {ranks['LIFT TRUCK HEAVY']['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -540,7 +540,7 @@ if authentication_status:
                                     ranks["UTILITY LIFT DRIVER"]["ot_wage"]=ot*ranks["UTILITY LIFT DRIVER"][shift]["ot"]
                                 ranks["UTILITY LIFT DRIVER"]["cost"]=ranks["UTILITY LIFT DRIVER"]["standard_wage"]+ranks["UTILITY LIFT DRIVER"]["ot_wage"]
                                 with lab_col4:
-                                    st.write(f"Standard: $ {ranks["UTILITY LIFT DRIVER"]['standard_wage']}, OT: $ {ranks["UTILITY LIFT DRIVER"]['ot_wage']}")
+                                    st.write(f"Standard: $ {ranks['UTILITY LIFT DRIVER']['standard_wage']}, OT: $ {ranks['UTILITY LIFT DRIVER']['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -576,7 +576,11 @@ if authentication_status:
                                     ranks["TRACTOR-SEMI-DOCK"]["ot"]=ot
                                     ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]=ot*ranks["TRACTOR-SEMI-DOCK"][shift]["ot"]
                                 ranks["TRACTOR-SEMI-DOCK"]["cost"]=ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]+ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]
-                            
+                                with lab_col4:
+                                    st.write(f"Standard: $ {ranks['TRACTOR-SEMI-DOCK']['standard_wage']}, OT: $ {ranks['TRACTOR-SEMI-DOCK']['ot_wage']}")
+                                    st.write(" ")
+                                    st.write(" ")
+                                    st.write(" ")
                         if shift=="DAY":
                             total_cost=0
                             with lab_col4:
