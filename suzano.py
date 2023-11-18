@@ -378,11 +378,12 @@ if authentication_status:
                 admin_bill_of_ladings=json.loads(bill_data)
                 admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
                 st.dataframe(admin_bill_of_ladings)
-                use=False
+                use=True
                 if use:
                     now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
                     
                     daily_admin_bill_of_ladings=admin_bill_of_ladings.copy()
+                    st.dataframe(daily_admin_bill_of_ladings)
                     daily_admin_bill_of_ladings["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["Issued"]]
                     daily_admin_bill_of_ladings_=daily_admin_bill_of_ladings[daily_admin_bill_of_ladings["Date"]==now.date()]
                     choose = st.radio(
