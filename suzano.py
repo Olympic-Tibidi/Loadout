@@ -404,6 +404,12 @@ if authentication_status:
                             with lab_col2:
                                 number_of_foreman=st.number_input("How Many?",step=1)
                                 ranks["FOREMAN"]=number_of_foreman
+                            with lab_col5:
+                                a1,a2=st.columns([2,2])
+                                with a1:
+                                    st.number_input("HOURS",step=1)
+                                with a2:
+                                    st.number_input("OT HOURS",step=1)
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
