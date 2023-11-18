@@ -392,7 +392,7 @@ if authentication_status:
                            "LINESMAN":{"qt":0,"shift":None,"hours":0,"ot":0,"cost":0}}
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
-                    #st.write(assessment_rates)
+                    st.write(assessment_rates)
                     lab_col5,lab_col6,lab_col7,lab_col8,lab_col9=st.columns([2,2,2,2,2])
                     with lab_col5:
                         shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
@@ -420,6 +420,7 @@ if authentication_status:
                                 with a2:
                                     ot=st.number_input("OT",step=1,key="1150370")
                                     ranks["FOREMAN"]["ot"]=ot
+                                
                         elif not foreman:
                             with lab_col2:
                                 st.write(" ")
