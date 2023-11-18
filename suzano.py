@@ -397,13 +397,19 @@ if authentication_status:
                     clerk=st.checkbox("CLERK")
                     if clerk:
                         with lab_col2:
-                            number_of_clerk=st.number_input("How Many?",step=1)
+                            number_of_clerk=st.number_input("How Many?",step=1,key="isuada")
                     st.write(" ")
                     st.write(" ")
                     heavy=st.checkbox("HEAVY")
                     if heavy:
                         with lab_col2:
-                            number_of_heavy=st.number_input("How Many?",step=1)
+                            number_of_heavy=st.number_input("How Many?",step=1,key="isuada2")
+                    st.write(" ")
+                    st.write(" ")
+                    ut=st.checkbox("UT")
+                    if heavy:
+                        with lab_col2:
+                            number_of_ut=st.number_input("How Many?",step=1,key="isuada3")
                             
                         
                         
