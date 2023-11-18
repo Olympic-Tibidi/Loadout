@@ -384,7 +384,16 @@ if authentication_status:
                 assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                 assessment_rates=json.loads(assessment_rates)
                 st.write(pd.DataFrame.from_dict(assessment_rates))
-                st.radio("PICK GANG",["FOREMAN", "CLERK", "HEAVY"])
+                lab_col1,lab_col2=st.columns([2,2])
+                with lab_col1:
+                    foreman=st.checkbox("FOREMAN")
+                    if foreman:
+                        with lab_col2:
+                            number_of_foreman=st.number_input("HOW MANY")
+                            
+                        
+                        
+                
             
             
             with admin_tab2:
