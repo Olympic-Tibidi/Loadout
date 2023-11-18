@@ -384,8 +384,8 @@ if authentication_status:
                     
                     daily_admin_bill_of_ladings=admin_bill_of_ladings.copy()
                     st.dataframe(daily_admin_bill_of_ladings)
-                    daily_admin_bill_of_ladings["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["Issued"]]
-                    daily_admin_bill_of_ladings_=daily_admin_bill_of_ladings[daily_admin_bill_of_ladings["Date"]==now.date()]
+                    #daily_admin_bill_of_ladings["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["Issued"]]
+                    #daily_admin_bill_of_ladings_=daily_admin_bill_of_ladings[daily_admin_bill_of_ladings["Date"]==now.date()]
                     choose = st.radio(
                                     "Select Today's Bill of Ladings or choose by Date or choose ALL",
                                     ["DAILY", "ACCUMULATIVE", "FIND BY DATE"],key="wewas")
