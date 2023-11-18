@@ -561,23 +561,29 @@ if authentication_status:
                             total_cost=0
                             with lab_col4:
                                 st.write(" ")
+                                st.write(" ")
                             for i in ranks:
                                 
                                 with lab_col4:
                                     st.markdown(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
-                                    
+                                    st.write(" ")
+                                    st.write(" ")
                         if shift=="NIGHT":
                             total_cost=0
                             for i in ranks:
                                 
                                  with lab_col4:
                                     st.markdown(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
+                                    st.write(" ")
+                                    st.write(" ")
                         elif shift=="WEEKEND":
                             total_cost=0
                             for i in ranks:
                                 
                                  with lab_col4:
                                     st.markdown(f"Standard: $ {ranks[i]['standard_wage']},OT: $ {ranks[i]['ot_wage']}")
+                                    st.write(" ")
+                                    st.write(" ")
                     with lab_col7:
                         st.markdown("**WAGES**")
                         with lab_col4:
