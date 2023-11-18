@@ -393,7 +393,7 @@ if authentication_status:
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
                     #st.write(assessment_rates)
-                    lab_col5,lab_col6,lab_col7=st.columns([3,3,4])
+                    lab_col5,lab_col6,lab_col7,lab_col8,lab_col9=st.columns([2,2,2,2,2])
                     with lab_col5:
                         shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
                         for i in ranks:
