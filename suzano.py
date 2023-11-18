@@ -543,11 +543,15 @@ if authentication_status:
                                     ranks["TRACTOR-SEMI-DOCK"]["ot"]=ot
                         
                         if shift=="DAY":
+                            total_cost=0
                             for i in ranks:
-                                hour_wage=ranks[i]
-                               
-                
-                        st.write(ranks)
+                                total_caost
+                                hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]
+                                ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]
+                                ranks[i]["cost"]=hour_wage+ot_wage
+                                total_cost+=hour_wage+ot_wage
+                        with lab_col4:
+                            st.write(total_cost)
                             
                         
                         
