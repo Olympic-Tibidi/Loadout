@@ -562,30 +562,22 @@ if authentication_status:
                             for i in ranks:
                                 
                                 with lab_col4:
-                                    st.markdown(f"Standard: $ {ranks[i]["standard_wage"]}")
-                                    st.markdown(f"OT: $ {ranks[i]["ot_wage"]}")
+                                    st.markdown(f"Standard: $ {ranks[i]['standard_wage']}")
+                                    st.markdown(f"OT: $ {ranks[i]['ot_wage']}")
                         if shift=="NIGHT":
                             total_cost=0
                             for i in ranks:
                                 
-                                hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]*ranks[i]["qt"]
-                                ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]*ranks[i]["qt"]
-                                ranks[i]["cost"]=hour_wage+ot_wage
-                                total_cost+=hour_wage+ot_wage
-                                with lab_col4:
-                                    st.markdown(f"Standard: $ {round(hour_wage,2)}")
-                                    st.markdown(f"OT: $ {round(ot_wage,2)}")
+                                 with lab_col4:
+                                    st.markdown(f"Standard: $ {ranks[i]['standard_wage']}")
+                                    st.markdown(f"OT: $ {ranks[i]['ot_wage']}")
                         elif shift=="WEEKEND":
                             total_cost=0
                             for i in ranks:
                                 
-                                hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]*ranks[i]["qt"]
-                                ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]*ranks[i]["qt"]
-                                ranks[i]["cost"]=hour_wage+ot_wage
-                                total_cost+=hour_wage+ot_wage
-                                with lab_col4:
-                                    st.markdown(f"Standard: $ {round(hour_wage,2)}")
-                                    st.markdown(f"OT: $ {round(ot_wage,2)}")
+                                 with lab_col4:
+                                    st.markdown(f"Standard: $ {ranks[i]['standard_wage']}")
+                                    st.markdown(f"OT: $ {ranks[i]['ot_wage']}")
                     with lab_col7:
                         st.markdown("**WAGES**")
                         with lab_col4:
