@@ -384,6 +384,7 @@ if authentication_status:
                 assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                 assessment_rates=json.loads(assessment_rates)
                 st.write(pd.DataFrame.from_dict(assessment_rates))
+                gang=st.mulltiselect("Select Ranks",assessment_rates.keys())
             
             
             with admin_tab2:
