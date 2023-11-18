@@ -407,7 +407,13 @@ if authentication_status:
                     with lab_col1:
                         st.write(" ")
                         st.write(" ")
+                        with lab_col4:
+                            
+                            st.write(" ")
+                            st.write(" ")
+                            st.write(" ")
                         foreman=st.checkbox("FOREMAN")
+                        
                         if foreman:
                             with lab_col2:
                                 number_of_foreman=st.number_input("How Many?",step=1,key="1150368")
@@ -466,7 +472,7 @@ if authentication_status:
                                     st.write(f"Standard: $ {ranks['CLERK']['standard_wage']}, OT: $ {ranks['CLERK']['ot_wage']}")
                                     st.write(" ")
                                     st.write(" ")
-                                   # st.write(" ")
+                                    st.write(" ")
                         elif not clerk:
                             with lab_col2:
                                 st.write(" ")
@@ -581,36 +587,7 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
-                        if shift=="DAY":
-                            total_cost=0
-                            with lab_col4:
-                                st.write(" ")
-                                st.write(" ")
-                            for i in ranks:
-                                
-                                with lab_col4:
-                                    st.write(f"Standard: $ {ranks[i]['standard_wage']}, OT: $ {ranks[i]['ot_wage']}")
-                                    st.write(" ")
-                                    st.write(" ")
-                                    st.write(" ")
-                        if shift=="NIGHT":
-                            total_cost=0
-                            for i in ranks:
-                                
-                                 with lab_col4:
-                                    st.write(f"Standard: $ {ranks[i]['standard_wage']}, OT: $ {ranks[i]['ot_wage']}")
-                                    st.write(" ")
-                                    st.write(" ")
-                                    st.write(" ")
-                        elif shift=="WEEKEND":
-                            total_cost=0
-                            for i in ranks:
-                                
-                                 with lab_col4:
-                                    st.write(f"Standard: $ {ranks[i]['standard_wage']}, OT: $ {ranks[i]['ot_wage']}")
-                                    st.write(" ")
-                                    st.write(" ")
-                                    st.write(" ")
+                        
                     with lab_col7:
                         st.markdown("**WAGES**")
                         with lab_col4:
