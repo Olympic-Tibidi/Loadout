@@ -390,7 +390,7 @@ if authentication_status:
                     
                     shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
                     ranks={"FOREMAN":0,"CLERK":0,"TRACTOR-SEMI-DOCK":0,"UTILITY LIFT DRIVER":0,"LIFT TRUCK HEAVY":0,"BASIC CLERK-DOCK":0,"LINESMAN":0}
-                    lab_col1,lab_col2,lab_col3=st.columns([2,1,8])
+                    lab_col1,lab_col2,lab_col3=st.columns([1,1,8])
                                         
                     with lab_col1:
                         st.write(" ")
@@ -425,7 +425,6 @@ if authentication_status:
                             with lab_col2:
                                 number_of_ut=st.number_input("How Many?",step=1,key="isuada3")
                                 ranks["UTILITY LIFT DRIVER"]=number_of_ut
-                        st.write(" ")
                         st.write(" ")
                         st.write(" ")
                         tractor_semi=st.checkbox("TRACTOR-SEMI")
