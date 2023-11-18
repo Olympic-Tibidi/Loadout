@@ -383,13 +383,14 @@ if authentication_status:
             with admin_tab5:
                 labor_issue=True
                 if labor_issue:
+                    
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
                     st.write(pd.DataFrame.from_dict(assessment_rates))
                     
                     shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
                     
-                    lab_col1,lab_col2,lab_col3=st.columns([3,3,4])
+                    lab_col1,lab_col2,lab_col3=st.columns([2,1,8])
                                         
                     with lab_col1:
                         st.write(" ")
@@ -405,6 +406,7 @@ if authentication_status:
                         if clerk:
                             with lab_col2:
                                 number_of_clerk=st.number_input("How Many?",step=1,key="isuada")
+                        st.write(" ")
                         st.write(" ")
                         st.write(" ")
                         heavy=st.checkbox("HEAVY")
