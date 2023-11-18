@@ -548,10 +548,10 @@ if authentication_status:
                                 
                                 hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]
                                 ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]
-                                ranks[i]["cost"]=hour_wage+ot_wage
-                                total_cost+=hour_wage+ot_wage
+                                ranks[i]["cost"]=(hour_wage+ot_wage)*ranks[i]["qt"]
+                                total_cost+=(hour_wage+ot_wage)*ranks[i]["qt"]
                         with lab_col4:
-                            st.write(total_cost)
+                            st.subheader(f"TOTAL COST FOR SHIFT:{total_cost}")
                             
                         
                         
