@@ -423,11 +423,11 @@ if authentication_status:
                                 with a1:
                                     hours=st.number_input("HOURS",step=1,key="1150369")
                                     ranks["FOREMAN"]["hours"]=hours
-                                    ranks["FOREMAN"]["standard_wage"]=hours*ranks["FOREMAN"][shift]["hr"]
+                                    ranks["FOREMAN"]["standard_wage"]=hours*ranks["FOREMAN"][shift]["hr"]*ranks["FOREMAN"]["qt"]
                                 with a2:
                                     ot=st.number_input("OT",step=1,key="1150370")
                                     ranks["FOREMAN"]["ot"]=ot
-                                    ranks["FOREMAN"]["ot_wage"]=ot*ranks["FOREMAN"][shift]["ot"]
+                                    ranks["FOREMAN"]["ot_wage"]=ot*ranks["FOREMAN"][shift]["ot"]*ranks["FOREMAN"]["qt"]
                                 ranks["FOREMAN"]["cost"]=ranks["FOREMAN"]["standard_wage"]+ranks["FOREMAN"]["ot_wage"]
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['FOREMAN']['standard_wage']}, OT: $ {ranks['FOREMAN']['ot_wage']}")
@@ -462,11 +462,11 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150372")
                                     ranks["CLERK"]["hours"]=hours
-                                    ranks["CLERK"]["standard_wage"]=hours*ranks["CLERK"][shift]["hr"]
+                                    ranks["CLERK"]["standard_wage"]=hours*ranks["CLERK"][shift]["hr"]*ranks["CLERK"]["qt"]
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150373")
                                     ranks["CLERK"]["ot"]=ot
-                                    ranks["CLERK"]["ot_wage"]=ot*ranks["CLERK"][shift]["ot"]
+                                    ranks["CLERK"]["ot_wage"]=ot*ranks["CLERK"][shift]["ot"]*ranks["CLERK"]["qt"]
                                 ranks["CLERK"]["cost"]=ranks["CLERK"]["standard_wage"]+ranks["CLERK"]["ot_wage"]
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['CLERK']['standard_wage']}, OT: $ {ranks['CLERK']['ot_wage']}")
@@ -502,11 +502,11 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150375")
                                     ranks["LIFT TRUCK HEAVY"]["hours"]=hours
-                                    ranks["LIFT TRUCK HEAVY"]["standard_wage"]=hours*ranks["LIFT TRUCK HEAVY"][shift]["hr"]
+                                    ranks["LIFT TRUCK HEAVY"]["standard_wage"]=hours*ranks["LIFT TRUCK HEAVY"][shift]["hr"]*ranks["LIFT TRUCK HEAVY"]["qt"]
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150376")
                                     ranks["LIFT TRUCK HEAVY"]["ot"]=ot
-                                    ranks["LIFT TRUCK HEAVY"]["ot_wage"]=ot*ranks["LIFT TRUCK HEAVY"][shift]["ot"]
+                                    ranks["LIFT TRUCK HEAVY"]["ot_wage"]=ot*ranks["LIFT TRUCK HEAVY"][shift]["ot"]*ranks["LIFT TRUCK HEAVY"]["qt"]
                                 ranks["LIFT TRUCK HEAVY"]["cost"]=ranks["LIFT TRUCK HEAVY"]["standard_wage"]+ranks["LIFT TRUCK HEAVY"]["ot_wage"]
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['LIFT TRUCK HEAVY']['standard_wage']}, OT: $ {ranks['LIFT TRUCK HEAVY']['ot_wage']}")
@@ -539,11 +539,11 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150378")
                                     ranks["UTILITY LIFT DRIVER"]["hours"]=hours
-                                    ranks["UTILITY LIFT DRIVER"]["standard_wage"]=hours*ranks["UTILITY LIFT DRIVER"][shift]["hr"]
+                                    ranks["UTILITY LIFT DRIVER"]["standard_wage"]=hours*ranks["UTILITY LIFT DRIVER"][shift]["hr"]*ranks["UTILITY LIFT DRIVER"]["qt"]
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150379")
                                     ranks["UTILITY LIFT DRIVER"]["ot"]=ot
-                                    ranks["UTILITY LIFT DRIVER"]["ot_wage"]=ot*ranks["UTILITY LIFT DRIVER"][shift]["ot"]
+                                    ranks["UTILITY LIFT DRIVER"]["ot_wage"]=ot*ranks["UTILITY LIFT DRIVER"][shift]["ot"]*ranks["UTILITY LIFT DRIVER"]["qt"]
                                 ranks["UTILITY LIFT DRIVER"]["cost"]=ranks["UTILITY LIFT DRIVER"]["standard_wage"]+ranks["UTILITY LIFT DRIVER"]["ot_wage"]
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['UTILITY LIFT DRIVER']['standard_wage']}, OT: $ {ranks['UTILITY LIFT DRIVER']['ot_wage']}")
@@ -576,11 +576,11 @@ if authentication_status:
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150380")
                                     ranks["TRACTOR-SEMI-DOCK"]["hours"]=hours
-                                    ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]=hours*ranks["TRACTOR-SEMI-DOCK"][shift]["hr"]
+                                    ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]=hours*ranks["TRACTOR-SEMI-DOCK"][shift]["hr"]*ranks["TRACTOR-SEMI-DOCK"]["qt"]
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150381")
                                     ranks["TRACTOR-SEMI-DOCK"]["ot"]=ot
-                                    ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]=ot*ranks["TRACTOR-SEMI-DOCK"][shift]["ot"]
+                                    ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]=ot*ranks["TRACTOR-SEMI-DOCK"][shift]["ot"]*ranks["TRACTOR-SEMI-DOCK"]["qt"]
                                 ranks["TRACTOR-SEMI-DOCK"]["cost"]=ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]+ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['TRACTOR-SEMI-DOCK']['standard_wage']}, OT: $ {ranks['TRACTOR-SEMI-DOCK']['ot_wage']}")
