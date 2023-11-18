@@ -387,14 +387,14 @@ if authentication_status:
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
                     st.write(pd.DataFrame.from_dict(assessment_rates))
-                    lab_col4,lab_col5,lab_col6=st.columns([3,3,4])
-                    with lab_col4:
-                        shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
+                    lab_col5,lab_col6,lab_col7=st.columns([3,3,4])
                     with lab_col5:
+                        shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
+                    with lab_col6:
                         st.markdown("HOURS/OT")
                         
                     ranks={"FOREMAN":0,"CLERK":0,"TRACTOR-SEMI-DOCK":0,"UTILITY LIFT DRIVER":0,"LIFT TRUCK HEAVY":0,"BASIC CLERK-DOCK":0,"LINESMAN":0}
-                    lab_col1,lab_col2,lab_col3=st.columns([1,1,8])
+                    lab_col1,lab_col2,lab_col3,lab_col4=st.columns([1,1,1,7])
                                         
                     with lab_col1:
                         st.write(" ")
@@ -404,7 +404,7 @@ if authentication_status:
                             with lab_col2:
                                 number_of_foreman=st.number_input("How Many?",step=1)
                                 ranks["FOREMAN"]=number_of_foreman
-                            with lab_col5:
+                            with lab_col3:
                                 a1,a2=st.columns([2,2])
                                 with a1:
                                     st.number_input("HOURS",step=1)
