@@ -418,6 +418,10 @@ if authentication_status:
                                 with a2:
                                     ot=st.number_input("OT",step=1,key="1150370")
                                     ranks["FOREMAN"]["ot"]=ot
+                        elif not foreman:
+                            with lab_col3:
+                                st.write(" ")
+                            
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
@@ -434,6 +438,9 @@ if authentication_status:
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150373")
                                     ranks["CLERK"]["ot"]=ot
+                        elif not clerk:
+                            with lab_col3:
+                                st.write(" ")
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
@@ -441,7 +448,7 @@ if authentication_status:
                         if heavy:
                             with lab_col2:
                                 number_of_heavy=st.number_input("How Many?",step=1,key="11503748")
-                                ranks["LIFT TRUCK HEAVY"]=number_of_heavy
+                                ranks["LIFT TRUCK HEAVY"]["qt"]=number_of_heavy
                             with lab_col3:
                                 b1,b2=st.columns([2,2])
                                 with b1:
@@ -450,6 +457,9 @@ if authentication_status:
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150376")
                                     ranks["LIFT TRUCK HEAVY"]["ot"]=ot
+                        elif not heavy:
+                            with lab_col3:
+                                st.write(" ")
                         st.write(" ")
                         st.write(" ")  
                         st.write(" ")
@@ -457,31 +467,34 @@ if authentication_status:
                         if ut:
                             with lab_col2:
                                 number_of_ut=st.number_input("How Many?",step=1,key="1150377")
-                                ranks["UTILITY LIFT DRIVER"]=number_of_ut
+                                ranks["UTILITY LIFT DRIVER"]["qt"]=number_of_ut
                             with lab_col3:
                                 b1,b2=st.columns([2,2])
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150378")
-                                    ranks["LIFT TRUCK HEAVY"]["hours"]=hours
+                                    ranks["UTILITY LIFT DRIVER"]["hours"]=hours
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150379")
-                                    ranks["LIFT TRUCK HEAVY"]["ot"]=ot
+                                    ranks["UTILITY LIFT DRIVER"]["ot"]=ot
+                        elif not ut:
+                            with lab_col3:
+                                st.write(" ")
                         st.write(" ")
                         st.write(" ")
                         tractor_semi=st.checkbox("TRACTOR-SEMI")
                         if tractor_semi:
                             with lab_col2:
                                 number_of_tractor_semi=st.number_input("How Many?",step=1,key="isuada4")
-                                ranks["TRACTOR-SEMI-DOCK"]=number_of_tractor_semi
+                                ranks["TRACTOR-SEMI-DOCK"]["qt"]=number_of_tractor_semi
 
                             with lab_col3:
                                 b1,b2=st.columns([2,2])
                                 with b1:
                                     hours=st.number_input("HOURS",step=1,key="1150380")
-                                    ranks["LIFT TRUCK HEAVY"]["hours"]=hours
+                                    ranks["TRACTOR-SEMI-DOCK"]["hours"]=hours
                                 with b2:
                                     ot=st.number_input("OT",step=1,key="1150381")
-                                    ranks["LIFT TRUCK HEAVY"]["ot"]=ot
+                                    ranks["TRACTOR-SEMI-DOCK"]["ot"]=ot
                         
                         
                             
