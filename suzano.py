@@ -389,7 +389,7 @@ if authentication_status:
                     foreman=st.checkbox("FOREMAN")
                     if foreman:
                         with lab_col2:
-                            number_of_foreman=st.number_input("HOW MANY")
+                            number_of_foreman=st.number_input(step=1)
                             
                         
                         
