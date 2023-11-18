@@ -394,7 +394,7 @@ if authentication_status:
                         st.markdown("HOURS/OT")
                         
                     ranks={"FOREMAN":0,"CLERK":0,"TRACTOR-SEMI-DOCK":0,"UTILITY LIFT DRIVER":0,"LIFT TRUCK HEAVY":0,"BASIC CLERK-DOCK":0,"LINESMAN":0}
-                    lab_col1,lab_col2,lab_col3,lab_col4=st.columns([1,1,1,7])
+                    lab_col1,lab_col2,lab_col3,lab_col4=st.columns([1,1,2,6])
                                         
                     with lab_col1:
                         st.write(" ")
@@ -409,7 +409,7 @@ if authentication_status:
                                 with a1:
                                     st.number_input("HOURS",step=1)
                                 with a2:
-                                    st.number_input("OT HOURS",step=1)
+                                    st.number_input("OT",step=1)
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
