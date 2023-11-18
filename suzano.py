@@ -545,7 +545,7 @@ if authentication_status:
                         if shift=="DAY":
                             total_cost=0
                             for i in ranks:
-                                total_caost
+                                
                                 hour_wage=assessment_rates[i]["1st"]*ranks[i]["hours"]
                                 ot_wage=assessment_rates[i]["1stot"]*ranks[i]["ot"]
                                 ranks[i]["cost"]=hour_wage+ot_wage
