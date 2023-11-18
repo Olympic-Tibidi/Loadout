@@ -381,35 +381,43 @@ if authentication_status:
         if select=="ADMIN" :
             admin_tab1,admin_tab2,admin_tab3,admin_tab4,admin_tab5=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES","LABOR"])
             with admin_tab5:
-                assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
-                assessment_rates=json.loads(assessment_rates)
-                st.write(pd.DataFrame.from_dict(assessment_rates))
-                lab_col1,lab_col2,lab_col3=st.columns([2,2,6])
-                with lab_col1:
-                    st.write(" ")
-                    st.write(" ")
-                    foreman=st.checkbox("FOREMAN")
-                    if foreman:
-                        with lab_col2:
-                            number_of_foreman=st.number_input("How Many?",step=1)
-                    st.write(" ")
-                    st.write(" ")
-                    clerk=st.checkbox("CLERK")
-                    if clerk:
-                        with lab_col2:
-                            number_of_clerk=st.number_input("How Many?",step=1,key="isuada")
-                    st.write(" ")
-                    st.write(" ")
-                    heavy=st.checkbox("HEAVY")
-                    if heavy:
-                        with lab_col2:
-                            number_of_heavy=st.number_input("How Many?",step=1,key="isuada2")
-                    st.write(" ")
-                    st.write(" ")
-                    ut=st.checkbox("UT")
-                    if heavy:
-                        with lab_col2:
-                            number_of_ut=st.number_input("How Many?",step=1,key="isuada3")
+                labor_issue=True
+                if labor_issue:
+                    assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
+                    assessment_rates=json.loads(assessment_rates)
+                    st.write(pd.DataFrame.from_dict(assessment_rates))
+                    lab_col1,lab_col2,lab_col3=st.columns([2,2,6])
+                    with lab_col1:
+                        st.write(" ")
+                        st.write(" ")
+                        foreman=st.checkbox("FOREMAN")
+                        if foreman:
+                            with lab_col2:
+                                number_of_foreman=st.number_input("How Many?",step=1)
+                        st.write(" ")
+                        st.write(" ")
+                        st.write(" ")
+                        clerk=st.checkbox("CLERK")
+                        if clerk:
+                            with lab_col2:
+                                number_of_clerk=st.number_input("How Many?",step=1,key="isuada")
+                        st.write(" ")
+                        st.write(" ")
+                        st.write(" ")
+                        st.write(" ")
+                        heavy=st.checkbox("HEAVY")
+                        if heavy:
+                            with lab_col2:
+                                number_of_heavy=st.number_input("How Many?",step=1,key="isuada2")
+                        st.write(" ")
+                        st.write(" ")
+                        st.write(" ")
+                        st.write(" ")
+                        st.write(" ")
+                        ut=st.checkbox("UT")
+                        if heavy:
+                            with lab_col2:
+                                number_of_ut=st.number_input("How Many?",step=1,key="isuada3")
                             
                         
                         
