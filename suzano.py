@@ -387,6 +387,7 @@ if authentication_status:
                 lab_col1,lab_col2,lab_col3=st.columns([2,2,6])
                 with lab_col1:
                     st.write(" ")
+                    st.write(" ")
                     foreman=st.checkbox("FOREMAN")
                     if foreman:
                         with lab_col2:
