@@ -387,6 +387,8 @@ if authentication_status:
                     assessment_rates=json.loads(assessment_rates)
                     st.write(pd.DataFrame.from_dict(assessment_rates))
                     lab_col1,lab_col2,lab_col3=st.columns([2,2,6])
+                    shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"])
+                    
                     with lab_col1:
                         st.write(" ")
                         st.write(" ")
@@ -412,9 +414,19 @@ if authentication_status:
                         st.write(" ")
                         st.write(" ")
                         ut=st.checkbox("UT")
-                        if heavy:
+                        if ut:
                             with lab_col2:
                                 number_of_ut=st.number_input("How Many?",step=1,key="isuada3")
+                        st.write(" ")
+                        st.write(" ")
+                        st.write(" ")
+                        tractor_semi=st.checkbox("TRACTOR-SEMI")
+                        if tractor_semi:
+                            with lab_col2:
+                                number_of_tractor_semi=st.number_input("How Many?",step=1,key="isuada4")
+                        
+                        
+                        
                             
                         
                         
