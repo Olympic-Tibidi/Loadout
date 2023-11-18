@@ -590,7 +590,7 @@ if authentication_status:
                     with lab_col7:
                         st.markdown("**WAGES**")
                         with lab_col4:
-                            st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(sum([key['cost'] for key in ranks]),2)}")
+                            st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(sum([ranks[key]['cost'] for key in ranks]),2)}")
                             
                         
                         
