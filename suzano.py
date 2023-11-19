@@ -402,7 +402,7 @@ if authentication_status:
                     st.write(assessment_rates)
                     siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="32324")
                     lab_col7,lab_col8,lab_col9,lab_col10,lab_col11,lab_col12=st.columns([2,2,2,2,1,1])
-                    with lab_col9:
+                    with lab_col10:
                         st.markdown("**BENEFITS**")
                     with lab_col7:
                         shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
@@ -410,7 +410,11 @@ if authentication_status:
                             ranks[i]["shift"]=shift
                     with lab_col8:
                         st.markdown("HOURS/OT")
-                        
+                    with lab_col9:
+                        st.markdown("**WAGES**")
+                    
+                    with lab_col11:
+                        st.markdown("**TOTAL**")
                     
                     lab_col1,lab_col2,lab_col3,lab_col4,lab_col5,lab_col6=st.columns([1,1,2,1,1,3])
                     with lab_col4:
@@ -737,11 +741,7 @@ if authentication_status:
                                     st.write(" ")
                                 
                         
-                    with lab_col7:
-                        st.markdown("**WAGES**")
-                    
-                    with lab_col9:
-                        st.markdown("**TOTAL**")
+                   
                         with lab_col4:
                             st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(sum([ranks[key]['cost'] for key in ranks]),2)}")
                             
