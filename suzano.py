@@ -412,7 +412,7 @@ if authentication_status:
                         st.markdown("HOURS/OT")
                         
                     
-                    lab_col1,lab_col2,lab_col3,lab_col4=st.columns([1,1,2,6])
+                    lab_col1,lab_col2,lab_col3,lab_col4,lab_col5=st.columns([1,1,2,2,4])
                     with lab_col4:
                             
                             st.write(" ")
@@ -443,6 +443,11 @@ if authentication_status:
                                 ranks["FOREMAN"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*2.81
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['FOREMAN']['standard_wage']}, OT: $ {ranks['FOREMAN']['ot_wage']}")
+                                    st.write(" ")
+                                    st.write(" ")
+                                    st.write(" ")
+                                with lab_col5:
+                                    st.write(f'${ranks["FOREMAN"]["state"]+ranks["FOREMAN"]["pma"]}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -484,6 +489,11 @@ if authentication_status:
                                 ranks["CLERK"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*0.75
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['CLERK']['standard_wage']}, OT: $ {ranks['CLERK']['ot_wage']}")
+                                    st.write(" ")
+                                    st.write(" ")
+                                    st.write(" ")
+                                with lab_col5:
+                                    st.write(f'${ranks["CLERK"]["state"]+ranks["CLERK"]["pma"]}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
