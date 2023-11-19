@@ -454,7 +454,7 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                             with lab_col6:
-                                st.write(f"$ {round(ranks['FOREMAN']['cost']+ranks["FOREMAN"]["state"]+ranks["FOREMAN"]["pma"],2)}")
+                                st.write(f"$ {round(ranks['FOREMAN']['cost']+ranks['FOREMAN']['state']+ranks['FOREMAN']['pma'],2)}")
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
@@ -505,7 +505,7 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                             with lab_col6:
-                                st.write(f"$ {round(ranks['CLERK']['cost']+ranks["CLERK"]["state"]+ranks["CLERK"]["pma"],2)}")
+                                st.write(f"$ {round(ranks['CLERK']['cost']+ranks['CLERK']['state']+ranks['CLERK']['pma'],2)}")
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
@@ -557,7 +557,7 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                 with lab_col6:
-                                    st.write(f"$ {round(ranks['LIFT TRUCK HEAVY']['cost']+ranks["LIFT TRUCK HEAVY"]["state"]+ranks["LIFT TRUCK HEAVY"]["pma"],2)}")
+                                    st.write(f"$ {round(ranks['LIFT TRUCK HEAVY']['cost']+ranks['LIFT TRUCK HEAVY']['state']+ranks['LIFT TRUCK HEAVY']['pma'],2)}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -606,7 +606,7 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                 with lab_col6:
-                                    st.write(f"$ {round(ranks['UTILITY LIFT DRIVER']['cost']+ranks["UTILITY LIFT DRIVER"]["state"]+ranks["UTILITY LIFT DRIVER"]["pma"],2)}")
+                                    st.write(f"$ {round(ranks['UTILITY LIFT DRIVER']['cost']+ranks['UTILITY LIFT DRIVER']['state']+ranks['UTILITY LIFT DRIVER']['pma'],2)}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -656,7 +656,7 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                 with lab_col6:
-                                    st.write(f"$ {round(ranks['TRACTOR-SEMI-DOCK']['cost']+ranks["TRACTOR-SEMI-DOCK"]["state"]+ranks["TRACTOR-SEMI-DOCK"]["pma"],2)}")
+                                    st.write(f"$ {round(ranks['TRACTOR-SEMI-DOCK']['cost']+ranks['TRACTOR-SEMI-DOCK']['state']+ranks['TRACTOR-SEMI-DOCK']['pma'],2)}")
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
