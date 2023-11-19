@@ -450,7 +450,7 @@ if authentication_status:
                                 ranks["FOREMAN"]["state"]=ranks["FOREMAN"]["cost"]*0.062+ranks["FOREMAN"]["cost"]*0.0145+ranks["FOREMAN"]["cost"]*0.0021792+ranks["FOREMAN"]["cost"]*siu/100
                                 ranks["FOREMAN"]["pma"]=(hours+ot)*1.58*ranks["FOREMAN"]["qt"]+(hours+ot)*0.14*ranks["FOREMAN"]["qt"]+(hours+ot)*29.15*ranks["FOREMAN"]["qt"]+(hours+ot)*2.81*ranks["FOREMAN"]["qt"]
                             with lab_col4:
-                                st.markdown(f"Standard: ${ranks['FOREMAN']['standard_wage']}, OT: ${ranks['FOREMAN']['ot_wage']}")
+                                st.markdown(f"Standard:${ranks['FOREMAN']['standard_wage']}, OT:${ranks['FOREMAN']['ot_wage']}")
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
