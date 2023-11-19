@@ -774,8 +774,8 @@ if authentication_status:
                         
                    
                     total_=round(sum([ranks[key]['cost'] for key in ranks])+sum([ranks[key]['state'] for key in ranks])+sum([ranks[key]['pma'] for key in ranks]),2)
-                    st.subheader(f"     TOTAL COST FOR SHIFT: $ {total_}")
-                    st.subheader(f"     TOTAL CHARGE WITH MARKUP: $ {(100+markup)/100*total_}")
+                    st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(total_,2)}")
+                    st.subheader(f"     TOTAL CHARGE WITH MARKUP: $ {round((100+markup)/100*total_,2)}")
                             
                         
                         
