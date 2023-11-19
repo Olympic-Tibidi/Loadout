@@ -399,7 +399,7 @@ if authentication_status:
                                        "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0}}
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
-                    st.write(assessment_rates)
+                    #st.write(assessment_rates)
                     siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="32324")
                     markup=st.number_input("ENTER MARKUP PERCENTAGE",step=1,key="3e2324")
                     lab_col7,lab_col8,lab_col9,lab_col10,lab_col11,lab_col12=st.columns([3,2,1,1,1,1])
@@ -773,8 +773,9 @@ if authentication_status:
                                 
                         
                    
-                        with lab_col4:
-                            st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(sum([ranks[key]['cost'] for key in ranks])+sum([ranks[key]['state'] for key in ranks])+sum([ranks[key]['pma'] for key in ranks]),2)}")
+                        total_=round(sum([ranks[key]['cost'] for key in ranks])+sum([ranks[key]['state'] for key in ranks])+sum([ranks[key]['pma'] for key in ranks]),2)
+                        st.subheader(f"     TOTAL COST FOR SHIFT: $ {total}")
+                        st.subheader(f"     TOTAL CHARGE WITH MARKUP: $ {(100+markup)/100*total}")
                             
                         
                         
