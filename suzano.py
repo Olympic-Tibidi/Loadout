@@ -743,7 +743,7 @@ if authentication_status:
                         
                    
                         with lab_col4:
-                            st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(sum([ranks[key]['cost'] for key in ranks]+sum([ranks[key]['state'] for key in ranks]+sum([ranks[key]['pma'] for key in ranks]),2)}")
+                            st.subheader(f"     TOTAL COST FOR SHIFT: $ {round(sum([ranks[key]['cost'] for key in ranks])+sum([ranks[key]['state'] for key in ranks])+sum([ranks[key]['pma'] for key in ranks]),2)}")
                             
                         
                         
