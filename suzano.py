@@ -448,7 +448,7 @@ if authentication_status:
                                     ranks["FOREMAN"]["ot_wage"]=ot*ranks["FOREMAN"][shift]["ot"]*ranks["FOREMAN"]["qt"]
                                 ranks["FOREMAN"]["cost"]=ranks["FOREMAN"]["standard_wage"]+ranks["FOREMAN"]["ot_wage"]
                                 ranks["FOREMAN"]["state"]=ranks["FOREMAN"]["cost"]*0.062+ranks["FOREMAN"]["cost"]*0.0145+ranks["FOREMAN"]["cost"]*0.0021792+ranks["FOREMAN"]["cost"]*siu/100
-                                ranks["FOREMAN"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*2.81
+                                ranks["FOREMAN"]["pma"]=(hours+ot)*1.58*ranks["FOREMAN"]["qt"]+(hours+ot)*0.14*ranks["FOREMAN"]["qt"]+(hours+ot)*29.15*ranks["FOREMAN"]["qt"]+(hours+ot)*2.81*ranks["FOREMAN"]["qt"]
                             with lab_col4:
                                 st.write(f"Standard: $ {ranks['FOREMAN']['standard_wage']}, OT: $ {ranks['FOREMAN']['ot_wage']}")
                                 st.write(" ")
@@ -528,7 +528,7 @@ if authentication_status:
                                     ranks["CLERK"]["ot_wage"]=ot*ranks["CLERK"][shift]["ot"]*ranks["CLERK"]["qt"]
                                 ranks["CLERK"]["cost"]=ranks["CLERK"]["standard_wage"]+ranks["CLERK"]["ot_wage"]
                                 ranks["CLERK"]["state"]=ranks["CLERK"]["cost"]*0.062+ranks["CLERK"]["cost"]*0.0145+ranks["CLERK"]["cost"]*0.0021792+ranks["CLERK"]["cost"]*siu/100
-                                ranks["CLERK"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*0.75
+                                ranks["CLERK"]["pma"]=(hours+ot)*1.58*ranks["CLERK"]["qt"]+(hours+ot)*0.14*ranks["CLERK"]["qt"]+(hours+ot)*29.15*ranks["CLERK"]["qt"]+(hours+ot)*0.75*ranks["CLERK"]["qt"]
                             with lab_col4:
                                 st.write(f"Standard: $ {ranks['CLERK']['standard_wage']}, OT: $ {ranks['CLERK']['ot_wage']}")
                                 st.write(" ")
@@ -602,7 +602,7 @@ if authentication_status:
                                     ranks["LIFT TRUCK HEAVY"]["ot_wage"]=ot*ranks["LIFT TRUCK HEAVY"][shift]["ot"]*ranks["LIFT TRUCK HEAVY"]["qt"]
                                 ranks["LIFT TRUCK HEAVY"]["cost"]=ranks["LIFT TRUCK HEAVY"]["standard_wage"]+ranks["LIFT TRUCK HEAVY"]["ot_wage"]
                                 ranks["LIFT TRUCK HEAVY"]["state"]=ranks["LIFT TRUCK HEAVY"]["cost"]*0.062+ranks["LIFT TRUCK HEAVY"]["cost"]*0.0145+ranks["LIFT TRUCK HEAVY"]["cost"]*0.0021792+ranks["LIFT TRUCK HEAVY"]["cost"]*siu/100
-                                ranks["LIFT TRUCK HEAVY"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*0.75
+                                ranks["LIFT TRUCK HEAVY"]["pma"]=(hours+ot)*1.58*ranks["LIFT TRUCK HEAVY"]["qt"]+(hours+ot)*0.14*ranks["LIFT TRUCK HEAVY"]["qt"]+(hours+ot)*29.15*ranks["LIFT TRUCK HEAVY"]["qt"]+(hours+ot)*0.75*ranks["LIFT TRUCK HEAVY"]["qt"]
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['LIFT TRUCK HEAVY']['standard_wage']}, OT: $ {ranks['LIFT TRUCK HEAVY']['ot_wage']}")
                                     st.write(" ")
@@ -675,7 +675,7 @@ if authentication_status:
                                     ranks["UTILITY LIFT DRIVER"]["ot_wage"]=ot*ranks["UTILITY LIFT DRIVER"][shift]["ot"]*ranks["UTILITY LIFT DRIVER"]["qt"]
                                 ranks["UTILITY LIFT DRIVER"]["cost"]=ranks["UTILITY LIFT DRIVER"]["standard_wage"]+ranks["UTILITY LIFT DRIVER"]["ot_wage"]
                                 ranks["UTILITY LIFT DRIVER"]["state"]=ranks["UTILITY LIFT DRIVER"]["cost"]*0.062+ranks["UTILITY LIFT DRIVER"]["cost"]*0.0145+ranks["UTILITY LIFT DRIVER"]["cost"]*0.0021792+ranks["UTILITY LIFT DRIVER"]["cost"]*siu/100
-                                ranks["UTILITY LIFT DRIVER"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*0.75
+                                ranks["UTILITY LIFT DRIVER"]["pma"]=(hours+ot)*1.58*ranks["UTILITY LIFT DRIVER"]["qt"]+(hours+ot)*0.14*ranks["UTILITY LIFT DRIVER"]["qt"]+(hours+ot)*29.15*ranks["UTILITY LIFT DRIVER"]["qt"]+(hours+ot)*0.75*ranks["UTILITY LIFT DRIVER"]["qt"]
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['UTILITY LIFT DRIVER']['standard_wage']}, OT: $ {ranks['UTILITY LIFT DRIVER']['ot_wage']}")
                                     st.write(" ")
@@ -749,7 +749,7 @@ if authentication_status:
                                     ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]=ot*ranks["TRACTOR-SEMI-DOCK"][shift]["ot"]*ranks["TRACTOR-SEMI-DOCK"]["qt"]
                                 ranks["TRACTOR-SEMI-DOCK"]["cost"]=ranks["TRACTOR-SEMI-DOCK"]["standard_wage"]+ranks["TRACTOR-SEMI-DOCK"]["ot_wage"]
                                 ranks["TRACTOR-SEMI-DOCK"]["state"]=ranks["TRACTOR-SEMI-DOCK"]["cost"]*0.062+ranks["TRACTOR-SEMI-DOCK"]["cost"]*0.0145+ranks["TRACTOR-SEMI-DOCK"]["cost"]*0.0021792+ranks["TRACTOR-SEMI-DOCK"]["cost"]*siu/100
-                                ranks["TRACTOR-SEMI-DOCK"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*0.75
+                                ranks["TRACTOR-SEMI-DOCK"]["pma"]=(hours+ot)*1.58*ranks["TRACTOR-SEMI-DOCK"]["qt"]+(hours+ot)*0.14*ranks["TRACTOR-SEMI-DOCK"]["qt"]+(hours+ot)*29.15*ranks["TRACTOR-SEMI-DOCK"]["qt"]+(hours+ot)*0.75*ranks["TRACTOR-SEMI-DOCK"]["qt"]
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['TRACTOR-SEMI-DOCK']['standard_wage']}, OT: $ {ranks['TRACTOR-SEMI-DOCK']['ot_wage']}")
                                     st.write(" ")
