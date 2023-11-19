@@ -416,7 +416,7 @@ if authentication_status:
                     with lab_col11:
                         st.markdown("**TOTAL**")
                     
-                    lab_col1,lab_col2,lab_col3,lab_col4,lab_col5,lab_col6=st.columns([1,1,2,1,1,3])
+                    lab_col1,lab_col2,lab_col3,lab_col4,lab_col5,lab_col6=st.columns([1,1,2,2,1,2])
                     with lab_col4:
                             
                             st.write(" ")
