@@ -402,6 +402,8 @@ if authentication_status:
                     st.write(assessment_rates)
                     siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="32324")
                     lab_col5,lab_col6,lab_col7,lab_col8,lab_col9=st.columns([2,2,2,2,2])
+                    with lab_col8:
+                        st.markdown("**BENEFITS**")
                     with lab_col5:
                         shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
                         for i in ranks:
@@ -512,7 +514,7 @@ if authentication_status:
                             with lab_col3:
                                 b1,b2=st.columns([2,2])
                                 with b1:
-                                    hours=st.number_input("HOURS",step=1,key="1150375")
+                                    hours=st.number_input("HOURS",step=1,key="1150375sa")
                                     ranks["LIFT TRUCK HEAVY"]["hours"]=hours
                                     ranks["LIFT TRUCK HEAVY"]["standard_wage"]=hours*ranks["LIFT TRUCK HEAVY"][shift]["hr"]*ranks["LIFT TRUCK HEAVY"]["qt"]
                                 with b2:
@@ -612,8 +614,7 @@ if authentication_status:
                         
                     with lab_col7:
                         st.markdown("**WAGES**")
-                    with lab_col8:
-                        st.markdown("**BENEFITS**")
+                    
                     with lab_col9:
                         st.markdown("**TOTAL**")
                         with lab_col4:
