@@ -441,18 +441,18 @@ if authentication_status:
                                 ranks["FOREMAN"]["cost"]=ranks["FOREMAN"]["standard_wage"]+ranks["FOREMAN"]["ot_wage"]
                                 ranks["FOREMAN"]["state"]=ranks["FOREMAN"]["cost"]*0.062+ranks["FOREMAN"]["cost"]*0.0145+ranks["FOREMAN"]["cost"]*0.0021792+ranks["FOREMAN"]["cost"]*siu/100
                                 ranks["FOREMAN"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*2.81
-                                with lab_col4:
-                                    st.write(f"Standard: $ {ranks['FOREMAN']['standard_wage']}, OT: $ {ranks['FOREMAN']['ot_wage']}")
-                                    st.write(" ")
-                                    st.write(" ")
-                                    st.write(" ")
-                                with lab_col5:
-                                    st.write(" ")
-                                    st.write(" ")
-                                    st.write(f'${round(ranks["FOREMAN"]["state"]+ranks["FOREMAN"]["pma"],2)}')
-                                    st.write(" ")
-                                    st.write(" ")
-                                    st.write(" ")
+                            with lab_col4:
+                                st.write(f"Standard: $ {ranks['FOREMAN']['standard_wage']}, OT: $ {ranks['FOREMAN']['ot_wage']}")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col5:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(f'${round(ranks["FOREMAN"]["state"]+ranks["FOREMAN"]["pma"],2)}')
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
                         elif not foreman:
                             with lab_col2:
                                 st.write(" ")
@@ -489,16 +489,16 @@ if authentication_status:
                                 ranks["CLERK"]["cost"]=ranks["CLERK"]["standard_wage"]+ranks["CLERK"]["ot_wage"]
                                 ranks["CLERK"]["state"]=ranks["CLERK"]["cost"]*0.062+ranks["CLERK"]["cost"]*0.0145+ranks["CLERK"]["cost"]*0.0021792+ranks["CLERK"]["cost"]*siu/100
                                 ranks["CLERK"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*0.75
-                                with lab_col4:
-                                    st.write(f"Standard: $ {ranks['CLERK']['standard_wage']}, OT: $ {ranks['CLERK']['ot_wage']}")
-                                    st.write(" ")
-                                    st.write(" ")
-                                    st.write(" ")
-                                with lab_col5:
-                                    st.write(f'${round(ranks["CLERK"]["state"]+ranks["CLERK"]["pma"],2)}')
-                                    st.write(" ")
-                                    st.write(" ")
-                                    st.write(" ")
+                            with lab_col4:
+                                st.write(f"Standard: $ {ranks['CLERK']['standard_wage']}, OT: $ {ranks['CLERK']['ot_wage']}")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col5:
+                                st.write(f'${round(ranks["CLERK"]["state"]+ranks["CLERK"]["pma"],2)}')
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
                         elif not clerk:
                             with lab_col2:
                                 st.write(" ")
@@ -541,6 +541,11 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
+                                with lab_col5:
+                                    st.write(f'${round(ranks["LIFT TRUCK HEAVY"]["state"]+ranks["LIFT TRUCK HEAVY"]["pma"],2)}')
+                                    st.write(" ")
+                                    st.write(" ")
+                                    st.write(" ")
                         elif not heavy:
                             with lab_col2:
                                 st.write(" ")
@@ -577,6 +582,11 @@ if authentication_status:
                                 ranks["UTILITY LIFT DRIVER"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*0.75
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['UTILITY LIFT DRIVER']['standard_wage']}, OT: $ {ranks['UTILITY LIFT DRIVER']['ot_wage']}")
+                                    st.write(" ")
+                                    st.write(" ")
+                                    st.write(" ")
+                                with lab_col5:
+                                    st.write(f'${round(ranks["UTILITY LIFT DRIVER"]["state"]+ranks["UTILITY LIFT DRIVER"]["pma"],2)}')
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -617,6 +627,11 @@ if authentication_status:
                                 ranks["TRACTOR-SEMI-DOCK"]["pma"]=(hours+ot)*1.58+(hours+ot)*0.14+(hours+ot)*29.15+(hours+ot)*0.75
                                 with lab_col4:
                                     st.write(f"Standard: $ {ranks['TRACTOR-SEMI-DOCK']['standard_wage']}, OT: $ {ranks['TRACTOR-SEMI-DOCK']['ot_wage']}")
+                                    st.write(" ")
+                                    st.write(" ")
+                                    st.write(" ")
+                                with lab_col5:
+                                    st.write(f'${round(ranks["TRACTOR-SEMI-DOCK"]["state"]+ranks["TRACTOR-SEMI-DOCK"]["pma"],2)}')
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
