@@ -406,11 +406,11 @@ if authentication_status:
                     with lab_col10:
                         st.markdown("**BENEFITS**")
                     with lab_col7:
-                        shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
+                        shift=st.radio("**SELECT SHIFT**",["DAY","NIGHT","WEEKEND"],horizontal=True)
                         for i in ranks:
                             ranks[i]["shift"]=shift
                     with lab_col8:
-                        st.markdown("HOURS/OT")
+                        st.markdown("**HOURS/OT**")
                     with lab_col9:
                         st.markdown("**WAGES**")
                     
