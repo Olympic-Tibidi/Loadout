@@ -454,6 +454,8 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                             with lab_col6:
+                                st.write(" ")
+                                st.write(" ")
                                 st.write(f"$ {round(ranks['FOREMAN']['cost']+ranks['FOREMAN']['state']+ranks['FOREMAN']['pma'],2)}")
                                 st.write(" ")
                                 st.write(" ")
@@ -467,6 +469,24 @@ if authentication_status:
                                 st.write(" ")
                         
                             with lab_col3:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col4:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col5:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col6:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
@@ -516,9 +536,26 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
-                                st.write(" ")
+                        
                             with lab_col3:
                                 st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col4:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col5:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col6:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
@@ -568,7 +605,26 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
+                        
                             with lab_col3:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col4:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col5:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col6:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
@@ -618,7 +674,26 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
+                        
                             with lab_col3:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col4:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col5:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_col6:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
