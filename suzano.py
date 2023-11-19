@@ -412,7 +412,7 @@ if authentication_status:
                         st.markdown("HOURS/OT")
                         
                     
-                    lab_col1,lab_col2,lab_col3,lab_col4,lab_col5=st.columns([1,1,2,2,4])
+                    lab_col1,lab_col2,lab_col3,lab_col4,lab_col5,lab_col6=st.columns([1,1,2,2,2,2])
                     with lab_col4:
                             
                             st.write(" ")
