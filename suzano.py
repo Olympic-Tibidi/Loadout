@@ -401,7 +401,7 @@ if authentication_status:
                     assessment_rates=json.loads(assessment_rates)
                     st.write(assessment_rates)
                     siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="32324")
-                    lab_col7,lab_col8,lab_col9,lab_col10,lab_col11,lab_col12=st.columns([3,2,2,1,1,1])
+                    lab_col7,lab_col8,lab_col9,lab_col10,lab_col11,lab_col12=st.columns([3,2,1,1,1,1])
                     with lab_col10:
                         st.markdown("**BENEFITS**")
                     with lab_col7:
