@@ -544,6 +544,11 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
+                            with lab_colend:
+                                st.write(f"$ {round(130/100*(ranks['CLERK']['cost']+ranks['CLERK']['state']+ranks['CLERK']['pma']),2)}")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
                         elif not clerk:
                             with lab_col2:
                                 st.write(" ")
