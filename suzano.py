@@ -471,7 +471,7 @@ if authentication_status:
                             with lab_colend:
                                 st.write(" ")
                                 st.write(" ")
-                                st.write(f"$ {round(130/100*(ranks['FOREMAN']['cost']+ranks['FOREMAN']['state']+ranks['FOREMAN']['pma'],2))}")
+                                st.write(f"$ {round(130/100*(ranks['FOREMAN']['cost']+ranks['FOREMAN']['state']+ranks['FOREMAN']['pma']),2)}")
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
