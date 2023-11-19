@@ -401,18 +401,18 @@ if authentication_status:
                     assessment_rates=json.loads(assessment_rates)
                     st.write(assessment_rates)
                     siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="32324")
-                    lab_col5,lab_col6,lab_col7,lab_col8,lab_col9,lab_col10=st.columns([2,2,2,2,1,1])
-                    with lab_col8:
+                    lab_col7,lab_col8,lab_col9,lab_col10,lab_col11,lab_col12=st.columns([2,2,2,2,1,1])
+                    with lab_col9:
                         st.markdown("**BENEFITS**")
-                    with lab_col5:
+                    with lab_col7:
                         shift=st.radio("SELECT SHIFT",["DAY","NIGHT","WEEKEND"],horizontal=True)
                         for i in ranks:
                             ranks[i]["shift"]=shift
-                    with lab_col6:
+                    with lab_col8:
                         st.markdown("HOURS/OT")
                         
                     
-                    lab_col1,lab_col2,lab_col3,lab_col4,lab_col5,lab_col6=st.columns([1,1,2,2,2,2])
+                    lab_col1,lab_col2,lab_col3,lab_col4,lab_col5,lab_col6=st.columns([1,1,2,1,1,3])
                     with lab_col4:
                             
                             st.write(" ")
