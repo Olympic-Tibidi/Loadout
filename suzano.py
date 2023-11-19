@@ -420,7 +420,7 @@ if authentication_status:
                     with lab_col12:
                         st.markdown("**WITH MARKUP**")
                     
-                    lab_col1,lab_col2,lab_col3,lab_col4,lab_col5,lab_col6=st.columns([1,1,2,2,1,2])
+                    lab_col1,lab_col2,lab_col3,lab_col4,lab_col5,lab_col6,lab_colend=st.columns([1,1,2,2,1,1,1])
                     with lab_col4:
                             
                             st.write(" ")
@@ -465,6 +465,13 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(f"$ {round(ranks['FOREMAN']['cost']+ranks['FOREMAN']['state']+ranks['FOREMAN']['pma'],2)}")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_colend:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(f"$ {round(130/100*(ranks['FOREMAN']['cost']+ranks['FOREMAN']['state']+ranks['FOREMAN']['pma'],2))}")
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
