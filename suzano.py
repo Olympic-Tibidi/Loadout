@@ -447,6 +447,8 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                 with lab_col5:
+                                    st.write(" ")
+                                    st.write(" ")
                                     st.write(f'${round(ranks["FOREMAN"]["state"]+ranks["FOREMAN"]["pma"],2)}')
                                     st.write(" ")
                                     st.write(" ")
