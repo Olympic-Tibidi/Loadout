@@ -507,7 +507,12 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
-                            
+                            with lab_colend:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
                         st.write(" ")
                         st.write(" ")
                         st.write(" ")
@@ -581,6 +586,14 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
+                            with lab_colend:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            
+                            
                                 
                         st.write(" ")
                         st.write(" ")
@@ -655,6 +668,12 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
+                            with lab_colend:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
                         st.write(" ")
                         st.write(" ")  
                         st.write(" ")
@@ -724,6 +743,12 @@ if authentication_status:
                                 st.write(" ")
                                 st.write(" ")
                             with lab_col6:
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                                st.write(" ")
+                            with lab_colend:
                                 st.write(" ")
                                 st.write(" ")
                                 st.write(" ")
