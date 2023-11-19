@@ -447,7 +447,7 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                 with lab_col5:
-                                    st.write(f'${ranks["FOREMAN"]["state"]+ranks["FOREMAN"]["pma"]}")
+                                    st.write(f'${ranks["FOREMAN"]["state"]+ranks["FOREMAN"]["pma"]}')
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
@@ -493,7 +493,7 @@ if authentication_status:
                                     st.write(" ")
                                     st.write(" ")
                                 with lab_col5:
-                                    st.write(f'${ranks["CLERK"]["state"]+ranks["CLERK"]["pma"]}")
+                                    st.write(f'${ranks["CLERK"]["state"]+ranks["CLERK"]["pma"]}')
                                     st.write(" ")
                                     st.write(" ")
                                     st.write(" ")
