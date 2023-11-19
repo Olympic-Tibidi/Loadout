@@ -385,7 +385,7 @@ if authentication_status:
                 if labor_issue:
                     ranks={"FOREMAN":{"code":"129","DAY":{"hr":74.04,"ot":111.06},"NIGHT":{"hr":98.72,"ot":111.06},"WEEKEND":{"hr":111.06,"ot":111.06},
                                       "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0},
-                           "CLERK":{"code":"115","DAY":{"hr":57.52,"ot":86.28},"NIGHT":{"hr":76.69,"ot":86.28},"WEEKEND":{"hr":86.28,"ot":86.28},
+                           "COMPUTER CLERK":{"code":"115","DAY":{"hr":57.52,"ot":86.28},"NIGHT":{"hr":76.69,"ot":86.28},"WEEKEND":{"hr":86.28,"ot":86.28},
                                     "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0},
                            "TRACTOR-SEMI-DOCK":{"code":"036","DAY":{"hr":55.25,"ot":82.88},"NIGHT":{"hr":73.67,"ot":82.88},"WEEKEND":{"hr":82.88,"ot":82.88},
                                                 "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0},
@@ -396,7 +396,9 @@ if authentication_status:
                            "BASIC CLERK-DOCK":{"code":"101","DAY":{"hr":52.85,"ot":79.28},"NIGHT":{"hr":70.47,"ot":79.28},"WEEKEND":{"hr":79.28,"ot":79.28},
                                                "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0},
                            "LINESMAN":{"code":"213","DAY":{"hr":52.85,"ot":79.28},"NIGHT":{"hr":70.47,"ot":79.28},"WEEKEND":{"hr":79.28,"ot":79.28},
-                                       "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0}}
+                                       "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0},
+                          "CLERK":{"code":"103","DAY":{"hr":55.25,"ot":82.88},"NIGHT":{"hr":73.67,"ot":82.88},"WEEKEND":{"hr":82.88,"ot":82.88},
+                                                "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0}}
                     assessment_rates=gcp_download(target_bucket,rf"assessment_rates.json")
                     assessment_rates=json.loads(assessment_rates)
                     #st.write(assessment_rates)
