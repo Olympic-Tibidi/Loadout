@@ -347,7 +347,7 @@ if authentication_status:
             
         if select=="DATA BACKUP" :
             st.write(datetime.datetime.now()-datetime.timedelta(hours=utc_difference))
-            scorecard = pd.DataFrame(columns=['User', 'Pushups', 'Pullups', 'Totaled'])
+            scorecard = pd.DataFrame(columns=['User', 'Hour', 'Ot', 'Totaled'])
 
             # Input your data using experimental data editor
             st.write("Input your data below:")
