@@ -351,14 +351,14 @@ if authentication_status:
 
             # Input your data using experimental data editor
             st.write("Input your data below:")
-            input_data = pd.DataFrame(index=[0], columns=['User', 'Pushups', 'Pullups'])
+            input_data = pd.DataFrame(index=[1,2,3,4,5], columns=['Rank', 'Shift', 'Hour','Ot'])
             input_data = input_data.fillna(0)  # fill with zeros
             
             edited_data = st.experimental_data_editor(input_data)
             
             # Handle user input
             if st.button('Submit'):
-                edited_data['Totaled'] = edited_data['Pushups'] + edited_data['Pullups']
+                edited_data['Totaled'] = edited_data['Hour'] + edited_data['Ot']
                 scorecard = scorecard.append(edited_data, ignore_index=True)
             
             # Display the updated scorecard
