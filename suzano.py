@@ -430,7 +430,162 @@ if authentication_status:
         if select=="ADMIN" :
             admin_tab1,admin_tab2,admin_tab3,admin_tab4,admin_tab5=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES","LABOR"])
             with admin_tab5:
-                labor_issue=True
+                labor_issue=False
+                secondary=True
+                if secondary:
+        
+                    foreman=False
+                    tinker,tailor=st.columns([5,5])
+                    with tinker:
+                        select_year=st.selectbox("SELECT ILWU PERIOD",["JUL 2023","JUL 2022","JUL 2021"])
+                    with tailor:
+                        select_pmayear=st.selectbox("SELECT PMA PERIOD",["JUL 2023","JUL 2022","JUL 2021"])
+                    
+                    year=select_year.split(' ')[1]
+                    pma_year=select_pmayear.split(' ')[1]
+                    assessment_rates=gcp_download(target_bucket,rf"occ_codes{year}.json")
+                    assessment_rates=json.loads(assessment_rates)
+                    pma_rates=gcp_download(target_bucket,rf"pma_dues.json")
+                    pma_rates=json.loads(pma_rates)
+                    pma_rates_=pd.DataFrame(pma_rates).T
+                    occ_codes=pd.DataFrame(assessment_rates).T
+                    occ_codes=occ_codes.rename_axis('Occ_Code')
+                    occ_codes=occ_codes.reset_index().set_index(["DESCRIPTION","Occ_Code"],drop=True)
+                    rates=st.checkbox("SELECT TO DISPLAY RATE TABLE FOR THE YEAR",key="iueis")
+                    if rates:
+                        
+                        lan1,lan2=st.columns([2,2])
+                        with lan1:
+                            st.write(occ_codes)
+                        with lan2:
+                            st.write(pma_rates[pma_year])
+                    
+                    
+                    if "scores" not in st.session_state:
+                        st.session_state.scores = pd.DataFrame(
+                            {"Code": [], "Shift":[],"Quantity": [], "Hours": [], "OT": [],"Hour Cost":[],"OT Cost":[],"Total Wage":[],"Benefits":[],"PMA Assessments":[],"TOTAL COST":[],"Mark UP":[],"INVOICE":[]}
+                        )
+                    ref={"DAY":["1ST","1OT"],"NIGHT":["2ST","2OT"],"WEEKEND":["2OT","2OT"]}
+                    # Function to add a new score to the DataFrame
+                    def new_scores():
+                        
+                        if num_code=='0129':
+                            foreman=True
+                        else:
+                            foreman=False
+                        
+                        pension=pma_rates[pma_year]["LS_401k"]
+                        if foreman:
+                            pension=pma_rates[pma_year]["Foreman_401k"]
+                                     
+                        
+                        qty=st.session_state.qty
+                        total_hours=st.session_state.hours+st.session_state.ot
+                        hour_cost=st.session_state.hours*occ_codes.loc[st.session_state.code,ref[st.session_state.shift][0]]
+                        ot_cost=st.session_state.ot*occ_codes.loc[st.session_state.code,ref[st.session_state.shift][1]]
+                        wage_cost=hour_cost+ot_cost
+                        benefits=wage_cost*0.062+wage_cost*0.0145+wage_cost*0.0021792+wage_cost*st.session_state.siu/100
+                        assessments=total_hours*pma_rates[pma_year]["Cargo_Dues"]+total_hours*pma_rates[pma_year]["Electronic_Input"]+total_hours*pma_rates[pma_year]["Benefits"]+total_hours*pension
+                        total_cost=wage_cost+benefits+assessments
+                        
+                        markup=wage_cost*st.session_state.markup/100+benefits*st.session_state.markup/100+assessments*st.session_state.markup/100
+                        if foreman:
+                            markup=wage_cost*st.session_state.f_markup/100+benefits*st.session_state.f_markup/100+assessments*st.session_state.f_markup/100
+                                          
+                       
+                        invoice=total_cost+markup
+                        new_score = pd.DataFrame(
+                            {
+                                "Code": [st.session_state.code],
+                                "Shift": [st.session_state.shift],
+                                "Quantity": [st.session_state.qty],
+                                "Hours": [st.session_state.hours*qty],
+                                "OT": [st.session_state.ot*qty],
+                                "Hour Cost": [hour_cost*qty],
+                                "OT Cost": [ot_cost*qty],
+                                "Total Wage": [round(wage_cost*qty,2)],
+                                "Benefits":[round(benefits*qty,2)],
+                                "PMA Assessments":[round(assessments*qty,2)],
+                                "TOTAL COST":[round(total_cost*qty,2)],
+                                "Mark UP":[round(markup*qty,2)],
+                                "INVOICE":[round(invoice*qty,2)]
+                                
+                            }
+                        )
+                        st.session_state.scores = pd.concat(
+                            [st.session_state.scores, new_score], ignore_index=True
+                        )
+                     
+                   
+                    sub_rate1,sub_rate2=st.columns([2,8])
+                    with sub_rate1:
+                        
+                        # Form for adding a new score
+                        st.write("### Add a New Rank")
+                        with st.form("new_score_form"):
+        
+                            st.session_state.siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="kdsha")
+                            st.session_state.markup=st.number_input("ENTER MARKUP",step=1,key="wer")
+                            st.session_state.f_markup=st.number_input("ENTER FOREMAN MARKUP (IF DIFFERENT)",step=1,key="wfder")
+                            st.session_state.shift=st.selectbox("SELECT SHIFT",["DAY","NIGHT","WEEKEND"])
+        
+                            
+                            # Dropdown for selecting Code
+                            st.session_state.code = st.selectbox(
+                                "Occupation Code", options=list(occ_codes.index)
+                            )
+                        
+                            # Number input for Quantity
+                            st.session_state.qty = st.number_input(
+                                "Quantity", step=1, value=0, min_value=0
+                            )
+                        
+                            # Number input for Hours
+                            st.session_state.hours = st.number_input(
+                                "Hours", step=0.5, value=0.0, min_value=0.0
+                            )
+                        
+                            # Number input for OT
+                            st.session_state.ot = st.number_input(
+                                "OT", step=1, value=0, min_value=0
+                            )
+                            
+                            # Form submit button
+                            submitted = st.form_submit_button("Submit")
+                        
+                        # If form is submitted, add the new score
+                        num_code=st.session_state.code[1].strip()
+                        if submitted:
+                            new_scores()
+                            
+                            st.success("Rank added successfully!")
+                    with sub_rate2:
+                        
+                        # Display the updated DataFrame
+                        st.write("### Updated Cost Table")
+                        
+                       
+                        
+                        display=pd.DataFrame(st.session_state.scores)
+                        display.loc["TOTAL FOR SHIFT"]=display[["Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]].sum()
+                        display=display[["Code","Shift","Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]]
+                        st.dataframe(display)
+                        csv=convert_df(display)
+                        file_name=f'Gang_Cost_Report-{datetime.datetime.strftime(datetime.datetime.now(),"%m-%d,%Y")}.csv'
+                        st.download_button(
+                                label="DOWNLOAD GANG COST",
+                                data=csv,
+                                file_name=file_name,
+                                mime='text/csv')
+        
+                        
+                        index=st.number_input("Enter Index To Delete",step=1,key="1224aa")
+                        if st.button("DELETE BY INDEX"):
+                            try:
+                                st.session_state.scores=st.session_state.scores.drop(index)
+                                st.session_state.scores.reset_index(drop=True,inplace=True)
+                            except:
+                                pass
                 if labor_issue:
                     ranks={"FOREMAN":{"code":"129","DAY":{"hr":74.04,"ot":111.06},"NIGHT":{"hr":98.72,"ot":111.06},"WEEKEND":{"hr":111.06,"ot":111.06},
                                       "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0},
