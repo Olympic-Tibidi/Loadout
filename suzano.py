@@ -576,7 +576,7 @@ if authentication_status:
                         st.success("Rank added successfully!")
                     
                         
-                    sub_col1,subcol2,sub_col3=st.columns([3,3,4])
+                    sub_col1,sub_col2,sub_col3=st.columns([3,3,4])
                     with sub_col1:
                         # Display the updated DataFrame
                         st.write("### Updated Cost Table")
