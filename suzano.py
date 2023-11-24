@@ -442,6 +442,7 @@ if authentication_status:
                         select_pmayear=st.selectbox("SELECT PMA PERIOD",["JUL 2023","JUL 2022","JUL 2021"])
                     
                     year=select_year.split(' ')[1]
+                    month=select_year.split(' ')[0]
                     pma_year=select_pmayear.split(' ')[1]
                     pma_rates=gcp_download(target_bucket,rf"pma_dues.json")
                     pma_rates=json.loads(pma_rates)
@@ -574,6 +575,7 @@ if authentication_status:
                         
                     display=pd.DataFrame(st.session_state.scores)
                     display.loc["TOTAL FOR SHIFT"]=display[["Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]].sum()
+                    display.loc["TOTAL FOR SHIFT","Code"]=f"ILWU/PMA Period-{month}-{year}"
                     display=display[["Code","Shift","Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]]
                     st.dataframe(display)
                     csv=convert_df(display)
