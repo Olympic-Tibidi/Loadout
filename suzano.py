@@ -587,7 +587,7 @@ if authentication_status:
                             file_name=file_name,
                             mime='text/csv')
                     with down_col1:
-                        filename=st.textbox("Name the Template",key="7dr3")
+                        filename=st.text_input("Name the Template",key="7dr3")
                         template=st.button("SAVE AS TEMPLATE",key="srfqw")
                         if template:
                             upload_cs_file(target_bucket, 'csv',rf"labor_templates/{filename}-{month},{year}.csv") 
