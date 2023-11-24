@@ -468,7 +468,7 @@ if authentication_status:
                             {"Code": [], "Shift":[],"Quantity": [], "Hours": [], "OT": [],"Hour Cost":[],"OT Cost":[],"Total Wage":[],"Benefits":[],"PMA Assessments":[],"TOTAL COST":[],"Mark UP":[],"INVOICE":[]}
                         )
                     ref={"DAY":["1ST","1OT"],"NIGHT":["2ST","2OT"],"WEEKEND":["2OT","2OT"]}
-                    # Function to add a new score to the DataFrame
+                   
                     def new_scores():
                         
                         if num_code=='0129':
@@ -527,7 +527,7 @@ if authentication_status:
                     with st.form("new_score_form"):
                         form_col1,form_col2,form_col3=st.columns([3,3,4])
                         with form_col1:
-                            st.markdown("ENTER SIU and MARKUPS")
+                            
                             st.session_state.siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="kdsha")
                             st.session_state.markup=st.number_input("ENTER MARKUP",step=1,key="wer")
                             st.session_state.f_markup=st.number_input("ENTER FOREMAN MARKUP (IF DIFFERENT)",step=1,key="wfder")
