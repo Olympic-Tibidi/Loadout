@@ -575,7 +575,7 @@ if authentication_status:
                         
                     display=pd.DataFrame(st.session_state.scores)
                     display.loc["TOTAL FOR SHIFT"]=display[["Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]].sum()
-                    display.loc["TOTAL FOR SHIFT","Code"]=f"ILWU/PMA Period-{month}-{year}"
+                    display.loc["TOTAL FOR SHIFT","Code"]=f"fdf"
                     display=display[["Code","Shift","Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]]
                     st.dataframe(display)
                     csv=convert_df(display)
@@ -594,6 +594,8 @@ if authentication_status:
                             st.session_state.scores.reset_index(drop=True,inplace=True)
                         except:
                             pass
+
+                ############################################
                 if labor_issue:
                     ranks={"FOREMAN":{"code":"129","DAY":{"hr":74.04,"ot":111.06},"NIGHT":{"hr":98.72,"ot":111.06},"WEEKEND":{"hr":111.06,"ot":111.06},
                                       "qt":0,"shift":None,"hours":0,"ot":0,"standard_wage":0,"ot_wage":0,"cost":0,"state":0,"pma":0},
