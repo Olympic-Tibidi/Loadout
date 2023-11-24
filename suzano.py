@@ -139,6 +139,14 @@ def upload_cs_file(bucket_name, source_file_name, destination_file_name):
     blob = bucket.blob(destination_file_name)
     blob.upload_from_filename(source_file_name)
     return True
+def upload_json_file(bucket_name, source_file_name, destination_file_name): 
+    storage_client = storage.Client()
+
+    bucket = storage_client.bucket(bucket_name)
+
+    blob = bucket.blob(destination_file_name)
+    blob.upload_from_filename(source_file_name,content_type="application/json")
+    return True
 def upload_xl_file(bucket_name, uploaded_file, destination_blob_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
@@ -592,7 +600,7 @@ if authentication_status:
                         template=st.button("SAVE AS TEMPLATE",key="srfqw")
                         if template:
                             temp=display.to_json(orient='index')
-                            upload_cs_file(target_bucket, csv,rf"labor_templates/{filename}.json") 
+                            upload_json_file(target_bucket, csv,rf"labor_templates/{filename}.json") 
                     
                     
                     index=st.number_input("Enter Index To Delete",step=1,key="1224aa")
