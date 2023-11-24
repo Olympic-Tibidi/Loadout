@@ -586,7 +586,7 @@ if authentication_status:
                             with sub_col3:
                                 template_choice_valid=False
                                 template_choice=st.selectbox("Select Recorded Template",[i for i in list_files_in_subfolder(target_bucket, rf"labor_templates/")],
-                                                             placeholder="Pick From List", disabled=False, label_visibility="collapsed")
+                                                              label_visibility="collapsed")
                                 if template_choice!="Pick From List":
                                     template_choice_valid=True 
                                 if template_choice_valid:
