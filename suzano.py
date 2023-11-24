@@ -594,14 +594,14 @@ if authentication_status:
                             data=csv,
                             file_name=file_name,
                             mime='text/csv')
-                    with down_col2:
-                        filename=st.text_input("Name the Template",key="7dr3")
-                    with down_col3:
-                        template=st.button("SAVE AS TEMPLATE",key="srfqw")
-                        if template:
-                            temp=display.to_json(orient='index')
+                   # with down_col2:
+                   #     filename=st.text_input("Name the Template",key="7dr3")
+                  #  with down_col3:
+                   #     template=st.button("SAVE AS TEMPLATE",key="srfqw")
+                   #     if template:
+                    #        temp=display.to_csv(orient='index')
                             
-                            upload_json_file(target_bucket, 'temp',rf"labor_templates/{filename}.json") 
+                    #        upload_json_file(target_bucket, 'temp',rf"labor_templates/{filename}.json") 
                     
                     
                     index=st.number_input("Enter Index To Delete",step=1,key="1224aa")
