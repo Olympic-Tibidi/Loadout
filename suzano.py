@@ -579,12 +579,19 @@ if authentication_status:
                     st.dataframe(display)
                     csv=convert_df(display)
                     file_name=f'Gang_Cost_Report-{datetime.datetime.strftime(datetime.datetime.now(),"%m-%d,%Y")}.csv'
-                    st.download_button(
+                    down_col1,down_col2,down_col3=st.columns([2,2,6])
+                    with down_col1:
+                        st.download_button(
                             label="DOWNLOAD GANG COST",
                             data=csv,
                             file_name=file_name,
                             mime='text/csv')
-    
+                    with down_col1:
+                        filename=st.textbox("Name the Template")
+                        template=st.button("SAVE AS TEMPLATE")
+                        if template:
+                            upload_cs_file(target_bucket, 'csv',rf"labor_templates/{filename}-{month},{year}.csv") 
+                    
                     
                     index=st.number_input("Enter Index To Delete",step=1,key="1224aa")
                     if st.button("DELETE BY INDEX"):
