@@ -443,13 +443,14 @@ if authentication_status:
                     
                     year=select_year.split(' ')[1]
                     pma_year=select_pmayear.split(' ')[1]
-                    assessment_rates=gcp_download(target_bucket,rf"occ_codes{year}.json")
-                    assessment_rates=json.loads(assessment_rates)
                     pma_rates=gcp_download(target_bucket,rf"pma_dues.json")
                     pma_rates=json.loads(pma_rates)
                     pma_rates_=pd.DataFrame(pma_rates).T
+                    assessment_rates=gcp_download(target_bucket,rf"occ_codes{year}.json")
+                    assessment_rates=json.loads(assessment_rates)
                     occ_codes=pd.DataFrame(assessment_rates).T
                     occ_codes=occ_codes.rename_axis('Occ_Code')
+                    shortened_occ_codes=occ_codes.loc[["036","037","055","092","101","103","115","129","213","215"]]
                     occ_codes=occ_codes.reset_index().set_index(["DESCRIPTION","Occ_Code"],drop=True)
                     rates=st.checkbox("SELECT TO DISPLAY RATE TABLE FOR THE YEAR",key="iueis")
                     if rates:
@@ -532,7 +533,7 @@ if authentication_status:
                             
                             # Dropdown for selecting Code
                             st.session_state.code = st.selectbox(
-                                "Occupation Code", options=list(occ_codes.index)
+                                "Occupation Code", options=list(shortened_occ_codes.index)
                             )
                         
                             # Number input for Quantity
