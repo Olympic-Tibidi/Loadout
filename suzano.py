@@ -594,14 +594,19 @@ if authentication_status:
                             data=csv,
                             file_name=file_name,
                             mime='text/csv')
-                   # with down_col2:
-                   #     filename=st.text_input("Name the Template",key="7dr3")
-                  #  with down_col3:
-                   #     template=st.button("SAVE AS TEMPLATE",key="srfqw")
-                   #     if template:
-                    #        temp=display.to_csv(orient='index')
+                    with down_col2:
+                        filename=st.text_input("Name the Template",key="7dr3")
+                    with down_col3:
+                        template=st.button("SAVE AS TEMPLATE",key="srfqw")
+                        if template:
+                            temp=display.to_csv(orient='index')
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket("olym_suzano")
                             
-                    #        upload_json_file(target_bucket, 'temp',rf"labor_templates/{filename}.json") 
+                            # Upload CSV string to GCS
+                            blob = bucket.blob(rf"labor_templates/{filename}.csv")
+                            blob.upload_from_string(temp, content_type="text/csv")
+                           
                     
                     
                     index=st.number_input("Enter Index To Delete",step=1,key="1224aa")
