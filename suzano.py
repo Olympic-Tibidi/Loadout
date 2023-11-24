@@ -611,7 +611,7 @@ if authentication_status:
                     with down_col3:
                         template=st.button("SAVE AS TEMPLATE",key="srfqw")
                         if template:
-                            temp=display.to_csv()
+                            temp=display.to_csv(index=False)
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
                             
