@@ -128,7 +128,7 @@ def gcp_csv_to_df(bucket_name, source_file_name):
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
     data = blob.download_as_bytes()
-    df = pd.read_csv(io.BytesIO(data))
+    df = pd.read_csv(index_col=None,io.BytesIO(data))
     print(f'Pulled down file from bucket {bucket_name}, file name: {source_file_name}')
     return df
 def upload_cs_file(bucket_name, source_file_name, destination_file_name): 
