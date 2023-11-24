@@ -599,9 +599,9 @@ if authentication_status:
                     with down_col3:
                         template=st.button("SAVE AS TEMPLATE",key="srfqw")
                         if template:
-                            temp=display.to_csv(orient='index')
+                            temp=display.to_csv()
                             storage_client = storage.Client()
-                            bucket = storage_client.bucket("olym_suzano")
+                            bucket = storage_client.bucket(target_bucket)
                             
                             # Upload CSV string to GCS
                             blob = bucket.blob(rf"labor_templates/{filename}.csv")
