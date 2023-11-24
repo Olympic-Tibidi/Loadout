@@ -600,7 +600,8 @@ if authentication_status:
                         template=st.button("SAVE AS TEMPLATE",key="srfqw")
                         if template:
                             temp=display.to_json(orient='index')
-                            upload_json_file(target_bucket, csv,rf"labor_templates/{filename}.json") 
+                            
+                            upload_json_file(target_bucket, temp,rf"labor_templates/{filename}.json") 
                     
                     
                     index=st.number_input("Enter Index To Delete",step=1,key="1224aa")
