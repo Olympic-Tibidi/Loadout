@@ -584,8 +584,11 @@ if authentication_status:
                         template_check=st.checkbox("LOAD FROM TEMPLATE")
                         if template_check:
                             with sub_col3:
-                                template_choice=st.selectbox("Select REcorded Template",[i for i in list_files_in_subfolder(target_bucket, rf"labor_templates/")])
-                                loaded_template=gcp_csv_to_df(target_bucket,rf"labor_templates/{template_choice}")
+                                template_choice_valid=False
+                                template_choice=st.selectbox("Select Recorded Template",[" "]+[i for i in list_files_in_subfolder(target_bucket, rf"labor_templates/")])
+                                template_choice_valid=True if template_choice!=" "
+                                if template_choice_valid:
+                                    loaded_template=gcp_csv_to_df(target_bucket,rf"labor_templates/{template_choice}")
                                 
                                 
                                 
