@@ -528,7 +528,7 @@ if authentication_status:
                         form_col1,form_col2,form_col3=st.columns([3,3,4])
                         with form_col1:
                             
-                            st.session_state.siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="kdsha")
+                            st.session_state.siu=st.number_input("ENTER SIU (UNEMPLOYMENT) PERCENTAGE",step=1,key="kdsha")
                             st.session_state.markup=st.number_input("ENTER MARKUP",step=1,key="wer")
                             st.session_state.f_markup=st.number_input("ENTER FOREMAN MARKUP (IF DIFFERENT)",step=1,key="wfder")
                         with form_col2:
