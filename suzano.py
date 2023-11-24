@@ -525,35 +525,39 @@ if authentication_status:
                         # Form for adding a new score
                         st.write("### Add a New Rank")
                         with st.form("new_score_form"):
-        
-                            st.session_state.siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="kdsha")
-                            st.session_state.markup=st.number_input("ENTER MARKUP",step=1,key="wer")
-                            st.session_state.f_markup=st.number_input("ENTER FOREMAN MARKUP (IF DIFFERENT)",step=1,key="wfder")
-                            st.session_state.shift=st.selectbox("SELECT SHIFT",["DAY","NIGHT","WEEKEND"])
+                            form_col1,form_col2,form_col3=st.columns([3,3,4])
+                            with form_col1:
+                                st.markdown("ENTER SIU and MARKUPS")
+                                st.session_state.siu=st.number_input("ENTER SIU PERCENTAGE",step=1,key="kdsha")
+                                st.session_state.markup=st.number_input("ENTER MARKUP",step=1,key="wer")
+                                st.session_state.f_markup=st.number_input("ENTER FOREMAN MARKUP (IF DIFFERENT)",step=1,key="wfder")
+                            with form_col2:
+                                st.session_state.shift=st.selectbox("SELECT SHIFT",["DAY","NIGHT","WEEKEND"])
         
                             
-                            # Dropdown for selecting Code
-                            st.session_state.code = st.selectbox(
-                                "Occupation Code", options=list(shortened_occ_codes.index)
-                            )
+                                # Dropdown for selecting Code
+                                st.session_state.code = st.selectbox(
+                                    "Occupation Code", options=list(shortened_occ_codes.index)
+                                )
                         
-                            # Number input for Quantity
-                            st.session_state.qty = st.number_input(
-                                "Quantity", step=1, value=0, min_value=0
+                                # Number input for Quantity
+                                st.session_state.qty = st.number_input(
+                                    "Quantity", step=1, value=0, min_value=0
                             )
-                        
-                            # Number input for Hours
-                            st.session_state.hours = st.number_input(
-                                "Hours", step=0.5, value=0.0, min_value=0.0
-                            )
-                        
-                            # Number input for OT
-                            st.session_state.ot = st.number_input(
-                                "OT", step=1, value=0, min_value=0
-                            )
+                            with form_col2:
+                                
+                                # Number input for Hours
+                                st.session_state.hours = st.number_input(
+                                    "Hours", step=0.5, value=0.0, min_value=0.0
+                                )
                             
-                            # Form submit button
-                            submitted = st.form_submit_button("Submit")
+                                # Number input for OT
+                                st.session_state.ot = st.number_input(
+                                    "OT", step=1, value=0, min_value=0
+                                )
+                                
+                                # Form submit button
+                                submitted = st.form_submit_button("Submit")
                         
                         # If form is submitted, add the new score
                         num_code=st.session_state.code[1].strip()
