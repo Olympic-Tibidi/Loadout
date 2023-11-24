@@ -116,7 +116,7 @@ def gcp_download(bucket_name, source_file_name):
     data = blob.download_as_text()
     return data
     
-def gcp_download_x(bucket_name, source_file_name,dest):
+def gcp_download_x(bucket_name, source_file_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
@@ -128,7 +128,7 @@ def gcp_csv_to_df(bucket_name, source_file_name):
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
     data = blob.download_as_bytes()
-    df = pd.read_csv(index_col=None,io.BytesIO(data))
+    df = pd.read_csv(io.BytesIO(data))
     print(f'Pulled down file from bucket {bucket_name}, file name: {source_file_name}')
     return df
 def upload_cs_file(bucket_name, source_file_name, destination_file_name): 
@@ -586,7 +586,10 @@ if authentication_status:
                             with sub_col3:
                                 template_choice=st.selectbox("Select REcorded Template",[i for i in list_files_in_subfolder(target_bucket, rf"labor_templates/")])
                                 loaded_template=gcp_csv_to_df(target_bucket,rf"labor_templates/{template_choice}")
-                        
+                                loaded_template=gcp_download_x(target_bucket,rf"labor_templates/{template_choice}")
+                                loaded_template=pd.read_csv(loaded_template,index_col=None)
+                                
+                                
                     display=pd.DataFrame(st.session_state.scores)
                     display.loc["TOTAL FOR SHIFT"]=display[["Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]].sum()
                     display=display[["Code","Shift","Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]]
