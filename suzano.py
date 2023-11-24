@@ -576,9 +576,14 @@ if authentication_status:
                         st.success("Rank added successfully!")
                     
                         
-                    # Display the updated DataFrame
-                    st.write("### Updated Cost Table")
-                        
+                    sub_col1,subcol2,sub_col3=st.columns([3,3,4])
+                    with sub_col1:
+                        # Display the updated DataFrame
+                        st.write("### Updated Cost Table")
+                    with sub_col2:
+                        template_check=st.checkbox("LOAD FROM TEMPLATE")
+                        if template_check:
+                            template_choice=st.selectbox("Select REcorded Template",[list_files_in_subfolder(target_bucket, rf"EDIS/KIRKENES-2304/")])
                        
                         
                     display=pd.DataFrame(st.session_state.scores)
