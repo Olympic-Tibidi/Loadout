@@ -591,7 +591,7 @@ if authentication_status:
                     with down_col3:
                         template=st.button("SAVE AS TEMPLATE",key="srfqw")
                         if template:
-                            upload_cs_file(target_bucket, csv,rf"labor_templates/{filename} {month}-{year}.csv") 
+                            upload_cs_file(target_bucket, csv,rf"labor_templates/{file_name}.csv") 
                     
                     
                     index=st.number_input("Enter Index To Delete",step=1,key="1224aa")
