@@ -530,7 +530,7 @@ if authentication_status:
                             
                             st.session_state.siu=st.number_input("ENTER SIU (UNEMPLOYMENT) PERCENTAGE",step=1,key="kdsha")
                             st.session_state.markup=st.number_input("ENTER MARKUP",step=1,key="wer")
-                            st.session_state.f_markup=st.number_input("ENTER FOREMAN MARKUP (IF DIFFERENT)",step=1,key="wfder")
+                            st.session_state.f_markup=st.number_input("ENTER FOREMAN MARKUP",step=1,key="wfder")
                         with form_col2:
                             st.session_state.shift=st.selectbox("SELECT SHIFT",["DAY","NIGHT","WEEKEND"])
     
