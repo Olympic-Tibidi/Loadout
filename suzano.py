@@ -544,7 +544,7 @@ if authentication_status:
                             st.session_state.qty = st.number_input(
                                 "Quantity", step=1, value=0, min_value=0
                         )
-                        with form_col2:
+                        with form_col3:
                             
                             # Number input for Hours
                             st.session_state.hours = st.number_input(
