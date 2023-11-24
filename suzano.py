@@ -585,7 +585,7 @@ if authentication_status:
                         if template_check:
                             with sub_col3:
                                 template_choice=st.selectbox("Select REcorded Template",[i for i in list_files_in_subfolder(target_bucket, rf"labor_templates/")])
-                                loaded_template=gcp_csv_to_df(target_bucket,template_choice):
+                                loaded_template=gcp_csv_to_df(target_bucket,template_choice)
                         
                     display=pd.DataFrame(st.session_state.scores)
                     display.loc["TOTAL FOR SHIFT"]=display[["Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]].sum()
