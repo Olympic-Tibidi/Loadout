@@ -574,7 +574,7 @@ if authentication_status:
                        
                         
                     display=pd.DataFrame(st.session_state.scores)
-                    display.loc["TOTAL FOR SHIFT"]=display[["Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]].sum()
+                    display.loc["TOTAL FOR SHIFT"]=display[["Code","Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]].sum()
                     display.loc["TOTAL FOR SHIFT","Code"]=f"fdf"
                     display=display[["Code","Shift","Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]]
                     st.dataframe(display)
