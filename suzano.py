@@ -583,7 +583,7 @@ if authentication_status:
                     with sub_col2:
                         template_check=st.checkbox("LOAD FROM TEMPLATE")
                         if template_check:
-                            with sub_col2:
+                            with sub_col3:
                                 template_choice=st.selectbox("Select REcorded Template",[i for i in list_files_in_subfolder(target_bucket, rf"labor_templates/")])
                        
                         
