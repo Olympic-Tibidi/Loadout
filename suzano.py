@@ -593,7 +593,8 @@ if authentication_status:
                                     loaded_template=gcp_csv_to_df(target_bucket,rf"labor_templates/{template_choice}")
                                 
                                 
-                    st.write(st.session_state.scores)           
+                       
+                   
                     display=pd.DataFrame(st.session_state.scores)
                     display.loc["TOTAL FOR SHIFT"]=display[["Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]].sum()
                     display=display[["Code","Shift","Quantity","Hours","OT","Hour Cost","OT Cost","Total Wage","Benefits","PMA Assessments","TOTAL COST","Mark UP","INVOICE"]]
