@@ -359,19 +359,19 @@ if authentication_status:
             st.markdown(
             """
             <style>
-                /* Add custom CSS styles here */
-                body {
-                    font-family: 'Arial', sans-serif;
-                    background-color: #f4f4f4;
-                    color: #333333;
-                }
-                h1 {
-                    color: #009688;
-                }
-                p {
-                    font-size: 18px;
-                }
-            </style> This is a Streamlit app with custom styling.
+        /* Add custom CSS styles here */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333333;
+        }
+        h1 {
+            color: #009688;
+        }
+        p {
+            font-size: 35px;
+        }
+    </style> This is a Streamlit app with custom styling.
 
                     - You can include bullet points.
                     - Add more text and formatting.
