@@ -356,6 +356,25 @@ if authentication_status:
         if select=="DATA BACKUP" :
             st.write(datetime.datetime.now()-datetime.timedelta(hours=utc_difference))
             try_lan=False
+            st.markdown(
+            """
+            <style>
+                /* Add custom CSS styles here */
+                body {
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f4f4f4;
+                    color: #333333;
+                }
+                h1 {
+                    color: #009688;
+                }
+                p {
+                    font-size: 18px;
+                }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
             if try_lan:
                 
                 scorecard = pd.DataFrame(columns=['User', 'Hour', 'Ot', 'Totaled'])
