@@ -369,7 +369,7 @@ if authentication_status:
             color: #009688; /* Teal */
         }
         p {
-            font-size: 18px;
+            font-size: 36px;
         }
         .blue-text {
             color: #2196F3; /* Blue */
