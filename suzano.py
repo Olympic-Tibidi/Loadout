@@ -371,7 +371,11 @@ if authentication_status:
                 p {
                     font-size: 18px;
                 }
-            </style>
+            </style> This is a Streamlit app with custom styling.
+
+                    - You can include bullet points.
+                    - Add more text and formatting.
+                    - Use *Markdown* syntax.
             """,
             unsafe_allow_html=True
         )
