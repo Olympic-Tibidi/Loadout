@@ -357,8 +357,8 @@ if authentication_status:
             st.write(datetime.datetime.now()-datetime.timedelta(hours=utc_difference))
             try_lan=False
             st.markdown(
-            """
-            <style>
+    """
+    <style>
         /* Add custom CSS styles here */
         body {
             font-family: 'Arial', sans-serif;
@@ -366,19 +366,37 @@ if authentication_status:
             color: #333333;
         }
         h1 {
-            color: #009688;
+            color: #009688; /* Teal */
         }
         p {
-            font-size: 35px;
+            font-size: 18px;
         }
-    </style> This is a Streamlit app with custom styling.
+        .blue-text {
+            color: #2196F3; /* Blue */
+        }
+        .red-text {
+            color: #FF5252; /* Red */
+        }
+        .green-text {
+            color: #4CAF50; /* Green */
+        }
+    </style>
+    
+    # Custom Styling with HTML and CSS
+    
+    This is a Streamlit app with custom styling.
 
-                    - You can include bullet points.
-                    - Add more text and formatting.
-                    - Use *Markdown* syntax.
-            """,
-            unsafe_allow_html=True
-        )
+    - You can include bullet points.
+    - Add more text and formatting.
+    - Use *Markdown* syntax.
+
+    <p class="blue-text">This text is in blue.</p>
+    <p class="red-text">This text is in red.</p>
+    <p class="green-text">This text is in green.</p>
+    """,
+    unsafe_allow_html=True
+)
+
             if try_lan:
                 
                 scorecard = pd.DataFrame(columns=['User', 'Hour', 'Ot', 'Totaled'])
