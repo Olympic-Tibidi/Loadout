@@ -1963,7 +1963,7 @@ if authentication_status:
                 with daily1:
                     now=datetime.datetime.now()-datetime.timedelta(hours=7)
                     text=f"**SHIPPED TODAY ON {datetime.datetime.strftime(now.date(),'%b %d, %Y')} - Indexed By Terminal Bill Of Lading**"
-                    st.markdown(f"<p style='font-family:fantasy;'>{text}</p>",unsafe_allow_html=True)     
+                    st.markdown(f"<p style='font-family:fantasy,monospace;'>{text}</p>",unsafe_allow_html=True)     
                     df_bill=pd.DataFrame(bill_of_ladings).T
                     df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","grade","carrier_id","vehicle","quantity","issued"]]
                     df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","GRADE","CARRIER ID","VEHICLE NO","QUANTITY (UNITS)","ISSUED"]
