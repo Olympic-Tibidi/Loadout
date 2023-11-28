@@ -2700,7 +2700,7 @@ if authentication_status:
                 load_admin_bill_of_ladings=load_admin_bill_of_ladings.sort_values(by="issued")
                 last_submitted=load_admin_bill_of_ladings.index[-3:].to_list()
                 last_submitted.reverse()
-                st.markdown(f"**Last Submitted Bill Of Ladings (From most recent) : {last_suhmitted}**")
+                st.markdown(f"**Last Submitted Bill Of Ladings (From most recent) : {last_submitted}**")
                 if yes:
                     
                     if st.button('**:blue[SUBMIT EDI]**'):
