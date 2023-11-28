@@ -2264,7 +2264,7 @@ if authentication_status:
                  #   except:
                    #     st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
                     
-               
+                
                 st.markdown(rf'**:blue[CURRENTLY WORKING] :**')
                 load_col1,load_col2,load_col3=st.columns([8,1,1])
                 
@@ -2638,7 +2638,12 @@ if authentication_status:
                     c=datetime.datetime.strftime(eta_date,"%Y%m%d")
                     
                     
-                    
+                
+                load_bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+                load_admin_bill_of_ladings=json.loads(bill_data)
+                load_admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
+                load_admin_bill_of_ladings=load_admin_bill_of_ladings.sort(by="issued")
+                st.write(load_admin_bill_of_ladings)
                 if yes:
                     
                     if st.button('**:blue[SUBMIT EDI]**'):
