@@ -355,7 +355,7 @@ if authentication_status:
         select=st.sidebar.radio("SELECT FUNCTION",
             ('ADMIN', 'LOADOUT', 'INVENTORY','DATA BACKUP','TIDES','FINANCE'))
         
-        if select="TIDES":
+        if select=="TIDES":
             st.header("OLYMPIA TIDES")
             st.subheader("FROM NOAA API  - STATION 9446969")
             st.write("Don't go further ahead than 1 year")
