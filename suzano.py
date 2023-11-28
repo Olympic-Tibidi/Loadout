@@ -527,7 +527,13 @@ if authentication_status:
                 
                 
         if select=="FINANCE":
-            hadi=True
+            hadi=False
+            fin_password=st.sidebar.text_input("Enter Password",key="sas")
+            if st.sidebar.button("Submit Password",key="sddaas"):
+                if fin_password=="marineterm98501!":
+                    hadi=True
+        
+            
             if hadi:
                 
                 class Account:
