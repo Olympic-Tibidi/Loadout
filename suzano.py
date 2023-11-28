@@ -2698,7 +2698,7 @@ if authentication_status:
                 load_admin_bill_of_ladings=json.loads(load_bill_data)
                 load_admin_bill_of_ladings=pd.DataFrame.from_dict(load_admin_bill_of_ladings).T[1:]
                 load_admin_bill_of_ladings=load_admin_bill_of_ladings.sort_values(by="issued")
-                st.markdown(f"**Last Submitted Bill Of Ladings (From most recent) : {load_admin_bill_of_ladings.index[-3:].to_list()}**")
+                st.markdown(f"**Last Submitted Bill Of Ladings (From most recent) : {load_admin_bill_of_ladings.index[-3:].to_list().reverse()}**")
                 if yes:
                     
                     if st.button('**:blue[SUBMIT EDI]**'):
