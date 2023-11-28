@@ -2640,7 +2640,7 @@ if authentication_status:
                     
                 
                 load_bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                load_admin_bill_of_ladings=json.loads(bill_data)
+                load_admin_bill_of_ladings=json.loads(load_bill_data)
                 load_admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
                 load_admin_bill_of_ladings=load_admin_bill_of_ladings.sort(by="issued")
                 st.write(load_admin_bill_of_ladings)
