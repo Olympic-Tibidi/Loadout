@@ -356,7 +356,7 @@ if authentication_status:
             ('ADMIN', 'LOADOUT', 'INVENTORY','DATA BACKUP','TIDES','FINANCE'))
         
         if select=="TIDES":
-            dada=False
+            dada=True
             if dada:
                 
                 st.header("OLYMPIA TIDES")
