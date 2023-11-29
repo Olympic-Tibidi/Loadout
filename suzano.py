@@ -584,11 +584,11 @@ if authentication_status:
                 st.write("Total Credit :${:,}".format(round(df.Credit.sum(),2)))
                 st.write("Total Debit  :${:,}".format(round(df.Debit.sum(),2)))
                 st.write("Net          :${:,}".format(round(df.Credit.sum()-df.Debit.sum(),2)))
-                df_feather=df.reset_index().to_feather(None)
+                ftr_data=df.reset_index().to_feather(ftr_data.ftr)
                 storage_client = storage.Client()
                 bucket = storage_client.bucket(target_bucket)
                 blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
-                blob.upload_from_string(df_feather)
+                blob.upload_from_string(ftr_data)
                 
 
             if hadi:
