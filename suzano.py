@@ -417,23 +417,26 @@ if authentication_status:
                 # You'll need to have matplotlib installed for this
                 import matplotlib.pyplot as plt
                 
-                fig, ax = plt.subplots()
-                ax.axis('tight')
-                ax.axis('off')
-                ax.table(cellText=tides.values, colLabels=tides.columns, cellLoc = 'center', loc='center')
-                
-                # Save the plot as an image
-                image_data = BytesIO()
-                plt.savefig(image_data, format='png')
-                plt.close()
-                
-                # Create a download button for PNG
-                st.download_button(
-                    label="Download as PNG",
-                    data=image_data.getvalue(),
-                    file_name="tides_data.png",
-                    mime="image/png"
+                fig = make_subplots(
+                    rows=1, cols=1,
+                    column_widths=[0.5],
+                    subplot_titles=["Tides Data"]
                 )
+                
+                table_trace = go.Table(
+                    header=dict(values=tides.columns),
+                    cells=dict(values=[tides[col] for col in tides.columns])
+                )
+                
+                fig.add_trace(table_trace)
+                
+                # Update layout to hide axis labels and ticks
+                fig.update_layout(
+                    showlegend=False,
+                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
+                )
+                fig.show()
         if select=="DATA BACKUP" :
             st.write(datetime.datetime.now()-datetime.timedelta(hours=utc_difference))
             try_lan=False
