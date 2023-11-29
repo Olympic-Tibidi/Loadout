@@ -418,7 +418,7 @@ if authentication_status:
                 from plotly.subplots import make_subplots
                 import plotly.graph_objects as go
 
-                
+                tides=tides.reset_index()
                 fig = make_subplots(
                     rows=1, cols=1,
                     column_widths=[0.5],
