@@ -37,7 +37,7 @@ import plotly.express as px               #to create interactive charts
 import plotly.graph_objects as go         #to create interactive charts
 import zipfile
 import requests
-#from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
 from PIL import Image
 import plotly.graph_objects as go
 import re
