@@ -415,7 +415,9 @@ if authentication_status:
 
                 # Convert the DataFrame to an image (PNG)
                 # You'll need to have matplotlib installed for this
-                import matplotlib.pyplot as plt
+                from plotly.subplots import make_subplots
+                import plotly.graph_objects as go
+
                 
                 fig = make_subplots(
                     rows=1, cols=1,
