@@ -404,7 +404,8 @@ if authentication_status:
                 tides["Time"]=[dt.datetime.strftime(dt.datetime.strptime(i,"%Y-%m-%d %H:%M"),"%B-%d,%a--%H:%M") for i in tides["Time"]]
                 tides.set_index("Time",drop=True,inplace=True)
                 #st.table(tides)
-                st.markdown(tides.to_html(), unsafe_allow_html=True)    
+                html_data=tides.to_html()
+                st.markdown(html_data, unsafe_allow_html=True)    
                 st.download_button(
                                     label="Download as HTML",
                                     data=html_data,
