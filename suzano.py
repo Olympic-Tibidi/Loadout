@@ -542,10 +542,10 @@ if authentication_status:
                 if fin_password=="marineterm98501!":
                     hadi=True
             if st.sidebar.button("UPLOAD LEDGER CSV",key="fsdsw"):
-                m_30 = st.file_uploader("Choose a CSV file", type=["csv"])
-                m_32 = st.file_uploader("Choose a CSV file", type=["csv"])
-                m_36 = st.file_uploader("Choose a CSV file", type=["csv"])
-                m_40 = st.file_uploader("Choose a CSV file", type=["csv"])
+                m_30 = st.file_uploader("Choose a CSV file", type=["csv"],key="34wss")
+                m_32 = st.file_uploader("Choose a CSV file", type=["csv"],key="34ws2ss")
+                m_36 = st.file_uploader("Choose a CSV file", type=["csv"],key="34wsas")
+                m_40 = st.file_uploader("Choose a CSV file", type=["csv"],key="34wsss")
             
             if hadi:
                 
