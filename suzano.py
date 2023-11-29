@@ -405,7 +405,34 @@ if authentication_status:
                 tides.set_index("Time",drop=True,inplace=True)
                 #st.table(tides)
                 st.markdown(tides.to_html(), unsafe_allow_html=True)    
-            
+                st.download_button(
+                                    label="Download as HTML",
+                                    data=html_data,
+                                    file_name="tides_data.html",
+                                    mime="text/html"
+                                )
+
+                # Convert the DataFrame to an image (PNG)
+                # You'll need to have matplotlib installed for this
+                import matplotlib.pyplot as plt
+                
+                fig, ax = plt.subplots()
+                ax.axis('tight')
+                ax.axis('off')
+                ax.table(cellText=tides.values, colLabels=tides.columns, cellLoc = 'center', loc='center')
+                
+                # Save the plot as an image
+                image_data = BytesIO()
+                plt.savefig(image_data, format='png')
+                plt.close()
+                
+                # Create a download button for PNG
+                st.download_button(
+                    label="Download as PNG",
+                    data=image_data.getvalue(),
+                    file_name="tides_data.png",
+                    mime="image/png"
+                )
         if select=="DATA BACKUP" :
             st.write(datetime.datetime.now()-datetime.timedelta(hours=utc_difference))
             try_lan=False
