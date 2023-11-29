@@ -413,32 +413,8 @@ if authentication_status:
                                     mime="text/html"
                                 )
 
-                # Convert the DataFrame to an image (PNG)
-                # You'll need to have matplotlib installed for this
-                from plotly.subplots import make_subplots
-                import plotly.graph_objects as go
-
-                tides=tides.reset_index()
-                fig = make_subplots(
-                    rows=1, cols=1,
-                    column_widths=[0.5],
-                    subplot_titles=["Tides Data"]
-                )
+              
                 
-                table_trace = go.Table(
-                    header=dict(values=tides.columns),
-                    cells=dict(values=[tides[col] for col in tides.columns])
-                )
-                
-                fig.add_trace(table_trace)
-                
-                # Update layout to hide axis labels and ticks
-                fig.update_layout(
-                    showlegend=False,
-                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
-                )
-                st.plotly_chart(fig)
         if select=="DATA BACKUP" :
             st.write(datetime.datetime.now()-datetime.timedelta(hours=utc_difference))
             try_lan=False
