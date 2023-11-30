@@ -538,9 +538,8 @@ if authentication_status:
         if select=="FINANCE":
             hadi=False
             fin_password=st.sidebar.text_input("Enter Password",key="sas")
-            if st.sidebar.button("Submit Password",key="sddaas"):
-                if fin_password=="marineterm98501!":
-                    hadi=True
+            if fin_password=="marineterm98501!":
+                hadi=True
             if hadi:
                 ttab1,ttab2=st.tabs(["MT LEDGERS","UPLOAD CSV LEDGER UPDATES"])
                 with ttab2:
