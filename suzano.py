@@ -593,7 +593,7 @@ if authentication_status:
                         #bucket = storage_client.bucket(target_bucket)
                         #blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
                         #blob.upload_from_string(feather_data.get_value())
-                        st.write(f"so far so good on {file}"
+                        st.write(f"so far so good on {file}")
                 
 
             if hadi:
