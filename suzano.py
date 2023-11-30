@@ -550,6 +550,7 @@ if authentication_status:
                 file_names=["030-2023","032-2023","036-2023","040-2023"]
                 if m30 and m32 and m36 and m40:
                     
+                    finals=[]
                     for k,file in zip(ledgers,file_names):
                         df=pd.read_csv(k,header=None) 
                         checkdate=datetime.datetime.strptime(df.loc[1,14].split(" ")[-1],"%m/%d/%Y")
@@ -582,7 +583,7 @@ if authentication_status:
                         df.Debit=temp
                         df["Date"]=pd.to_datetime(df["Date"])
                     
-                    
+                        st.markdown(f"**Processing ledger {file}...Results Below.**")
                         st.write("Total Credit :${:,}".format(round(df.Credit.sum(),2)))
                         st.write("Total Debit  :${:,}".format(round(df.Debit.sum(),2)))
                         st.write("Net          :${:,}".format(round(df.Credit.sum()-df.Debit.sum(),2)))
@@ -595,9 +596,31 @@ if authentication_status:
                         bucket = storage_client.bucket(target_bucket)
                         blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
                         blob.upload_from_filename(temp_file_path)
-                        st.write(f"so far so good on {file}")
-                        st.write(pd.read_feather(feather_data).head())
-
+                        
+                        set=pd.read_feather(feather_data).set_index("index",drop=True).reset_index(drop=True)
+                        if file==m30:
+                            st.write("Processing Depreciation and Overhead from Ledger 030.
+                            set["Net"]=set["Credit"]-set["Debit"]
+                            depreciation=set[set.Account.astype(str).str.startswith("17")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
+                            overhead=set[set.Account.astype(str).str.startswith("735")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
+                            main30=set[set.Account.astype(str).str.startswith("731")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
+                            finals.append(main30,overhead)
+                        if file==m32:
+                            st.write("Processing Ledger 032..)
+                                set["Net"]=set["Credit"]-set["Debit"]
+                                first=set.copy()
+                                finals.append(first)
+                        if file==m36:
+                            st.write("Processing Ledger 036...)
+                                set["Net"]=set["Credit"]-set["Debit"]
+                                third=set.copy()
+                                finals.append(third)
+                        if file==m36:
+                            st.write("Processing Ledger 040...)
+                                set["Net"]=set["Credit"]-set["Debit"]
+                                fourth=set.copy()
+                                finals.append(fourth)
+                    st.write(finals)
             if hadi:
                 
                 class Account:
