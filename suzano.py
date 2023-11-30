@@ -541,112 +541,116 @@ if authentication_status:
             if st.sidebar.button("Submit Password",key="sddaas"):
                 if fin_password=="marineterm98501!":
                     hadi=True
-            if st.checkbox("UPLOAD LEDGER CSV",key="fsdsw"):
-                led_col1,led_col2,led_col3=st.columns([3,3,4])
-                with led_col1:
+            if hadi:
+                ttab1,ttab2=st.tabs(["MT LEDGERS","UPLOAD CSV LEDGER UPDATES"])
+                with ttab2:
                     
-                    m30 = st.file_uploader("**Upload Ledger 030 csv**", type=["csv"],key="34wss")
-                    m32= st.file_uploader("**Upload Ledger 032 csv**", type=["csv"],key="34ws2ss")
-                    m36 = st.file_uploader("**Upload Ledger 036 csv**", type=["csv"],key="34wsas")
-                    m40 = st.file_uploader("**Upload Ledger 040 csv**", type=["csv"],key="34wsss")
-                    ledgers=[m30,m32,m36,m40]
-                    file_names=["030-2023","032-2023","036-2023","040-2023"]
-                    if m30 and m32 and m36 and m40:
-                                                
-                        for k,file in zip(ledgers,file_names):
-                            df=pd.read_csv(k,header=None) 
-                            checkdate=datetime.datetime.strptime(df.loc[1,14].split(" ")[-1],"%m/%d/%Y")
+                if st.checkbox("UPLOAD LEDGER CSV",key="fsdsw"):
+                    led_col1,led_col2,led_col3=st.columns([3,3,4])
+                    with led_col1:
                         
-                            a=df.iloc[:,41:45]
-                            b=df.iloc[:,49:59]
+                        m30 = st.file_uploader("**Upload Ledger 030 csv**", type=["csv"],key="34wss")
+                        m32= st.file_uploader("**Upload Ledger 032 csv**", type=["csv"],key="34ws2ss")
+                        m36 = st.file_uploader("**Upload Ledger 036 csv**", type=["csv"],key="34wsas")
+                        m40 = st.file_uploader("**Upload Ledger 040 csv**", type=["csv"],key="34wsss")
+                        ledgers=[m30,m32,m36,m40]
+                        file_names=["030-2023","032-2023","036-2023","040-2023"]
+                        if m30 and m32 and m36 and m40:
+                                                    
+                            for k,file in zip(ledgers,file_names):
+                                df=pd.read_csv(k,header=None) 
+                                checkdate=datetime.datetime.strptime(df.loc[1,14].split(" ")[-1],"%m/%d/%Y")
+                            
+                                a=df.iloc[:,41:45]
+                                b=df.iloc[:,49:59]
+                            
+                                df=pd.concat([a,b],axis=1)
+                                df.drop(columns=[43,54,57],inplace=True)
+                            
+                                columns=["Account","Name","Sub_Cat","Bat_No","Per_Entry","Ref_No","Date","Description","Debit","Credit","Job_No"]
+                                df.columns=columns
+                                df.dropna(subset="Date",inplace=True)
+                            
+                                temp=[]
+                                for i in df.Credit:
+                                    try:
+                                        temp.append(int(i.split(",")[0])*1000+float(i.split(",")[1]))
+                                        #print(int(i.split(",")[0])*1000+float(i.split(",")[1]))
+                                    except:
+                                        temp.append(float(i))
+                                df.Credit=temp
+                                temp=[]
+                                for i in df.Debit:
+                                    try:
+                                        temp.append(int(i.split(",")[0])*1000+float(i.split(",")[1]))
+                                        #print(int(i.split(",")[0])*1000+float(i.split(",")[1]))
+                                    except:
+                                        temp.append(float(i))
+                                df.Debit=temp
+                                df["Date"]=pd.to_datetime(df["Date"])
                         
-                            df=pd.concat([a,b],axis=1)
-                            df.drop(columns=[43,54,57],inplace=True)
-                        
-                            columns=["Account","Name","Sub_Cat","Bat_No","Per_Entry","Ref_No","Date","Description","Debit","Credit","Job_No"]
-                            df.columns=columns
-                            df.dropna(subset="Date",inplace=True)
-                        
-                            temp=[]
-                            for i in df.Credit:
-                                try:
-                                    temp.append(int(i.split(",")[0])*1000+float(i.split(",")[1]))
-                                    #print(int(i.split(",")[0])*1000+float(i.split(",")[1]))
-                                except:
-                                    temp.append(float(i))
-                            df.Credit=temp
-                            temp=[]
-                            for i in df.Debit:
-                                try:
-                                    temp.append(int(i.split(",")[0])*1000+float(i.split(",")[1]))
-                                    #print(int(i.split(",")[0])*1000+float(i.split(",")[1]))
-                                except:
-                                    temp.append(float(i))
-                            df.Debit=temp
-                            df["Date"]=pd.to_datetime(df["Date"])
-                    
-                            with led_col2:
-                                
-                                st.markdown(f"**Processing ledger {file}...**")
-                                st.write("Total Credit :${:,}".format(round(df.Credit.sum(),2)))
-                                st.write("Total Debit  :${:,}".format(round(df.Debit.sum(),2)))
-                                st.write("Net          :${:,}".format(round(df.Credit.sum()-df.Debit.sum(),2)))
-                            feather_data = BytesIO()
-                            df.reset_index().to_feather(feather_data)
-                            # Create a temporary local file to store Feather data
-                            temp_file_path = tempfile.NamedTemporaryFile(delete=False).name
-                            df.reset_index().to_feather(temp_file_path)
-                            storage_client = storage.Client()
-                            bucket = storage_client.bucket(target_bucket)
-                            blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
-                            blob.upload_from_filename(temp_file_path)
-                        
-                            set=pd.read_feather(feather_data).set_index("index",drop=True).reset_index(drop=True)
-                            if k==m30:
                                 with led_col2:
-                                    st.write("Processing Depreciation and Overhead from Ledger 030...")
-                                set["Net"]=set["Credit"]-set["Debit"]
-                                depreciation=set[set.Account.astype(str).str.startswith("17")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
-                                overhead=set[set.Account.astype(str).str.startswith("735")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
-                                main30=set[set.Account.astype(str).str.startswith("731")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
+                                    
+                                    st.markdown(f"**Processing ledger {file}...**")
+                                    st.write("Total Credit :${:,}".format(round(df.Credit.sum(),2)))
+                                    st.write("Total Debit  :${:,}".format(round(df.Debit.sum(),2)))
+                                    st.write("Net          :${:,}".format(round(df.Credit.sum()-df.Debit.sum(),2)))
+                                feather_data = BytesIO()
+                                df.reset_index().to_feather(feather_data)
+                                # Create a temporary local file to store Feather data
                                 temp_file_path = tempfile.NamedTemporaryFile(delete=False).name
-                                depreciation.reset_index().to_feather(temp_file_path)
+                                df.reset_index().to_feather(temp_file_path)
                                 storage_client = storage.Client()
                                 bucket = storage_client.bucket(target_bucket)
-                                blob = bucket.blob(rf"FIN/main2023-30.ftr")
+                                blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
                                 blob.upload_from_filename(temp_file_path)
-                            if k==m32:
-                                with led_col2:
-                                    st.write("Processing Ledger 032...")
-                                set["Net"]=set["Credit"]-set["Debit"]
-                                first=set.copy()
-                           
-                            if k==m36:
-                                with led_col2:
-                                    st.write("Processing Ledger 036...")
-                                set["Net"]=set["Credit"]-set["Debit"]
-                                third=set.copy()
-                           
-                            if k==m36:
-                                with led_col2:
-                                    st.write("Processing Ledger 040...")
-                                set["Net"]=set["Credit"]-set["Debit"]
-                                fourth=set.copy()
+                            
+                                set=pd.read_feather(feather_data).set_index("index",drop=True).reset_index(drop=True)
+                                if k==m30:
+                                    with led_col2:
+                                        st.write("Processing Depreciation and Overhead from Ledger 030...")
+                                    set["Net"]=set["Credit"]-set["Debit"]
+                                    depreciation=set[set.Account.astype(str).str.startswith("17")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
+                                    overhead=set[set.Account.astype(str).str.startswith("735")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
+                                    main30=set[set.Account.astype(str).str.startswith("731")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
+                                    temp_file_path = tempfile.NamedTemporaryFile(delete=False).name
+                                    depreciation.reset_index().to_feather(temp_file_path)
+                                    storage_client = storage.Client()
+                                    bucket = storage_client.bucket(target_bucket)
+                                    blob = bucket.blob(rf"FIN/main2023-30.ftr")
+                                    blob.upload_from_filename(temp_file_path)
+                                if k==m32:
+                                    with led_col2:
+                                        st.write("Processing Ledger 032...")
+                                    set["Net"]=set["Credit"]-set["Debit"]
+                                    first=set.copy()
+                               
+                                if k==m36:
+                                    with led_col2:
+                                        st.write("Processing Ledger 036...")
+                                    set["Net"]=set["Credit"]-set["Debit"]
+                                    third=set.copy()
+                               
+                                if k==m36:
+                                    with led_col2:
+                                        st.write("Processing Ledger 040...")
+                                    set["Net"]=set["Credit"]-set["Debit"]
+                                    fourth=set.copy()
+                                    
+                            store=pd.concat([first,main30,overhead,third,fourth])
                                 
-                        store=pd.concat([first,main30,overhead,third,fourth])
-                            
-                            
-                        temp_file_path = tempfile.NamedTemporaryFile(delete=False).name
-                        store.reset_index().to_feather(temp_file_path)
-                        storage_client = storage.Client()
-                        bucket = storage_client.bucket(target_bucket)
-                        blob = bucket.blob(rf"FIN/main2023.ftr")
-                        blob.upload_from_filename(temp_file_path)
-                        with led_col2:
-                            st.success("**SUCCESS. 2023 Ledger has been updated!", icon="✅")     
+                                
+                            temp_file_path = tempfile.NamedTemporaryFile(delete=False).name
+                            store.reset_index().to_feather(temp_file_path)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket(target_bucket)
+                            blob = bucket.blob(rf"FIN/main2023.ftr")
+                            blob.upload_from_filename(temp_file_path)
+                            with led_col2:
+                                st.success("**SUCCESS. 2023 Ledger has been updated!", icon="✅")     
                 
                     
-            if hadi:
+            with ttab2:
                 
                 class Account:
                     def __init__(self, code, description,parent,root):
