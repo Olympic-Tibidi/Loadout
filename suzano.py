@@ -3114,7 +3114,7 @@ if authentication_status:
                     daily_suzano_=daily_suzano[daily_suzano["Date"]==now.date()]
                     
                     choose = st.radio(
-                                    f"<p style='font-family:arial,monospace; color: #0099ff;text-shadow: 2px 2px 4px #99ccff;'>text</p>",
+                                    "Select Daily or Accumulative Report",
                                     ["DAILY", "ACCUMULATIVE", "FIND BY DATE"])
                     if choose=="DAILY":
                         daily_suzano_=daily_suzano_.reset_index(drop=True)
