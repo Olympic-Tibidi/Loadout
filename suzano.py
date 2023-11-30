@@ -548,47 +548,47 @@ if authentication_status:
                 m40 = st.file_uploader("Choose a CSV file", type=["csv"],key="34wsss")
                 ledgers=[m30,m32,m36,m40]
                 file_names=["030-2023","032-2023","036-2023","040-2023"]
-            for k,file in zip(ledgers,file_names):
-                df=pd.read_csv(k,header=None) 
-                checkdate=datetime.datetime.strptime(df.loc[1,14].split(" ")[-1],"%m/%d/%Y")
-            
-                a=df.iloc[:,41:45]
-                b=df.iloc[:,49:59]
-            
-                df=pd.concat([a,b],axis=1)
-                df.drop(columns=[43,54,57],inplace=True)
-            
-                columns=["Account","Name","Sub_Cat","Bat_No","Per_Entry","Ref_No","Date","Description","Debit","Credit","Job_No"]
-                df.columns=columns
-                df.dropna(subset="Date",inplace=True)
-            
-                temp=[]
-                for i in df.Credit:
-                    try:
-                        temp.append(int(i.split(",")[0])*1000+float(i.split(",")[1]))
-                        #print(int(i.split(",")[0])*1000+float(i.split(",")[1]))
-                    except:
-                        temp.append(float(i))
-                df.Credit=temp
-                temp=[]
-                for i in df.Debit:
-                    try:
-                        temp.append(int(i.split(",")[0])*1000+float(i.split(",")[1]))
-                        #print(int(i.split(",")[0])*1000+float(i.split(",")[1]))
-                    except:
-                        temp.append(float(i))
-                df.Debit=temp
-                df["Date"]=pd.to_datetime(df["Date"])
-            
-            
-                st.write("Total Credit :${:,}".format(round(df.Credit.sum(),2)))
-                st.write("Total Debit  :${:,}".format(round(df.Debit.sum(),2)))
-                st.write("Net          :${:,}".format(round(df.Credit.sum()-df.Debit.sum(),2)))
-                df.reset_index().to_feather("ftr_data.ftr")
-                storage_client = storage.Client()
-                bucket = storage_client.bucket(target_bucket)
-                blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
-                blob.upload_from_string(ftr_data)
+                for k,file in zip(ledgers,file_names):
+                    df=pd.read_csv(k,header=None) 
+                    checkdate=datetime.datetime.strptime(df.loc[1,14].split(" ")[-1],"%m/%d/%Y")
+                
+                    a=df.iloc[:,41:45]
+                    b=df.iloc[:,49:59]
+                
+                    df=pd.concat([a,b],axis=1)
+                    df.drop(columns=[43,54,57],inplace=True)
+                
+                    columns=["Account","Name","Sub_Cat","Bat_No","Per_Entry","Ref_No","Date","Description","Debit","Credit","Job_No"]
+                    df.columns=columns
+                    df.dropna(subset="Date",inplace=True)
+                
+                    temp=[]
+                    for i in df.Credit:
+                        try:
+                            temp.append(int(i.split(",")[0])*1000+float(i.split(",")[1]))
+                            #print(int(i.split(",")[0])*1000+float(i.split(",")[1]))
+                        except:
+                            temp.append(float(i))
+                    df.Credit=temp
+                    temp=[]
+                    for i in df.Debit:
+                        try:
+                            temp.append(int(i.split(",")[0])*1000+float(i.split(",")[1]))
+                            #print(int(i.split(",")[0])*1000+float(i.split(",")[1]))
+                        except:
+                            temp.append(float(i))
+                    df.Debit=temp
+                    df["Date"]=pd.to_datetime(df["Date"])
+                
+                
+                    st.write("Total Credit :${:,}".format(round(df.Credit.sum(),2)))
+                    st.write("Total Debit  :${:,}".format(round(df.Debit.sum(),2)))
+                    st.write("Net          :${:,}".format(round(df.Credit.sum()-df.Debit.sum(),2)))
+                    df.reset_index().to_feather("ftr_data.ftr")
+                    storage_client = storage.Client()
+                    bucket = storage_client.bucket(target_bucket)
+                    blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
+                    blob.upload_from_string(ftr_data)
                 
 
             if hadi:
