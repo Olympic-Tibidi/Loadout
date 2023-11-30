@@ -599,24 +599,24 @@ if authentication_status:
                         
                         set=pd.read_feather(feather_data).set_index("index",drop=True).reset_index(drop=True)
                         if file==m30:
-                            st.write("Processing Depreciation and Overhead from Ledger 030...)
+                            st.write("Processing Depreciation and Overhead from Ledger 030...")
                             set["Net"]=set["Credit"]-set["Debit"]
                             depreciation=set[set.Account.astype(str).str.startswith("17")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
                             overhead=set[set.Account.astype(str).str.startswith("735")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
                             main30=set[set.Account.astype(str).str.startswith("731")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
                             finals.append(main30,overhead)
                         if file==m32:
-                            st.write("Processing Ledger 032..)
+                            st.write("Processing Ledger 032...")
                                 set["Net"]=set["Credit"]-set["Debit"]
                                 first=set.copy()
                                 finals.append(first)
                         if file==m36:
-                            st.write("Processing Ledger 036...)
+                            st.write("Processing Ledger 036...")
                                 set["Net"]=set["Credit"]-set["Debit"]
                                 third=set.copy()
                                 finals.append(third)
                         if file==m36:
-                            st.write("Processing Ledger 040...)
+                            st.write("Processing Ledger 040...")
                                 set["Net"]=set["Credit"]-set["Debit"]
                                 fourth=set.copy()
                                 finals.append(fourth)
