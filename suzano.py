@@ -589,10 +589,11 @@ if authentication_status:
                         feather_data = BytesIO()
 
                         df.reset_index().to_feather(feather_data)
-                        storage_client = storage.Client()
-                        bucket = storage_client.bucket(target_bucket)
-                        blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
-                        blob.upload_from_string(feather_data.get_value())
+                        #storage_client = storage.Client()
+                        #bucket = storage_client.bucket(target_bucket)
+                        #blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
+                        #blob.upload_from_string(feather_data.get_value())
+                        st.write(f"so far so good on {file}"
                 
 
             if hadi:
