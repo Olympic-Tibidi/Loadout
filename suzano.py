@@ -604,23 +604,32 @@ if authentication_status:
                             depreciation=set[set.Account.astype(str).str.startswith("17")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
                             overhead=set[set.Account.astype(str).str.startswith("735")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
                             main30=set[set.Account.astype(str).str.startswith("731")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
-                            finals.append(main30,overhead)
+                            
                         if k==m32:
                             st.write("Processing Ledger 032...")
                             set["Net"]=set["Credit"]-set["Debit"]
                             first=set.copy()
-                            finals.append(first)
+                           
                         if k==m36:
                             st.write("Processing Ledger 036...")
                             set["Net"]=set["Credit"]-set["Debit"]
                             third=set.copy()
-                            finals.append(third)
+                           
                         if k==m36:
                             st.write("Processing Ledger 040...")
                             set["Net"]=set["Credit"]-set["Debit"]
                             fourth=set.copy()
-                            finals.append(fourth)
-                    st.write(finals)
+                            
+                    store=pd.concat([first,main30,overhead,third,fourth])
+                        
+                        
+                    temp_file_path = tempfile.NamedTemporaryFile(delete=False).name
+                    store.reset_index().to_feather(temp_file_path)
+                    storage_client = storage.Client()
+                    bucket = storage_client.bucket(target_bucket)
+                    blob = bucket.blob(rf"FIN/NEW/main2023.ftr")
+                    blob.upload_from_filename(temp_file_path)
+                    
             if hadi:
                 
                 class Account:
