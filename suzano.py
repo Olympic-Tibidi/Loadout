@@ -3112,8 +3112,9 @@ if authentication_status:
                     daily_suzano=suzano_report.copy()
                     daily_suzano["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suzano_report["Date Shipped"]]
                     daily_suzano_=daily_suzano[daily_suzano["Date"]==now.date()]
+                    
                     choose = st.radio(
-                                    "Select Daily or Accumulative Report",
+                                    f"<p style='font-family:arial,monospace; color: #0099ff;text-shadow: 2px 2px 4px #99ccff;'>text</p>",
                                     ["DAILY", "ACCUMULATIVE", "FIND BY DATE"])
                     if choose=="DAILY":
                         daily_suzano_=daily_suzano_.reset_index(drop=True)
