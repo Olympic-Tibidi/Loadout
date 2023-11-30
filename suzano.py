@@ -604,7 +604,12 @@ if authentication_status:
                             depreciation=set[set.Account.astype(str).str.startswith("17")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
                             overhead=set[set.Account.astype(str).str.startswith("735")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
                             main30=set[set.Account.astype(str).str.startswith("731")]#.resample("M",on="Date")[["Debit","Credit"]].sum()
-                            
+                            temp_file_path = tempfile.NamedTemporaryFile(delete=False).name
+                            depreciation.reset_index().to_feather(temp_file_path)
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket(target_bucket)
+                            blob = bucket.blob(rf"FIN/main2023-30.ftr")
+                            blob.upload_from_filename(temp_file_path)
                         if k==m32:
                             st.write("Processing Ledger 032...")
                             set["Net"]=set["Credit"]-set["Debit"]
@@ -627,7 +632,7 @@ if authentication_status:
                     store.reset_index().to_feather(temp_file_path)
                     storage_client = storage.Client()
                     bucket = storage_client.bucket(target_bucket)
-                    blob = bucket.blob(rf"FIN/NEW/main2023.ftr")
+                    blob = bucket.blob(rf"FIN/main2023.ftr")
                     blob.upload_from_filename(temp_file_path)
                     
             if hadi:
