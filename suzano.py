@@ -542,10 +542,10 @@ if authentication_status:
                 if fin_password=="marineterm98501!":
                     hadi=True
             if st.checkbox("UPLOAD LEDGER CSV",key="fsdsw"):
-                m30 = st.file_uploader("Choose a CSV file", type=["csv"],key="34wss")
-                m32= st.file_uploader("Choose a CSV file", type=["csv"],key="34ws2ss")
-                m36 = st.file_uploader("Choose a CSV file", type=["csv"],key="34wsas")
-                m40 = st.file_uploader("Choose a CSV file", type=["csv"],key="34wsss")
+                m30 = st.file_uploader("**Upload Ledger 030 csv**", type=["csv"],key="34wss")
+                m32= st.file_uploader("**Upload Ledger 032 csv**", type=["csv"],key="34ws2ss")
+                m36 = st.file_uploader("**Upload Ledger 036 csv**", type=["csv"],key="34wsas")
+                m40 = st.file_uploader("**Upload Ledger 040 csv**", type=["csv"],key="34wsss")
                 ledgers=[m30,m32,m36,m40]
                 file_names=["030-2023","032-2023","036-2023","040-2023"]
                 if m30 and m32 and m36 and m40:
