@@ -607,19 +607,19 @@ if authentication_status:
                             finals.append(main30,overhead)
                         if file==m32:
                             st.write("Processing Ledger 032...")
-                                set["Net"]=set["Credit"]-set["Debit"]
-                                first=set.copy()
-                                finals.append(first)
+                            set["Net"]=set["Credit"]-set["Debit"]
+                            first=set.copy()
+                            finals.append(first)
                         if file==m36:
                             st.write("Processing Ledger 036...")
-                                set["Net"]=set["Credit"]-set["Debit"]
-                                third=set.copy()
-                                finals.append(third)
+                            set["Net"]=set["Credit"]-set["Debit"]
+                            third=set.copy()
+                            finals.append(third)
                         if file==m36:
                             st.write("Processing Ledger 040...")
-                                set["Net"]=set["Credit"]-set["Debit"]
-                                fourth=set.copy()
-                                finals.append(fourth)
+                            set["Net"]=set["Credit"]-set["Debit"]
+                            fourth=set.copy()
+                            finals.append(fourth)
                     st.write(finals)
             if hadi:
                 
