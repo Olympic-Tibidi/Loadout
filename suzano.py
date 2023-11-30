@@ -360,7 +360,7 @@ if authentication_status:
             if dada:
                 
                 st.header("OLYMPIA TIDES")
-                st.subheader("FROM NOAA API  - STATION 9446969")
+                st.subheader("LIVE FROM NOAA API  - STATION 9446969")
                 st.write("Don't go further ahead than 1 year")
                 
                 a1,a2,a3=st.columns([2,2,6])
