@@ -41,7 +41,7 @@ from bs4 import BeautifulSoup
 from PIL import Image
 import plotly.graph_objects as go
 import re
-
+import tempfile
 import plotly.graph_objects as go
 st.set_page_config(layout="wide")
 
@@ -587,12 +587,14 @@ if authentication_status:
                         st.write("Total Debit  :${:,}".format(round(df.Debit.sum(),2)))
                         st.write("Net          :${:,}".format(round(df.Credit.sum()-df.Debit.sum(),2)))
                         feather_data = BytesIO()
-
                         df.reset_index().to_feather(feather_data)
-                        #storage_client = storage.Client()
-                        #bucket = storage_client.bucket(target_bucket)
-                        #blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
-                        #blob.upload_from_string(feather_data.get_value())
+                        # Create a temporary local file to store Feather data
+                        temp_file_path = tempfile.NamedTemporaryFile(delete=False).name
+                        df.reset_index().to_feather(temp_file_path)
+                        storage_client = storage.Client()
+                        bucket = storage_client.bucket(target_bucket)
+                        blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
+                        blob.upload_from_filename(temp_file_path)
                         st.write(f"so far so good on {file}")
                 
 
