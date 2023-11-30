@@ -596,7 +596,7 @@ if authentication_status:
                         blob = bucket.blob(rf"FIN/NEW/{file}.ftr")
                         blob.upload_from_filename(temp_file_path)
                         st.write(f"so far so good on {file}")
-                
+                        st.write(pd.read_feather(feather_data).head())
 
             if hadi:
                 
