@@ -3229,16 +3229,16 @@ if authentication_status:
                         merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
                                                           'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
                         merged_df_grouped=merged_df_grouped.reset_index()
+                        merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
+                        merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
                         def highlight_weekends(row):
-                            if row["Date"].dayofweek in [5, 6]:  # Saturday or Sunday
+                            if "Saturday" in row.name or "Sunday" in row.name:
                                 return ['background-color: lightgray'] * len(row)
                             else:
                                 return [''] * len(row)
 
                         # Apply the function to highlight weekends
                         merged_df_grouped = merged_df_grouped.style.apply(highlight_weekends, axis=1)
-                        merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
-                        merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
                         st.dataframe(merged_df_grouped)
                         csv_inventory=convert_df(merged_df_grouped)
                         st.download_button(
