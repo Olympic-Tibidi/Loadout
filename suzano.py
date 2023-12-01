@@ -2066,7 +2066,7 @@ if authentication_status:
                                 for sales in release_order_dictionary[i]:
                                     release_order_dest_map[i]=release_order_dictionary[i][sales]["destination"]
                             
-                            destinations_of_release_orders=[f"{i} to {release_order_dest_map[i]}" for i in files_in_folder]
+                            destinations_of_release_orders=[f"{i} to {release_order_dest_map[i]}" for i in files_in_folder if i!=""]
                         
                                                                         
                             requested_file_=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders)
