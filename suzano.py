@@ -3262,7 +3262,7 @@ if authentication_status:
                         """
                         
                         # Combine styles and data
-                        styled_table = custom_styles + styled_table
+                        #styled_table = custom_styles + styled_table
                         
                         # Display the styled table using st.markdown
                         st.markdown(styled_table, unsafe_allow_html=True)
