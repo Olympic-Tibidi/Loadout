@@ -3231,42 +3231,8 @@ if authentication_status:
                         merged_df_grouped=merged_df_grouped.reset_index()
                         merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
                         #merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
-                        styled_table = merged_df_grouped.to_html(index=False, escape=False)
-
-                        # Define custom CSS styles
-                        custom_styles = """
-                        <style>
-                            table {
-                                border-collapse: collapse;
-                                width: 100%;
-                            }
-                        
-                            th, td {
-                                border: 1px solid #dddddd;
-                                text-align: left;
-                                padding: 8px;
-                            }
-                        
-                            th {
-                                background-color: #f2f2f2;
-                            }
-                        
-                            tr:nth-child(even) {
-                                background-color: #f9f9f9;
-                            }
-                        
-                            tr:hover {
-                                background-color: #f5f5f5;
-                            }
-                        </style>
-                        """
-                        
-                        # Combine styles and data
-                        #styled_table = custom_styles + styled_table
-                        
-                        # Display the styled table using st.markdown
-                        st.markdown(styled_table, unsafe_allow_html=True)
-                        #st.dataframe(merged_df_grouped)
+                      
+                        st.dataframe(merged_df_grouped)
                         csv_inventory=convert_df(merged_df_grouped)
                         st.download_button(
                             label="DOWNLOAD INVENTORY REPORT AS CSV",
