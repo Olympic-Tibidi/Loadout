@@ -3231,14 +3231,7 @@ if authentication_status:
                         merged_df_grouped=merged_df_grouped.reset_index()
                         merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
                         merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
-                        def highlight_weekends(row):
-                            if "Saturday" in row.name or "Sunday" in row.name:
-                                return ['background-color: lightgray'] * len(row)
-                            else:
-                                return [''] * len(row)
-
-                        # Apply the function to highlight weekends
-                        merged_df_grouped = merged_df_grouped.style.apply(highlight_weekends, axis=1)
+                        
                         st.dataframe(merged_df_grouped)
                         csv_inventory=convert_df(merged_df_grouped)
                         st.download_button(
