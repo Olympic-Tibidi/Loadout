@@ -3047,8 +3047,8 @@ if authentication_status:
                                                 subject=f"FOUND UNIT {x} NOT IN INVENTORY"
                                                 body=f"Clerk identified an uninventoried {'Unwrapped' if grade=='ISU' else 'wrapped'} unit {x}, and after verifying the physical pile, inventoried it into Ocean Bill Of Lading : {ocean_bill_of_lading} for vessel {vessel}. Unit has been put into alien unit list."
                                                 sender = "warehouseoly@gmail.com"
-                                                recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                                                #recipients = ["afsiny@portolympia.com"]
+                                                #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                                                recipients = ["afsiny@portolympia.com"]
                                                 password = "xjvxkmzbpotzeuuv"
                                                 send_email(subject, body, sender, recipients, password)
                                                 time.sleep(0.1)
@@ -3365,8 +3365,8 @@ if authentication_status:
                             subject=f"UNREGISTERED UNITS SHIPPED TO {destination} on RELEASE ORDER {current_release_order}"
                             body=f"{len([i for i in this_shipment_aliens])} unregistered units were shipped on {vehicle_id} to {destination} on {current_release_order}.<br>{[i for i in this_shipment_aliens]}"
                             sender = "warehouseoly@gmail.com"
-                            #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                            recipients = ["afsiny@portolympia.com"]
+                            recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                            #recipients = ["afsiny@portolympia.com"]
                             password = "xjvxkmzbpotzeuuv"
                             send_email(subject, body, sender, recipients, password)
                             
