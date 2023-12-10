@@ -2092,24 +2092,27 @@ if authentication_status:
                     batch_mapping=gcp_download(target_bucket,rf"batch_mapping.json")
                     batch_mapping=json.loads(batch_mapping)
                     if edit:
-                        
-                        release_order_number=st.selectbox("SELECT RELEASE ORDER",([i for i in [i.replace(".json","") for i in list_files_in_subfolder(target_bucket, rf"release_orders/{vessel}/")] if i not in junk]))
-                        to_edit=gcp_download(target_bucket,rf"release_orders/{vessel}/{release_order_number}.json")
-                        to_edit=json.loads(to_edit)
-                        po_number_edit=st.text_input("PO No",to_edit[vessel][release_order_number]["po_number"],disabled=False)
-                        destination_edit=st.text_input("Destination",to_edit[vessel][release_order_number]["destination"],disabled=False)
-                        sales_order_item_edit=st.text_input("Sales Order Item",list(to_edit[vessel][release_order_number].keys())[2],disabled=False)
-                        ocean_bill_of_lading_edit=st.text_input("Ocean Bill Of Lading",to_edit[vessel][release_order_number][sales_order_item_edit]["ocean_bill_of_lading"],disabled=False)
-                        wrap_edit=st.text_input("Grade",to_edit[vessel][release_order_number][sales_order_item_edit]["grade"],disabled=False)
-                        batch_edit=st.text_input("Batch No",to_edit[vessel][release_order_number][sales_order_item_edit]["batch"],disabled=False)
-                        dryness_edit=st.text_input("Dryness",to_edit[vessel][release_order_number][sales_order_item_edit]["dryness"],disabled=False)
-                        admt_edit=st.text_input("ADMT PER UNIT",round(int(batch_mapping[vessel][ocean_bill_of_lading_edit]["dryness"])/90,6),disabled=False)
-                        unitized_edit=st.selectbox("UNITIZED/DE-UNITIZED",["UNITIZED","DE-UNITIZED"],disabled=False)
-                        quantity_edit=st.number_input("Quantity of Units", 0, disabled=False, label_visibility="visible")
-                        tonnage_edit=2*quantity_edit
-                        shipped_edit=st.number_input("Shipped # of Units",to_edit[vessel][release_order_number][sales_order_item_edit]["shipped"],disabled=True)
-                        remaining_edit=st.number_input("Remaining # of Units",
-                                                       quantity_edit-to_edit[vessel][release_order_number][sales_order_item_edit]["shipped"],disabled=True)
+                        try:
+                            list_files_in_subfolder(target_bucket, rf"release_orders/{vessel}/")
+                            release_order_number=st.selectbox("SELECT RELEASE ORDER",([i for i in [i.replace(".json","") for i in list_files_in_subfolder(target_bucket, rf"release_orders/{vessel}/")] if i not in junk]))
+                            to_edit=gcp_download(target_bucket,rf"release_orders/{vessel}/{release_order_number}.json")
+                            to_edit=json.loads(to_edit)
+                            po_number_edit=st.text_input("PO No",to_edit[vessel][release_order_number]["po_number"],disabled=False)
+                            destination_edit=st.text_input("Destination",to_edit[vessel][release_order_number]["destination"],disabled=False)
+                            sales_order_item_edit=st.text_input("Sales Order Item",list(to_edit[vessel][release_order_number].keys())[2],disabled=False)
+                            ocean_bill_of_lading_edit=st.text_input("Ocean Bill Of Lading",to_edit[vessel][release_order_number][sales_order_item_edit]["ocean_bill_of_lading"],disabled=False)
+                            wrap_edit=st.text_input("Grade",to_edit[vessel][release_order_number][sales_order_item_edit]["grade"],disabled=False)
+                            batch_edit=st.text_input("Batch No",to_edit[vessel][release_order_number][sales_order_item_edit]["batch"],disabled=False)
+                            dryness_edit=st.text_input("Dryness",to_edit[vessel][release_order_number][sales_order_item_edit]["dryness"],disabled=False)
+                            admt_edit=st.text_input("ADMT PER UNIT",round(int(batch_mapping[vessel][ocean_bill_of_lading_edit]["dryness"])/90,6),disabled=False)
+                            unitized_edit=st.selectbox("UNITIZED/DE-UNITIZED",["UNITIZED","DE-UNITIZED"],disabled=False)
+                            quantity_edit=st.number_input("Quantity of Units", 0, disabled=False, label_visibility="visible")
+                            tonnage_edit=2*quantity_edit
+                            shipped_edit=st.number_input("Shipped # of Units",to_edit[vessel][release_order_number][sales_order_item_edit]["shipped"],disabled=True)
+                            remaining_edit=st.number_input("Remaining # of Units",
+                                                          quantity_edit-to_edit[vessel][release_order_number][sales_order_item_edit]["shipped"],disabled=True)
+                        except:
+                            st.write("NO RELEASE ORDERS YET FOR THIS VESSEL")
                     elif add:
                         release_order_number=st.selectbox("SELECT RELEASE ORDER",([i for i in [i.replace(".json","") for i in list_files_in_subfolder(target_bucket, rf"release_orders/KIRKENES-2304/")] if i not in junk]))
                         
