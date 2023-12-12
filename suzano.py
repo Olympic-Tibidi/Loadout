@@ -2050,7 +2050,10 @@ if authentication_status:
                                                   'shipped':qt,'remaining':ro.loc[int(val),"KIRKENES-2304"]['001']['remaining']}})
                     new=pd.DataFrame(info).T
                     new=new.reset_index()
-                    new.groupby('level_1')['remaining'].sum()
+                    new.columns=["Release Order","Ocean_BOL","Destination","Total Order", "Shipped", "Remaining"]
+                    row_totals = new.select_dtypes(include='number').sum()
+                    new = new.append(pd.Series(row_totals, name='TOTAL'))
+
                     
                     release_orders = [str(key[0]) for key in info.keys()]
                     release_orders=[str(i) for i in release_orders]
