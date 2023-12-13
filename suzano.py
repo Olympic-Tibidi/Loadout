@@ -2329,9 +2329,8 @@ if authentication_status:
                         ###       Dropdown menu
                         nofile=0
                         requested_file_=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders)
-                        st.write(requested_file_)
                         requested_file=requested_file_.split(" ")[0]
-                        st.write(requested_file)
+                 
                         
                        
                         data=gcp_download(target_bucket,rf"release_orders/ORDERS/{requested_file}.json")
