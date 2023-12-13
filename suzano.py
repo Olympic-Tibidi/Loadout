@@ -2720,7 +2720,7 @@ if authentication_status:
                 info=gcp_download(target_bucket,rf"release_orders/ORDERS/{work_order}.json")
                 info=json.loads(info)
                 
-                
+                vessel=info[current_release_order][current_sales_order]["vessel"]
                 #if st.checkbox("CLICK TO LOAD MIXED SKU"):
                 #    try:
                   #      next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
