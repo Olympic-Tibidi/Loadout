@@ -2028,6 +2028,12 @@ if authentication_status:
                         st.dataframe(admin_bill_of_ladings)
                         csv=convert_df(admin_bill_of_ladings)
                         file_name=f'OLYMPIA_ALL_BILL_OF_LADINGS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
+
+                    st.download_button(
+                        label="DOWNLOAD BILL OF LADINGS",
+                        data=csv,
+                        file_name=file_name,
+                        mime='text/csv')
             with admin_tab3:
                 edi_files=list_files_in_subfolder(target_bucket, rf"EDIS/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
