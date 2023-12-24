@@ -1745,8 +1745,8 @@ if authentication_status:
             
               
         if select=="ADMIN" :
-            admin_tab1,admin_tab2,admin_tab3,admin_tab4,admin_tab5=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","VESSEL SHIPMENT FILES","LABOR"])
-            with admin_tab5:
+            admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","LABOR"])
+            with admin_tab4:
                 labor_issue=False
                 secondary=True
                 if secondary:
@@ -2053,92 +2053,7 @@ if authentication_status:
             
                             
 
-            with admin_tab4:
-                st.markdown("SHIPMENT FILES")
-                shipment_tab1,shipment_tab2=st.tabs(["UPLOAD/PROCESS SHIPMENT FILE","SHIPMENT FILE DATABASE"])
-                with shipment_tab1:
-                    
-                    uploaded_file = st.file_uploader("Choose a file")
-                    if uploaded_file is not None:
-                        # To read file as bytes:
-                        bytes_data = uploaded_file.getvalue()
-                        #st.write(bytes_data)
-                    
-                        # To convert to a string based IO:
-                        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-                        #st.write(stringio)
-                    
-                        # To read file as string:
-                        string_data = stringio.read()
-                        #st.write(string_data)
-                    
-                        # Can be used wherever a "file-like" object is accepted:
-                        temp = pd.read_csv(uploaded_file,header=None)
-                        temp=temp[1:-1]
-                        gemi=temp[5].unique()[0]
-                        voyage=int(temp[6].unique()[0])
-                        df=pd.DataFrame(list(zip([i[5:] for i in temp[0]],[str(i)[13:15] for i in temp[7]],
-                                  [str(i)[20:28] for i in temp[7]])),columns=["Lot","Lot Qty","Batch"])
-                        df["Lot Qty"]=[int(int(i)/2) for i in df["Lot Qty"]]
-                        df["Grade"]=[i[:3] for i in temp[1]]
-                        df["Vessel"]=[i[-12:] for i in temp[7]]
-                        df["DryWeight"]=[int(i) for i in temp[8]]
-                        df["ADMT"]=[int(i)/0.9/100000 for i in temp[8]]
-                        new_list=[]
-                        lotq=[]
-                        batch=[]
-                        wrap=[]
-                        vessel=[]
-                        DryWeight=[]
-                        ADMT=[]
-                        for i in df.index:
-                            #print(df.loc[i,"Lot"])
-                            for j in range(1,df.loc[i,"Lot Qty"]+1):
-                                #print(f"00{i}")
-                                if j<10:
-                                    new_list.append(f"{df.loc[i,'Lot']}00{j}")
-                                else:
-                                    new_list.append(f"{df.loc[i,'Lot']}0{j}")
-                                lotq.append(df.loc[i,"Lot Qty"])
-                                batch.append(str(df.loc[i,"Batch"]))
-                                wrap.append(df.loc[i,"Grade"])
-                                vessel.append(df.loc[i,"Vessel"])
-                                DryWeight.append(df.loc[i,"DryWeight"])
-                                ADMT.append(df.loc[i,"ADMT"])
-                        new_df=pd.DataFrame(list(zip(new_list,lotq,batch,wrap,vessel,DryWeight,ADMT)),columns=df.columns.to_list())
-                        new_df["Location"]="OLYM"
-                        new_df["Warehouse_In"]="8/24/2023"
-                        new_df["Warehouse_Out"]=""
-                        new_df["Vehicle_Id"]=""
-                        new_df["Release_Order_Number"]=""
-                        new_df["Carrier_Code"]=""
-                        new_df["BL"]=""
-                        bls=new_df["Batch"].value_counts()
-                        wraps=[new_df[new_df["Batch"]==k]["Grade"].unique()[0] for k in bls.keys()]
-                        wrap_dict={"ISU":"Unwrapped","ISP":"Wrapped"}
-                        col1, col2= st.columns([2,2])
-                        with col1:
-                            st.markdown(f"**VESSEL = {gemi} - VOYAGE = {voyage}**")
-                            st.markdown(f"**TOTAL UNITS = {len(new_df)}**")
-                        
-                       
-                            for i in range(len(bls)):
-                                st.markdown(f"**{bls[i]} units of Bill of Lading {bls.keys()[i]} - -{wrap_dict[wraps[i]]}-{wraps[i]}**")
-                        with col2:
-                            if st.button("RECORD PARSED SHIPMENT TO DATABASE"):
-                                temp=new_df.to_csv("temp.csv")
-                                upload_cs_file(target_bucket, 'temp.csv',rf"shipping_files/{gemi}-{voyage}-shipping_file.csv") 
-                                st.write(f"Uploaded {gemi}-{voyage}-shipping_file.csv to database")
-                        st.dataframe(new_df)
-                    with shipment_tab2:
-                        folder_name = "olym_suzano/shipping_files"  # Replace this with the folder path you want to read
-                        files_in_folder = list_files_in_folder(target_bucket, "shipping_files")
-                        requested_file=st.selectbox("SHIPPING FILES IN DATABASE",files_in_folder[1:])
-                        if st.button("LOAD SHIPPING FILE"):
-                            requested_shipping_file=gcp_csv_to_df(target_bucket,requested_file)
-                            filtered_df=requested_shipping_file[["Lot","Lot Qty","Batch","Grade","Ocean B/L","DryWeight","ADMT"]]
-                            #st.data_editor(filtered_df, use_container_width=True)
-                            st.data_editor(filtered_df)
+            
                           
             with admin_tab1:
                 carrier_list_=gcp_download(target_bucket,rf"carrier.json")
