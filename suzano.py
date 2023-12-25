@@ -363,7 +363,7 @@ def get_weather():
             'Accept-Encoding' : 'gzip', 
             'DNT' : '1', # Do Not Track Request Header 
             'Connection' : 'close' }
-    #url ='https://api.weather.gov/gridpoints/SEW/117,51/forecast/hourly'
+
     url='http://api.weatherapi.com/v1/forecast.json?key=5fa3f1f7859a415b9e6145743230912&q=98502&days=7'
     #response = get(url,headers=headers)
     response=get(url,headers=headers)
@@ -472,58 +472,61 @@ if authentication_status:
 
         if select=='WEATHER':
             st.caption("Live Data for Olympia From Weather.gov API")
-            
+            gov_forecast=get_weather()
+            data=dict()
+            for day in forecast['forecast']['forecastday']:
+                data[day['date']]={}
+                data[day['date']]['DAY']={}
+                data[day['date']]['ASTRO']={}
+                for item in day['day']:
+                    data[day['date']]['DAY'][item]=day['day'][item]
+                for astro in day['astro']:
+                    data[day['date']]['ASTRO'][astro]=day['astro'][astro]
+                for dic in day['hour']:
+                    data[day['date']][dic['time']]={}
+                    for measure in dic:
+                        if measure=='condition':
+                            data[day['date']][dic['time']][measure]=dic[measure]['text']
+                            data[day['date']][dic['time']]['condition_png']=dic[measure]['icon']
+                        else:
+                            data[day['date']][dic['time']][measure]=dic[measure]
+            index=[]
+            temperatures=[]
+            condition=[]
+            wind=[]
+            wind_dir=[]
+            pressure=[]
+            cloud=[]
+            rain=[]
+            dew_point=[]
+            will_rain=[]
+            chance_rain=[]
+            for day in data:
+                for hour in data[day]:
+                    if hour not in ['DAY','ASTRO']:
+                        #print(hour)
+                        index.append(hour)
+                        temperatures.append(data[day][hour]['temp_f'])
+                        condition.append(data[day][hour]['condition'])
+                        wind.append(data[day][hour]['wind_mph'])
+                        wind_dir.append(data[day][hour]['wind_dir'])
+                        pressure.append(data[day][hour]['pressure_mb'])
+                        cloud.append(data[day][hour]['cloud'])
+                        rain.append(data[day][hour]['precip_in'])
+                        will_rain.append(True if data[day][hour]['will_it_rain']==1 else False)
+                        chance_rain.append(data[day][hour]['chance_of_rain'])
+                        dew_point.append(data[day][hour]['dewpoint_f'])    
             weather_tab1,weather_tab2=st.tabs(["TABULAR","GRAPH"])
             with weather_tab1:
-            
-                gov_forecast=get_weather()
-                st.table(gov_forecast)
+                weather_df=pd.DataFrame({'Temperature':temperatures,"Sky":condition,'Rain Amount':rain,
+                'Chance of Rain':chance_rain,"Wind":[f"{i}-{j}" for i,j in zip(wind_dir,wind)]
+                },index=index)
+                
+                st.table(weather_df)
             with weather_tab2:
                 st.markdown('Powered by <a href="https://www.weatherapi.com/" title="Free Weather API">WeatherAPI.com</a>',unsafe_allow_html=True)
                 
-                data=dict()
-                for day in forecast['forecast']['forecastday']:
-                    data[day['date']]={}
-                    data[day['date']]['DAY']={}
-                    data[day['date']]['ASTRO']={}
-                    for item in day['day']:
-                        data[day['date']]['DAY'][item]=day['day'][item]
-                    for astro in day['astro']:
-                        data[day['date']]['ASTRO'][astro]=day['astro'][astro]
-                    for dic in day['hour']:
-                        data[day['date']][dic['time']]={}
-                        for measure in dic:
-                            if measure=='condition':
-                                data[day['date']][dic['time']][measure]=dic[measure]['text']
-                                data[day['date']][dic['time']]['condition_png']=dic[measure]['icon']
-                            else:
-                                data[day['date']][dic['time']][measure]=dic[measure]
-                index=[]
-                temperatures=[]
-                condition=[]
-                wind=[]
-                wind_dir=[]
-                pressure=[]
-                cloud=[]
-                rain=[]
-                dew_point=[]
-                will_rain=[]
-                chance_rain=[]
-                for day in data:
-                    for hour in data[day]:
-                        if hour not in ['DAY','ASTRO']:
-                            #print(hour)
-                            index.append(hour)
-                            temperatures.append(data[day][hour]['temp_f'])
-                            condition.append(data[day][hour]['condition'])
-                            wind.append(data[day][hour]['wind_mph'])
-                            wind_dir.append(data[day][hour]['wind_dir'])
-                            pressure.append(data[day][hour]['pressure_mb'])
-                            cloud.append(data[day][hour]['cloud'])
-                            rain.append(data[day][hour]['precip_in'])
-                            will_rain.append(True if data[day][hour]['will_it_rain']==1 else False)
-                            chance_rain.append(data[day][hour]['chance_of_rain'])
-                            dew_point.append(data[day][hour]['dewpoint_f'])    
+                
                 fig = go.Figure()
 
                 # Add traces for each weather parameter
