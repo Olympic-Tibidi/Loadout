@@ -476,7 +476,7 @@ if authentication_status:
             weather_tab1,weather_tab2=st.tabs(["TABULAR","GRAPH"])
             with weather_tab1:
             
-                gov_forecast=get_gov_weather()
+                gov_forecast=get_weather()
                 st.table(gov_forecast)
             with weather_tab2:
                 st.markdown('Powered by <a href="https://www.weatherapi.com/" title="Free Weather API">WeatherAPI.com</a>',unsafe_allow_html=True)
