@@ -519,7 +519,7 @@ if authentication_status:
             weather_tab1,weather_tab2=st.tabs(["TABULAR","GRAPH"])
             with weather_tab1:
                 temperatures_=["{:.1f}".format(number)for number in temperatures]
-                rain_=[round(float(i),2) for i in rain]
+                rain_=["{:.2f}".format(number)for number in rain]
                 weather_df=pd.DataFrame({'Temperature':temperatures_,"Sky":condition,'Rain Amount':rain_,
                 'Chance of Rain':chance_rain,"Wind":[f"{i}-{j}" for i,j in zip(wind_dir,wind)]
                 },index=index)
