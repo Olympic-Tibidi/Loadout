@@ -518,8 +518,8 @@ if authentication_status:
                         dew_point.append(data[day][hour]['dewpoint_f'])    
             weather_tab1,weather_tab2=st.tabs(["TABULAR","GRAPH"])
             with weather_tab1:
-                temperatures_=[round(i,1) for i in temperatures]
-                rain_=[round(i,2) for i in rain]
+                temperatures_=[round(float(i),1) for i in temperatures]
+                rain_=[round(float(i),2) for i in rain]
                 weather_df=pd.DataFrame({'Temperature':temperatures_,"Sky":condition,'Rain Amount':rain_,
                 'Chance of Rain':chance_rain,"Wind":[f"{i}-{j}" for i,j in zip(wind_dir,wind)]
                 },index=index)
