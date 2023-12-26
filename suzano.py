@@ -3865,7 +3865,7 @@ if authentication_status:
             if 'work_order_' not in st.session_state:
                 st.session_state.work_order_ = None
             liste=[f"{i} to {menu_destinations[i]}" for i in dispatched.keys()]
-            work_order_=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",liste,index=liste.index(st.session_state.work_order_) if st.session_state.work_order_ else 0)
+            work_order_=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",liste,index=liste.index(st.session_state.work_order_) if st.session_state.work_order_ else 0) 
             st.session_state.work_order_=work_order_
             work_order=work_order_.split(" ")[0]
             order=["001","002","003","004","005","006"]
@@ -3994,23 +3994,27 @@ if authentication_status:
                     load_mf_number_issued=False
                     carrier_code=st.text_input("Carrier Code",info[current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
                     if carrier_code=="123456-KBX":
-                       if release_order_number in mf_numbers_for_load.keys():
-                           mf_liste=[i for i in mf_numbers_for_load[release_order_number]]
-                           if len(mf_liste)>0:
-                               load_mf_number=st.selectbox("MF NUMBER",mf_liste,disabled=False,key=14551)
-                               mf=True
-                               load_mf_number_issued=True
-                               yes=True
-                           else:
-                               st.write(f"**:red[ASK ADMIN TO PUT MF NUMBERS]**")
-                               mf=False
-                               yes=False
-                               load_mf_number_issued=False  
-                       else:
-                           st.write(f"**:red[ASK ADMIN TO PUT MF NUMBERS]**")
-                           mf=False
-                           yes=False
-                           load_mf_number_issued=False  
+                        if 'load_mf_number' not in st.session_state:
+                            st.session_state.load_mf_number = None
+                        if release_order_number in mf_numbers_for_load.keys():
+                            mf_liste=[i for i in mf_numbers_for_load[release_order_number]]
+                            if len(mf_liste)>0:
+                                load_mf_number = st.selectbox("MF NUMBER", mf_liste, disabled=False, key=14551, index=mf_liste.index(st.session_state.load_mf_number) if st.session_state.load_mf_number else 0)
+                                mf=True
+                                load_mf_number_issued=True
+                                yes=True
+                                st.session_state.load_mf_number = load_mf_number
+                               
+                            else:
+                                st.write(f"**:red[ASK ADMIN TO PUT MF NUMBERS]**")
+                                mf=False
+                                yes=False
+                                load_mf_number_issued=False  
+                        else:
+                            st.write(f"**:red[ASK ADMIN TO PUT MF NUMBERS]**")
+                            mf=False
+                            yes=False
+                            load_mf_number_issued=False  
                        
                     foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=8)
                     foreman_bale_quantity=st.number_input("**:blue[ENTER Quantity of Bales]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=123)
@@ -4437,7 +4441,7 @@ if authentication_status:
                         else:
                             bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                             if load_mf_number_issued:
-                                bill_of_lading_number=load_mf_number
+                                bill_of_lading_number=st.session_state.load_mf_number
                             edi_name= f'{bill_of_lading_number}.txt'
                             bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                          "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
@@ -4623,8 +4627,7 @@ if authentication_status:
                     
         else:
             st.subheader("**Nothing dispatched!**")
-                        
-    
+   
         
                     ###########################       SUZANO INVENTORY BOARD    ###########################
  
