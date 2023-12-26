@@ -2821,13 +2821,17 @@ if authentication_status:
                         load_mf_number_issued=False
                         carrier_code=st.text_input("Carrier Code",info[current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
                         if carrier_code=="123456-KBX":
+                            if 'load_mf_number' not in st.session_state:
+                                st.session_state.load_mf_number = None
                            if release_order_number in mf_numbers_for_load.keys():
                                mf_liste=[i for i in mf_numbers_for_load[release_order_number]]
                                if len(mf_liste)>0:
-                                   load_mf_number=st.selectbox("MF NUMBER",mf_liste,disabled=False,key=14551)
+                                   load_mf_number = st.selectbox("MF NUMBER", mf_liste, disabled=False, key=14551, index=mf_liste.index(st.session_state.load_mf_number) if st.session_state.load_mf_number else 0)
                                    mf=True
                                    load_mf_number_issued=True
                                    yes=True
+                                   st.session_state.load_mf_number = load_mf_number
+                                   
                                else:
                                    st.write(f"**:red[ASK ADMIN TO PUT MF NUMBERS]**")
                                    mf=False
@@ -3264,7 +3268,7 @@ if authentication_status:
                             else:
                                 bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                                 if load_mf_number_issued:
-                                    bill_of_lading_number=load_mf_number
+                                    bill_of_lading_number=st.session_state.load_mf_number
                                 edi_name= f'{bill_of_lading_number}.txt'
                                 bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                              "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
