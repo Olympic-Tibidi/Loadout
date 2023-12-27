@@ -46,6 +46,7 @@ import tempfile
 import plotly.graph_objects as go
 import pydeck as pdk
 from pandas.tseries.offsets import BDay
+import calendar
 
 
 #import streamlit_option_menu
@@ -2142,7 +2143,94 @@ if authentication_status:
                             st.dataframe(new)
                         with relcol2:
                             st.plotly_chart(fig)
-                
+                        temp_dict={}
+                        for rel_ord in raw_ro:
+                            
+                            
+                            for sales in raw_ro[rel_ord]:
+                                temp_dict[rel_ord,sales]={}
+                                dest=raw_ro[rel_ord][sales]['destination']
+                                vessel=raw_ro[rel_ord][sales]['vessel']
+                                total=raw_ro[rel_ord][sales]['total']
+                                remaining=raw_ro[rel_ord][sales]['remaining']
+                                temp_dict[rel_ord,sales]={'destination': dest,'vessel': vessel,'total':total,'remaining':remaining}
+                        temp_df=pd.DataFrame(temp_dict).T
+                        temp_df['First Shipment'] = temp_df.index.map(inv_bill_of_ladings.groupby(['release_order','sales_order'])['issued'].first())
+                        
+                        for i in temp_df.index:
+                            if temp_df.loc[i,'remaining']<=2:
+                                temp_df.loc[i,"Last Shipment"]=inv_bill_of_ladings.groupby(['release_order','sales_order']).issued.last().loc[i]
+                                temp_df.loc[i,"Duration"]=(pd.to_datetime(temp_df.loc[i,"Last Shipment"])-pd.to_datetime(temp_df.loc[i,"First Shipment"])).days+1
+                        
+                        temp_df['Last Shipment'] = temp_df['Last Shipment'].fillna(datetime.datetime.now())
+                        
+                        ####
+                        
+                        def business_days(start_date, end_date):
+                            return pd.date_range(start=start_date, end=end_date, freq=BDay())
+                        temp_df['# of Shipment Days'] = temp_df.apply(lambda row: len(business_days(row['First Shipment'], row['Last Shipment'])), axis=1)
+                        df_temp=inv_bill_of_ladings.copy()
+                        df_temp["issued"]=[pd.to_datetime(i).date() for i in df_temp["issued"]]
+                        for i in temp_df.index:
+                            temp_df.loc[i,"Utilized Shipment Days"]=df_temp.groupby(["release_order",'sales_order'])[["issued"]].nunique().loc[i,'issued']
+                        temp_df['First Shipment'] = temp_df['First Shipment'].apply(lambda x: datetime.datetime.strftime(datetime.datetime.strptime(x,'%Y-%m-%d %H:%M:%S'),'%d-%b,%Y'))
+                        temp_df['Last Shipment'] = temp_df['Last Shipment'].apply(lambda x: datetime.datetime.strftime(datetime.datetime.strptime(x,'%Y-%m-%d %H:%M:%S'),'%d-%b,%Y') if type(x)==str else None)
+                        liste=['Duration','# of Shipment Days',"Utilized Shipment Days"]
+                        for col in liste:
+                            temp_df[col] = temp_df[col].apply(lambda x: f" {int(x)} days" if not pd.isna(x) else np.nan)
+                        temp_df['remaining'] = temp_df['remaining'].apply(lambda x: int(x))
+                        temp_df.columns=['Destination', 'Vessel', 'Total Units', 'Remaining Units', 'First Shipment',
+                               'Last Shipment', 'Duration', '# of Calendar Shipment Days',
+                               'Utilized Calendar Shipment Days']
+                        st.dataframe(temp_df)
+                        a=df_temp.groupby(["issued"])[['quantity']].sum()
+                        a.index=pd.to_datetime(a.index)
+                        labor=gcp_download(target_bucket,rf"trucks.json")
+                        labor = json.loads(labor)
+                        
+                        labor=pd.DataFrame(labor).T
+                        labor.index=pd.to_datetime(labor.index)
+                        for index in a.index:
+                            try:
+                                a.loc[index,'cost']=labor.loc[index,'cost']
+                            except:
+                                pass
+                        a['quantity']=2*a['quantity']
+                        a['Per_Ton']=a['cost']/a['quantity']
+                        trucks=df_temp.groupby(["issued"])[['vehicle']].count().vehicle.values
+                        a.insert(0,'trucks',trucks)
+                        a['Per_Ton']=round(a['Per_Ton'],1)
+                        w=a.copy()
+                        m=a.copy()
+                        cost_choice=st.radio("Select Daily/Weekly/Monthly Cost Analysis",["DAILY","WEEKLY","MONTHLY"])
+                        if cost_choice=="DAILY":
+                            a['Per_Ton']=["${:.2f}".format(number) for number in a['Per_Ton']]
+                            a['cost']=["${:.2f}".format(number) for number in a['cost']]
+                            a.index=[i.date() for i in a.index]
+                            a= a.rename_axis('Day', axis=0)
+                            a.columns=["# of Trucks","Tons Shipped","Total Cost","Cost Per Ton"]
+                            st.dataframe(a)
+                        if cost_choice=="WEEKLY":
+                            w.columns=["# of Trucks","Tons Shipped","Total Cost","Cost Per Ton"]
+                            weekly=w.dropna()
+                            weekly=weekly.resample('W').sum()
+                            weekly['Cost Per Ton']=round(weekly['Total Cost']/weekly['Tons Shipped'],1)
+                            weekly['Cost Per Ton']=["${:.2f}".format(number) for number in weekly['Cost Per Ton']]
+                            weekly['Total Cost']=["${:.2f}".format(number) for number in weekly['Total Cost']]
+                            weekly.index=[i.date() for i in weekly.index]
+                            weekly= weekly.rename_axis('Week', axis=0)
+                            st.dataframe(weekly)
+                        if cost_choice=="MONTHLY":
+                            m.columns=["# of Trucks","Tons Shipped","Total Cost","Cost Per Ton"]
+                            monthly=m.dropna()
+                            monthly=monthly.resample('M').sum()
+                            monthly['Cost Per Ton']=round(monthly['Total Cost']/monthly['Tons Shipped'],1)
+                            monthly['Cost Per Ton']=["${:.2f}".format(number) for number in monthly['Cost Per Ton']]
+                            monthly['Total Cost']=["${:.2f}".format(number) for number in monthly['Total Cost']]
+                            monthly.index=[calendar.month_abbr[k] for k in [i.month for i in monthly.index]]
+                            monthly= monthly.rename_axis('Month', axis=0)
+                            st.dataframe(monthly)
+                        
                 with release_order_tab1:
                     #vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308"])  ###-###
                    
