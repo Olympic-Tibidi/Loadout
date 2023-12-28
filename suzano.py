@@ -2093,7 +2093,6 @@ if authentication_status:
                         info=grouped_df.T.to_dict()
                         for rel_ord in raw_ro:
                             for sales in raw_ro[rel_ord]:
-                                st.write(f"{rel_ord},{sales},{raw_ro[rel_ord][sales]['destination']},{raw_ro[rel_ord][sales]['remaining']}")
                                 try:
                                     found_key = next((key for key in info.keys() if rel_ord in key and sales in key), None)
                                     qt=info[found_key]['quantity']
@@ -2107,11 +2106,9 @@ if authentication_status:
                         #new.groupby('level_1')['remaining'].sum()
                         new.columns=["Release Order #","Sales Order #","Destination","Total","Shipped","Remaining"]
                         new.index=[i+1 for i in new.index]
-                        st.dataframe(new)
                         #new.columns=["Release Order #","Sales Order #","Destination","Total","Shipped","Remaining"]
                         new.index=[i+1 for i in new.index]
                         release_orders = [str(key[0]) for key in info.keys()]
-                        st.write(release_orders)
                         release_orders=[str(i) for i in release_orders]
                         release_orders = pd.Categorical(release_orders)
                         
