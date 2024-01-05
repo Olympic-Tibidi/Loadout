@@ -2285,8 +2285,8 @@ if authentication_status:
                     date_range = pd.date_range(start=start_date, end=end_date, freq='D')
                     if st.button("SUBMIT SIMULATION"):
                         # Calculate balances
-                        d=pd.DataFrame(balances).T
                         balances = calculate_balance(initial_tons, daily_rate, storage_rate)
+                        d=pd.DataFrame(balances).T
                         st.write(f"####  Cargo:{initial_tons} - Loadout Rate/Day: {daily_rate}" )
                         st.write(f"##### TOTAL CHARGES:{round(d.loc[len(d),'Accumulated Charge'],1)}" )
                         st.write(f"##### DURATION OF LOADOUT:{len(d)} Days")
