@@ -2285,11 +2285,12 @@ if authentication_status:
                     date_range = pd.date_range(start=start_date, end=end_date, freq='D')
                     if st.button("SUBMIT SIMULATION"):
                         # Calculate balances
+                        d=pd.DataFrame(balances).T
                         balances = calculate_balance(initial_tons, daily_rate, storage_rate)
                         st.write(f"####  Cargo:{initial_tons} - Loadout Rate/Day: {daily_rate}" )
                         st.write(f"##### TOTAL CHARGES:{round(d.loc[len(d),'Accumulated Charge'],1)}" )
                         st.write(f"##### DURATION OF LOADOUT:{len(d)} Days")
-                        st.write(pd.DataFrame(balances).T)
+                        st.write(d)
             with admin_tab2:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
