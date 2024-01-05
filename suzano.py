@@ -2239,12 +2239,12 @@ if authentication_status:
         if select=="ADMIN" :
             admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","STORAGE"])
             with admin_tab4:
-                maintenance=True
+                maintenance=False
                 if not maintenance:
                     
                     initial_tons =st.number_input("CARGO SIZE (TONS)",  help=None, on_change=None, disabled=False, label_visibility="visible",key="fdee2a")
                     daily_rate = st.number_input("DAILY SHIPMENT TONNAGE",  help=None, on_change=None, disabled=False, label_visibility="visible",key="fdee2aedseq")
-                    storage_rate = st.number_input("Storage Rate Daily",value=round(4.5/30,1), help="dsds", on_change=None, disabled=False, label_visibility="visible",key="fdee2dsdseq")
+                    storage_rate = st.number_input("Storage Rate Daily",value=0.15, help="dsds", on_change=None, disabled=False, label_visibility="visible",key="fdee2dsdseq")
                     balances = {}
                     
                     
@@ -2283,9 +2283,10 @@ if authentication_status:
                     start_date = pd.to_datetime('today').date()
                     end_date = start_date + pd.DateOffset(days=120)  # Adjust as needed
                     date_range = pd.date_range(start=start_date, end=end_date, freq='D')
-                    
-                    # Calculate balances
-                    balances = calculate_balance(initial_tons, daily_rate, storage_rate)
+                    if.st.button("SUBMIT SIMULATION"):
+                        # Calculate balances
+                        balances = calculate_balance(initial_tons, daily_rate, storage_rate)
+                        st.write(balances)
             with admin_tab2:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
