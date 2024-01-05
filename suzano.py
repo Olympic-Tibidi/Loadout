@@ -2237,8 +2237,52 @@ if authentication_status:
             
               
         if select=="ADMIN" :
-            admin_tab1,admin_tab2,admin_tab3=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S"])
-            
+            admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","STORAGE"])
+            with admin_tab4:
+                initial_tons =st.number_input("CARGO SIZE (TONS)", key=None, help=None, on_change=None, disabled=False, label_visibility="visible",key="fdee2a")
+                daily_rate = st.number_input("DAILY SHIPMENT TONNAGE", key=None, help=None, on_change=None, disabled=False, label_visibility="visible","fdee2aedseq")
+                storage_rate = st.number_input("Storage Rate Daily", key=None,value=round(4.5/30,1), help="dsds", on_change=None, disabled=False, label_visibility="visible","fdee2dsdseq")
+                balances = {}
+                
+                
+                
+                # Function to calculate remaining balance
+                
+                
+                
+                def calculate_balance(start_tons, daily_rate, storage_rate):
+                    tons_remaining = start_tons
+                    accumulated=0
+                    day=1
+                    while tons_remaining>daily_rate:
+                        #print(day)
+                        balances[day]={"Remaining":tons_remaining,"Charge":0,"Accumulated":0}
+                        if day % 7 < 5:  # Consider only weekdays
+                            tons_remaining-=daily_rate
+                            #print(tons_remaining)
+                            
+                            balances[day]={"Remaining":tons_remaining,"Charge":0,"Accumulated":0}
+                
+                            # If storage free days are over, start applying storage charges
+                        elif day % 7 in ([5,6]):
+                            balances[day]={"Remaining":tons_remaining,"Charge":0,"Accumulated":accumulated}
+                        if day >30:
+                            charge = round(tons_remaining*storage_rate,2)  # You can adjust the storage charge after the free days
+                            accumulated+=charge
+                            accumulated=round(accumulated,2)
+                            balances[day]={"Remaining":tons_remaining,"Charge":charge,"Accumulated":accumulated}
+                
+                        
+                        day+=1
+                    return balances
+                
+                # Create a date range
+                start_date = pd.to_datetime('today').date()
+                end_date = start_date + pd.DateOffset(days=120)  # Adjust as needed
+                date_range = pd.date_range(start=start_date, end=end_date, freq='D')
+                
+                # Calculate balances
+                balances = calculate_balance(initial_tons, daily_rate, storage_rate)
             with admin_tab2:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
