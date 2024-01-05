@@ -2283,16 +2283,20 @@ if authentication_status:
                     start_date = pd.to_datetime('today').date()
                     end_date = start_date + pd.DateOffset(days=120)  # Adjust as needed
                     date_range = pd.date_range(start=start_date, end=end_date, freq='D')
-                    if st.button("SUBMIT SIMULATION"):
+                    calc=st.button("SUBMIT SIMULATION")
                         # Calculate balances
-                        balances = calculate_balance(initial_tons, daily_rate, storage_rate)
-                        d=pd.DataFrame(balances).T
-                        d.rename_axis("Days",inplace=True)
-                        d.columns=["Remaining Tonnage","Daily Charge","Accumulated Charge"]
-                        st.write(f"####  Cargo:{initial_tons} - Loadout Rate/Day: {daily_rate}" )
-                        st.write(f"##### TOTAL CHARGES:{round(d.loc[len(d),'Accumulated Charge'],1)}" )
-                        st.write(f"##### DURATION OF LOADOUT:{len(d)} Days")
-                        st.write(d)
+                        
+                    with st.container(borders=True):
+                        if calc:
+                            balances = calculate_balance(initial_tons, daily_rate, storage_rate)
+                            d=pd.DataFrame(balances).T
+                            d.rename_axis("Days",inplace=True)
+                            d.columns=["Remaining Tonnage","Daily Charge","Accumulated Charge"]
+                            st.write(f"####  Cargo:{initial_tons} - Loadout Rate/Day: {daily_rate}" )
+                            st.write(f"##### TOTAL CHARGES:{round(d.loc[len(d),'Accumulated Charge'],1)}" )
+                            st.write(f"##### DURATION OF LOADOUT:{len(d)} Days")
+                    st.write(d)
+                    
             with admin_tab2:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
