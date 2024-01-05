@@ -2240,8 +2240,8 @@ if authentication_status:
             admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","STORAGE"])
             with admin_tab4:
                 initial_tons =st.number_input("CARGO SIZE (TONS)", key=None, help=None, on_change=None, disabled=False, label_visibility="visible",key="fdee2a")
-                daily_rate = st.number_input("DAILY SHIPMENT TONNAGE", key=None, help=None, on_change=None, disabled=False, label_visibility="visible","fdee2aedseq")
-                storage_rate = st.number_input("Storage Rate Daily", key=None,value=round(4.5/30,1), help="dsds", on_change=None, disabled=False, label_visibility="visible","fdee2dsdseq")
+                daily_rate = st.number_input("DAILY SHIPMENT TONNAGE", key=None, help=None, on_change=None, disabled=False, label_visibility="visible",key="fdee2aedseq")
+                storage_rate = st.number_input("Storage Rate Daily", key=None,value=round(4.5/30,1), help="dsds", on_change=None, disabled=False, label_visibility="visible",key="fdee2dsdseq")
                 balances = {}
                 
                 
