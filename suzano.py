@@ -2286,7 +2286,7 @@ if authentication_status:
                     calc=st.button("SUBMIT SIMULATION")
                         # Calculate balances
                         
-                    with st.container(borders=True):
+                    with st.container(border=True):
                         if calc:
                             balances = calculate_balance(initial_tons, daily_rate, storage_rate)
                             d=pd.DataFrame(balances).T
