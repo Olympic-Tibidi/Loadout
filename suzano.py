@@ -2287,6 +2287,8 @@ if authentication_status:
                         # Calculate balances
                         balances = calculate_balance(initial_tons, daily_rate, storage_rate)
                         d=pd.DataFrame(balances).T
+                        d.rename_axis("Days",inplace=True)
+                        d.columns=["Remaining Tonnage","Daily Charge","Accumulated Charge"]
                         st.write(f"####  Cargo:{initial_tons} - Loadout Rate/Day: {daily_rate}" )
                         st.write(f"##### TOTAL CHARGES:{round(d.loc[len(d),'Accumulated Charge'],1)}" )
                         st.write(f"##### DURATION OF LOADOUT:{len(d)} Days")
