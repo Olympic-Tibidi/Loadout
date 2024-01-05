@@ -2244,7 +2244,8 @@ if authentication_status:
                     
                     initial_tons =st.number_input("CARGO SIZE (TONS)",  help=None, on_change=None, disabled=False, label_visibility="visible",key="fdee2a")
                     daily_rate = st.number_input("DAILY SHIPMENT TONNAGE",  help=None, on_change=None, disabled=False, label_visibility="visible",key="fdee2aedseq")
-                    storage_rate = st.number_input("Storage Rate Daily",value=0.15, help="dsds", on_change=None, disabled=False, label_visibility="visible",key="fdee2dsdseq")
+                    storage_rate = st.number_input("STORAGE RATE DAILY ($)",value=0.15, help="dsds", on_change=None, disabled=False, label_visibility="visible",key="fdee2dsdseq")
+                    free_days_till = st.number_input("FREE DAYS",value=0.15, help="dssds",step=1, on_change=None, disabled=False, label_visibility="visible",key="fd3242dsdseq")
                     balances = {}
                     
                     
@@ -2269,7 +2270,7 @@ if authentication_status:
                                 # If storage free days are over, start applying storage charges
                             elif day % 7 in ([5,6]):
                                 balances[day]={"Remaining":tons_remaining,"Charge":0,"Accumulated":accumulated}
-                            if day >30:
+                            if day >free_days_till:
                                 charge = round(tons_remaining*storage_rate,2)  # You can adjust the storage charge after the free days
                                 accumulated+=charge
                                 accumulated=round(accumulated,2)
