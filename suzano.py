@@ -1144,82 +1144,8 @@ if authentication_status:
             if fin_password=="marineterm98501!":
                 hadi=True
             if hadi:
-                ttab1,ttab2,ttab3=st.tabs(["MT LEDGERS","UPLOAD CSV LEDGER UPDATES","SUZANO TRUCK ANALYSIS"])
-                with ttab3:
-                    shouldwe=False
-                    if shouldwe:
-                        
-                        inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                        
-                        df=pd.read_json(inv_bill_of_ladings).T
-                        ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
-                        labor=gcp_download(target_bucket,rf"trucks.json")
-                        labor=json.loads(labor)
-                        raw_ro = json.loads(ro)
-                        temp_dict={}
-                        for rel_ord in raw_ro:
-                            
-                            
-                            for sales in raw_ro[rel_ord]:
-                                temp_dict[rel_ord,sales]={}
-                                dest=raw_ro[rel_ord][sales]['destination']
-                                vessel=raw_ro[rel_ord][sales]['vessel']
-                                total=raw_ro[rel_ord][sales]['total']
-                                remaining=raw_ro[rel_ord][sales]['remaining']
-                                temp_dict[rel_ord,sales]={'destination': dest,'vessel': vessel,'total':total,'remaining':remaining}
-                        temp_df=pd.DataFrame(temp_dict).T
-                        #temp_df
-                        
-                        temp_df['First Shipment'] = temp_df.index.map(df.groupby(['release_order','sales_order'])['issued'].first())
-                        
-                        for i in temp_df.index:
-                            if temp_df.loc[i,'remaining']<=2:
-                                temp_df.loc[i,"Last Shipment"]=df.groupby(['release_order','sales_order']).issued.last().loc[i]
-                                temp_df.loc[i,"Duration"]=(pd.to_datetime(temp_df.loc[i,"Last Shipment"])-pd.to_datetime(temp_df.loc[i,"First Shipment"])).days+1
-                        
-                        temp_df['Last Shipment'] = temp_df['Last Shipment'].fillna(datetime.datetime.now())
-                        
-                        ####
-                        
-                        def business_days(start_date, end_date):
-                            return pd.date_range(start=start_date, end=end_date, freq=BDay())
-                        temp_df['# of Shipment Days'] = temp_df.apply(lambda row: len(business_days(row['First Shipment'], row['Last Shipment'])), axis=1)
-                        df_temp=df.copy()
-                        df_temp["issued"]=[pd.to_datetime(i).date() for i in df_temp["issued"]]
-                        for i in temp_df.index:
-                            temp_df.loc[i,"Utilized Shipment Days"]=df_temp.groupby(["release_order",'sales_order'])[["issued"]].nunique().loc[i,'issued']
-                        temp_df['First Shipment'] = temp_df['First Shipment'].apply(lambda x: datetime.datetime.strftime(datetime.datetime.strptime(x,'%Y-%m-%d %H:%M:%S'),'%d-%b,%Y'))
-                        temp_df['Last Shipment'] = temp_df['Last Shipment'].apply(lambda x: datetime.datetime.strftime(datetime.datetime.strptime(x,'%Y-%m-%d %H:%M:%S'),'%d-%b,%Y') if type(x)==str else None)
-                        liste=['Duration','# of Shipment Days',"Utilized Shipment Days"]
-                        for col in liste:
-                            temp_df[col] = temp_df[col].apply(lambda x: f" {int(x)} days" if not pd.isna(x) else np.nan)
-                        temp_df['remaining'] = temp_df['remaining'].apply(lambda x: int(x))
-                        temp_df.columns=['Destination', 'Vessel', 'Total Units', 'Remaining Units', 'First Shipment',
-                               'Last Shipment', 'Duration', '# of Calendar Shipment Days',
-                               'Utilized Calendar Shipment Days']
-                        st.write(temp_df)
-                        a=df_temp.groupby(["issued"])[['quantity']].sum()
-                        a.index=pd.to_datetime(a.index)
-                        
-                        
-                        labor=pd.DataFrame(labor).T
-                        labor.index=pd.to_datetime(labor.index)
-                        for index in a.index:
-                            try:
-                                a.loc[index,'cost']=labor.loc[index,'cost']
-                            except:
-                                pass
-                        a['quantity']=2*a['quantity']
-                        a['Per_Ton']=a['cost']/a['quantity']
-                        trucks=df_temp.groupby(["issued"])[['vehicle']].count().vehicle.values
-                        a.insert(0,'trucks',trucks)
-                        a['Per_Ton']=round(a['Per_Ton'],1)
-                        a.columns=["# of Trucks","Shipped Tonnage","Total Cost","Cost Per Ton"]
-                        a.index=[i.date() for i in a.index]
-                        a["Shipped Tonnage"]=[int(i) for i in a["Shipped Tonnage"]]
-                        a["Total Cost"]= a["Total Cost"].map('${:,.2f}'.format)
-                        a["Cost Per Ton"]= a["Cost Per Ton"].map('${:,.2f}'.format)
-                        st.table(a)
+                ttab1,ttab2=st.tabs(["MT LEDGERS","UPLOAD CSV LEDGER UPDATES"])
+                
                 with ttab2:
                     
                     if st.checkbox("UPLOAD LEDGER CSV",key="fsdsw"):
@@ -4062,6 +3988,7 @@ if authentication_status:
                     inv4tab1,inv4tab2,inv4tab3=st.tabs(["DAILY SHIPMENT REPORT","INVENTORY","UNREGISTERED LOTS FOUND"])
                     with inv4tab1:
                         
+                        amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000}
                         inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308"])
                         kf=inv_bill_of_ladings.iloc[1:].copy()
                         kf['issued'] = pd.to_datetime(kf['issued'])
@@ -4080,7 +4007,7 @@ if authentication_status:
                         merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
                         merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
                         merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
-                        merged_df_grouped["Remaining_Units"]=[9200-i for i in merged_df_grouped['Accumulated_Quantity']]
+                        merged_df_grouped["Remaining_Units"]=[amount_dict[inv_vessel]-i for i in merged_df_grouped['Accumulated_Quantity']]
                         merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
                         merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
                                                           'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
@@ -5312,6 +5239,7 @@ if authentication_status:
                 inv4tab1,inv4tab2,inv4tab3=st.tabs(["DAILY SHIPMENT REPORT","INVENTORY","UNREGISTERED LOTS FOUND"])
                 with inv4tab1:
                     
+                    amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000}
                     inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308"])
                     kf=inv_bill_of_ladings.iloc[1:].copy()
                     kf['issued'] = pd.to_datetime(kf['issued'])
@@ -5330,7 +5258,7 @@ if authentication_status:
                     merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
                     merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
                     merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
-                    merged_df_grouped["Remaining_Units"]=[9200-i for i in merged_df_grouped['Accumulated_Quantity']]
+                    merged_df_grouped["Remaining_Units"]=[amount_dict[inv_vessel]-i for i in merged_df_grouped['Accumulated_Quantity']]
                     merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
                     merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
                                                       'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
