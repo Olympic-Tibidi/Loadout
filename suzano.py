@@ -2167,20 +2167,8 @@ if authentication_status:
             with admin_tab4:
                 maintenance=False
                 if not maintenance:
-                    
-                    initial_tons =st.number_input("CARGO SIZE (TONS)",  help=None, on_change=None, disabled=False, label_visibility="visible",key="fdee2a")
-                    daily_rate = st.number_input("DAILY SHIPMENT TONNAGE",  help=None, on_change=None, disabled=False, label_visibility="visible",key="fdee2aedseq")
-                    storage_rate = st.number_input("STORAGE RATE DAILY ($)",value=0.15, help="dsds", on_change=None, disabled=False, label_visibility="visible",key="fdee2dsdseq")
-                    #free_days_till = st.number_input("FREE DAYS",value=0.15, help="dssds",step=1, on_change=None, disabled=False, label_visibility="visible",key="fd3242dsdseq")
-                    balances = {}
-                    
-                    
-                    
-                    # Function to calculate remaining balance
-                    
-                    
-                    
                     def calculate_balance(start_tons, daily_rate, storage_rate):
+                        balances={}
                         tons_remaining = start_tons
                         accumulated=0
                         day=1
@@ -2196,35 +2184,84 @@ if authentication_status:
                                 # If storage free days are over, start applying storage charges
                             elif day % 7 in ([5,6]):
                                 balances[day]={"Remaining":tons_remaining,"Charge":0,"Accumulated":accumulated}
-                            if day >30:
+                            if day >free_days_till:
                                 charge = round(tons_remaining*storage_rate,2)  # You can adjust the storage charge after the free days
                                 accumulated+=charge
                                 accumulated=round(accumulated,2)
                                 balances[day]={"Remaining":tons_remaining,"Charge":charge,"Accumulated":accumulated}
-                    
                             
                             day+=1
                         return balances
-                    
-                    # Create a date range
-                    start_date = pd.to_datetime('today').date()
-                    end_date = start_date + pd.DateOffset(days=120)  # Adjust as needed
-                    date_range = pd.date_range(start=start_date, end=end_date, freq='D')
-                    
-                        # Calculate balances
                         
-                    with st.container(border=True):
-                        calc=st.button("SUBMIT SIMULATION")
-                        if calc:
+                    here1,here2,here3=st.columns([2,5,3])
+                    
+                    with here1:
+                        with st.container(border=True):
+                            initial_tons =st.number_input("START TONNAGE", min_value=1000, help=None, on_change=None,step=50, disabled=False, label_visibility="visible",key="fas2aedseq")
+                            daily_rate=st.slider("DAILY SHIPMENT TONNAGE",min_value=248, max_value=544, step=10,key="fdee2a")
+                            storage_rate = st.number_input("STORAGE RATE DAILY ($)",value=0.15, help="dsds", on_change=None, disabled=False, label_visibility="visible",key="fdee2dsdseq")
+                            free_days_till = st.selectbox("FREE DAYS",[15,30,45,60])
+                    
+                    with here3:
+                        with st.container(border=True):    
                             balances = calculate_balance(initial_tons, daily_rate, storage_rate)
                             d=pd.DataFrame(balances).T
-                            d.rename_axis("Days",inplace=True)
+                            start_date = pd.to_datetime('today').date()
+                            end_date = start_date + pd.DateOffset(days=120)  # Adjust as needed
+                            date_range = pd.date_range(start=start_date, end=end_date, freq='D')
+                            
                             d.columns=["Remaining Tonnage","Daily Charge","Accumulated Charge"]
-                            st.write(f"####  Cargo: {initial_tons} - Loadout Rate/Day: {daily_rate} Tons" )
-                            st.write(f"##### TOTAL CHARGES:  ${round(d.loc[len(d),'Accumulated Charge'],1)}" )
+                            d.rename_axis("Days",inplace=True)
+                            total=round(d.loc[len(d),'Accumulated Charge'],1)
+                            st.dataframe(d)
+
+                    with here2:
+                        with st.container(border=True):     
+                            st.write(f"######  Cargo: {initial_tons} - Loadout Rate/Day: {daily_rate} Tons - Free Days : {free_days_till}" )
+                            st.write(f"##### TOTAL CHARGES:  ${total}" )
                             st.write(f"##### DURATION OF LOADOUT:  {len(d)} Days")
-                    if calc:
-                        st.write(d)
+                            st.write(f"##### MONTHLY REVENUE: ${round(total/len(d)*30,1)} ")
+                            fig = px.bar(d, x=d.index, y="Accumulated Charge", title="Accumulated Charges Over Days")
+        
+                            # Add a horizontal line for the monthly average charge
+                            average_charge = round(total/len(d)*30,1)
+                            fig.add_shape(
+                                dict(
+                                    type="line",
+                                    x0=d.index.min(),
+                                    x1=d.index.max(),
+                                    y0=average_charge,
+                                    y1=average_charge,
+                                    line=dict(color="red", dash="dash"),
+                                )
+                            )
+                            
+                            # Add annotation with the average charge value
+                            fig.add_annotation(
+                                x=d.index.max()//3,
+                                y=average_charge,
+                                text=f'Monthly Average Income: <b><i>${average_charge:.2f}</b></i> ',
+                                showarrow=True,
+                                arrowhead=4,
+                                ax=-50,
+                                ay=-30,
+                                font=dict(size=16),
+                                bgcolor='rgba(255, 255, 255, 0.6)',
+                            )
+                            
+                            # Set layout options
+                            fig.update_layout(
+                                xaxis_title="Days",
+                                yaxis_title="Accumulated Charge",
+                                sliders=[
+                                    {
+                                        "steps": [
+                                            {"args": [[{"type": "scatter", "x": d.index, "y": d["Accumulated Charge"]}], "layout"], "label": "All", "method": "animate"},
+                                        ],
+                                    }
+                                ],
+                            )
+                            st.plotly_chart(fig)
                     
             with admin_tab2:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
