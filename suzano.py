@@ -4032,28 +4032,31 @@ if authentication_status:
                         raw_ro = json.loads(ro)
                         grouped_df = inv_bill_of_ladings.groupby('ocean_bill_of_lading')['release_order'].agg(set)
                         bols=grouped_df.T.to_dict()
+                        
                         grouped_df = inv_bill_of_ladings.groupby(['release_order','ocean_bill_of_lading','destination'])[['quantity']].agg(sum)
                         info=grouped_df.T.to_dict()
                         info_=info.copy()
-                        for i in bols: #### for each bill of lading
-                            for val in bols[i]:##   (for each release order on that bill of lading)
-                                found_key = next((key for key in info.keys() if val in key), None)
-                                print(found_key)
-                                qt=info[found_key]['quantity']
-                                info_.update({found_key:{'total':sum([raw_ro[val][sales]['total'] for sales in raw_ro[val]]) if val in ro else 0,
-                                                      'shipped':qt,'remaining':sum([raw_ro[val][sales]['remaining'] for sales in raw_ro[val]])}})
+                        for bol in bols: #### for each bill of lading
+                            for rel_ord in bols[bol]:##   (for each release order on that bill of lading)
+                                found_keys = [key for key in info.keys() if rel_ord in key]
+                                for key in found_keys:
+                                    #print(key)
+                                    qt=info[key]['quantity']
+                                    info_.update({key:{'total':sum([raw_ro[rel_ord][sales]['total'] for sales in raw_ro[rel_ord]]) if rel_ord in ro else 0,
+                                                      'shipped':qt,'remaining':sum([raw_ro[rel_ord][sales]['remaining'] for sales in raw_ro[rel_ord]])}})
                         new=pd.DataFrame(info_).T
                         new=new.reset_index()
                         new.groupby('level_1')['remaining'].sum()
                         
-                        temp=inv_bill_of_ladings.groupby("ocean_bill_of_lading")[["quantity"]].sum()
-                        temp1=combined.groupby("Ocean B/L")[["Bales","Shipped","Remaining"]].sum()/8
-                        temp=pd.merge(temp, temp1, left_index=True, right_index=True, how='outer', suffixes=('_df1', '_df2'))
-                        temp=temp[["Bales","quantity","Remaining"]]
+                        temp1=new.groupby("level_1")[["total","shipped","remaining"]].sum()
+                        temp2=combined.groupby("Ocean B/L")[["Bales","Shipped","Remaining"]].sum()/8
+                        temp=temp2.copy()
+                        temp["Shipped"]=temp.index.map(lambda x: temp1.loc[x,"shipped"] if x in temp1.index else 0)
                         temp.columns=["Total","Shipped","Remaining"]
                         temp["Remaining"]=temp.Total-temp.Shipped
                         temp.loc["TOTAL"]=temp.sum(axis=0)
                         tempo=temp*2
+
                         inv_col1,inv_col2=st.columns([2,2])
                         with inv_col1:
                             st.subheader("By Ocean BOL,UNITS")
