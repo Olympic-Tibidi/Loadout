@@ -3188,7 +3188,7 @@ if authentication_status:
                         mf=True
                         load_mf_number_issued=False
                         if destination=="CLEARWATER-Lewiston,ID":
-                            carrier_code=st.selectbox("Carrier Code",[info[current_release_order][current_sales_order]["carrier_code"],"432602-NTG"],disabled=False,key=29)
+                            carrier_code=st.selectbox("Carrier Code",[info[current_release_order][current_sales_order]["carrier_code"],"432602-NTG","310897-Ashley"],disabled=False,key=29)
                         else:
                             carrier_code=st.text_input("Carrier Code",info[current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
                         if carrier_code=="123456-KBX":
@@ -4454,7 +4454,7 @@ if authentication_status:
                     mf=True
                     load_mf_number_issued=False
                     if destination=="CLEARWATER-Lewiston,ID":
-                        carrier_code=st.selectbox("Carrier Code",[info[current_release_order][current_sales_order]["carrier_code"],"432602-NTG"],disabled=False,key=29)
+                        carrier_code=st.selectbox("Carrier Code",[info[current_release_order][current_sales_order]["carrier_code"],"432602-NTG","310897-Ashley"],disabled=False,key=29)
                     else:
                         carrier_code=st.text_input("Carrier Code",info[current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
                     if carrier_code=="123456-KBX":
