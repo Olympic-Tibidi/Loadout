@@ -56,7 +56,7 @@ st.set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
-target_bucket="olym_suzano"
+target_bucket="olym_suzano_test"
 utc_difference=8
 
 def check_password():
@@ -432,7 +432,9 @@ authenticator = stauth.Authenticate(
     config['preauthorized']
 )
 
-name, authentication_status, username = authenticator.login('PORT OF OLYMPIA TOS LOGIN', 'main')
+name, authentication_status, username = authenticator.login(fields={'PORT OF OLYMPIA TOS LOGIN', 'main'})
+
+
 
 if authentication_status:
     authenticator.logout('Logout', 'main')
@@ -2510,7 +2512,7 @@ if authentication_status:
                             monthly= monthly.rename_axis('Month', axis=0)
                             st.dataframe(monthly)
                         
-                with release_order_tab1:
+                with release_order_tab1:   ###CREATE RELEASE ORDER
                     #vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308"])  ###-###
                    
                     add=st.checkbox("CHECK TO ADD TO EXISTING RELEASE ORDER",disabled=False)
@@ -2546,7 +2548,7 @@ if authentication_status:
                         po_number_add=st.text_input("PO No",to_add[release_order_number]["po_number"],disabled=False)
                         destination_add=st.text_input("Destination",to_add[release_order_number]["destination"],disabled=False)
                         sales_order_item_add=st.text_input("Sales Order Item",disabled=False)
-                        vessel_add=vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308"],key="popoa")
+                        vessel_add=vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"],key="popoa")
                         ocean_bill_of_lading_add=st.selectbox("Ocean Bill Of Lading",batch_mapping[vessel_add].keys(),key="treerw")  
                         wrap_add=st.text_input("Grade",batch_mapping[vessel_add][ocean_bill_of_lading_add]["grade"],disabled=True) 
                         batch_add=st.text_input("Batch No",batch_mapping[vessel_add][ocean_bill_of_lading_add]["batch"],disabled=False)
@@ -2567,7 +2569,7 @@ if authentication_status:
                         #st.write(destination_list)
                         destination=st.selectbox("SELECT DESTINATION",destination_list)
                         sales_order_item=st.text_input("Sales Order Item")  
-                        vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308"],key="tre")
+                        vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"],key="tre")
                         ocean_bill_of_lading=st.selectbox("Ocean Bill Of Lading",batch_mapping[vessel].keys())   #######
                         wrap=st.text_input("Grade",batch_mapping[vessel][ocean_bill_of_lading]["grade"],disabled=True)   ##### batch mapping injection
                         batch=st.text_input("Batch No",batch_mapping[vessel][ocean_bill_of_lading]["batch"],disabled=True)   #####
@@ -3096,7 +3098,7 @@ if authentication_status:
                 load_col1,load_col2=st.columns([9,1])
                 
                 with load_col1:
-                    wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
+                    wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED","AEP":"WRAPPED"}
                     wrap=info[current_release_order][current_sales_order]["grade"]
                     ocean_bill_of_=info[current_release_order][current_sales_order]["ocean_bill_of_lading"]
                     unitized=info[current_release_order][current_sales_order]["unitized"]
@@ -3187,7 +3189,7 @@ if authentication_status:
                         mf=True
                         load_mf_number_issued=False
                         if destination=="CLEARWATER-Lewiston,ID":
-                            carrier_code=st.selectbox("Carrier Code",[info[current_release_order][current_sales_order]["carrier_code"],"310897-ASHLEY"],disabled=False,key=29)
+                            carrier_code=st.selectbox("Carrier Code",[info[current_release_order][current_sales_order]["carrier_code"],"432602-NTG"],disabled=False,key=29)
                         else:
                             carrier_code=st.text_input("Carrier Code",info[current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
                         if carrier_code=="123456-KBX":
@@ -3289,6 +3291,8 @@ if authentication_status:
                         st.session_state.updated_quantity=updated_quantity
                     load_digit=-2 if vessel=="KIRKENES-2304" else -3
                     def audit_unit(x):
+                        if vessel=="LAGUNA-3142":
+                            return True
                         if vessel=="KIRKENES-2304":
                             if len(x)>=10:
                                 if bill_mapping[vessel][x[:-2]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[vessel][x[:-2]]["Batch"]!=batch:
@@ -3444,8 +3448,8 @@ if authentication_status:
                                     faults.append(1)
                                     st.markdown("**:red[THIS LOT# IS FROM THE OTHER VESSEL!]**")
                                 else:
-                                    
-                                    if x[:load_digit] in bill_mapping[vessel]:
+                                        
+                                    if x[:load_digit] in bill_mapping[vessel] or vessel=="LAGUNA-3142" :
                                         if audit_unit(x):
                                             if x in seen:
                                                 st.markdown(f"**:red[Unit No : {i+1}-{x}]**",unsafe_allow_html=True)
@@ -3779,8 +3783,8 @@ if authentication_status:
                             body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline} Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Grade : {wrap} {newline}{2*quantity} tons {unitized} cargo were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
                             #st.write(body)           
                             sender = "warehouseoly@gmail.com"
-                            recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                            #recipients = ["afsiny@portolympia.com"]
+                            #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                            recipients = ["afsiny@portolympia.com"]
                             password = "xjvxkmzbpotzeuuv"
                     
                   
@@ -4360,7 +4364,7 @@ if authentication_status:
             load_col1,load_col2=st.columns([9,1])
             
             with load_col1:
-                wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED"}
+                wrap_dict={"ISU":"UNWRAPPED","ISP":"WRAPPED","AEP":"WRAPPED"}
                 wrap=info[current_release_order][current_sales_order]["grade"]
                 ocean_bill_of_=info[current_release_order][current_sales_order]["ocean_bill_of_lading"]
                 unitized=info[current_release_order][current_sales_order]["unitized"]
@@ -4451,7 +4455,7 @@ if authentication_status:
                     mf=True
                     load_mf_number_issued=False
                     if destination=="CLEARWATER-Lewiston,ID":
-                        carrier_code=st.selectbox("Carrier Code",[info[current_release_order][current_sales_order]["carrier_code"],"310897-ASHLEY"],disabled=False,key=29)
+                        carrier_code=st.selectbox("Carrier Code",[info[current_release_order][current_sales_order]["carrier_code"],"432602-NTG"],disabled=False,key=29)
                     else:
                         carrier_code=st.text_input("Carrier Code",info[current_release_order][current_sales_order]["carrier_code"],disabled=True,key=9)
                     if carrier_code=="123456-KBX":
@@ -4553,6 +4557,8 @@ if authentication_status:
                     st.session_state.updated_quantity=updated_quantity
                 load_digit=-2 if vessel=="KIRKENES-2304" else -3
                 def audit_unit(x):
+                    if vessel=="LAGUNA-3142":
+                        return True
                     if vessel=="KIRKENES-2304":
                         if len(x)>=10:
                             if bill_mapping[vessel][x[:-2]]["Ocean_bl"]!=ocean_bill_of_lading and bill_mapping[vessel][x[:-2]]["Batch"]!=batch:
@@ -4708,8 +4714,8 @@ if authentication_status:
                                 faults.append(1)
                                 st.markdown("**:red[THIS LOT# IS FROM THE OTHER VESSEL!]**")
                             else:
-                                
-                                if x[:load_digit] in bill_mapping[vessel]:
+                                    
+                                if x[:load_digit] in bill_mapping[vessel] or vessel=="LAGUNA-3142" :
                                     if audit_unit(x):
                                         if x in seen:
                                             st.markdown(f"**:red[Unit No : {i+1}-{x}]**",unsafe_allow_html=True)
@@ -4757,8 +4763,8 @@ if authentication_status:
                                             subject=f"FOUND UNIT {x} NOT IN INVENTORY"
                                             body=f"Clerk identified an uninventoried {'Unwrapped' if grade=='ISU' else 'wrapped'} unit {x}, and after verifying the physical pile, inventoried it into Ocean Bill Of Lading : {ocean_bill_of_lading} for vessel {vessel}. Unit has been put into alien unit list."
                                             sender = "warehouseoly@gmail.com"
-                                            #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                                            recipients = ["afsiny@portolympia.com"]
+                                            recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                                            #recipients = ["afsiny@portolympia.com"]
                                             password = "xjvxkmzbpotzeuuv"
                                             send_email(subject, body, sender, recipients, password)
                                             time.sleep(0.1)
@@ -4766,6 +4772,7 @@ if authentication_status:
                                             st.rerun()
                             
                     if bale_load_input is not None:
+                    
                         bale_textsplit = bale_load_input.splitlines()                       
                         bale_textsplit=[i for i in bale_textsplit if len(i)>8]                           
                         seen=set()
@@ -4790,7 +4797,7 @@ if authentication_status:
                                     faults.append(1)
                                     with st.expander(f"**:red[Bale No : {i+1}-{x} This LOT# NOT IN INVENTORY!---VERIFY BALE {x} CAME FROM {vessel} - {'Unwrapped' if grade=='ISU' else 'wrapped'} piles]**"):
                                         st.write("Verify that the bale came from the pile that has the units for this release order and click to inventory")
-                                        if st.button("ADD UNIT TO INVENTORY",key=f"{x}"):
+                                        if st.button("ADD BALE TO INVENTORY",key=f"{x}"):
                                             updated_bill=bill_mapping.copy()
                                             updated_bill[vessel][x[:load_digit]]={"Batch":batch,"Ocean_bl":ocean_bill_of_lading}
                                             updated_bill=json.dumps(updated_bill)
