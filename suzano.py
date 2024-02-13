@@ -2531,7 +2531,7 @@ if authentication_status:
                         wrap_edit=st.text_input("Grade",to_edit[release_order_number][sales_order_item_edit]["grade"],disabled=False)
                         batch_edit=st.text_input("Batch No",to_edit[release_order_number][sales_order_item_edit]["batch"],disabled=False)
                         dryness_edit=st.text_input("Dryness",to_edit[release_order_number][sales_order_item_edit]["dryness"],disabled=False)
-                        admt_edit=st.text_input("ADMT PER UNIT",round(int(batch_mapping[vessel_edit][ocean_bill_of_lading_edit]["dryness"])/90,6),disabled=False)
+                        admt_edit=st.text_input("ADMT PER UNIT",round(float(batch_mapping[vessel_edit][ocean_bill_of_lading_edit]["dryness"])/90,6),disabled=False)
                         unitized_edit=st.selectbox("UNITIZED/DE-UNITIZED",["UNITIZED","DE-UNITIZED"],disabled=False)
                         quantity_edit=st.number_input("Quantity of Units", 0, disabled=False, label_visibility="visible")
                         tonnage_edit=2*quantity_edit
@@ -2552,7 +2552,7 @@ if authentication_status:
                         wrap_add=st.text_input("Grade",batch_mapping[vessel_add][ocean_bill_of_lading_add]["grade"],disabled=True) 
                         batch_add=st.text_input("Batch No",batch_mapping[vessel_add][ocean_bill_of_lading_add]["batch"],disabled=False)
                         dryness_add=st.text_input("Dryness",batch_mapping[vessel_add][ocean_bill_of_lading_add]["dryness"],disabled=False)
-                        admt_add=st.text_input("ADMT PER UNIT",round(int(batch_mapping[vessel_add][ocean_bill_of_lading_add]["dryness"])/90,6),disabled=False)
+                        admt_add=st.text_input("ADMT PER UNIT",round(float(batch_mapping[vessel_add][ocean_bill_of_lading_add]["dryness"])/90,6),disabled=False)
                         unitized_add=st.selectbox("UNITIZED/DE-UNITIZED",["UNITIZED","DE-UNITIZED"],disabled=False)
                         quantity_add=st.number_input("Quantity of Units", 0, disabled=False, label_visibility="visible")
                         tonnage_add=2*quantity_add
