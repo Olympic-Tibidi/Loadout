@@ -2526,7 +2526,7 @@ if authentication_status:
                         po_number_edit=st.text_input("PO No",to_edit[release_order_number]["po_number"],disabled=False)
                         destination_edit=st.text_input("Destination",to_edit[release_order_number]["destination"],disabled=False)
                         sales_order_item_edit=st.selectbox("Sales Order Item",list(to_edit[release_order_number].keys())[2:],disabled=False)
-                        vessel_edit=vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308"],key="poFpoa")
+                        vessel_edit=vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"],key="poFpoa")
                         ocean_bill_of_lading_edit=st.selectbox("Ocean Bill Of Lading",batch_mapping[vessel_edit].keys(),key="trdfeerw") 
                         wrap_edit=st.text_input("Grade",to_edit[release_order_number][sales_order_item_edit]["grade"],disabled=False)
                         batch_edit=st.text_input("Batch No",to_edit[release_order_number][sales_order_item_edit]["batch"],disabled=False)
@@ -4032,7 +4032,7 @@ if authentication_status:
                     with inv4tab1:
                         
                         amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000}
-                        inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308"])
+                        inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"])
                         kf=inv_bill_of_ladings.iloc[1:].copy()
                         kf['issued'] = pd.to_datetime(kf['issued'])
                         kf=kf[kf['vessel']==inv_vessel]
@@ -4110,7 +4110,7 @@ if authentication_status:
                 
                     with inv4tab3:
                         alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
-                        alien_vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308"])
+                        alien_vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"])
                         alien_list=pd.DataFrame(alien_units[alien_vessel]).T
                         alien_list.reset_index(inplace=True)
                         alien_list.index=alien_list.index+1
