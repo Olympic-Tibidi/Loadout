@@ -5106,7 +5106,7 @@ if authentication_status:
                 c.drawString(30, 750, "STRAIGHT BILL OF LADING")
                 c.setFont("Times-Bold", 16)
                 
-                c.drawString(450, 750, f"BOL #: {bol}")
+                c.drawString(420, 750, f"BOL #: {bol}")
                 
                 
                 
