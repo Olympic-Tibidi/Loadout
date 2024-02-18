@@ -3689,8 +3689,8 @@ if authentication_status:
                     c.rect(300, 525 ,270, 100)
                     
                     c.setFont("Times-Bold", 13)
-                    c.drawString(40, 600, "SHIP FROM :")
-                    c.drawString(310, 600, "SHIP TO :")
+                    c.drawString(40, 620, "SHIP FROM :")
+                    c.drawString(310, 620, "SHIP TO :")
                     c.setFont("Helvetica", 13)
                     c.drawString(140, 600, "Port Of Olympia")
                     c.drawString(140, 580, "915 Washington St NE")
