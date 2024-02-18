@@ -5139,17 +5139,17 @@ if authentication_status:
                 c.rect(300, 525 ,270, 100)
                 
                 c.setFont("Times-Bold", 13)
-                c.drawString(40, 600, "SHIP FROM :")
-                c.drawString(310, 600, "SHIP TO :")
+                c.drawString(35, 610, "SHIP FROM :")
+                c.drawString(315, 610, "SHIP TO :")
                 c.setFont("Helvetica", 13)
-                c.drawString(140, 600, "Port Of Olympia")
-                c.drawString(140, 580, "915 Washington St NE")
-                c.drawString(140, 560, "Olympia,WA 98501")
-                c.drawString(140, 540, "United States")
-                c.drawString(360, 600, mill_data[destination]["BOL_Name"])
-                c.drawString(360, 580, mill_data[destination]["BOL_Name_2"])
-                c.drawString(360, 560, mill_data[destination]["BOL_Addr_1"])
-                c.drawString(360, 540, mill_data[destination]["BOL_Addr_2"])
+                c.drawString(120, 590, "Port Of Olympia")
+                c.drawString(120, 570, "915 Washington St NE")
+                c.drawString(120, 550, "Olympia,WA 98501")
+                c.drawString(120, 530, "United States")
+                c.drawString(340, 590, mill_data[destination]["BOL_Name"])
+                c.drawString(340, 570, mill_data[destination]["BOL_Name_2"])
+                c.drawString(340, 550, mill_data[destination]["BOL_Addr_1"])
+                c.drawString(340, 530, mill_data[destination]["BOL_Addr_2"])
                 
                 data2 = [
                     ['Batch #', 'Grade','Dryness','MT','Bales'],
