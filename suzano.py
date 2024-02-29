@@ -3058,28 +3058,36 @@ if authentication_status:
                     for sales in dispatched[rel_ord]:
                         
                         try:
-                            menu_destinations[rel_ord]=dispatched[rel_ord][sales]["destination"]
+                            menu_destinations[f"{rel_ord} -{sales}"]=dispatched[rel_ord][sales]["destination"]
                             
-                            break
+                            
                         except:
                             pass
                 if 'work_order_' not in st.session_state:
                     st.session_state.work_order_ = None
-                liste=[f"{i} to {menu_destinations[i]}" for i in dispatched.keys()]
-                work_order_=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",liste,index=liste.index(st.session_state.work_order_) if st.session_state.work_order_ else 0) 
+                liste=[f"{i} to {menu_destinations[i]}" for i in menu_destinations.keys()]
+                st.write(liste)
+                work_order_=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",liste,index=0 if st.session_state.work_order_ else 0) 
                 st.session_state.work_order_=work_order_
                 work_order=work_order_.split(" ")[0]
                 order=["001","002","003","004","005","006"]
                 
-                for i in order:                   ##############HERE we check all the sales orders in dispatched[releaseordernumber] dictionary. it breaks after it finds the first sales order
-                    if i in dispatched[work_order].keys():
-                        current_release_order=work_order
-                        current_sales_order=i
-                        vessel=dispatched[work_order][i]["vessel"]
-                        destination=dispatched[work_order][i]['destination']
-                        break
-                    else:
-                        pass
+                current_release_order=work_order
+                current_sales_order=work_order_.split(" ")[1][1:]
+                vessel=dispatched[work_order][current_sales_order]["vessel"]
+                destination=dispatched[work_order][current_sales_order]['destination']
+                
+                
+                
+               #for i in order:                   ##############HERE we check all the sales orders in dispatched[releaseordernumber] dictionary. it breaks after it finds the first sales order
+               #     if i in dispatched[work_order].keys():
+               #         current_release_order=work_order
+                #        current_sales_order=i
+                 #       vessel=dispatched[work_order][i]["vessel"]
+                  #      destination=dispatched[work_order][i]['destination']
+                  #      break
+                  #  else:
+                  #      pass
                 try:
                     next_release_order=dispatched['002']['release_order']    #############################  CHECK HERE ######################## FOR MIXED LOAD
                     next_sales_order=dispatched['002']['sales_order']
@@ -4508,28 +4516,36 @@ if authentication_status:
                 for sales in dispatched[rel_ord]:
                     
                     try:
-                        menu_destinations[rel_ord]=dispatched[rel_ord][sales]["destination"]
+                        menu_destinations[f"{rel_ord} -{sales}"]=dispatched[rel_ord][sales]["destination"]
                         
-                        break
+                        
                     except:
                         pass
             if 'work_order_' not in st.session_state:
                 st.session_state.work_order_ = None
-            liste=[f"{i} to {menu_destinations[i]}" for i in dispatched.keys()]
-            work_order_=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",liste,index=liste.index(st.session_state.work_order_) if st.session_state.work_order_ else 0) 
+            liste=[f"{i} to {menu_destinations[i]}" for i in menu_destinations.keys()]
+            st.write(liste)
+            work_order_=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",liste,index=0 if st.session_state.work_order_ else 0) 
             st.session_state.work_order_=work_order_
             work_order=work_order_.split(" ")[0]
             order=["001","002","003","004","005","006"]
             
-            for i in order:                   ##############HERE we check all the sales orders in dispatched[releaseordernumber] dictionary. it breaks after it finds the first sales order
-                if i in dispatched[work_order].keys():
-                    current_release_order=work_order
-                    current_sales_order=i
-                    vessel=dispatched[work_order][i]["vessel"]
-                    destination=dispatched[work_order][i]['destination']
-                    break
-                else:
-                    pass
+            current_release_order=work_order
+            current_sales_order=work_order_.split(" ")[1][1:]
+            vessel=dispatched[work_order][current_sales_order]["vessel"]
+            destination=dispatched[work_order][current_sales_order]['destination']
+            
+            
+            
+           #for i in order:                   ##############HERE we check all the sales orders in dispatched[releaseordernumber] dictionary. it breaks after it finds the first sales order
+           #     if i in dispatched[work_order].keys():
+           #         current_release_order=work_order
+            #        current_sales_order=i
+             #       vessel=dispatched[work_order][i]["vessel"]
+              #      destination=dispatched[work_order][i]['destination']
+              #      break
+              #  else:
+              #      pass
             try:
                 next_release_order=dispatched['002']['release_order']    #############################  CHECK HERE ######################## FOR MIXED LOAD
                 next_sales_order=dispatched['002']['sales_order']
