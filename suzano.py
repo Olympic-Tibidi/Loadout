@@ -1030,7 +1030,7 @@ if authentication_status:
                 fig.add_trace(go.Bar(x=index, y=chance_rain,name='Chance of Rain'))
                 fig.add_trace(go.Scatter(x=index, y=cloud, mode='lines', name='Cloud Cover'))
                 # Add traces for other weather parameters...
-                rain_threshold = 0.04
+                rain_threshold = 0.02
                 fig.add_shape(
                     dict(
                         type='line',
