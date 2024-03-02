@@ -1045,7 +1045,7 @@ if authentication_status:
                 fig.add_annotation(
                         go.layout.Annotation(
                             x=0.5,  # Set x to the middle of the x-axis (adjust as needed)
-                            y=rain_threshold+0.005
+                            y=rain_threshold+0.005,
                             xref='paper',
                             yref='y',
                             text=f'{rain_threshold} inches/h',
