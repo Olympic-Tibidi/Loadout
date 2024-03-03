@@ -371,7 +371,7 @@ def get_weather():
             'DNT' : '1', # Do Not Track Request Header 
             'Connection' : 'close' }
 
-    url='http://api.weatherapi.com/v1/forecast.json?key=5fa3f1f7859a415b9e6145743230912&q=98502&days=7'
+    url='http://api.weatherapi.com/v1/forecast.json?key=5fa3f1f7859a415b9e6145743230912&q=98501&days=7'
     #response = get(url,headers=headers)
     response=get(url,headers=headers)
     #data = json.loads(response.text)
