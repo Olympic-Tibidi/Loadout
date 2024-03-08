@@ -4438,7 +4438,7 @@ if authentication_status:
                                   xaxis_title='Release Orders',
                                   yaxis_title='Quantities',
                                   barmode='overlay',
-                                  width=1000,
+                                  width=1300,
                                   xaxis=dict(tickangle=-90, type='category'))
                 #relcol1,relcol2=st.columns([5,5])
                 #with relcol1:
