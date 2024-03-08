@@ -4280,7 +4280,7 @@ if authentication_status:
                         #raw_ro = json.loads(ro)
                         grouped_df = inv_bill_of_ladings.groupby('ocean_bill_of_lading')['release_order'].agg(set)
                         bols=grouped_df.T.to_dict()
-                        st.write(bol_mapping)
+                        #st.write(bol_mapping)
                         
                         
                         
