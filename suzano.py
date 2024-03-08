@@ -4439,12 +4439,13 @@ if authentication_status:
                                   yaxis_title='Quantities',
                                   barmode='overlay',
                                   xaxis=dict(tickangle=-90, type='category'))
-                relcol1,relcol2=st.columns([5,5])
-                with relcol1:
-                    st.dataframe(new)
-                with relcol2:
-                    st.plotly_chart(fig)
-                
+                #relcol1,relcol2=st.columns([5,5])
+                #with relcol1:
+                    #st.dataframe(new)
+                #with relcol2:
+                    #st.plotly_chart(fig)
+                st.dataframe(new)
+                st.plotly_chart(fig)
                 temp_dict={}
                 for rel_ord in raw_ro:
                     
