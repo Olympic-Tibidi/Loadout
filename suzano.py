@@ -4229,8 +4229,8 @@ if authentication_status:
                     inv4tab1,inv4tab2,inv4tab3=st.tabs(["DAILY SHIPMENT REPORT","INVENTORY","UNREGISTERED LOTS FOUND"])
                     with inv4tab1:
                         
-                        amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000}
-                        inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"])
+                        amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":250}
+                        inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LYSEFJORD-2308","LAGUNA-3142"])
                         kf=inv_bill_of_ladings.iloc[1:].copy()
                         kf['issued'] = pd.to_datetime(kf['issued'])
                         if inv_vessel in kf['vessel']:
@@ -4280,7 +4280,7 @@ if authentication_status:
                         #raw_ro = json.loads(ro)
                         grouped_df = inv_bill_of_ladings.groupby('ocean_bill_of_lading')['release_order'].agg(set)
                         bols=grouped_df.T.to_dict()
-                        
+                        st.write(bol_mapping)
                         
                         
                         
