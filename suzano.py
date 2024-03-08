@@ -4233,36 +4233,39 @@ if authentication_status:
                         inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"])
                         kf=inv_bill_of_ladings.iloc[1:].copy()
                         kf['issued'] = pd.to_datetime(kf['issued'])
-                        kf=kf[kf['vessel']==inv_vessel]
-                        kf['Date'] = kf['issued'].dt.date
-                        kf['Date'] = pd.to_datetime(kf['Date'])
-                        # Create a date range from the minimum to maximum date in the 'issued' column
-                        date_range = pd.date_range(start=kf['Date'].min(), end=kf['Date'].max(), freq='D')
-                        
-                        # Create a DataFrame with the date range
-                        date_df = pd.DataFrame({'Date': date_range})
-                        # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
-                        merged_df = pd.merge(date_df, kf, how='left', on='Date')
-                        merged_df['quantity'].fillna(0, inplace=True)
-                        merged_df['Shipped Tonnage']=merged_df['quantity']*2
-                        merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
-                        merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
-                        merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
-                        merged_df_grouped["Remaining_Units"]=[amount_dict[inv_vessel]-i for i in merged_df_grouped['Accumulated_Quantity']]
-                        merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
-                        merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
-                                                          'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
-                        merged_df_grouped=merged_df_grouped.reset_index()
-                        merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
-                        #merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
-                      
-                        st.dataframe(merged_df_grouped)
-                        csv_inventory=convert_df(merged_df_grouped)
-                        st.download_button(
-                            label="DOWNLOAD INVENTORY REPORT AS CSV",
-                            data=csv_inventory,
-                            file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
-                            mime='text/csv')            
+                        if inv_vessel in kf['vessel']:
+                            kf['Date'] = kf['issued'].dt.date
+                            kf['Date'] = pd.to_datetime(kf['Date'])
+                            # Create a date range from the minimum to maximum date in the 'issued' column
+                            date_range = pd.date_range(start=kf['Date'].min(), end=kf['Date'].max(), freq='D')
+                            
+                            # Create a DataFrame with the date range
+                            date_df = pd.DataFrame({'Date': date_range})
+                            # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
+                            merged_df = pd.merge(date_df, kf, how='left', on='Date')
+                            merged_df['quantity'].fillna(0, inplace=True)
+                            merged_df['Shipped Tonnage']=merged_df['quantity']*2
+                            merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
+                            merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
+                            merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
+                            merged_df_grouped["Remaining_Units"]=[amount_dict[inv_vessel]-i for i in merged_df_grouped['Accumulated_Quantity']]
+                            merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
+                            merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
+                                                              'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
+                            merged_df_grouped=merged_df_grouped.reset_index()
+                            merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
+                            #merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
+                          
+                            st.dataframe(merged_df_grouped)
+                            csv_inventory=convert_df(merged_df_grouped)
+                            st.download_button(
+                                label="DOWNLOAD INVENTORY REPORT AS CSV",
+                                data=csv_inventory,
+                                file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
+                                mime='text/csv')   
+                        else:
+                            st.markdown("No Shipments yet from this vessel!")
+                            
                     with inv4tab2:
                         combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
                         combined["Batch"]=combined["Batch"].astype(str)
@@ -4271,8 +4274,16 @@ if authentication_status:
                         inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
                         ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                         raw_ro = json.loads(ro)
+                        bol_mapping=gcp_download(target_bucket,rf"bol_mapping.json")
+                        bol_mapping = json.loads(bol_mapping)
+
+                        #raw_ro = json.loads(ro)
                         grouped_df = inv_bill_of_ladings.groupby('ocean_bill_of_lading')['release_order'].agg(set)
                         bols=grouped_df.T.to_dict()
+                        
+                        
+                        
+                        
                         
                         grouped_df = inv_bill_of_ladings.groupby(['release_order','ocean_bill_of_lading','destination'])[['quantity']].agg(sum)
                         info=grouped_df.T.to_dict()
@@ -4283,7 +4294,7 @@ if authentication_status:
                                 for key in found_keys:
                                     #print(key)
                                     qt=info[key]['quantity']
-                                    info_.update({key:{'total':sum([raw_ro[rel_ord][sales]['total'] for sales in raw_ro[rel_ord]]) if rel_ord in ro else 0,
+                                    info_.update({key:{'wrap':bol_mapping[bol]['grade'],'total':sum([raw_ro[rel_ord][sales]['total'] for sales in raw_ro[rel_ord]]) if rel_ord in ro else 0,
                                                       'shipped':qt,'remaining':sum([raw_ro[rel_ord][sales]['remaining'] for sales in raw_ro[rel_ord]])}})
                         new=pd.DataFrame(info_).T
                         new=new.reset_index()
@@ -4294,8 +4305,12 @@ if authentication_status:
                         temp=temp2.copy()
                         temp["Shipped"]=temp.index.map(lambda x: temp1.loc[x,"shipped"] if x in temp1.index else 0)
                         temp.columns=["Total","Shipped","Remaining"]
-                        temp["Remaining"]=temp.Total-temp.Shipped
+                        temp.columns=["Total","Shipped","Remaining"]
+                        
+                        temp.insert(2,"Damaged",[1,0,5,2,2,0,0,0])
+                        temp["Remaining"]=temp.Total-temp.Shipped-temp.Damaged
                         temp.loc["TOTAL"]=temp.sum(axis=0)
+                        temp=temp.astype(int)
                         tempo=temp*2
 
                         inv_col1,inv_col2=st.columns([2,2])
@@ -5684,36 +5699,38 @@ if authentication_status:
                     inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308"])
                     kf=inv_bill_of_ladings.iloc[1:].copy()
                     kf['issued'] = pd.to_datetime(kf['issued'])
-                    kf=kf[kf['vessel']==inv_vessel]
-                    kf['Date'] = kf['issued'].dt.date
-                    kf['Date'] = pd.to_datetime(kf['Date'])
-                    # Create a date range from the minimum to maximum date in the 'issued' column
-                    date_range = pd.date_range(start=kf['Date'].min(), end=kf['Date'].max(), freq='D')
-                    
-                    # Create a DataFrame with the date range
-                    date_df = pd.DataFrame({'Date': date_range})
-                    # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
-                    merged_df = pd.merge(date_df, kf, how='left', on='Date')
-                    merged_df['quantity'].fillna(0, inplace=True)
-                    merged_df['Shipped Tonnage']=merged_df['quantity']*2
-                    merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
-                    merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
-                    merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
-                    merged_df_grouped["Remaining_Units"]=[amount_dict[inv_vessel]-i for i in merged_df_grouped['Accumulated_Quantity']]
-                    merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
-                    merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
-                                                      'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
-                    merged_df_grouped=merged_df_grouped.reset_index()
-                    merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
-                    #merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
-                  
-                    st.dataframe(merged_df_grouped)
-                    csv_inventory=convert_df(merged_df_grouped)
-                    st.download_button(
-                        label="DOWNLOAD INVENTORY REPORT AS CSV",
-                        data=csv_inventory,
-                        file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
-                        mime='text/csv')            
+                    if inv_vessel in kf['vessel']:
+                        kf['Date'] = kf['issued'].dt.date
+                        kf['Date'] = pd.to_datetime(kf['Date'])
+                        # Create a date range from the minimum to maximum date in the 'issued' column
+                        date_range = pd.date_range(start=kf['Date'].min(), end=kf['Date'].max(), freq='D')
+                        
+                        # Create a DataFrame with the date range
+                        date_df = pd.DataFrame({'Date': date_range})
+                        # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
+                        merged_df = pd.merge(date_df, kf, how='left', on='Date')
+                        merged_df['quantity'].fillna(0, inplace=True)
+                        merged_df['Shipped Tonnage']=merged_df['quantity']*2
+                        merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
+                        merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
+                        merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
+                        merged_df_grouped["Remaining_Units"]=[amount_dict[inv_vessel]-i for i in merged_df_grouped['Accumulated_Quantity']]
+                        merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
+                        merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
+                                                          'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
+                        merged_df_grouped=merged_df_grouped.reset_index()
+                        merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
+                        #merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
+                      
+                        st.dataframe(merged_df_grouped)
+                        csv_inventory=convert_df(merged_df_grouped)
+                        st.download_button(
+                            label="DOWNLOAD INVENTORY REPORT AS CSV",
+                            data=csv_inventory,
+                            file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
+                            mime='text/csv')   
+                    else:
+                        st.markdown("No Shipments yet from this vessel!")
                 with inv4tab2:
                     combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
                     combined["Batch"]=combined["Batch"].astype(str)
