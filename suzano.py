@@ -4439,7 +4439,7 @@ if authentication_status:
                                   yaxis_title='Quantities',
                                   barmode='overlay',
                                   width=1300,
-                                  height=500,
+                                  height=700,
                                   xaxis=dict(tickangle=-90, type='category'))
                 #relcol1,relcol2=st.columns([5,5])
                 #with relcol1:
