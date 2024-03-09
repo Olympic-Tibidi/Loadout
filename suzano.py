@@ -4214,10 +4214,15 @@ if authentication_status:
 
                 
             with inv4:
+                combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
+                combined["Batch"]=combined["Batch"].astype(str)
+                
                 inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
                 ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
-                
+                raw_ro = json.loads(ro)
+                bol_mapping=gcp_download(target_bucket,rf"bol_mapping.json")
+                bol_mapping = json.loads(bol_mapping)
                 
                 maintenance=False
                                 
@@ -4233,6 +4238,7 @@ if authentication_status:
                         inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LYSEFJORD-2308","LAGUNA-3142"])
                         kf=inv_bill_of_ladings.iloc[1:].copy()
                         kf['issued'] = pd.to_datetime(kf['issued'])
+                        kf=kf[kf["vessel"]==inv_vessel]
                         if inv_vessel in kf['vessel']:
                             kf['Date'] = kf['issued'].dt.date
                             kf['Date'] = pd.to_datetime(kf['Date'])
@@ -4267,15 +4273,7 @@ if authentication_status:
                             st.markdown("No Shipments yet from this vessel!")
                             
                     with inv4tab2:
-                        combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
-                        combined["Batch"]=combined["Batch"].astype(str)
                         
-                        inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                        inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
-                        ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
-                        raw_ro = json.loads(ro)
-                        bol_mapping=gcp_download(target_bucket,rf"bol_mapping.json")
-                        bol_mapping = json.loads(bol_mapping)
 
                         #raw_ro = json.loads(ro)
                         grouped_df = inv_bill_of_ladings.groupby('ocean_bill_of_lading')['release_order'].agg(set)
