@@ -356,7 +356,7 @@ if authentication_status:
         st.subheader("PORT OF OLYMPIA TOS")
         st.write(f'Welcome *{name}*')
         
-        forecast=get_weather()
+        #forecast=get_weather()
         
         
         select=st.sidebar.radio("SELECT FUNCTION",
