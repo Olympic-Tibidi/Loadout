@@ -372,7 +372,7 @@ if authentication_status:
                     </style>
                 """
         st.markdown(custom_style, unsafe_allow_html=True)
-        with st.sidebar.container(border=True):
+        #with st.sidebar.container(border=True):
             #st.markdown(f"Temperature: {forecast['current']['temp_f']}")
           #  st.markdown(f"Conditions: {forecast['current']['condition']['text']}")
           #  st.markdown(f"Wind: {forecast['current']['wind_dir']}-{forecast['current']['wind_mph']}")
