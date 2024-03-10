@@ -373,19 +373,19 @@ if authentication_status:
                 """
         st.markdown(custom_style, unsafe_allow_html=True)
         with st.sidebar.container(border=True):
-            st.markdown(f"Temperature: {forecast['current']['temp_f']}")
-            st.markdown(f"Conditions: {forecast['current']['condition']['text']}")
-            st.markdown(f"Wind: {forecast['current']['wind_dir']}-{forecast['current']['wind_mph']}")
-            st.markdown(f"Cloud Cover: %{forecast['current']['cloud']}")
-            #st.markdown(f"Chance of Rain Today: %{forecast['forecast']['forecastday'][0]['day']['daily_chance_of_rain']} ")
-            st.markdown(f"Current Precipitation: {forecast['current']['precip_in']} Inches")
+            #st.markdown(f"Temperature: {forecast['current']['temp_f']}")
+          #  st.markdown(f"Conditions: {forecast['current']['condition']['text']}")
+          #  st.markdown(f"Wind: {forecast['current']['wind_dir']}-{forecast['current']['wind_mph']}")
+          #  st.markdown(f"Cloud Cover: %{forecast['current']['cloud']}")
+         #   #st.markdown(f"Chance of Rain Today: %{forecast['forecast']['forecastday'][0]['day']['daily_chance_of_rain']} ")
+          #  st.markdown(f"Current Precipitation: {forecast['current']['precip_in']} Inches")
             #st.markdown(f"Day's Total Expected Rain: {forecast['forecast']['forecastday'][0]['day']['totalprecip_in']} Inches")
-            events=[]
-            for i,j in enumerate(forecast['forecast']['forecastday'][:3]):
-                if forecast['forecast']['forecastday'][i]['astro']['moon_phase'] in ['New Moon','Full Moon']:
-                    events.append(f"{forecast['forecast']['forecastday'][i]['astro']['moon_phase']} Coming up in {i} {'days' if i>1 else 'day'}. Check for King Tides for the following days.")
-            if len(events)>0:
-                st.warning(events[0])
+       #     events=[]
+        #    for i,j in enumerate(forecast['forecast']['forecastday'][:3]):
+        #        if forecast['forecast']['forecastday'][i]['astro']['moon_phase'] in ['New Moon','Full Moon']:
+         #           events.append(f"{forecast['forecast']['forecastday'][i]['astro']['moon_phase']} Coming up in {i} {'days' if i>1 else 'day'}. Check for King Tides for the following days.")
+         #   if len(events)>0:
+         #       st.warning(events[0])
         if select=="LABOR":
             labor_issue=False
             secondary=True
@@ -2322,10 +2322,10 @@ if authentication_status:
                                           barmode='overlay',
                                           xaxis=dict(tickangle=-90, type='category'))
                         relcol1,relcol2=st.columns([5,5])
-                        with relcol1:
-                            st.dataframe(new)
-                        with relcol2:
-                            st.plotly_chart(fig)
+                        #with relcol1:
+                        st.dataframe(new)
+                        #with relcol2:
+                        st.plotly_chart(fig)
                         
                         temp_dict={}
                         for rel_ord in raw_ro:
