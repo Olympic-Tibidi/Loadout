@@ -4059,7 +4059,7 @@ if authentication_status:
                 
                         
         if select=="INVENTORY" :
-            Inventory=gcp_csv_to_df(target_bucket, "kirkenes_with_ghosts_found.csv")
+            #Inventory=gcp_csv_to_df(target_bucket, "kirkenes_with_ghosts_found.csv")
             data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
             bill_of_ladings=json.loads(data)
             mill_info=json.loads(gcp_download(target_bucket,rf"mill_info.json"))
@@ -5555,7 +5555,6 @@ if authentication_status:
  
     elif username == 'olysuzanodash':
         
-        Inventory=gcp_csv_to_df(target_bucket, "kirkenes_with_ghosts_found.csv")
         data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
         bill_of_ladings=json.loads(data)
         mill_info=json.loads(gcp_download(target_bucket,rf"mill_info.json"))
@@ -5710,8 +5709,15 @@ if authentication_status:
 
             
         with inv4:
+            combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
+            combined["Batch"]=combined["Batch"].astype(str)
+            
             inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
             inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
+            ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
+            raw_ro = json.loads(ro)
+            bol_mapping=gcp_download(target_bucket,rf"bol_mapping.json")
+            bol_mapping = json.loads(bol_mapping)
             
             maintenance=False
                             
@@ -5723,43 +5729,46 @@ if authentication_status:
                 inv4tab1,inv4tab2,inv4tab3=st.tabs(["DAILY SHIPMENT REPORT","INVENTORY","UNREGISTERED LOTS FOUND"])
                 with inv4tab1:
                     
-                    amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000}
-                    inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308"])
+                    amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":250}
+                    inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LYSEFJORD-2308","LAGUNA-3142"])
                     kf=inv_bill_of_ladings.iloc[1:].copy()
                     kf['issued'] = pd.to_datetime(kf['issued'])
-                    if inv_vessel in kf['vessel']:
-                        kf['Date'] = kf['issued'].dt.date
-                        kf['Date'] = pd.to_datetime(kf['Date'])
-                        # Create a date range from the minimum to maximum date in the 'issued' column
-                        date_range = pd.date_range(start=kf['Date'].min(), end=kf['Date'].max(), freq='D')
+                    kf=kf[kf["vessel"]==inv_vessel]
+                    
+                    kf['Date'] = kf['issued'].dt.date
+                    kf['Date'] = pd.to_datetime(kf['Date'])
+                    # Create a date range from the minimum to maximum date in the 'issued' column
+                    date_range = pd.date_range(start=kf['Date'].min(), end=kf['Date'].max(), freq='D')
+                    
+                    # Create a DataFrame with the date range
+                    date_df = pd.DataFrame({'Date': date_range})
+                    # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
+                    merged_df = pd.merge(date_df, kf, how='left', on='Date')
+                    merged_df['quantity'].fillna(0, inplace=True)
+                    merged_df['Shipped Tonnage']=merged_df['quantity']*2
+                    merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
+                    merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
+                    merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
+                    merged_df_grouped["Remaining_Units"]=[amount_dict[inv_vessel]-i for i in merged_df_grouped['Accumulated_Quantity']]
+                    merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
+                    merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
+                                                      'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
+                    merged_df_grouped=merged_df_grouped.reset_index()
+                    merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
+                    #merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
+                  
+                    st.dataframe(merged_df_grouped)
+                    csv_inventory=convert_df(merged_df_grouped)
+                    st.download_button(
+                        label="DOWNLOAD INVENTORY REPORT AS CSV",
+                        data=csv_inventory,
+                        file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
+                        mime='text/csv')   
+                    
                         
-                        # Create a DataFrame with the date range
-                        date_df = pd.DataFrame({'Date': date_range})
-                        # Merge the date range DataFrame with the original DataFrame based on the 'Date' column
-                        merged_df = pd.merge(date_df, kf, how='left', on='Date')
-                        merged_df['quantity'].fillna(0, inplace=True)
-                        merged_df['Shipped Tonnage']=merged_df['quantity']*2
-                        merged_df_grouped=merged_df.groupby('Date')[['quantity','Shipped Tonnage']].sum()
-                        merged_df_grouped['Accumulated_Quantity'] = merged_df_grouped['quantity'].cumsum()
-                        merged_df_grouped["Accumulated_Tonnage"]=merged_df_grouped['Accumulated_Quantity']*2
-                        merged_df_grouped["Remaining_Units"]=[amount_dict[inv_vessel]-i for i in merged_df_grouped['Accumulated_Quantity']]
-                        merged_df_grouped["Remaining_Tonnage"]=merged_df_grouped["Remaining_Units"]*2
-                        merged_df_grouped.rename(columns={'quantity':"Shipped Quantity", 'Accumulated_Quantity':"Shipped Qty To_Date",
-                                                          'Accumulated_Tonnage':"Shipped Tonnage To_Date"},inplace=True)
-                        merged_df_grouped=merged_df_grouped.reset_index()
-                        merged_df_grouped["Date"]=merged_df_grouped['Date'].dt.strftime('%m-%d-%Y, %A')
-                        #merged_df_grouped=merged_df_grouped.set_index("Date",drop=True)
-                      
-                        st.dataframe(merged_df_grouped)
-                        csv_inventory=convert_df(merged_df_grouped)
-                        st.download_button(
-                            label="DOWNLOAD INVENTORY REPORT AS CSV",
-                            data=csv_inventory,
-                            file_name=f'INVENTORY REPORT-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y_%m_%d")}.csv',
-                            mime='text/csv')   
-                    else:
-                        st.markdown("No Shipments yet from this vessel!")
                 with inv4tab2:
+                    
+
                     #raw_ro = json.loads(ro)
                     grouped_df = inv_bill_of_ladings.groupby('ocean_bill_of_lading')['release_order'].agg(set)
                     bols=grouped_df.T.to_dict()
@@ -5821,27 +5830,27 @@ if authentication_status:
                     temp.insert(3,"Remaining on ROs",[bols_allocated[i]["Remaining"] for i in temp.index])
                     temp["Remaining After ROs"]=temp["Total"] -temp["Allocated to ROs"]-temp["Damaged"]
                     temp.loc["TOTAL"]=temp.sum(axis=0)
-                                       
+                    
+                    
                     tempo=temp*2
+
                     #inv_col1,inv_col2=st.columns([2,2])
-                       # with inv_col1:
+                   # with inv_col1:
                     st.subheader("By Ocean BOL,UNITS")
                     st.dataframe(temp)
                     #with inv_col2:
                     st.subheader("By Ocean BOL,TONS")
-                    st.dataframe(tempo)  
-
-
-                
+                    st.dataframe(tempo)               
                 with inv4tab3:
                     alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
-                    alien_vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308"])
+                    alien_vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"])
                     alien_list=pd.DataFrame(alien_units[alien_vessel]).T
                     alien_list.reset_index(inplace=True)
                     alien_list.index=alien_list.index+1
+                    st.markdown(f"**{len(alien_list)} units that are not on the shipping file found on {alien_vessel}**")
                     st.dataframe(alien_list)
                     
-                    
+                  
         with inv5:
             inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
             inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
@@ -5888,6 +5897,7 @@ if authentication_status:
                 
                 st.plotly_chart(fig)
 
+
         with inv6:
             inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
             inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
@@ -5913,7 +5923,6 @@ if authentication_status:
             #new.columns=["Release Order #","Sales Order #","Destination","Total","Shipped","Remaining"]
             new.index=[i+1 for i in new.index]
             new.loc["Total"]=new[["Total","Shipped","Remaining"]].sum()
-            
             release_orders = [str(key[0]) for key in info.keys()]
             release_orders=[str(i) for i in release_orders]
             release_orders = pd.Categorical(release_orders)
@@ -5949,13 +5958,16 @@ if authentication_status:
                               xaxis_title='Release Orders',
                               yaxis_title='Quantities',
                               barmode='overlay',
+                              width=1300,
+                              height=700,
                               xaxis=dict(tickangle=-90, type='category'))
-            relcol1,relcol2=st.columns([5,5])
-            with relcol1:
-                st.dataframe(new)
-            with relcol2:
-                st.plotly_chart(fig)
-            
+            #relcol1,relcol2=st.columns([5,5])
+            #with relcol1:
+                #st.dataframe(new)
+            #with relcol2:
+                #st.plotly_chart(fig)
+            st.dataframe(new)
+            st.plotly_chart(fig)
             temp_dict={}
             for rel_ord in raw_ro:
                 
