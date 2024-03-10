@@ -42,6 +42,14 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import Table, TableStyle
 import pypdfium2 as pdfium
 
+@functools.lru_cache
+def gcp_download(bucket_name, source_file_name):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(source_file_name)
+    data = blob.download_as_text()
+    return data
+
 
 @functools.lru_cache
 def gcp_download_x(bucket_name, source_file_name):
