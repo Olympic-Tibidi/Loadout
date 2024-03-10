@@ -55,6 +55,7 @@ import pypdfium2 as pdfium
 #import streamlit_option_menu
 #from streamlit_modal import Modal
 
+from helper import gcp_download
 from helper import gcp_download_x
 from helper import gcp_csv_to_df
 from helper import list_cs_files_f
