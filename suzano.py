@@ -4339,14 +4339,13 @@ if authentication_status:
                         
                         tempo=temp*2
 
-                        inv_col1,inv_col2=st.columns([2,2])
-                        with inv_col1:
-                            st.subheader("By Ocean BOL,UNITS")
-                            st.dataframe(temp)
-                        with inv_col2:
-                            st.subheader("By Ocean BOL,TONS")
-                            st.dataframe(tempo)
-                
+                        #inv_col1,inv_col2=st.columns([2,2])
+                       # with inv_col1:
+                        st.subheader("By Ocean BOL,UNITS")
+                        st.dataframe(temp)
+                        #with inv_col2:
+                        st.subheader("By Ocean BOL,TONS")
+                        st.dataframe(tempo)               
                     with inv4tab3:
                         alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
                         alien_vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"])
@@ -5761,27 +5760,79 @@ if authentication_status:
                     else:
                         st.markdown("No Shipments yet from this vessel!")
                 with inv4tab2:
-                    combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
-                    combined["Batch"]=combined["Batch"].astype(str)
+                    #raw_ro = json.loads(ro)
+                    grouped_df = inv_bill_of_ladings.groupby('ocean_bill_of_lading')['release_order'].agg(set)
+                    bols=grouped_df.T.to_dict()
+                    #st.write(bol_mapping)
                     
-                    #no_of_unaccounted=Inventory[Inventory["Accounted"]==False]["Bales"].sum()/8
-                    #st.write(f'**Unaccounted Units Registered : {no_of_unaccounted} Units/{no_of_unaccounted*2} Tons**')
                     
-                    temp=inv_bill_of_ladings.groupby("ocean_bill_of_lading")[["quantity"]].sum()
-                    temp1=combined.groupby("Ocean B/L")[["Bales","Shipped","Remaining"]].sum()/8
-                    temp=pd.merge(temp, temp1, left_index=True, right_index=True, how='outer', suffixes=('_df1', '_df2'))
-                    temp=temp[["Bales","quantity","Remaining"]]
+                    
+                    
+                    bols_allocated={}
+                    for rel in raw_ro:
+                        for sale in raw_ro[rel]:
+                            member=raw_ro[rel][sale]['ocean_bill_of_lading']
+                            if member not in bols_allocated:
+                                bols_allocated[member]={}
+                                bols_allocated[member]["RO"]=rel
+                                bols_allocated[member]["Total"]=raw_ro[rel][sale]['total']
+                                bols_allocated[member]["Remaining"]=raw_ro[rel][sale]['remaining']
+                            else:
+                                bols_allocated[member]["RO"]=rel
+                                bols_allocated[member]["Total"]+=raw_ro[rel][sale]['total']
+                                bols_allocated[member]["Remaining"]+=raw_ro[rel][sale]['remaining']
+                    
+                    #raw_ro = json.loads(ro)
+                    grouped_df = inv_bill_of_ladings.groupby('ocean_bill_of_lading')['release_order'].agg(set)
+                    bols=grouped_df.T.to_dict()
+                    
+                    
+                    
+                    
+                    
+                    grouped_df = inv_bill_of_ladings.groupby(['release_order','ocean_bill_of_lading','destination'])[['quantity']].agg(sum)
+                    info=grouped_df.T.to_dict()
+                    info_=info.copy()
+                    for bol in bols: #### for each bill of lading
+                        for rel_ord in bols[bol]:##   (for each release order on that bill of lading)
+                            found_keys = [key for key in info.keys() if rel_ord in key]
+                            for key in found_keys:
+                                #print(key)
+                                qt=info[key]['quantity']
+                                info_.update({key:{'wrap':bol_mapping[bol]['grade'],'total':sum([raw_ro[rel_ord][sales]['total'] for sales in raw_ro[rel_ord]]) if rel_ord in ro else 0,
+                                                  'shipped':qt,'remaining':sum([raw_ro[rel_ord][sales]['remaining'] for sales in raw_ro[rel_ord]])}})
+                    new=pd.DataFrame(info_).T
+                    new=new.reset_index()
+                    new.groupby('level_1')['remaining'].sum()
+                    
+                    temp1=new.groupby("level_1")[["total","shipped","remaining"]].sum()
+                    temp2=combined.groupby("Ocean B/L")[["Bales","Shipped","Remaining"]].sum()/8
+                    temp=temp2.copy()
+                    temp["Shipped"]=temp.index.map(lambda x: temp1.loc[x,"shipped"] if x in temp1.index else 0)
                     temp.columns=["Total","Shipped","Remaining"]
-                    temp["Remaining"]=temp.Total-temp.Shipped
+                    temp.columns=["Total","Shipped","Remaining"]
+                    
+                    temp.insert(2,"Damaged",[1,0,5,2,2,0,0,0])
+                    temp["Remaining"]=temp.Total-temp.Shipped-temp.Damaged
+                    
+                    temp=temp.astype(int)
+                    
+                    temp.insert(1,"Allocated to ROs",[bols_allocated[i]["Total"] for i in temp.index])
+                    temp.insert(3,"Remaining on ROs",[bols_allocated[i]["Remaining"] for i in temp.index])
+                    temp["Remaining After ROs"]=temp["Total"] -temp["Allocated to ROs"]-temp["Damaged"]
                     temp.loc["TOTAL"]=temp.sum(axis=0)
+                                       
                     tempo=temp*2
-                    inv_col1,inv_col2=st.columns([2,2])
-                    with inv_col1:
-                        st.subheader("By Ocean BOL,UNITS")
-                        st.dataframe(temp)
-                    with inv_col2:
-                        st.subheader("By Ocean BOL,TONS")
-                        st.dataframe(tempo)
+                    #inv_col1,inv_col2=st.columns([2,2])
+                       # with inv_col1:
+                    st.subheader("By Ocean BOL,UNITS")
+                    st.dataframe(temp)
+                    #with inv_col2:
+                    st.subheader("By Ocean BOL,TONS")
+                    st.dataframe(tempo)  
+
+
+                
                 with inv4tab3:
                     alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
                     alien_vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308"])
