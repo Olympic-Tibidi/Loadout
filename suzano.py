@@ -4282,6 +4282,28 @@ if authentication_status:
                         
                         
                         
+                        bols_allocated={}
+                        for rel in raw_ro:
+                            for sale in raw_ro[rel]:
+                                member=raw_ro[rel][sale]['ocean_bill_of_lading']
+                                if member not in bols_allocated:
+                                    bols_allocated[member]={}
+                                    bols_allocated[member]["RO"]=rel
+                                    bols_allocated[member]["Total"]=raw_ro[rel][sale]['total']
+                                    bols_allocated[member]["Remaining"]=raw_ro[rel][sale]['remaining']
+                                else:
+                                    bols_allocated[member]["RO"]=rel
+                                    bols_allocated[member]["Total"]+=raw_ro[rel][sale]['total']
+                                    bols_allocated[member]["Remaining"]+=raw_ro[rel][sale]['remaining']
+                        
+                        #raw_ro = json.loads(ro)
+                        grouped_df = inv_bill_of_ladings.groupby('ocean_bill_of_lading')['release_order'].agg(set)
+                        bols=grouped_df.T.to_dict()
+                        
+                        
+                        
+                        
+                        
                         grouped_df = inv_bill_of_ladings.groupby(['release_order','ocean_bill_of_lading','destination'])[['quantity']].agg(sum)
                         info=grouped_df.T.to_dict()
                         info_=info.copy()
@@ -4306,8 +4328,15 @@ if authentication_status:
                         
                         temp.insert(2,"Damaged",[1,0,5,2,2,0,0,0])
                         temp["Remaining"]=temp.Total-temp.Shipped-temp.Damaged
-                        temp.loc["TOTAL"]=temp.sum(axis=0)
+                        
                         temp=temp.astype(int)
+                        
+                        temp.insert(1,"Allocated to ROs",[bols_allocated[i]["Total"] for i in temp.index])
+                        temp.insert(3,"Remaining on ROs",[bols_allocated[i]["Remaining"] for i in temp.index])
+                        temp["Remaining After ROs"]=temp["Total"] -temp["Allocated to ROs"]-temp["Damaged"]
+                        temp.loc["TOTAL"]=temp.sum(axis=0)
+                        
+                        
                         tempo=temp*2
 
                         inv_col1,inv_col2=st.columns([2,2])
