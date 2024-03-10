@@ -69,6 +69,8 @@ from helper import get_gov_weather
 #from streamlit_modal import Modal
 
 st.set_page_config(layout="wide")
+target_bucket="olym_suzano"
+utc_difference=8
 
 labor_issue=False
 secondary=True
