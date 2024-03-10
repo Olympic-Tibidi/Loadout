@@ -355,58 +355,11 @@ if authentication_status:
     if username == 'ayilmaz' or username=='gatehouse':
         st.subheader("PORT OF OLYMPIA TOS")
         st.write(f'Welcome *{name}*')
-        
-        #forecast=get_weather()
-        
-        
-        
-        #with st.sidebar.container(border=True):
-            #st.markdown(f"Temperature: {forecast['current']['temp_f']}")
-          #  st.markdown(f"Conditions: {forecast['current']['condition']['text']}")
-          #  st.markdown(f"Wind: {forecast['current']['wind_dir']}-{forecast['current']['wind_mph']}")
-          #  st.markdown(f"Cloud Cover: %{forecast['current']['cloud']}")
-         #   #st.markdown(f"Chance of Rain Today: %{forecast['forecast']['forecastday'][0]['day']['daily_chance_of_rain']} ")
-          #  st.markdown(f"Current Precipitation: {forecast['current']['precip_in']} Inches")
-            #st.markdown(f"Day's Total Expected Rain: {forecast['forecast']['forecastday'][0]['day']['totalprecip_in']} Inches")
-       #     events=[]
-        #    for i,j in enumerate(forecast['forecast']['forecastday'][:3]):
-        #        if forecast['forecast']['forecastday'][i]['astro']['moon_phase'] in ['New Moon','Full Moon']:
-         #           events.append(f"{forecast['forecast']['forecastday'][i]['astro']['moon_phase']} Coming up in {i} {'days' if i>1 else 'day'}. Check for King Tides for the following days.")
-         #   if len(events)>0:
-         #       st.warning(events[0])
-        
-        
-               
-        
-        
-
-            
-        
-            
-            
-              
-
-            
-                        
-                                
-        
-                        
-        
-        ##########  LOAD OUT  ##############
-        
-        
-        
-       
-                    
-            
-                    
-                        
-        ##########################################################################
-        
-                
-   
-            
-                   
+        st.set_page_config(
+                    page_title="Hello",
+                    page_icon="👋",
+                )
+      
                 
 
 
