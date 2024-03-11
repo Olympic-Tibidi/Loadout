@@ -142,21 +142,21 @@ def send_email_with_attachment(subject, body, sender, recipients, password, file
         smtp_server.login(sender, password)
         smtp_server.sendmail(sender, recipients, msg.as_string())
     print("Message sent!")
-
+@st.cache_data
 def gcp_download(bucket_name, source_file_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
     data = blob.download_as_text()
     return data
-    
+@st.cache_data    
 def gcp_download_x(bucket_name, source_file_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
     data = blob.download_as_bytes()
     return data
-
+@st.cache_data
 def gcp_csv_to_df(bucket_name, source_file_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
@@ -165,6 +165,8 @@ def gcp_csv_to_df(bucket_name, source_file_name):
     df = pd.read_csv(io.BytesIO(data),index_col=None)
     print(f'Pulled down file from bucket {bucket_name}, file name: {source_file_name}')
     return df
+
+
 def upload_cs_file(bucket_name, source_file_name, destination_file_name): 
     storage_client = storage.Client()
 
@@ -173,6 +175,7 @@ def upload_cs_file(bucket_name, source_file_name, destination_file_name):
     blob = bucket.blob(destination_file_name)
     blob.upload_from_filename(source_file_name)
     return True
+    
 def upload_json_file(bucket_name, source_file_name, destination_file_name): 
     storage_client = storage.Client()
 
@@ -190,6 +193,7 @@ def upload_xl_file(bucket_name, uploaded_file, destination_blob_name):
     # Upload the file from the file object provided by st.file_uploader
     blob.upload_from_file(uploaded_file)
 # define function that list files in the bucket
+@st.cache_data
 def list_cs_files(bucket_name): 
     storage_client = storage.Client()
 
@@ -197,6 +201,7 @@ def list_cs_files(bucket_name):
     file_list = [file.name for file in file_list]
 
     return file_list
+@st.cache_data
 def list_cs_files_f(bucket_name, folder_name):
     storage_client = storage.Client()
 
@@ -207,6 +212,7 @@ def list_cs_files_f(bucket_name, folder_name):
     folder_files = [blob.name for blob in blobs if blob.name.startswith(folder_name)]
 
     return folder_files
+@st.cache_data
 def list_files_in_folder(bucket_name, folder_name):
     storage_client = storage.Client()
     blobs = storage_client.list_blobs(bucket_name, prefix=folder_name)
@@ -215,6 +221,7 @@ def list_files_in_folder(bucket_name, folder_name):
     filenames = [blob.name.split("/")[-1] for blob in blobs if "/" in blob.name]
 
     return filenames
+@st.cache_data
 def list_files_in_subfolder(bucket_name, folder_name):
     storage_client = storage.Client()
     blobs = storage_client.list_blobs(bucket_name, prefix=folder_name, delimiter='/')
@@ -356,7 +363,7 @@ def gen_bill_of_lading():
     except:
         bill_of_lading_number=11502400
     return bill_of_lading_number,bill_of_ladings
-
+@st.cache_data
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     return df.to_csv().encode('utf-8')
@@ -465,105 +472,8 @@ if authentication_status:
         st.markdown(custom_style, unsafe_allow_html=True)
               
         if select=="ADMIN" :
-            admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","STORAGE"])
-            with admin_tab4:
-                maintenance=False
-                if not maintenance:
-                    def calculate_balance(start_tons, daily_rate, storage_rate):
-                        balances={}
-                        tons_remaining = start_tons
-                        accumulated=0
-                        day=1
-                        while tons_remaining>daily_rate:
-                            #print(day)
-                            balances[day]={"Remaining":tons_remaining,"Charge":0,"Accumulated":0}
-                            if day % 7 < 5:  # Consider only weekdays
-                                tons_remaining-=daily_rate
-                                #print(tons_remaining)
-                                
-                                balances[day]={"Remaining":tons_remaining,"Charge":0,"Accumulated":0}
-                    
-                                # If storage free days are over, start applying storage charges
-                            elif day % 7 in ([5,6]):
-                                balances[day]={"Remaining":tons_remaining,"Charge":0,"Accumulated":accumulated}
-                            if day > free_days_till:
-                                charge = round(tons_remaining*storage_rate,2)  # You can adjust the storage charge after the free days
-                                accumulated+=charge
-                                accumulated=round(accumulated,2)
-                                balances[day]={"Remaining":tons_remaining,"Charge":charge,"Accumulated":accumulated}
-                            
-                            day+=1
-                        return balances
-                        
-                    here1,here2,here3=st.columns([2,5,3])
-                    
-                    with here1:
-                        with st.container(border=True):
-                            initial_tons =st.number_input("START TONNAGE", min_value=1000, help=None, on_change=None,step=50, disabled=False, label_visibility="visible",key="fas2aedseq")
-                            daily_rate=st.slider("DAILY SHIPMENT TONNAGE",min_value=248, max_value=544, step=10,key="fdee2a")
-                            storage_rate = st.number_input("STORAGE RATE DAILY ($)",value=0.15, help="dsds", on_change=None, disabled=False, label_visibility="visible",key="fdee2dsdseq")
-                            free_days_till = st.selectbox("FREE DAYS",[15,30,45,60])
-                    
-                    with here3:
-                        with st.container(border=True):    
-                            balances = calculate_balance(initial_tons, daily_rate, storage_rate)
-                            d=pd.DataFrame(balances).T
-                            start_date = pd.to_datetime('today').date()
-                            end_date = start_date + pd.DateOffset(days=120)  # Adjust as needed
-                            date_range = pd.date_range(start=start_date, end=end_date, freq='D')
-                            
-                            d.columns=["Remaining Tonnage","Daily Charge","Accumulated Charge"]
-                            d.rename_axis("Days",inplace=True)
-                            total=round(d.loc[len(d),'Accumulated Charge'],1)
-                            st.dataframe(d)
-
-                    with here2:
-                        with st.container(border=True):     
-                            st.write(f"######  Cargo: {initial_tons} - Loadout Rate/Day: {daily_rate} Tons - Free Days : {free_days_till}" )
-                            st.write(f"##### TOTAL CHARGES:  ${total}" )
-                            st.write(f"##### DURATION OF LOADOUT:  {len(d)} Days")
-                            st.write(f"##### MONTHLY REVENUE: ${round(total/len(d)*30,1)} ")
-                            fig = px.bar(d, x=d.index, y="Accumulated Charge", title="Accumulated Charges Over Days")
-        
-                            # Add a horizontal line for the monthly average charge
-                            average_charge = round(total/len(d)*30,1)
-                            fig.add_shape(
-                                dict(
-                                    type="line",
-                                    x0=d.index.min(),
-                                    x1=d.index.max(),
-                                    y0=average_charge,
-                                    y1=average_charge,
-                                    line=dict(color="red", dash="dash"),
-                                )
-                            )
-                            
-                            # Add annotation with the average charge value
-                            fig.add_annotation(
-                                x=d.index.max()//3,
-                                y=average_charge,
-                                text=f'Monthly Average Income: <b><i>${average_charge:.2f}</b></i> ',
-                                showarrow=True,
-                                arrowhead=4,
-                                ax=-50,
-                                ay=-30,
-                                font=dict(size=16),
-                                bgcolor='rgba(255, 255, 255, 0.6)',
-                            )
-                            
-                            # Set layout options
-                            fig.update_layout(
-                                xaxis_title="Days",
-                                yaxis_title="Accumulated Charge",
-                                sliders=[
-                                    {
-                                        "steps": [
-                                            {"args": [[{"type": "scatter", "x": d.index, "y": d["Accumulated Charge"]}], "layout"], "label": "All", "method": "animate"},
-                                        ],
-                                    }
-                                ],
-                            )
-                            st.plotly_chart(fig)
+            admin_tab1,admin_tab2,admin_tab3=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","STORAGE"])
+            
                     
             with admin_tab2:
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
