@@ -472,7 +472,7 @@ if authentication_status:
         st.markdown(custom_style, unsafe_allow_html=True)
               
         if select=="ADMIN" :
-            admin_tab1,admin_tab2,admin_tab3=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","STORAGE"])
+            admin_tab1,admin_tab2,admin_tab3=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S"])
             
                     
             with admin_tab2:
