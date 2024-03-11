@@ -1274,11 +1274,11 @@ if authentication_status:
                 #st.write(liste)
                 work_order_=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",liste,index=0 if st.session_state.work_order_ else 0) 
                 st.session_state.work_order_=work_order_
-                work_order=work_order_.split(" ")[0]
+                work_order=st.session_state.work_order_.split(" ")[0]
                 order=["001","002","003","004","005","006"]
                 
                 current_release_order=work_order
-                current_sales_order=work_order_.split(" ")[1][1:]
+                current_sales_order=st.session_state.work_order_.split(" ")[1][1:]
                 vessel=dispatched[work_order][current_sales_order]["vessel"]
                 destination=dispatched[work_order][current_sales_order]['destination']
                 
@@ -1403,6 +1403,8 @@ if authentication_status:
                     placeholder = st.empty()
                     with placeholder.container():
                         vehicle_id=st.text_input("**:blue[Vehicle ID]**",value="",key=7)
+                        if not vehicle_id:
+                            st.stop()
                     
                         mf=True
                         load_mf_number_issued=False
@@ -1437,11 +1439,9 @@ if authentication_status:
                                 load_mf_number_issued=False  
                            
                         foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=8)
-                        if not foreman_quantity:
-                            st.stop()
+                       
                         foreman_bale_quantity=st.number_input("**:blue[ENTER Quantity of Bales]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=123)
-                        if not foreman_bale_quantity:
-                            st.stop()
+                    
                     click_clear1 = st.button('CLEAR VEHICLE-QUANTITY INPUTS', key=34)
                     if click_clear1:
                          with placeholder.container():
