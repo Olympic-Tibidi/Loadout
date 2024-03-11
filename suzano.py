@@ -1,4 +1,4 @@
-import streamlit as st
+    import streamlit as st
 import streamlit.components.v1 as components
 #import cv2
 import numpy as np
@@ -1437,7 +1437,11 @@ if authentication_status:
                                 load_mf_number_issued=False  
                            
                         foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=8)
+                        if not foreman_quantity:
+                            st.stop()
                         foreman_bale_quantity=st.number_input("**:blue[ENTER Quantity of Bales]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=123)
+                        if not foreman_bale_quantity:
+                            st.stop()
                     click_clear1 = st.button('CLEAR VEHICLE-QUANTITY INPUTS', key=34)
                     if click_clear1:
                          with placeholder.container():
@@ -1465,7 +1469,11 @@ if authentication_status:
                                    yes=False
                                    load_mf_number_issued=False  
                              foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=18)
+                             if not foreman_quantity:
+                                st.stop()
                              foreman_bale_quantity=st.number_input("**:blue[ENTER Quantity of Bales]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=1123)
+                             if not foreman_bale_quantity:
+                                st.stop()
                              
                            
                     
@@ -1587,6 +1595,7 @@ if authentication_status:
                     click_clear = st.button('CLEAR SCANNED INPUTS', key=3)
                     if click_clear:
                         load_input = placeholder1.text_area("**UNITS**",value="",height=300,key=2)#
+                        
                         bale_load_input=placeholder2.text_area("**INDIVIDUAL BALES**",value="",height=300,key=1121)#
                     if load_input is not None :
                         textsplit = load_input.splitlines()
