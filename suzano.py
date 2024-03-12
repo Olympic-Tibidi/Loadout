@@ -1403,8 +1403,7 @@ if authentication_status:
                     placeholder = st.empty()
                     with placeholder.container():
                         vehicle_id=st.text_input("**:blue[Vehicle ID]**",value="",key=7)
-                        if not vehicle_id:
-                            st.stop()
+                        
                     
                         mf=True
                         load_mf_number_issued=False
@@ -1469,11 +1468,9 @@ if authentication_status:
                                    yes=False
                                    load_mf_number_issued=False  
                              foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=18)
-                             if not foreman_quantity:
-                                st.stop()
+                             
                              foreman_bale_quantity=st.number_input("**:blue[ENTER Quantity of Bales]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=1123)
-                             if not foreman_bale_quantity:
-                                st.stop()
+                            
                              
                            
                     
