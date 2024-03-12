@@ -2655,19 +2655,17 @@ with Profiler():
                         st.markdown(rf'**Destination : {destination}**')
                         st.markdown(rf'**VESSEL-{vessel}**')
                         #st.write (pd.DataFrame(temp.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
-                        #st.write (temp.items())
+                 
                     with sub_load_col2:
                         st.markdown(rf'**Ocean B/L: {ocean_bill_of_}**')
                         st.markdown(rf'**Type : {wrap_dict[wrap]}**')
                         st.markdown(rf'**Prep": {unitized}**')
                         #st.write (pd.DataFrame(temp2.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
-                        #st.write (temp2.items())
+                   
                         
                     with sub_load_col3:
                         
-                        #st.markdown(rf'**Total Quantity : {quant_} Units - {quant_*2} Tons**')
-                        #st.markdown(rf'**Shipped : {ship_} Units - {ship_*2} Tons**')
-                        
+                       
                         if remaining<=10:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
     
@@ -2678,8 +2676,7 @@ with Profiler():
                         
                     
                         #st.write (pd.DataFrame(temp5.items(),columns=["TONNAGE","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
-                        st.write (temp5.items())
-                        temp5={"<b>Total Tonnage":quant_*2,"<b>Shipped Tonnage":ship_*2,"<b>Remaining Tonnage":quant_*2-(ship_*2)}
+                        
                         st.markdown(rf'**Total Tonnage : {quant_*2}**')
                         st.markdown(rf'**Shipped Tonnage : {ship_*2}**')
                         st.markdown(rf'**Remaining Tonnage": {remaining*2}**')
