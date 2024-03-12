@@ -2677,7 +2677,7 @@ with Profiler():
                         
                     
                         #st.write (pd.DataFrame(temp5.items(),columns=["TONNAGE","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
-                        st.write (temp4.items())
+                        st.write (temp5.items())
                 
                 
                 with load_col2:
