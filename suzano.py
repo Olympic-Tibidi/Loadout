@@ -138,21 +138,21 @@ def send_email_with_attachment(subject, body, sender, recipients, password, file
         smtp_server.login(sender, password)
         smtp_server.sendmail(sender, recipients, msg.as_string())
     print("Message sent!")
-@st.cache_data
+
 def gcp_download(bucket_name, source_file_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
     data = blob.download_as_text()
     return data
-@st.cache_data
+
 def gcp_download_x(bucket_name, source_file_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
     data = blob.download_as_bytes()
     return data
-@st.cache_data
+
 def gcp_csv_to_df(bucket_name, source_file_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
@@ -188,8 +188,7 @@ def upload_xl_file(bucket_name, uploaded_file, destination_blob_name):
 
     # Upload the file from the file object provided by st.file_uploader
     blob.upload_from_file(uploaded_file)
-# define function that list files in the bucket
-@st.cache_data
+
 def list_cs_files(bucket_name): 
     storage_client = storage.Client()
 
@@ -197,7 +196,7 @@ def list_cs_files(bucket_name):
     file_list = [file.name for file in file_list]
 
     return file_list
-@st.cache_data
+
 def list_cs_files_f(bucket_name, folder_name):
     storage_client = storage.Client()
 
@@ -208,7 +207,7 @@ def list_cs_files_f(bucket_name, folder_name):
     folder_files = [blob.name for blob in blobs if blob.name.startswith(folder_name)]
 
     return folder_files
-@st.cache_data
+
 def list_files_in_folder(bucket_name, folder_name):
     storage_client = storage.Client()
     blobs = storage_client.list_blobs(bucket_name, prefix=folder_name)
@@ -217,7 +216,7 @@ def list_files_in_folder(bucket_name, folder_name):
     filenames = [blob.name.split("/")[-1] for blob in blobs if "/" in blob.name]
 
     return filenames
-@st.cache_data
+
 def list_files_in_subfolder(bucket_name, folder_name):
     storage_client = storage.Client()
     blobs = storage_client.list_blobs(bucket_name, prefix=folder_name, delimiter='/')
