@@ -2654,9 +2654,11 @@ with Profiler():
                         #st.markdown(rf'**Release Order-{current_release_order}**')
                         #st.markdown(rf'**Destination : {destination}**')
                         #st.markdown(rf'**VESSEL-{vessel}**')
-                        st.write (pd.DataFrame(temp.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        #st.write (pd.DataFrame(temp.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        st.write (temp.items())
                     with sub_load_col2:
-                        st.write (pd.DataFrame(temp2.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        #st.write (pd.DataFrame(temp2.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        st.write (temp2.items())
                         
                     with sub_load_col3:
                         
@@ -2666,9 +2668,10 @@ with Profiler():
                         if remaining<=10:
                             st.markdown(rf'**:red[CAUTION : Remaining : {remaining} Units]**')
     
-                        a=pd.DataFrame(temp3.items(),columns=["UNITS","Data"])
-                        a["Data"]=a["Data"].astype("float")
-                        st.write (a.to_html (escape=False, index=False), unsafe_allow_html=True)
+                       # a=pd.DataFrame(temp3.items(),columns=["UNITS","Data"])
+                        #a["Data"]=a["Data"].astype("float")
+                        #st.write (a.to_html (escape=False, index=False), unsafe_allow_html=True)
+                        st.write (temp3.items())
                    
                     with sub_load_col4:
                     
