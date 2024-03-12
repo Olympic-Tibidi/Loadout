@@ -2651,12 +2651,15 @@ with Profiler():
                     sub_load_col1,sub_load_col2,sub_load_col3,sub_load_col4=st.columns([3,3,3,3])
                     
                     with sub_load_col1:   
-                        #st.markdown(rf'**Release Order-{current_release_order}**')
-                        #st.markdown(rf'**Destination : {destination}**')
-                        #st.markdown(rf'**VESSEL-{vessel}**')
+                        st.markdown(rf'**Release Order-{current_release_order}**')
+                        st.markdown(rf'**Destination : {destination}**')
+                        st.markdown(rf'**VESSEL-{vessel}**')
                         #st.write (pd.DataFrame(temp.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
-                        st.write (temp.items())
+                        #st.write (temp.items())
                     with sub_load_col2:
+                        st.markdown(rf'**Ocean B/L": {ocean_bill_of_}**')
+                        st.markdown(rf'**Type : {wrap_dict[wrap]}**')
+                        st.markdown(rf'**Prep": {unitized}**')
                         #st.write (pd.DataFrame(temp2.items(),columns=["Inquiry","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                         st.write (temp2.items())
                         
