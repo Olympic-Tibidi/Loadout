@@ -1235,18 +1235,18 @@ with Profiler():
     
                     
                 
-                bill_mapping=gcp_download(target_bucket,"bill_mapping.json")
-                bill_mapping=json.loads(bill_mapping)
-                mill_info_=gcp_download(target_bucket,rf"mill_info.json")
+                bill_mapping=gcp_download(target_bucket,"bill_mapping.json")   ###### DOWNLOADS
+                bill_mapping=json.loads(bill_mapping)                    
+                mill_info_=gcp_download(target_bucket,rf"mill_info.json")   ###### DOWNLOADS
                 mill_info=json.loads(mill_info_)
-                mf_numbers_for_load=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
+                mf_numbers_for_load=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")  ###### DOWNLOADS
                 mf_numbers_for_load=json.loads(mf_numbers_for_load)
                 no_dispatch=0
                 number=None
                 if number not in st.session_state:
                     st.session_state.number=number
                 try:
-                    dispatched=gcp_download(target_bucket,"dispatched.json")
+                    dispatched=gcp_download(target_bucket,"dispatched.json")    ###### DOWNLOADS
                     dispatched=json.loads(dispatched)
                 except:
                     no_dispatch=1
@@ -1299,16 +1299,11 @@ with Profiler():
                     except:
                         
                         pass
-                    info=gcp_download(target_bucket,rf"release_orders/ORDERS/{work_order}.json")
+                    info=gcp_download(target_bucket,rf"release_orders/ORDERS/{work_order}.json")     ###### DOWNLOADS
                     info=json.loads(info)
                     
                     vessel=info[current_release_order][current_sales_order]["vessel"]
-                    #if st.checkbox("CLICK TO LOAD MIXED SKU"):
-                    #    try:
-                      #      next_item=gcp_download("olym_suzano",rf"release_orders/{dispatched['2']['vessel']}/{dispatched['2']['release_order']}.json")
-                      #      double_load=True
-                     #   except:
-                       #     st.markdown("**:red[ONLY ONE ITEM IN QUEUE ! ASK NEXT ITEM TO BE DISPATCHED!]**")
+                
                         
                     
                     st.markdown(rf'**:blue[CURRENTLY WORKING] :**')
@@ -1355,7 +1350,7 @@ with Profiler():
                             st.write (temp2.items())
                         with sub_load_col4:
                         
-                            st.write (pd.DataFrame(temp5.items(),columns=["TONNAGE","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                            #st.write (pd.DataFrame(temp5.items(),columns=["TONNAGE","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
                             st.write (temp5.items())
                     
                     with load_col2:
@@ -1634,7 +1629,7 @@ with Profiler():
                                 
                         ####   IF NOT double load
                         else:
-                            units_shipped=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+                            units_shipped=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")   ###### DOWNLOADS
                             units_shipped=pd.read_json(units_shipped).T
                             load_dict={}
                             for row in units_shipped.index[1:]:
@@ -1776,7 +1771,7 @@ with Profiler():
                                                     send_email(subject, body, sender, recipients, password)
                                                     time.sleep(0.1)
                                                     st.success(f"Added Unit {x} to Inventory!",icon="✅")
-                                                    st.rerun()
+                                                   # st.rerun()
                            
                                
                             loads={}
@@ -1822,7 +1817,7 @@ with Profiler():
                         
                         
                     
-                    load_bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+                    load_bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json") ###### DOWNLOADS
                     load_admin_bill_of_ladings=json.loads(load_bill_data)
                     load_admin_bill_of_ladings=pd.DataFrame.from_dict(load_admin_bill_of_ladings).T[1:]
                     load_admin_bill_of_ladings=load_admin_bill_of_ladings.sort_values(by="issued")
