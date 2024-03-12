@@ -2979,7 +2979,7 @@ with Profiler():
                             textsplit=[i for i in textsplit if len(i)>8]
                        
                             seen=set()
-                            alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
+                            #alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
                             for i,x in enumerate(textsplit):
                                 alternate_vessel=[ship for ship in bill_mapping if ship!=vessel][0]
                                 if x[:load_digit] in bill_mapping[alternate_vessel]:
@@ -3049,7 +3049,7 @@ with Profiler():
                             bale_textsplit = bale_load_input.splitlines()                       
                             bale_textsplit=[i for i in bale_textsplit if len(i)>8]                           
                             seen=set()
-                            alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
+                            #alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
                             for i,x in enumerate(bale_textsplit):
                                 alternate_vessel=[ship for ship in bill_mapping if ship!=vessel][0]
                                 if x[:load_digit] in bill_mapping[alternate_vessel]:
