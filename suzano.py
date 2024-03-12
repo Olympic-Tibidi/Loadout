@@ -2674,8 +2674,10 @@ with Profiler():
                         st.write (temp3.items())
                    
                     with sub_load_col4:
+                        
                     
-                        st.write (pd.DataFrame(temp5.items(),columns=["TONNAGE","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        #st.write (pd.DataFrame(temp5.items(),columns=["TONNAGE","Data"]).to_html (escape=False, index=False), unsafe_allow_html=True)
+                        st.write (temp4.items())
                 
                 
                 with load_col2:
