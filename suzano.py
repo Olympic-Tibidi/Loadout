@@ -2079,7 +2079,7 @@ if authentication_status:
                 
                         
         if select=="INVENTORY" :
-            #Inventory=gcp_csv_to_df(target_bucket, "kirkenes_with_ghosts_found.csv")
+           
             data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
             bill_of_ladings=json.loads(data)
             mill_info=json.loads(gcp_download(target_bucket,rf"mill_info.json"))
@@ -2234,8 +2234,8 @@ if authentication_status:
 
                 
             with inv4:
-                combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
-                combined["Batch"]=combined["Batch"].astype(str)
+                #combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
+                #combined["Batch"]=combined["Batch"].astype(str)
                 
                 inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
@@ -2244,7 +2244,7 @@ if authentication_status:
                 bol_mapping=gcp_download(target_bucket,rf"bol_mapping.json")
                 bol_mapping = json.loads(bol_mapping)
                 
-                maintenance=False
+                maintenance=True
                                 
                 if maintenance:
                     st.title("CURRENTLY UNDER MAINTENANCE, CHECK BACK LATER")
@@ -2377,9 +2377,9 @@ if authentication_status:
                         
                       
             with inv5:
-                inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
-                maintenance=False
+                #inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+                #inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
+                maintenance=True
                 if maintenance:
                     st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
                 else:
