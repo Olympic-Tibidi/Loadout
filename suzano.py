@@ -891,7 +891,7 @@ with Profiler():
                             files_in_folder=[i for i in files_in_folder if i not in junk.keys()]        ###  CHECK IF COMPLETED
                             
                             ###       Make Release order destinaiton map for dropdown menu
-                            
+                            st.write(release_order_dest_map)
                             release_order_dest_map={} 
                             for i in release_order_database:
                                 for sales in release_order_database[i]:
