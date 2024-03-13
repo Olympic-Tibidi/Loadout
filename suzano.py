@@ -2497,7 +2497,7 @@ with Profiler():
            
             
             double_load=False
-            st.write(dispatched)
+            
             if len(dispatched.keys())>0 and not no_dispatch:
                 menu_destinations={}
                 
