@@ -1255,7 +1255,7 @@ with Profiler():
                     no_dispatch=1
                     pass
                
-                
+                st.write(dispatched)
                 double_load=False
                 
                 if len(dispatched.keys())>0 and not no_dispatch:
