@@ -891,13 +891,14 @@ with Profiler():
                             files_in_folder=[i for i in files_in_folder if i not in junk.keys()]        ###  CHECK IF COMPLETED
                             
                             ###       Make Release order destinaiton map for dropdown menu
-                            st.write(release_order_dest_map)
+                            
                             release_order_dest_map={} 
                             for i in release_order_database:
                                 for sales in release_order_database[i]:
                                     release_order_dest_map[i]=release_order_database[i][sales]["destination"]
+                            st.write(release_order_dest_map)
                             destinations_of_release_orders=[f"{i} to {release_order_dest_map[i]}" for i in files_in_folder if i!=""]
-    
+                            
                             ###       Dropdown menu
                             nofile=0
                             requested_file_=st.selectbox("ACTIVE RELEASE ORDERS",destinations_of_release_orders)
