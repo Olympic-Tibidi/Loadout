@@ -2082,83 +2082,8 @@ with Profiler():
                 data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 bill_of_ladings=json.loads(data)
                 mill_info=json.loads(gcp_download(target_bucket,rf"mill_info.json"))
-                inv1,inv2,inv3,inv4,inv5,inv6=st.tabs(["DAILY ACTION","SUZANO DAILY REPORTS","EDI BANK","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS","RELEASE ORDER STATUS"])
-                with inv1:
-                    
-                    daily1,daily2,daily3=st.tabs(["TODAY'SHIPMENTS","TRUCKS ENROUTE","TRUCKS AT DESTINATION"])
-                    with daily1:
-                        now=datetime.datetime.now()-datetime.timedelta(hours=7)
-                        text=f"SHIPPED TODAY ON {datetime.datetime.strftime(now.date(),'%b %d, %Y')} - Indexed By Terminal Bill Of Lading"
-                        st.markdown(f"<p style='font-family:arial,monospace; color: #0099ff;text-shadow: 2px 2px 4px #99ccff;'>{text}</p>",unsafe_allow_html=True)     
-                        df_bill=pd.DataFrame(bill_of_ladings).T
-                        df_bill=df_bill[["vessel","release_order","destination","sales_order","ocean_bill_of_lading","grade","carrier_id","vehicle","quantity","issued"]]
-                        df_bill.columns=["VESSEL","RELEASE ORDER","DESTINATION","SALES ORDER","OCEAN BILL OF LADING","GRADE","CARRIER ID","VEHICLE NO","QUANTITY (UNITS)","ISSUED"]
-                        df_bill["Date"]=[None]+[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in df_bill["ISSUED"].values[1:]]
-                        
-                        df_today=df_bill[df_bill["Date"]==now.date()]
-                        df_today.insert(9,"TONNAGE",[i*2 for i in df_today["QUANTITY (UNITS)"]])
-                        df_today.loc["TOTAL","QUANTITY (UNITS)"]=df_today["QUANTITY (UNITS)"].sum()
-                        df_today.loc["TOTAL","TONNAGE"]=df_today["TONNAGE"].sum()
-                           
-                        st.dataframe(df_today)
-    
+                inv2,inv3,inv4,inv5,inv6=st.tabs(["SUZANO DAILY REPORTS","EDI BANK","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS","RELEASE ORDER STATUS"])
                 
-                    with daily2:
-                        enroute_vehicles={}
-                        arrived_vehicles={}
-                        today_arrived_vehicles={}
-                        for i in bill_of_ladings:
-                            if i!="11502400":
-                                date_strings=bill_of_ladings[i]["issued"].split(" ")
-                                
-                                ship_date=datetime.datetime.strptime(date_strings[0],"%Y-%m-%d")
-                                ship_time=datetime.datetime.strptime(date_strings[1],"%H:%M:%S").time()
-                                
-                                #st.write(bill_of_ladings[i]["issued"])
-                                destination=bill_of_ladings[i]['destination']
-                                truck=bill_of_ladings[i]['vehicle']
-                                distance=mill_info[bill_of_ladings[i]['destination']]["distance"]
-                                hours_togo=mill_info[bill_of_ladings[i]['destination']]["hours"]
-                                minutes_togo=mill_info[bill_of_ladings[i]['destination']]["minutes"]
-                                combined_departure=datetime.datetime.combine(ship_date,ship_time)
-                               
-                                estimated_arrival=combined_departure+datetime.timedelta(minutes=60*hours_togo+minutes_togo)
-                                estimated_arrival_string=datetime.datetime.strftime(estimated_arrival,"%B %d,%Y -- %H:%M")
-                                now=datetime.datetime.now()-datetime.timedelta(hours=7)
-                                if estimated_arrival>now:
-                                    
-                                    enroute_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
-                                                     "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}","ETA":estimated_arrival_string}
-                                elif estimated_arrival.date()==now.date() and estimated_arrival<now:
-                                    today_arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
-                                                     "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}",
-                                                                     "ARRIVAL TIME":estimated_arrival_string}
-                                else:
-                                    
-                                    arrived_vehicles[truck]={"DESTINATION":destination,"CARGO":bill_of_ladings[i]["ocean_bill_of_lading"],
-                                                     "QUANTITY":f'{2*bill_of_ladings[i]["quantity"]} TONS',"LOADED TIME":f"{ship_date.date()}---{ship_time}",
-                                                                     "ARRIVAL TIME":estimated_arrival_string,"ARRIVAL":estimated_arrival}
-                                            
-                        arrived_vehicles=pd.DataFrame(arrived_vehicles)
-                        arrived_vehicles=arrived_vehicles.rename_axis('TRUCK NO')
-                        arrived_vehicles=arrived_vehicles.T
-                        arrived_vehicles=arrived_vehicles.sort_values(by="ARRIVAL")
-                        today_arrived_vehicles=pd.DataFrame(today_arrived_vehicles)
-                        today_arrived_vehicles=today_arrived_vehicles.rename_axis('TRUCK NO')
-                        enroute_vehicles=pd.DataFrame(enroute_vehicles)
-                        enroute_vehicles=enroute_vehicles.rename_axis('TRUCK NO')
-                        st.dataframe(enroute_vehicles.T)                      
-                        for i in enroute_vehicles:
-                            st.write(f"Truck No : {i} is Enroute to {enroute_vehicles[i]['DESTINATION']} at {enroute_vehicles[i]['ETA']}")
-                    with daily3:
-                        select = st.radio(
-                                        "Select Today's Arrived Vehicles or All Delivered Vehicles",
-                                        ["TODAY'S ARRIVALS", "ALL ARRIVALS"])
-                        if select=="TODAY'S ARRIVALS":
-                            st.table(today_arrived_vehicles.T)
-                        if select=="ALL ARRIVALS":
-                            
-                            st.table(arrived_vehicles.drop(columns=['ARRIVAL']))
                 
                 with inv2:
                     
