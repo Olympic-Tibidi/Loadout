@@ -1263,10 +1263,10 @@ with Profiler():
                     
                     for rel_ord in dispatched.keys():
                         for sales in dispatched[rel_ord]:
-                            
+                            st.write(rel_ord,sales)
                             try:
                                 menu_destinations[f"{rel_ord} -{sales}"]=dispatched[rel_ord][sales]["destination"]
-                                
+                                st.write(rel_ord,sales)
                                 
                             except:
                                 pass
