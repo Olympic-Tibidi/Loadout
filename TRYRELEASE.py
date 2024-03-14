@@ -58,7 +58,7 @@ st.set_page_config(layout="wide")
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
-target_bucket="suzano2"
+target_bucket="olym_suzano"
 utc_difference=8
 
 def check_password():
