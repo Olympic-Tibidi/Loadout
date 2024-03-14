@@ -515,7 +515,7 @@ with Profiler():
                        
                         st.download_button(
                             label="DOWNLOAD EDI",
-                            data=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}",
+                            data=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}"),
                             file_name=f'{requested_edi_file}',
                             mime='text/csv')
     
