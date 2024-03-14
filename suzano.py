@@ -59,7 +59,7 @@ st.set_page_config(layout="wide")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 
 target_bucket="olym_suzano"
-utc_difference=7
+utc_difference=8
 
 def check_password():
     """Returns `True` if the user had a correct password."""
@@ -472,12 +472,11 @@ with Profiler():
                 admin_tab1,admin_tab2,admin_tab3=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S"])
                 
                         
-                with admin_tab2:   #### BILL OF LADINGS
+                with admin_tab2:
                     bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                     admin_bill_of_ladings=json.loads(bill_data)
                     admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
-                    admin_bill_of_ladings["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["issued"]]
-                    @st.cache_data
+                    
                     def convert_df(df):
                         # IMPORTANT: Cache the conversion to prevent computation on every rerun
                         return df.to_csv().encode('utf-8')
@@ -485,23 +484,29 @@ with Profiler():
                     if use:
                         now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
                         
+                        daily_admin_bill_of_ladings=admin_bill_of_ladings.copy()
+                        
+                        daily_admin_bill_of_ladings["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["issued"]]
+                        daily_admin_bill_of_ladings_=daily_admin_bill_of_ladings[daily_admin_bill_of_ladings["Date"]==now.date()]
                         choose = st.radio(
                                         "Select Today's Bill of Ladings or choose by Date or choose ALL",
                                         ["DAILY", "ACCUMULATIVE", "FIND BY DATE"],key="wewas")
                         if choose=="DAILY":
-                            display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==now.date()]
-                            st.dataframe(display_df)
+                            st.dataframe(daily_admin_bill_of_ladings_)
+                            csv=convert_df(daily_admin_bill_of_ladings_)
                             file_name=f'OLYMPIA_DAILY_BILL_OF_LADINGS-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                         elif choose=="FIND BY DATE":
                             required_date=st.date_input("CHOOSE DATE",key="dssar")
-                            display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==required_date]
-                            st.dataframe(display_df)
+                            filtered_daily_admin_bill_of_ladings=daily_admin_bill_of_ladings[daily_admin_bill_of_ladings["Date"]==required_date]
+                            
+                            st.dataframe(filtered_daily_admin_bill_of_ladings)
+                            csv=convert_df(filtered_daily_admin_bill_of_ladings)
                             file_name=f'OLYMPIA_BILL_OF_LADINGS_FOR-{datetime.datetime.strftime(required_date,"%m-%d,%Y")}.csv'
                         else:
-                            display_df=admin_bill_of_ladings
-                            st.write("DATA TOO LARGE, DOWNLOAD INSTEAD")
+                            st.dataframe(admin_bill_of_ladings)
+                            csv=convert_df(admin_bill_of_ladings)
                             file_name=f'OLYMPIA_ALL_BILL_OF_LADINGS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
-                        csv=convert_df(display_df)
+    
                         st.download_button(
                             label="DOWNLOAD BILL OF LADINGS",
                             data=csv,
@@ -511,12 +516,12 @@ with Profiler():
                     edi_files=list_files_in_subfolder(target_bucket, rf"EDIS/")
                     requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
                     try:
-                        #requested_edi=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}")
+                        requested_edi=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}")
                         st.text_area("EDI",requested_edi,height=400)                                
                        
                         st.download_button(
                             label="DOWNLOAD EDI",
-                            data=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}"),
+                            data=requested_edi,
                             file_name=f'{requested_edi_file}',
                             mime='text/csv')
     
@@ -880,11 +885,8 @@ with Profiler():
                         
                             files_in_folder_ = [i.replace(".json","") for i in list_files_in_subfolder(target_bucket, rf"release_orders/ORDERS/")]   ### REMOVE json extension from name
                             
-                            junk=gcp_download(target_bucket,rf"junk_release.json")
-                            junk=json.loads(junk)
                             files_in_folder=[i for i in files_in_folder_ if i not in completed_release_orders]        ###  CHECK IF COMPLETED
-                            files_in_folder=[i for i in files_in_folder if i not in junk.keys()]        ###  CHECK IF COMPLETED
-                            st.write(release_order_database)
+                          
                             
                             ###       Make Release order destinaiton map for dropdown menu
                             
@@ -892,7 +894,7 @@ with Profiler():
                             for i in release_order_database:
                                 for sales in release_order_database[i]:
                                     release_order_dest_map[i]=release_order_database[i][sales]["destination"]
-                            st.write(release_order_dest_map)
+                            
                             destinations_of_release_orders=[f"{i} to {release_order_dest_map[i]}" for i in files_in_folder if i!=""]
                             
                             ###       Dropdown menu
