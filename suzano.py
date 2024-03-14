@@ -498,6 +498,7 @@ with Profiler():
                             st.dataframe(display_df)
                             file_name=f'OLYMPIA_BILL_OF_LADINGS_FOR-{datetime.datetime.strftime(required_date,"%m-%d,%Y")}.csv'
                         else:
+                            display_df=admin_bill_of_ladings
                             st.write("DATA TOO LARGE, DOWNLOAD INSTEAD")
                             file_name=f'OLYMPIA_ALL_BILL_OF_LADINGS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                         csv=convert_df(display_df)
