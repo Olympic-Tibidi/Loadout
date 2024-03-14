@@ -494,7 +494,7 @@ with Profiler():
                             file_name=f'OLYMPIA_DAILY_BILL_OF_LADINGS-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                         elif choose=="FIND BY DATE":
                             required_date=st.date_input("CHOOSE DATE",key="dssar")
-                            display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]====required_date]
+                            display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==required_date]
                             st.dataframe(display_df)
                             file_name=f'OLYMPIA_BILL_OF_LADINGS_FOR-{datetime.datetime.strftime(required_date,"%m-%d,%Y")}.csv'
                         else:
