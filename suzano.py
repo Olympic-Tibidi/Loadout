@@ -489,7 +489,7 @@ with Profiler():
                                         "Select Today's Bill of Ladings or choose by Date or choose ALL",
                                         ["DAILY", "ACCUMULATIVE", "FIND BY DATE"],key="wewas")
                         if choose=="DAILY":
-                            display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]====now.date()]
+                            display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==now.date()]
                             st.dataframe(display_df)
                             file_name=f'OLYMPIA_DAILY_BILL_OF_LADINGS-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                         elif choose=="FIND BY DATE":
