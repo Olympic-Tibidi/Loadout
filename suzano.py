@@ -1213,7 +1213,7 @@ with Profiler():
                                             input_mf_numbers = input_mf_numbers.splitlines()
                                             input_mf_numbers=[i for i in input_mf_numbers if len(i)==10]####### CAREFUL THIS ASSUMES SAME DIGIT MF EACH TIME
                                        
-                                        if st.form_submit_button("SUBMIT MF NUMBERS",key="ioeru" ):
+                                        if st.form_submit_button("SUBMIT MF NUMBERS"):
                                             if release_order_number_mf not in mf_numbers.keys():   
                                                 mf_numbers[release_order_number_mf]=[]
                                             mf_numbers[release_order_number_mf]+=input_mf_numbers
