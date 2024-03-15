@@ -282,7 +282,7 @@ def add_release_order_data(file,release_order_number,destination,po_number,sales
     json_data = json.dumps(file)
     return json_data
 
-def edit_release_order_data(file,sales_order_item,quantity,tonnage,shipped,remaining,carrier_code):
+def edit_release_order_data(file,sales_order_item,quantity,tonnage,shipped,remaining,carrier_code,unitized):
        
     # Edit the loaded current dictionary.
     
@@ -291,6 +291,7 @@ def edit_release_order_data(file,sales_order_item,quantity,tonnage,shipped,remai
     file[release_order_number][sales_order_item]["shipped"]= shipped
     file[release_order_number][sales_order_item]["remaining"]= remaining
     file[release_order_number][sales_order_item]["carrier_code"]= carrier_code
+    file[release_order_number][sales_order_item]["unitized"]= unitized
     
     
        
@@ -805,7 +806,7 @@ with Profiler():
                             elif edit:
                                 data=gcp_download(target_bucket,rf"release_orders/ORDERS/{release_order_number}.json")
                                 to_edit=json.loads(data)
-                                temp=edit_release_order_data(to_edit,sales_order_item_edit,quantity_edit,tonnage_edit,shipped_edit,remaining_edit,carrier_code_edit)
+                                temp=edit_release_order_data(to_edit,sales_order_item_edit,quantity_edit,tonnage_edit,shipped_edit,remaining_edit,carrier_code_edit,unitized_edit)
                                 storage_client = storage.Client()
                                 bucket = storage_client.bucket(target_bucket)
                                 blob = bucket.blob(rf"release_orders/ORDERS/{release_order_number}.json")
