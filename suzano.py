@@ -429,7 +429,7 @@ pd.set_option('display.max_columns', None)
 pd.options.mode.chained_assignment = None  # default='warn'
 
 with Profiler():
-    st.title("My app")
+    st.title("...")
        
     
     with open('configure.yaml') as file:
