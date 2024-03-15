@@ -1189,7 +1189,7 @@ with Profiler():
                                     destination=release_order_database[ro][keys[0]]['destination']
                                     return destination
                                 
-                                gp_release_orders=[i for i in release_order_database if release_order_database[i]["001"]["destination"] in ["GP-Clatskanie,OR","GP-Halsey,OR"] ]   # and (release_order_database[i]["001"]["remaining"]>0|release_order_database[i]["001"]["remaining"]>0)
+                                #gp_release_orders=[i for i in release_order_database if release_order_database[i]["001"]["destination"] in ["GP-Clatskanie,OR","GP-Halsey,OR"] ]   # and (release_order_database[i]["001"]["remaining"]>0|release_order_database[i]["001"]["remaining"]>0)
                                 
                                 destinations_of_release_orders=[f"{i} to {release_order_dest_map[i]}" for i in release_order_database if check_home(i) in ["GP-Clatskanie,OR","GP-Halsey,OR"]]
                                 if len(destinations_of_release_orders)==0:
