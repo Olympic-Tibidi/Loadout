@@ -2174,8 +2174,8 @@ if authentication_status:
 
                 
             with inv4:
-                #combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
-                #combined["Batch"]=combined["Batch"].astype(str)
+                combined=gcp_csv_to_df(target_bucket,rf"combined.csv")
+                combined["Batch"]=combined["Batch"].astype(str)
                 
                 inv_bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 inv_bill_of_ladings=pd.read_json(inv_bill_of_ladings).T
