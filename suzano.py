@@ -1895,7 +1895,7 @@ if authentication_status:
             #raw_ro = json.loads(ro)
             bol_mapping = map["bol_mapping"]
             
-            suzano,edi_bank,main_inventory,mill_progress,status=st.tabs(["SUZANO DAILY REPORTS","EDI BANK","MAIN INVENTORY","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS","RELEASE ORDER STATUS"])
+            suzano,edi_bank,main_inventory,status,mill_progress=st.tabs(["SUZANO DAILY REPORTS","EDI BANK","MAIN INVENTORY","RELEASE ORDER STATUS","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
             
             with suzano:
                 
