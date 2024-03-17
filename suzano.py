@@ -64,7 +64,7 @@ st.set_page_config(layout="wide")
 #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = st.secrets['private_key']
 
-target_bucket="new_suzano"
+target_bucket="suzano2"
 utc_difference=7
 
 def check_password():
@@ -1804,8 +1804,8 @@ with Profiler():
                                 body = f"EDI for Below attached.{newline}Release Order Number : {current_release_order} - Sales Order Number:{current_sales_order}{newline} Destination : {destination} Ocean Bill Of Lading : {ocean_bill_of_lading}{newline}Terminal Bill of Lading: {terminal_bill_of_lading} - Grade : {wrap} {newline}{2*quantity} tons {unitized} cargo were loaded to vehicle : {vehicle_id} with Carried ID : {carrier_code} {newline}Truck loading completed at {a_} {b_}"
                                 #st.write(body)           
                                 sender = "warehouseoly@gmail.com"
-                                #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                                recipients = ["afsiny@portolympia.com"]
+                                recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                                #recipients = ["afsiny@portolympia.com"]
                                 password = "xjvxkmzbpotzeuuv"
                         
                       
@@ -1862,8 +1862,8 @@ with Profiler():
                                     subject=f"UNREGISTERED UNITS SHIPPED TO {destination} on RELEASE ORDER {current_release_order}"
                                     body=f"{len([i for i in this_shipment_aliens])} unregistered units were shipped on {vehicle_id} to {destination} on {current_release_order}.<br>{[i for i in this_shipment_aliens]}"
                                     sender = "warehouseoly@gmail.com"
-                                    #recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
-                                    recipients = ["afsiny@portolympia.com"]
+                                    recipients = ["alexandras@portolympia.com","conleyb@portolympia.com", "afsiny@portolympia.com"]
+                                    #recipients = ["afsiny@portolympia.com"]
                                     password = "xjvxkmzbpotzeuuv"
                                     send_email(subject, body, sender, recipients, password)
                                 
