@@ -842,8 +842,8 @@ if authentication_status:
                    
                     with rls_tab3:
                         
-                        mf_numbers=gcp_download_new(target_bucket,rf"release_orders/mf_numbers.json")
-                        
+                        mf_numbers=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
+                        mf_numbers=json.loads(mf_numbers)
                         def check_home(ro):
                             destination=release_order_database[ro]['destination']
                             if destination not in ["GP-Clatskanie,OR","GP-Halsey,OR"]:
