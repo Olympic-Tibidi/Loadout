@@ -1892,7 +1892,7 @@ if authentication_status:
             #inv_bill_of_ladings=gcp_download_new(target_bucket,rf"terminal_bill_of_ladings.json")
             #inv_bill_of_ladings=pd.DataFrame(inv_bill_of_ladings).T
             raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
-            raw_ro = json.loads(ro)
+            raw_ro = json.loads(raw_ro)
             bol_mapping = map["bol_mapping"]
             
             suzano,edi_bank,main_inventory,status,mill_progress=st.tabs(["SUZANO DAILY REPORTS","EDI BANK","MAIN INVENTORY","RELEASE ORDER STATUS","SUZANO MILL SHIPMENT SCHEDULE/PROGRESS"])
