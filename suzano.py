@@ -64,7 +64,7 @@ st.set_page_config(layout="wide")
 #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "client_secrets.json"
 #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = st.secrets['private_key']
 
-target_bucket="new_suzano"
+target_bucket="new_suzano_spare"
 utc_difference=7
 
 def check_password():
@@ -773,14 +773,10 @@ if authentication_status:
                                     try:
                                         last=list(dispatch[requested_file].keys())[-1]
                                      
-                                        dispatch[requested_file][hangisi]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
-                                                    "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
-                                                     "release_order":requested_file,"sales_order":hangisi,"destination":destination,"ocean_bill_of_lading":target[hangisi]["ocean_bill_of_lading"],"batch":target[hangisi]["batch"]}
+                                        dispatch[requested_file][hangisi]={"release_order":requested_file,"sales_order":hangisi,"destination":destination}
                                     except:
                                         dispatch[requested_file]={}
-                                        dispatch[requested_file][hangisi]={"vessel":vessel,"date":datetime.datetime.strftime(datetime.datetime.today()-datetime.timedelta(hours=7),"%b-%d-%Y"),
-                                                    "time":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=7),"%H:%M:%S"),
-                                                     "release_order":requested_file,"sales_order":hangisi,"destination":destination,"ocean_bill_of_lading":target[hangisi]["ocean_bill_of_lading"],"batch":target[hangisi]["batch"]}
+                                        dispatch[requested_file][hangisi]={"release_order":requested_file,"sales_order":hangisi,"destination":destination}
             
                                     
                                     json_data = json.dumps(dispatch)
@@ -817,9 +813,7 @@ if authentication_status:
                             st.markdown("**CURRENT DISPATCH QUEUE**")
                             try:
                                 for dispatched_release in dispatch.keys():
-                                    #st.write(dispatched_release)
                                     for sales in dispatch[dispatched_release].keys():
-                                        #st.write(sales)
                                         st.markdown(f'**Release Order = {dispatched_release}, Sales Item : {sales}, Destination : {dispatch[dispatched_release][sales]["destination"]} .**')
                             except:
                                 st.write("NO DISPATCH ITEMS")
@@ -1116,8 +1110,8 @@ if authentication_status:
                 
                 current_release_order=work_order
                 current_sales_order=work_order_.split(" ")[1][1:]
-                vessel=dispatched[work_order][current_sales_order]["vessel"]
-                destination=dispatched[work_order][current_sales_order]['destination']
+                vessel=release_order_database[current_release_order][current_sales_order]["vessel"]
+                destination=release_order_database[current_release_order]['destination']
                 
                 
                 
@@ -1782,11 +1776,7 @@ if authentication_status:
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
                             blob.upload_from_string(json_data)
-                            success_container2=st.empty()
-                            time.sleep(0.1)                            
-                            success_container2.success(f"Updated Release Order {current_release_order}",icon="✅")
-    
-                          
+                                                      
                             success_container3=st.empty()
                             time.sleep(0.1)                            
                             success_container3.success(f"Updated Release Order Database",icon="✅")
@@ -2146,24 +2136,31 @@ if authentication_status:
                                             "Shipped":raw_ro[ro][sale]['shipped'],
                                             "Remaining":raw_ro[ro][sale]['remaining']}
                 status_frame=pd.DataFrame(status_dict).T.set_index("Release Order #",drop=True)
+                active_frame=status_frame[status_frame["Remaining"]>0]
                 status_frame.loc["Total"]=status_frame[["Total","Shipped","Remaining"]].sum()
-                st.dataframe(status_frame)
+                
+                st.markdown(status_frame.to_html(render_links=True),unsafe_allow_html=True)
 
                 
                 release_orders = status_frame.index[:-1]
                 release_orders = pd.Categorical(release_orders)
-                
+                active_order_names = [f"{i} to {raw_ro[i]['destination']}" for i in active_frame.index]
+                destinations=[raw_ro[i]['destination'] for i in active_frame.index]
+                active_orders=[str(i) for i in active_frame.index]
                
                 fig = go.Figure()
-                fig.add_trace(go.Bar(x=release_orders, y=status_frame["Total"][:-1], name='Total', marker_color='lightgray'))
-                fig.add_trace(go.Bar(x=release_orders, y=status_frame["Shipped"][:-1], name='Shipped', marker_color='blue', opacity=0.7))
+                fig.add_trace(go.Bar(x=active_orders, y=active_frame["Total"], name='Total', marker_color='lightgray'))
+                fig.add_trace(go.Bar(x=active_orders, y=active_frame["Shipped"], name='Shipped', marker_color='blue', opacity=0.7))
                 remaining_data = [remaining if remaining > 0 else None for remaining in status_frame["Remaining"][:-1]]
-                fig.add_trace(go.Scatter(x=release_orders, y=remaining_data, mode='markers', name='Remaining', marker=dict(color='red', size=10)))
+                fig.add_trace(go.Scatter(x=active_orders, y=remaining_data, mode='markers', name='Remaining', marker=dict(color='red', size=10)))
                 
-                #annotations = [dict(x=release_order, y=total_quantity, text=destination, showarrow=True, arrowhead=4, ax=0, ay=-30) for release_order, total_quantity, destination in zip(release_orders, total_quantities, destinations)]
+                #annotations = [dict(x=release_order, y=total_quantity, text=destination, showarrow=True, arrowhead=4, ax=0, ay=-30) for release_order, total_quantity, destination in zip(active_orders, active_frame["Total"], destinations)]
                 #fig.update_layout(annotations=annotations)
 
-                fig.update_layout(title='Shipment Status',
+                # fig.add_annotation(x="3172296", y=800, text="destination",
+                #                        showarrow=True, arrowhead=4, ax=0, ay=-30)
+                
+                fig.update_layout(title='ACTIVE RELEASE ORDERS',
                                   xaxis_title='Release Orders',
                                   yaxis_title='Quantities',
                                   barmode='overlay',
@@ -2279,8 +2276,8 @@ if authentication_status:
             
             current_release_order=work_order
             current_sales_order=work_order_.split(" ")[1][1:]
-            vessel=dispatched[work_order][current_sales_order]["vessel"]
-            destination=dispatched[work_order][current_sales_order]['destination']
+            vessel=release_order_database[current_release_order][current_sales_order]["vessel"]
+            destination=release_order_database[current_release_order]['destination']
             
             
             
