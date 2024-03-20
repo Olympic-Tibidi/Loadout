@@ -2135,7 +2135,7 @@ if authentication_status:
                                             "Shipped":raw_ro[ro][sale]['shipped'],
                                             "Remaining":raw_ro[ro][sale]['remaining']}
                 status_frame=pd.DataFrame(status_dict).T.set_index("Release Order #",drop=True)
-                active_frame=status_frame[status_frame["Remaining"]>0]
+                active_frame_=status_frame[status_frame["Remaining"]>0]
                 status_frame.loc["Total"]=status_frame[["Total","Shipped","Remaining"]].sum()
                 active_frame.loc["Total"]=active_frame[["Total","Shipped","Remaining"]].sum()
                 
@@ -2144,14 +2144,14 @@ if authentication_status:
                 
                 release_orders = status_frame.index[:-1]
                 release_orders = pd.Categorical(release_orders)
-                active_order_names = [f"{i} to {raw_ro[i]['destination']}" for i in active_frame.index]
-                destinations=[raw_ro[i]['destination'] for i in active_frame.index]
+                active_order_names = [f"{i} to {raw_ro[i]['destination']}" for i in active_frame_.index]
+                destinations=[raw_ro[i]['destination'] for i in active_frame_.index]
                 active_orders=[str(i) for i in active_frame.index]
                
                 fig = go.Figure()
                 fig.add_trace(go.Bar(x=active_orders, y=active_frame["Total"], name='Total', marker_color='lightgray'))
                 fig.add_trace(go.Bar(x=active_orders, y=active_frame["Shipped"], name='Shipped', marker_color='blue', opacity=0.7))
-                remaining_data = [remaining if remaining > 0 else None for remaining in status_frame["Remaining"][:-1]]
+                remaining_data = [remaining if remaining > 0 else None for remaining in active_frame_["Remaining"]]
                 fig.add_trace(go.Scatter(x=active_orders, y=remaining_data, mode='markers', name='Remaining', marker=dict(color='red', size=10)))
                 
                 #annotations = [dict(x=release_order, y=total_quantity, text=destination, showarrow=True, arrowhead=4, ax=0, ay=-30) for release_order, total_quantity, destination in zip(active_orders, active_frame["Total"], destinations)]
