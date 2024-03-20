@@ -748,10 +748,10 @@ if authentication_status:
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[3]}**")
                                     st.markdown(f"**:blue[Destination : {target['destination']}]**")
-                                    st.write(f"        Total Quantity : {target[targets[3]]['quantity']} Units - {2*target[targets[3]]['total']} Metric Tons")
+                                    st.write(f"        Total Quantity : {target[targets[3]]['total']} Units - {2*target[targets[3]]['total']} Metric Tons")
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[3]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[3]]['batch']} WIRES : {target[targets[3]]['unitized']}")
-                                    st.write(f"        Units Shipped : {target[targets[3]]['shipped']} Units - {2*target[targets[3]]['shipped']} Metric Tons")
+                                    st.write(f"        Units Shipped : {target[targets[3]]['shipped']} Units - {2*target[targets[2]]['shipped']} Metric Tons")
                                     if 0<target[targets[3]]['remaining']<=10:
                                         st.markdown(f"**:red[Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons]**")
                                     elif target[targets[3]]['remaining']<=0:
