@@ -767,7 +767,7 @@ if authentication_status:
                             with st.container(border=True):
                                 dol1,dol2,dol3,dol4=st.columns([2,2,2,2])
                                 with dol1:
-                                   hangisi=st.selectbox("**:green[SELECT SALES ORDER ITEM TO DISPATCH]**",([i for i in targets if i not in sales_orders_completed]))
+                                    hangisi=st.selectbox("**:green[SELECT SALES ORDER ITEM TO DISPATCH]**",([i for i in targets if i not in sales_orders_completed]))
                                     if st.button("DISPATCH TO WAREHOUSE",key="lala"):
                                         try:
                                             last=list(dispatch[requested_file].keys())[-1]
