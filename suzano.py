@@ -2128,13 +2128,13 @@ if authentication_status:
                 sales_group=["001","002","003","004","005"]
                 for ro in raw_ro:
                     for sale in [i for i in raw_ro[ro] if i in sales_group]:
-                        status_dict[ro]={"Release Order #":ro,"Sales Order #":sale,
+                        status_dict[f"{ro}-{sale}"]={"Release Order #":ro,"Sales Order #":sale,
                                             "Destination":raw_ro[ro]['destination'],
                                             "Ocean BOL":raw_ro[ro][sale]['ocean_bill_of_lading'],
                                             "Total":raw_ro[ro][sale]['total'],
                                             "Shipped":raw_ro[ro][sale]['shipped'],
                                             "Remaining":raw_ro[ro][sale]['remaining']}
-                status_frame=pd.DataFrame(status_dict).T.set_index("Release Order #",drop=True)
+                status=pd.DataFrame(status_dict).T.set_index("Release Order #",drop=True)
                 active_frame=status_frame[status_frame["Remaining"]>0]
                 status_frame.loc["Total"]=status_frame[["Total","Shipped","Remaining"]].sum()
                 
