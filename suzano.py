@@ -765,11 +765,9 @@ if authentication_status:
                             
                   
                             with st.container(border=True):
-                                
-                                hangisi=st.selectbox("**:green[SELECT SALES ORDER ITEM TO DISPATCH]**",([i for i in targets if i not in sales_orders_completed]))
                                 dol1,dol2,dol3,dol4=st.columns([2,2,2,2])
                                 with dol1:
-                                   
+                                   hangisi=st.selectbox("**:green[SELECT SALES ORDER ITEM TO DISPATCH]**",([i for i in targets if i not in sales_orders_completed]))
                                     if st.button("DISPATCH TO WAREHOUSE",key="lala"):
                                         try:
                                             last=list(dispatch[requested_file].keys())[-1]
@@ -789,16 +787,6 @@ if authentication_status:
                                 
                                                
                                 with dol2:  
-                                    if st.button("CLEAR DISPATCH QUEUE!"):
-                                        dispatch={}
-                                        json_data = json.dumps(dispatch)
-                                        storage_client = storage.Client()
-                                        bucket = storage_client.bucket(target_bucket)
-                                        blob = bucket.blob(rf"dispatched.json")
-                                        blob.upload_from_string(json_data)
-                                        st.markdown(f"**CLEARED ALL DISPATCHES**")   
-                                with dol3:
-                                    
                                     try:
                                         item=st.selectbox("CHOOSE ITEM",dispatch.keys())
                                         if st.button("CLEAR DISPATCH ITEM"):                                       
@@ -811,6 +799,17 @@ if authentication_status:
                                             st.markdown(f"**CLEARED DISPATCH ITEM {item}**")   
                                     except:
                                         pass
+                                    
+                                with dol3:
+                                    if st.button("CLEAR DISPATCH QUEUE!"):
+                                        dispatch={}
+                                        json_data = json.dumps(dispatch)
+                                        storage_client = storage.Client()
+                                        bucket = storage_client.bucket(target_bucket)
+                                        blob = bucket.blob(rf"dispatched.json")
+                                        blob.upload_from_string(json_data)
+                                        st.markdown(f"**CLEARED ALL DISPATCHES**")   
+                                    
                             with st.container(border=True):
                                 
                                 st.markdown("**CURRENT DISPATCH QUEUE**")
