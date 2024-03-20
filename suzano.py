@@ -694,13 +694,11 @@ if authentication_status:
                                     st.write(f"       Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons")
                             with rel_col2:
                                 try:
-                                
                                     st.markdown(f"**:blue[Destination] : {target['destination']}**")
                                     if targets[1] in sales_orders_completed:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[1]} - COMPLETED]**")                                    
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
-                                    st.markdown(f"**:blue[Destination : {target['destination']}]**")
                                     st.write(f"        Total Quantity : {target[targets[1]]['total']} Units - {2*target[targets[1]]['total']} Metric Tons")                        
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[1]]['batch']} WIRES : {target[targets[1]]['unitized']}")
@@ -717,13 +715,11 @@ if authentication_status:
                 
                             with rel_col3:
                                 try:
-                                
                                     st.markdown(f"**:blue[PO Number] : {target['po_number']}**")
                                     if targets[2] in sales_orders_completed:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[2]} - COMPLETED]**")
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
-                                    st.markdown(f"**:blue[Destination : {target['destination']}]**")
                                     st.write(f"        Total Quantity : {target[targets[2]]['total']} Units - {2*target[targets[2]]['total']} Metric Tons")
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[2]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[2]]['batch']} WIRES : {target[targets[2]]['unitized']}")
@@ -747,7 +743,6 @@ if authentication_status:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[3]} - COMPLETED]**")
                                     else:
                                         st.markdown(f"**:blue[Sales Order Item] : {targets[3]}**")
-                                    st.markdown(f"**:blue[Destination : {target['destination']}]**")
                                     st.write(f"        Total Quantity : {target[targets[3]]['total']} Units - {2*target[targets[3]]['total']} Metric Tons")
                                     st.write(f"        Ocean Bill Of Lading : {target[targets[3]]['ocean_bill_of_lading']}")
                                     st.write(f"        Batch : {target[targets[3]]['batch']} WIRES : {target[targets[3]]['unitized']}")
