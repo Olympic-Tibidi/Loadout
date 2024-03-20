@@ -2137,6 +2137,7 @@ if authentication_status:
                 status_frame=pd.DataFrame(status_dict).T.set_index("Release Order #",drop=True)
                 active_frame_=status_frame[status_frame["Remaining"]>0]
                 status_frame.loc["Total"]=status_frame[["Total","Shipped","Remaining"]].sum()
+                active_frame=active_frame.copy()
                 active_frame.loc["Total"]=active_frame[["Total","Shipped","Remaining"]].sum()
                 
                 st.markdown(active_frame.to_html(render_links=True),unsafe_allow_html=True)
