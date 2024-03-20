@@ -1770,6 +1770,15 @@ if authentication_status:
                                 bucket = storage_client.bucket(target_bucket)
                                 blob = bucket.blob(rf"dispatched.json")
                                 blob.upload_from_string(json_data)       
+                            def check_complete(data,ro):
+                                complete=True
+                                for i in data[ro]:
+                                    if i in ["001","002","003","004","005"]:
+                                        if data[ro][i]['remaining']>0:
+                                            complete=False
+                                return complete
+                            if check_complete(release_order_database,current_release_order):
+                                release_order_database[current_release_order]['complete']=True
                             
                             json_data = json.dumps(release_order_database)
                             storage_client = storage.Client()
@@ -2937,7 +2946,15 @@ if authentication_status:
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"dispatched.json")
                             blob.upload_from_string(json_data)       
-                        
+                        def check_complete(data,ro):
+                            complete=True
+                            for i in data[ro]:
+                                if i in ["001","002","003","004","005"]:
+                                    if data[ro][i]['remaining']>0:
+                                        complete=False
+                            return complete
+                        if check_complete(release_order_database,current_release_order):
+                            release_order_database[current_release_order]['complete']=True
                         json_data = json.dumps(release_order_database)
                         storage_client = storage.Client()
                         bucket = storage_client.bucket(target_bucket)
