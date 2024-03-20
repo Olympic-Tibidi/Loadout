@@ -668,95 +668,96 @@ if authentication_status:
                         rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
                        
                         if nofile!=1 :         
-                                        
-                            targets=[i for i in target if i in ["001","002","003","004","005"]] 
-                            sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
-                            with rel_col1:
+                            with st.container():
                                 
-                                st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                                
-                                if targets[0] in sales_orders_completed:
-                                    st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
-                                    target0_done=True
+                                targets=[i for i in target if i in ["001","002","003","004","005"]] 
+                                sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
+                                with rel_col1:
                                     
-                                else:
-                                    st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
-                                
-                                st.write(f"        Total Quantity: {target[targets[0]]['total']} Units - {2*target[targets[0]]['total']} Metric Tons")
-                                st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
-                                st.write(f"        Batch : {target[targets[0]]['batch']} WIRES : {target[targets[0]]['unitized']}")
-                                st.write(f"        Units Shipped : {target[targets[0]]['shipped']} Units - {2*target[targets[0]]['shipped']} Metric Tons")
-                                if 0<target[targets[0]]['remaining']<=10:
-                                    st.markdown(f"**:red[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]**")
-                                elif target[targets[0]]['remaining']<=0:
-                                    st.markdown(f":orange[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]")                                                                        
-                                else:
-                                    st.write(f"       Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons")
-                            with rel_col2:
-                                try:
-                                    st.markdown(f"**:blue[Destination] : {target['destination']}**")
-                                    if targets[1] in sales_orders_completed:
-                                        st.markdown(f"**:orange[Sales Order Item : {targets[1]} - COMPLETED]**")                                    
-                                    else:
-                                        st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
-                                    st.write(f"        Total Quantity : {target[targets[1]]['total']} Units - {2*target[targets[1]]['total']} Metric Tons")                        
-                                    st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
-                                    st.write(f"        Batch : {target[targets[1]]['batch']} WIRES : {target[targets[1]]['unitized']}")
-                                    st.write(f"        Units Shipped : {target[targets[1]]['shipped']} Units - {2*target[targets[1]]['shipped']} Metric Tons")
-                                    if 0<target[targets[1]]['remaining']<=10:
-                                        st.markdown(f"**:red[Units Remaining : {target[targets[1]]['remaining']} Units - {2*target[targets[1]]['remaining']} Metric Tons]**")
-                                    elif target[targets[1]]['remaining']<=0:
-                                        st.markdown(f":orange[Units Remaining : {target[targets[1]]['remaining']} Units - {2*target[targets[1]]['remaining']} Metric Tons]")
-                                    else:
-                                        st.write(f"       Units Remaining : {target[targets[1]]['remaining']} Units - {2*target[targets[1]]['remaining']} Metric Tons")
+                                    st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                                    
+                                    if targets[0] in sales_orders_completed:
+                                        st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
+                                        target0_done=True
                                         
-                                except:
-                                    pass
+                                    else:
+                                        st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
+                                    
+                                    st.write(f"        Total Quantity: {target[targets[0]]['total']} Units - {2*target[targets[0]]['total']} Metric Tons")
+                                    st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
+                                    st.write(f"        Batch : {target[targets[0]]['batch']} WIRES : {target[targets[0]]['unitized']}")
+                                    st.write(f"        Units Shipped : {target[targets[0]]['shipped']} Units - {2*target[targets[0]]['shipped']} Metric Tons")
+                                    if 0<target[targets[0]]['remaining']<=10:
+                                        st.markdown(f"**:red[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]**")
+                                    elif target[targets[0]]['remaining']<=0:
+                                        st.markdown(f":orange[Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons]")                                                                        
+                                    else:
+                                        st.write(f"       Units Remaining : {target[targets[0]]['remaining']} Units - {2*target[targets[0]]['remaining']} Metric Tons")
+                                with rel_col2:
+                                    try:
+                                        st.markdown(f"**:blue[Destination] : {target['destination']}**")
+                                        if targets[1] in sales_orders_completed:
+                                            st.markdown(f"**:orange[Sales Order Item : {targets[1]} - COMPLETED]**")                                    
+                                        else:
+                                            st.markdown(f"**:blue[Sales Order Item] : {targets[1]}**")
+                                        st.write(f"        Total Quantity : {target[targets[1]]['total']} Units - {2*target[targets[1]]['total']} Metric Tons")                        
+                                        st.write(f"        Ocean Bill Of Lading : {target[targets[1]]['ocean_bill_of_lading']}")
+                                        st.write(f"        Batch : {target[targets[1]]['batch']} WIRES : {target[targets[1]]['unitized']}")
+                                        st.write(f"        Units Shipped : {target[targets[1]]['shipped']} Units - {2*target[targets[1]]['shipped']} Metric Tons")
+                                        if 0<target[targets[1]]['remaining']<=10:
+                                            st.markdown(f"**:red[Units Remaining : {target[targets[1]]['remaining']} Units - {2*target[targets[1]]['remaining']} Metric Tons]**")
+                                        elif target[targets[1]]['remaining']<=0:
+                                            st.markdown(f":orange[Units Remaining : {target[targets[1]]['remaining']} Units - {2*target[targets[1]]['remaining']} Metric Tons]")
+                                        else:
+                                            st.write(f"       Units Remaining : {target[targets[1]]['remaining']} Units - {2*target[targets[1]]['remaining']} Metric Tons")
+                                            
+                                    except:
+                                        pass
+                    
+                                with rel_col3:
+                                    try:
+                                        st.markdown(f"**:blue[PO Number] : {target['po_number']}**")
+                                        if targets[2] in sales_orders_completed:
+                                            st.markdown(f"**:orange[Sales Order Item : {targets[2]} - COMPLETED]**")
+                                        else:
+                                            st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
+                                        st.write(f"        Total Quantity : {target[targets[2]]['total']} Units - {2*target[targets[2]]['total']} Metric Tons")
+                                        st.write(f"        Ocean Bill Of Lading : {target[targets[2]]['ocean_bill_of_lading']}")
+                                        st.write(f"        Batch : {target[targets[2]]['batch']} WIRES : {target[targets[2]]['unitized']}")
+                                        st.write(f"        Units Shipped : {target[targets[2]]['shipped']} Units - {2*target[targets[2]]['shipped']} Metric Tons")
+                                        if 0<target[targets[2]]['remaining']<=10:
+                                            st.markdown(f"**:red[Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons]**")
+                                        elif target[targets[2]]['remaining']<=0:
+                                            st.markdown(f":orange[Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons]")
+                                        else:
+                                            st.write(f"       Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons")
+                                        
+                                        
+                                    except:
+                                        pass
                 
-                            with rel_col3:
-                                try:
-                                    st.markdown(f"**:blue[PO Number] : {target['po_number']}**")
-                                    if targets[2] in sales_orders_completed:
-                                        st.markdown(f"**:orange[Sales Order Item : {targets[2]} - COMPLETED]**")
-                                    else:
-                                        st.markdown(f"**:blue[Sales Order Item] : {targets[2]}**")
-                                    st.write(f"        Total Quantity : {target[targets[2]]['total']} Units - {2*target[targets[2]]['total']} Metric Tons")
-                                    st.write(f"        Ocean Bill Of Lading : {target[targets[2]]['ocean_bill_of_lading']}")
-                                    st.write(f"        Batch : {target[targets[2]]['batch']} WIRES : {target[targets[2]]['unitized']}")
-                                    st.write(f"        Units Shipped : {target[targets[2]]['shipped']} Units - {2*target[targets[2]]['shipped']} Metric Tons")
-                                    if 0<target[targets[2]]['remaining']<=10:
-                                        st.markdown(f"**:red[Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons]**")
-                                    elif target[targets[2]]['remaining']<=0:
-                                        st.markdown(f":orange[Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons]")
-                                    else:
-                                        st.write(f"       Units Remaining : {target[targets[2]]['remaining']} Units - {2*target[targets[2]]['remaining']} Metric Tons")
+                                with rel_col4:
+                                    try:
                                     
-                                    
-                                except:
-                                    pass
-            
-                            with rel_col4:
-                                try:
-                                
-                                    st.markdown(f"**:blue[...]**")
-                                    if targets[3] in sales_orders_completed:
-                                        st.markdown(f"**:orange[Sales Order Item : {targets[3]} - COMPLETED]**")
-                                    else:
-                                        st.markdown(f"**:blue[Sales Order Item] : {targets[3]}**")
-                                    st.write(f"        Total Quantity : {target[targets[3]]['total']} Units - {2*target[targets[3]]['total']} Metric Tons")
-                                    st.write(f"        Ocean Bill Of Lading : {target[targets[3]]['ocean_bill_of_lading']}")
-                                    st.write(f"        Batch : {target[targets[3]]['batch']} WIRES : {target[targets[3]]['unitized']}")
-                                    st.write(f"        Units Shipped : {target[targets[3]]['shipped']} Units - {2*target[targets[2]]['shipped']} Metric Tons")
-                                    if 0<target[targets[3]]['remaining']<=10:
-                                        st.markdown(f"**:red[Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons]**")
-                                    elif target[targets[3]]['remaining']<=0:
-                                        st.markdown(f":orange[Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons]")
-                                    else:
-                                        st.write(f"       Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons")
-                                    
-                                    
-                                except:
-                                    pass
+                                        st.markdown(f"**:blue[...]**")
+                                        if targets[3] in sales_orders_completed:
+                                            st.markdown(f"**:orange[Sales Order Item : {targets[3]} - COMPLETED]**")
+                                        else:
+                                            st.markdown(f"**:blue[Sales Order Item] : {targets[3]}**")
+                                        st.write(f"        Total Quantity : {target[targets[3]]['total']} Units - {2*target[targets[3]]['total']} Metric Tons")
+                                        st.write(f"        Ocean Bill Of Lading : {target[targets[3]]['ocean_bill_of_lading']}")
+                                        st.write(f"        Batch : {target[targets[3]]['batch']} WIRES : {target[targets[3]]['unitized']}")
+                                        st.write(f"        Units Shipped : {target[targets[3]]['shipped']} Units - {2*target[targets[2]]['shipped']} Metric Tons")
+                                        if 0<target[targets[3]]['remaining']<=10:
+                                            st.markdown(f"**:red[Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons]**")
+                                        elif target[targets[3]]['remaining']<=0:
+                                            st.markdown(f":orange[Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons]")
+                                        else:
+                                            st.write(f"       Units Remaining : {target[targets[3]]['remaining']} Units - {2*target[targets[3]]['remaining']} Metric Tons")
+                                        
+                                        
+                                    except:
+                                        pass
                             
                   
                             
