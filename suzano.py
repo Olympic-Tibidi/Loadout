@@ -665,11 +665,11 @@ if authentication_status:
                                     
                         number_of_sales_orders=len([i for i in target if i not in ["destination","po_number"]])   ##### WRONG CAUSE THERE IS NOW DESTINATION KEYS
                         
-                        rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
+                        
                        
                         if nofile!=1 :         
                             with st.container(border=True):
-                                
+                                rel_col1,rel_col2,rel_col3,rel_col4=container.columns([2,2,2,2])
                                 targets=[i for i in target if i in ["001","002","003","004","005"]] 
                                 sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
                                 with rel_col1:
