@@ -668,7 +668,7 @@ if authentication_status:
                         rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
                        
                         if nofile!=1 :         
-                            with st.container():
+                            with st.container(border=True):
                                 
                                 targets=[i for i in target if i in ["001","002","003","004","005"]] 
                                 sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
