@@ -551,9 +551,9 @@ if authentication_status:
                 carrier_list=map['carriers']
                 mill_info=map["mill_info"]
                       
-                release_order_tab1,release_order_tab2,release_order_tab3=st.tabs(["CREATE RELEASE ORDER","RELEASE ORDER DATABASE","RELEASE ORDER STATUS"])
+                release_order_tab1,release_order_tab2,release_order_tab3=st.tabs(["RELEASE ORDER DATABASE","CREATE RELEASE ORDER","RELEASE ORDER STATUS"])
                 
-                with release_order_tab1:   ###CREATE RELEASE ORDER
+                with release_order_tab2:   ###CREATE RELEASE ORDER
                    
                     add=st.checkbox("CHECK TO ADD TO EXISTING RELEASE ORDER",disabled=False)
                     edit=st.checkbox("CHECK TO EDIT EXISTING RELEASE ORDER")
@@ -645,7 +645,7 @@ if authentication_status:
                         
              
                         
-                with release_order_tab2:  ##   RELEASE ORDER DATABASE ##
+                with release_order_tab1:  ##   RELEASE ORDER DATABASE ##
                     
      
                     rls_tab1,rls_tab2,rls_tab3=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS","ENTER MF NUMBERS"])
