@@ -1980,7 +1980,7 @@ if authentication_status:
                     st.title("CURRENTLY UNDER MAINTENANCE, CHECK BACK LATER")
                                
                 else:
-                    daily,inventory,unregistered=st.tabs(["DAILY SHIPMENT REPORT","INVENTORY","UNREGISTERED LOTS FOUND"])
+                    inventory,daily,unregistered=st.tabs(["INVENTORY","DAILY SHIPMENT REPORT","UNREGISTERED LOTS FOUND"])
                     
                     with daily:
                         
