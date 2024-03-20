@@ -669,19 +669,19 @@ if authentication_status:
                        
                         if nofile!=1 :         
                             with st.container(border=True):
-                                rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
+                                rel_ccol1,rel_ccol2,rel_ccol3,rel_ccol4=st.columns([2,2,2,2])
                                 targets=[i for i in target if i in ["001","002","003","004","005"]] 
                                 sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
-                                with rel_col1:
+                                with rel_ccol1:
                                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                                with rel_col2:
+                                with rel_ccol2:
                                     st.markdown(f"**:blue[Destination] : {target['destination']}**")
-                                with rel_col3:
+                                with rel_ccol3:
                                     st.markdown(f"**:blue[PO Number] : {target['po_number']}**")
-                                with rel_col3:
+                                with rel_ccol3:
                                     st.markdown(f"**:blue[...]**")
                                 st.divider()
-                                
+                                rel_col1,rel_col2,rel_col3,rel_col4=st.columns([2,2,2,2])
                                 with rel_col1:
                                     
                                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
