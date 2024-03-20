@@ -886,6 +886,8 @@ if authentication_status:
                                 blob.upload_from_string(mf_data)
                             st.write(mf_numbers)
                 with release_order_tab3:  ### RELEASE ORDER STATUS
+                    raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
+                    raw_ro = json.loads(raw_ro)
                     status_dict={}
                     sales_group=["001","002","003","004","005"]
                     for ro in raw_ro:
