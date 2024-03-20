@@ -674,14 +674,14 @@ if authentication_status:
                             with rel_col1:
                                 
                                 st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
-                                st.markdown(f"**:blue[PO Number] : {target['po_number']}**")
+                                
                                 if targets[0] in sales_orders_completed:
                                     st.markdown(f"**:orange[Sales Order Item : {targets[0]} - COMPLETED]**")
                                     target0_done=True
                                     
                                 else:
                                     st.markdown(f"**:blue[Sales Order Item] : {targets[0]}**")
-                                st.markdown(f"**:blue[Destination] : {target['destination']}**")
+                                
                                 st.write(f"        Total Quantity: {target[targets[0]]['total']} Units - {2*target[targets[0]]['total']} Metric Tons")
                                 st.write(f"        Ocean Bill Of Lading : {target[targets[0]]['ocean_bill_of_lading']}")
                                 st.write(f"        Batch : {target[targets[0]]['batch']} WIRES : {target[targets[0]]['unitized']}")
@@ -695,7 +695,7 @@ if authentication_status:
                             with rel_col2:
                                 try:
                                 
-                                    st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                                    st.markdown(f"**:blue[Destination] : {target['destination']}**")
                                     if targets[1] in sales_orders_completed:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[1]} - COMPLETED]**")                                    
                                     else:
@@ -718,7 +718,7 @@ if authentication_status:
                             with rel_col3:
                                 try:
                                 
-                                    st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                                    st.markdown(f"**:blue[PO Number] : {target['po_number']}**")
                                     if targets[2] in sales_orders_completed:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[2]} - COMPLETED]**")
                                     else:
@@ -742,7 +742,7 @@ if authentication_status:
                             with rel_col4:
                                 try:
                                 
-                                    st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                                    st.markdown(f"**:blue[...]**")
                                     if targets[3] in sales_orders_completed:
                                         st.markdown(f"**:orange[Sales Order Item : {targets[3]} - COMPLETED]**")
                                     else:
