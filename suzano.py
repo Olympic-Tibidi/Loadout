@@ -813,7 +813,7 @@ if authentication_status:
                                         pass
                             with st.container(border=True):
                                 
-                            st.markdown("**CURRENT DISPATCH QUEUE**")
+                                st.markdown("**CURRENT DISPATCH QUEUE**")
                                 try:
                                     for dispatched_release in dispatch.keys():
                                         for sales in dispatch[dispatched_release].keys():
