@@ -673,6 +673,16 @@ if authentication_status:
                                 targets=[i for i in target if i in ["001","002","003","004","005"]] 
                                 sales_orders_completed=[k for k in targets if target[k]['remaining']<=0]
                                 with rel_col1:
+                                    st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
+                                with rel_col2:
+                                    st.markdown(f"**:blue[Destination] : {target['destination']}**")
+                                with rel_col3:
+                                    st.markdown(f"**:blue[PO Number] : {target['po_number']}**")
+                                with rel_col3:
+                                    st.markdown(f"**:blue[...]**")
+                                st.divider()
+                                
+                                with rel_col1:
                                     
                                     st.markdown(f"**:blue[Release Order Number] : {requested_file}**")
                                     
