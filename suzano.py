@@ -761,7 +761,7 @@ if authentication_status:
                             
                   
                             
-                            hangisi=st.selectbox("**:green[SELECT SALES ORDER ITEM TO DISPATCH]**",([i for i in ["001","002","003","004","005"] if i not in sales_orders_completed]))
+                            hangisi=st.selectbox("**:green[SELECT SALES ORDER ITEM TO DISPATCH]**",([i for i in targets if i not in sales_orders_completed]))
                             dol1,dol2,dol3,dol4=st.columns([2,2,2,2])
                             with dol1:
                                
