@@ -490,8 +490,8 @@ if authentication_status:
                 dfb=pd.DataFrame.from_dict(dfb).T[1:]
                 suz=gcp_download(target_bucket,rf"suzano_report.json")
                 suz=json.loads(suz)
-                rel_t=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
-                rel_t=json.loads(rel_t)
+                raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
+                raw_ro=json.loads(raw_ro)
                 def dict_compare(d1, d2):
                     d1_keys = set(d1.keys())
                     d2_keys = set(d2.keys())
