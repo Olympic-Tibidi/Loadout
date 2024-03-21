@@ -540,7 +540,8 @@ if authentication_status:
                     rel_t={i:extract_bol_shipped(raw_ro,i) for i in suz_t}
                     if compare_dict(suz_t,df_t):
                         st.markdown("All Checks Complete !")
-                        st.markdown("Suzano Report and BOL Database Matches")               
+                        st.markdown("Suzano Report and BOL Database Matches")       
+                        st.write(f"{len(suz_frame)} Shipments")
                         st.write(suz_t)
                         st.write(df_t)
             with admin_tab2:   #### BILL OF LADINGS
