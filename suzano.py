@@ -538,12 +538,24 @@ if authentication_status:
                     suz_t['GSSWJUV8556A']=suz_t['GSSWJUV8556A']-7
                     
                     rel_t={i:extract_bol_shipped(raw_ro,i) for i in suz_t}
-                    if compare_dict(suz_t,df_t):
-                        st.markdown("All Checks Complete !")
-                        st.markdown("Suzano Report and BOL Database Matches")       
-                        st.write(f"{len(suz_frame)} Shipments")
-                        st.write(suz_t)
-                        st.write(df_t)
+                    aud_col1,audcol2=st.columns(2)
+                    with aud_col1:
+                        
+                        if compare_dict(suz_t,df_t):
+                            st.markdown("All Checks Complete !")
+                            st.markdown("Suzano Report and BOL Database Matches")       
+                            st.write(f"{len(suz_frame)} Shipments")
+                            st.write(suz_t)
+                            st.write(df_t)
+
+                    with aud_col2:
+                        
+                        if compare_dict(rel_t,df_t):
+                            st.markdown("All Checks Complete !")
+                            st.markdown("Release Order Database and BOL Database Matches")       
+                            st.write(f"{len(suz_frame)} Shipments")
+                            
+                            
             with admin_tab2:   #### BILL OF LADINGS
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
