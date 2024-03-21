@@ -485,60 +485,64 @@ if authentication_status:
             admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","AUDIT"])
 
             with admin_tab4:
-                dfb=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                dfb=json.loads(dfb)
-                dfb=pd.DataFrame.from_dict(dfb).T[1:]
-                suz=gcp_download(target_bucket,rf"suzano_report.json")
-                suz=json.loads(suz)
-                raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
-                raw_ro=json.loads(raw_ro)
-                def dict_compare(d1, d2):
-                    d1_keys = set(d1.keys())
-                    d2_keys = set(d2.keys())
-                    shared_keys = d1_keys.intersection(d2_keys)
-                    added = d1_keys - d2_keys
-                    removed = d2_keys - d1_keys
-                    modified = {o : (d1[o], d2[o]) for o in shared_keys if d1[o] != d2[o]}
-                    same = set(o for o in shared_keys if d1[o] == d2[o])
-                    return added, removed, modified, same
-                
-                def extract_bol_shipped(data,bol):
-                    qt=0
-                    sales_group=["001","002","003","004","005"]
-                    for ro in data:
-                        for sale in data[ro]:
-                            if sale in sales_group and data[ro][sale]['ocean_bill_of_lading']==bol:
-                                qt+=data[ro][sale]['shipped']
-                    return qt
-                def compare_dict(a, b):
-                    # Compared two dictionaries..
-                    # Posts things that are not equal..
-                    res_compare = []
-                    for k in set(list(a.keys()) + list(b.keys())):
-                        if isinstance(a[k], dict):
-                            z0 = compare_dict(a[k], b[k])
-                        else:
-                            z0 = a[k] == b[k]
-                
-                        z0_bool = np.all(z0)
-                        res_compare.append(z0_bool)
-                        if not z0_bool:
-                            st.markdown(f"{k} - Suzano Report :{a[k]} Units  BOL Report : {b[k]}")
-                    return np.all(res_compare)
-           
-                suz_frame=pd.DataFrame(suz).T
-                suz_t=suz_frame.groupby("Ocean BOL#")["Quantity"].sum().to_dict()
-                df_t=dfb.groupby("ocean_bill_of_lading")["quantity"].sum().to_dict()
-                #corrections due to shipment MF01769573 and 1150344 on 12-15 between Kirkenes and Juventas mixed loads.
-                suz_t['GSSWKIR6013E']=suz_t['GSSWKIR6013E']+7
-                suz_t['GSSWKIR6013D']=suz_t['GSSWKIR6013D']+9
-                suz_t['GSSWJUV8556C']=suz_t['GSSWJUV8556C']-9
-                suz_t['GSSWJUV8556A']=suz_t['GSSWJUV8556A']-7
-                
-                rel_t={i:extract_bol_shipped(raw_ro,i) for i in suz_t}
-                if compare_dict(suz_t,df_t):
-                    st.markdown("All Checks Complete !")
-                    st.markdown("Suzano Report and BOL Database Matches")                    
+                if st.button("RUN RECORD AUDIT"):
+                    
+                    dfb=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+                    dfb=json.loads(dfb)
+                    dfb=pd.DataFrame.from_dict(dfb).T[1:]
+                    suz=gcp_download(target_bucket,rf"suzano_report.json")
+                    suz=json.loads(suz)
+                    raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
+                    raw_ro=json.loads(raw_ro)
+                    def dict_compare(d1, d2):
+                        d1_keys = set(d1.keys())
+                        d2_keys = set(d2.keys())
+                        shared_keys = d1_keys.intersection(d2_keys)
+                        added = d1_keys - d2_keys
+                        removed = d2_keys - d1_keys
+                        modified = {o : (d1[o], d2[o]) for o in shared_keys if d1[o] != d2[o]}
+                        same = set(o for o in shared_keys if d1[o] == d2[o])
+                        return added, removed, modified, same
+                    
+                    def extract_bol_shipped(data,bol):
+                        qt=0
+                        sales_group=["001","002","003","004","005"]
+                        for ro in data:
+                            for sale in data[ro]:
+                                if sale in sales_group and data[ro][sale]['ocean_bill_of_lading']==bol:
+                                    qt+=data[ro][sale]['shipped']
+                        return qt
+                    def compare_dict(a, b):
+                        # Compared two dictionaries..
+                        # Posts things that are not equal..
+                        res_compare = []
+                        for k in set(list(a.keys()) + list(b.keys())):
+                            if isinstance(a[k], dict):
+                                z0 = compare_dict(a[k], b[k])
+                            else:
+                                z0 = a[k] == b[k]
+                    
+                            z0_bool = np.all(z0)
+                            res_compare.append(z0_bool)
+                            if not z0_bool:
+                                st.markdown(f"{k} - Suzano Report :{a[k]} Units  BOL Report : {b[k]}")
+                        return np.all(res_compare)
+               
+                    suz_frame=pd.DataFrame(suz).T
+                    suz_t=suz_frame.groupby("Ocean BOL#")["Quantity"].sum().to_dict()
+                    df_t=dfb.groupby("ocean_bill_of_lading")["quantity"].sum().to_dict()
+                    #corrections due to shipment MF01769573 and 1150344 on 12-15 between Kirkenes and Juventas mixed loads.
+                    suz_t['GSSWKIR6013E']=suz_t['GSSWKIR6013E']+7
+                    suz_t['GSSWKIR6013D']=suz_t['GSSWKIR6013D']+9
+                    suz_t['GSSWJUV8556C']=suz_t['GSSWJUV8556C']-9
+                    suz_t['GSSWJUV8556A']=suz_t['GSSWJUV8556A']-7
+                    
+                    rel_t={i:extract_bol_shipped(raw_ro,i) for i in suz_t}
+                    if compare_dict(suz_t,df_t):
+                        st.markdown("All Checks Complete !")
+                        st.markdown("Suzano Report and BOL Database Matches")               
+                        st.write(suz_t)
+                        st.write(df_t)
             with admin_tab2:   #### BILL OF LADINGS
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 admin_bill_of_ladings=json.loads(bill_data)
