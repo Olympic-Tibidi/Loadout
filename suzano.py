@@ -523,7 +523,7 @@ if authentication_status:
                         z0_bool = np.all(z0)
                         res_compare.append(z0_bool)
                         if not z0_bool:
-                            print(f"{k} - Suzano Report :{a[k]} Units  BOL Report : {b[k]}")
+                            st.markdown(f"{k} - Suzano Report :{a[k]} Units  BOL Report : {b[k]}")
                     return np.all(res_compare)
            
                 suz_frame=pd.DataFrame(suz).T
