@@ -524,9 +524,7 @@ if authentication_status:
                         if not z0_bool:
                             print(f"{k} - Suzano Report :{a[k]} Units  BOL Report : {b[k]}")
                     return np.all(res_compare)
-                if compare_dict(suz_t,df_t):
-                    print("All Checks Complete !")
-                    print("Suzano Report and BOL Matches")
+           
                 suz_frame=pd.DataFrame(suz).T
                 suz_t=suz_frame.groupby("Ocean BOL#")["Quantity"].sum().to_dict()
                 df_t=dfb.groupby("ocean_bill_of_lading")["quantity"].sum().to_dict()
