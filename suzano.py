@@ -530,10 +530,10 @@ if authentication_status:
                 suz_t=suz_frame.groupby("Ocean BOL#")["Quantity"].sum().to_dict()
                 df_t=dfb.groupby("ocean_bill_of_lading")["quantity"].sum().to_dict()
                 #corrections due to shipment MF01769573 and 1150344 on 12-15 between Kirkenes and Juventas mixed loads.
-                # suz_t['GSSWKIR6013E']=suz_t['GSSWKIR6013E']+7
-                # suz_t['GSSWKIR6013D']=suz_t['GSSWKIR6013D']+9
-                # suz_t['GSSWJUV8556C']=suz_t['GSSWJUV8556C']-9
-                # suz_t['GSSWJUV8556A']=suz_t['GSSWJUV8556A']-7
+                suz_t['GSSWKIR6013E']=suz_t['GSSWKIR6013E']+7
+                suz_t['GSSWKIR6013D']=suz_t['GSSWKIR6013D']+9
+                suz_t['GSSWJUV8556C']=suz_t['GSSWJUV8556C']-9
+                suz_t['GSSWJUV8556A']=suz_t['GSSWJUV8556A']-7
                 
                 rel_t={i:extract_bol_shipped(raw_ro,i) for i in suz_t}
                 if compare_dict(suz_t,df_t):
