@@ -1130,7 +1130,8 @@ if authentication_status:
             carrier_list=map['carriers']
             mill_info=map["mill_info"]
             
-            bill_mapping=gcp_download_new(target_bucket,"bill_mapping.json")   ###### DOWNLOADS
+            bill_mapping=gcp_download(target_bucket,"bill_mapping.json")   ###### DOWNLOADS
+            bill_mapping=json.loads(bill_mapping)
             mf_numbers_for_load=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")  ###### DOWNLOADS
             mf_numbers_for_load=json.loads(mf_numbers_for_load)
 
@@ -1568,7 +1569,10 @@ if authentication_status:
                                                 blob = bucket.blob(rf"bill_mapping.json")
                                                 blob.upload_from_string(updated_bill)
 
-                                                alien_units=gcp_download_new(target_bucket,rf"alien_units.json")
+                                                alien_units=gcp_download(target_bucket,rf"alien_units.json")
+                                                alien_units=json.loads(alien_units)
+                                                if vessel not in alien_units:
+                                                    alien_units[vessel]={}
                                                 alien_units[vessel][x]={}
                                                 alien_units[vessel][x]={"Ocean_Bill_Of_Lading":ocean_bill_of_lading,"Batch":batch,"Grade":grade,
                                                                         "Date_Found":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y,%m-%d %H:%M:%S")}
@@ -2306,7 +2310,8 @@ if authentication_status:
         carrier_list=map['carriers']
         mill_info=map["mill_info"]
         
-        bill_mapping=gcp_download_new(target_bucket,"bill_mapping.json")   ###### DOWNLOADS
+        bill_mapping=gcp_download(target_bucket,"bill_mapping.json")   ###### DOWNLOADS
+        bill_mapping=json.loads(bill_mapping)
         mf_numbers_for_load=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")  ###### DOWNLOADS
         mf_numbers_for_load=json.loads(mf_numbers_for_load)
 
@@ -2744,7 +2749,11 @@ if authentication_status:
                                             blob = bucket.blob(rf"bill_mapping.json")
                                             blob.upload_from_string(updated_bill)
 
-                                            alien_units=gcp_download_new(target_bucket,rf"alien_units.json")
+                                           
+                                            alien_units=gcp_download(target_bucket,rf"alien_units.json")
+                                            alien_units=json.loads(alien_units)
+                                            if vessel not in alien_units:
+                                                alien_units[vessel]={}
                                             alien_units[vessel][x]={}
                                             alien_units[vessel][x]={"Ocean_Bill_Of_Lading":ocean_bill_of_lading,"Batch":batch,"Grade":grade,
                                                                     "Date_Found":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y,%m-%d %H:%M:%S")}
