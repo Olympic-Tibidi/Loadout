@@ -538,7 +538,7 @@ if authentication_status:
                     suz_t['GSSWJUV8556A']=suz_t['GSSWJUV8556A']-7
                     
                     rel_t={i:extract_bol_shipped(raw_ro,i) for i in suz_t}
-                    aud_col1,audcol2=st.columns(2)
+                    aud_col1,aud_col2=st.columns(2)
                     with aud_col1:
                         
                         if compare_dict(suz_t,df_t):
