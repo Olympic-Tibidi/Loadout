@@ -614,7 +614,8 @@ if authentication_status:
             
                           
             with admin_tab1:
-                map=gcp_download_new(target_bucket,rf"map.json")
+                map=gcp_download(target_bucket,rf"map.json")
+                map=json.loads(map)
                 release_order_database=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                 release_order_database=json.loads(release_order_database)
                 dispatch=gcp_download(target_bucket,rf"dispatched.json")
