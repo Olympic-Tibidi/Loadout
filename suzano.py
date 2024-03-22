@@ -1280,7 +1280,9 @@ if authentication_status:
                     placeholder = st.empty()
                     with placeholder.container():
                         vehicle_id=st.text_input("**:blue[Vehicle ID]**",value="",key=7)
-                    
+                        manual_bill=st.toggle("Toggle for Manual BOL")
+                        if manual_bill:
+                            manual_bill_of_lading_number=st.textbox("ENTER BOL",key="eirufs")
                         mf=True
                         load_mf_number_issued=False
                         if destination=="CLEARWATER-Lewiston,ID":
@@ -1758,6 +1760,8 @@ if authentication_status:
                                 bill_of_lading_number,bill_of_ladings=gen_bill_of_lading()
                                 if load_mf_number_issued:
                                     bill_of_lading_number=st.session_state.load_mf_number
+                                if manual_bill:
+                                    bill_of_lading_number=manual_bill_of_lading_number
                                 edi_name= f'{bill_of_lading_number}.txt'
                                 bill_of_ladings[str(bill_of_lading_number)]={"vessel":vessel,"release_order":release_order_number,"destination":destination,"sales_order":current_sales_order,
                                                                              "ocean_bill_of_lading":ocean_bill_of_lading,"grade":wrap,"carrier_id":carrier_code,"vehicle":vehicle_id,
