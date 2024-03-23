@@ -739,14 +739,8 @@ if authentication_status:
 
                     with rls_tab4:  #####  SCHEDULE
                         
-                        # schedule=pd.DataFrame(columns=["Release Order","Sales Order","Destination","Scheduled","Loaded","Left"])
-                        # for rel in dispatch.keys():
-                        #     for sale in dispatch[rel]:
-                        #         schedule.loc[rel,"Release Order"]=rel
-                        #         schedule.loc[rel,"Sales Order"]=sale
-                        #         schedule.loc[rel,"Destination"]=dispatch[rel][sale]['destination']
-                        # schedule=schedule.fillna(0)
-                        #schedule.set_index("Destination",drop=True,inplace=True)
+                        display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==now.date()]
+                        st.write(display_df)
                         schedule_frame=pd.DataFrame(schedule)
                         a=st.data_editor(schedule_frame.T)
                         a_=json.dumps(a.T.to_dict())
