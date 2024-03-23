@@ -753,7 +753,7 @@ if authentication_status:
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"schedule.json")
-                            blob.upload_from_string(schedule.to_dict())
+                            blob.upload_from_string(schedule_frame.to_dict())
                             st.markdown(f"**UPDATED SCHEDULE**")   
 
 
