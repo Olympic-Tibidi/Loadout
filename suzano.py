@@ -534,8 +534,9 @@ if authentication_status:
                                 else:
                                     st.markdown(f"**:red[Discrepancy]**")
                                     st.markdown(f"**{k} - Suzano Report :{a[k]} Units Shipped - BOL Report : {b[k]} Units Shipped**")
-                                    diff = dfb[~dfb.index.isin([str(i) for i in suz_frame['Shipment ID #']]+['11502400', '11503345', 'MF01769573*', '11503871'])].index
-                                    st.write(diff)
+                                    diff = dfb[~dfb.index.isin([str(i) for i in suz_frame['Shipment ID #']]+['11502400', '11503345', 'MF01769573*', '11503871'])].index.to_list()
+                                    for i in diff:
+                                        st.write(f"Shipment {i} is in BOL but not Suzano Report") 
                         return np.all(res_compare)
                
                     
