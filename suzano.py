@@ -737,6 +737,12 @@ if authentication_status:
 
                     with rls_tab4:
                         schedule=pd.DataFrame(columns=["Release Order","Sales Order","Destination","Scheduled","Loaded","Left"])
+                        for rel in dispatch.keys():
+                            for sale in dispatch[rel]:
+                                schedule.loc[rel,"Release Order"]=rel
+                                schedule.loc[rel,"Sales Order"]=sale
+                                schedule.loc[rel,"Destination"]=dispatch[rel][sale]['destination']
+                        schedule=schedule.fillna(0)
                         st.data_editor(schedule)
 
 
