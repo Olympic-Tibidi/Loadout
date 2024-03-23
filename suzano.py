@@ -493,6 +493,7 @@ if authentication_status:
                     dfb=pd.DataFrame.from_dict(dfb).T[1:]
                     suz=gcp_download(target_bucket,rf"suzano_report.json")
                     suz=json.loads(suz)
+                    suz_frame=pd.DataFrame(suz).T
                     raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                     raw_ro=json.loads(raw_ro)
                     def dict_compare(d1, d2):
@@ -529,12 +530,14 @@ if authentication_status:
                                 if a==rel_t:
                                     st.markdown(f"**:red[Discrepancy]**")
                                     st.markdown(f"**{k} - Inventory :{a[k]} Units Shipped - BOL Report : {b[k]} Units Shipped**")
+                                    diff = dfb[~dfb.index.isin([str(i) for i in suz_frame['Shipment ID #']+['11502400', '11503345', 'MF01769573*', '11503871'])].index
+                                    st.write(diff)
                                 else:
                                     st.markdown(f"**:red[Discrepancy]**")
                                     st.markdown(f"**{k} - Suzano Report :{a[k]} Units Shipped - BOL Report : {b[k]} Units Shipped**")
                         return np.all(res_compare)
                
-                    suz_frame=pd.DataFrame(suz).T
+                    
                     suz_t=suz_frame.groupby("Ocean BOL#")["Quantity"].sum().to_dict()
                     df_t=dfb.groupby("ocean_bill_of_lading")["quantity"].sum().to_dict()
                     #corrections due to shipment MF01769573 and 1150344 on 12-15 between Kirkenes and Juventas mixed loads.
