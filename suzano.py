@@ -749,6 +749,7 @@ if authentication_status:
                         #schedule.set_index("Destination",drop=True,inplace=True)
                         schedule_frame=pd.DataFrame(schedule)
                         a=st.data_editor(schedule_frame)
+                        st.write(a.to_dict())
                         if st.button("UPDATE TABLE"):
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
