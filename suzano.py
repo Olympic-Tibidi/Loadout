@@ -860,9 +860,15 @@ if authentication_status:
                                                
                                 with dol2:  
                                     try:
-                                        item=st.selectbox("CHOOSE ITEM",dispatch.keys())
-                                        if st.button("CLEAR DISPATCH ITEM"):                                       
-                                            del dispatch[item]
+                                        liste=[]
+                                        for i in dispatch.keys():
+                                            for k in dispatch[i]:
+                                                liste.append(f"{i}-{k}")
+                                        item=st.selectbox("CHOOSE ITEM",liste)
+                                        undispatch_rel=item.split("-")[0]
+                                        undispatch_sal=item.split("-")[1]
+                                        if st.button("UN-DISPATCH ITEM"):                                       
+                                            del dispatch[undispatch_rel][undispatch_sal]
                                             json_data = json.dumps(dispatch)
                                             storage_client = storage.Client()
                                             bucket = storage_client.bucket(target_bucket)
