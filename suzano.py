@@ -743,6 +743,7 @@ if authentication_status:
                                 schedule.loc[rel,"Sales Order"]=sale
                                 schedule.loc[rel,"Destination"]=dispatch[rel][sale]['destination']
                         schedule=schedule.fillna(0)
+                        schedule.set_index("Destination",drop=True,inplace=True)
                         st.data_editor(schedule)
 
 
