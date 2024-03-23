@@ -631,6 +631,8 @@ if authentication_status:
                 release_order_database=json.loads(release_order_database)
                 dispatch=gcp_download(target_bucket,rf"dispatched.json")
                 dispatch=json.loads(dispatch)
+                schedule_=gcp_download(target_bucket,rf"schedule.json")
+                schedule=json.loads(schedule_)
                 carrier_list=map['carriers']
                 mill_info=map["mill_info"]
                       
@@ -736,15 +738,16 @@ if authentication_status:
 
 
                     with rls_tab4:
-                        schedule=pd.DataFrame(columns=["Release Order","Sales Order","Destination","Scheduled","Loaded","Left"])
-                        for rel in dispatch.keys():
-                            for sale in dispatch[rel]:
-                                schedule.loc[rel,"Release Order"]=rel
-                                schedule.loc[rel,"Sales Order"]=sale
-                                schedule.loc[rel,"Destination"]=dispatch[rel][sale]['destination']
-                        schedule=schedule.fillna(0)
-                        schedule.set_index("Destination",drop=True,inplace=True)
-                        st.data_editor(schedule)
+                        # schedule=pd.DataFrame(columns=["Release Order","Sales Order","Destination","Scheduled","Loaded","Left"])
+                        # for rel in dispatch.keys():
+                        #     for sale in dispatch[rel]:
+                        #         schedule.loc[rel,"Release Order"]=rel
+                        #         schedule.loc[rel,"Sales Order"]=sale
+                        #         schedule.loc[rel,"Destination"]=dispatch[rel][sale]['destination']
+                        # schedule=schedule.fillna(0)
+                        #schedule.set_index("Destination",drop=True,inplace=True)
+                        schedule_frame=pd.readjson(schedule_)
+                        st.data_editor(schedule_frame)
 
 
 
