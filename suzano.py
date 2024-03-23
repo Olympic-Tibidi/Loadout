@@ -737,7 +737,8 @@ if authentication_status:
 
 
 
-                    with rls_tab4:
+                    with rls_tab4:  #####  SCHEDULE
+                        
                         # schedule=pd.DataFrame(columns=["Release Order","Sales Order","Destination","Scheduled","Loaded","Left"])
                         # for rel in dispatch.keys():
                         #     for sale in dispatch[rel]:
@@ -746,7 +747,7 @@ if authentication_status:
                         #         schedule.loc[rel,"Destination"]=dispatch[rel][sale]['destination']
                         # schedule=schedule.fillna(0)
                         #schedule.set_index("Destination",drop=True,inplace=True)
-                        schedule_frame=pd.read_json(schedule_)
+                        schedule_frame=pd.read_json(schedule_,orient='records')
                         st.data_editor(schedule_frame)
 
 
