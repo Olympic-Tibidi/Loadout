@@ -748,12 +748,12 @@ if authentication_status:
                         # schedule=schedule.fillna(0)
                         #schedule.set_index("Destination",drop=True,inplace=True)
                         schedule_frame=pd.DataFrame(schedule)
-                        st.data_editor(schedule_frame)
+                        a=st.data_editor(schedule_frame)
                         if st.button("UPDATE TABLE"):
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"schedule.json")
-                            blob.upload_from_string(schedule_frame.to_dict())
+                            blob.upload_from_string(a.to_dict())
                             st.markdown(f"**UPDATED SCHEDULE**")   
 
 
