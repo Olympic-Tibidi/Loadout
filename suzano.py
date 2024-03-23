@@ -731,8 +731,17 @@ if authentication_status:
                 with release_order_tab1:  ##   RELEASE ORDER DATABASE ##
                     
      
-                    rls_tab1,rls_tab2,rls_tab3=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS","ENTER MF NUMBERS"])
-                                            
+                    rls_tab1,rls_tab2,rls_tab3,rls_tab4=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS","ENTER MF NUMBERS","SCHEDULE"])
+
+
+
+                    with rls_tab4:
+                        schedule=pd.DataFrame(columns=["Release Order","Sales Order","Destination","Scheduled","Loaded","Left"])
+                        st.data_editor(schedule)
+
+
+
+                        
                     with rls_tab1:
                         
                         destinations_of_release_orders=[f"{i} to {release_order_database[i]['destination']}" for i in release_order_database if release_order_database[i]["complete"]!=True]
