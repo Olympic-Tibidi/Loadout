@@ -484,7 +484,8 @@ if authentication_status:
             #st.write(a)
             admin_tab1,admin_tab2,admin_tab3,admin_tab4=st.tabs(["RELEASE ORDERS","BILL OF LADINGS","EDI'S","AUDIT"])
 
-            with admin_tab4:
+            with admin_tab4:   ###   AUDIT
+                st.markdown(f"**[red]Discrepancy**")
                 if st.button("RUN RECORD AUDIT"):
                     
                     dfb=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
@@ -525,6 +526,7 @@ if authentication_status:
                             z0_bool = np.all(z0)
                             res_compare.append(z0_bool)
                             if not z0_bool:
+                                st.markdown(f"**[red]Discrepancy**")
                                 st.markdown(f"{k} - Suzano Report :{a[k]} Units  BOL Report : {b[k]}")
                         return np.all(res_compare)
                
