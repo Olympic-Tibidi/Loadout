@@ -747,7 +747,7 @@ if authentication_status:
                         #         schedule.loc[rel,"Destination"]=dispatch[rel][sale]['destination']
                         # schedule=schedule.fillna(0)
                         #schedule.set_index("Destination",drop=True,inplace=True)
-                        schedule_frame=pd.read_json(schedule_,orient='records')
+                        schedule_frame=pd.DataFrame(schedule)
                         st.data_editor(schedule_frame)
 
 
