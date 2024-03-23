@@ -526,7 +526,7 @@ if authentication_status:
                             z0_bool = np.all(z0)
                             res_compare.append(z0_bool)
                             if not z0_bool:
-                                st.markdown(f"**[red]Discrepancy**")
+                                st.markdown(f"**:red[Discrepancy]**")
                                 st.markdown(f"{k} - Suzano Report :{a[k]} Units  BOL Report : {b[k]}")
                         return np.all(res_compare)
                
