@@ -742,7 +742,10 @@ if authentication_status:
                         display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==now.date()]
                         st.write(display_df)
                         schedule_frame=pd.DataFrame(schedule)
-                        a=st.data_editor(schedule_frame.T)
+                        schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
+                        schedule_frame.set_index("Destination",drop=True,inplace=True)
+                        schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
+                        schedule_frame=schedule_frame.fillna("")
                         a_=json.dumps(a.T.to_dict())
                         if st.button("UPDATE TABLE"):
                             storage_client = storage.Client()
