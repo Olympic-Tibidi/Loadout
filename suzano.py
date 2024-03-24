@@ -1223,6 +1223,7 @@ if authentication_status:
                         schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
                     yeni=[]
                     for i in schedule_frame.index:
+                        st.write(i)
                         yeni.append(release_order_database[schedule_frame.loc[i,"Release Order"]][schedule_frame.loc[i,"Sales Order"]]['unitized'])
                     st.write(yeni)
                     schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
