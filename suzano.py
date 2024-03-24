@@ -747,13 +747,10 @@ if authentication_status:
                             liste.append(t)
                         
                         schedule_frame=pd.DataFrame(schedule).T
-                        #schedule_frame=schedule_frame.iloc[:-1]
+                        schedule_frame["Loaded"]=0
                         for i in liste:
-                            try:
-                                schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]=0
-                                schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
-                            except:
-                                pass
+                            schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
+                     
                         schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
                         schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
                         schedule_frame=schedule_frame.fillna("")
@@ -1221,12 +1218,10 @@ if authentication_status:
                     
                     schedule_frame=pd.DataFrame(schedule).T
                     #schedule_frame=schedule_frame.iloc[:-1]
+                    schedule_frame["Loaded"]=0
                     for i in liste:
-                        try:
-                            schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]=0
-                            schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
-                        except:
-                            pass
+                        schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
+                     
                     schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
                     schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
                     schedule_frame=schedule_frame.fillna("")
@@ -2435,12 +2430,9 @@ if authentication_status:
                 
                 schedule_frame=pd.DataFrame(schedule).T
                 #schedule_frame=schedule_frame.iloc[:-1]
+                schedule_frame["Loaded"]=0
                 for i in liste:
-                    try:
-                        schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]=0
-                        schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
-                    except:
-                        pass
+                    schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
                 schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
                 schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
                 schedule_frame=schedule_frame.fillna("")
