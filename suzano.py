@@ -631,8 +631,7 @@ if authentication_status:
                 release_order_database=json.loads(release_order_database)
                 dispatch=gcp_download(target_bucket,rf"dispatched.json")
                 dispatch=json.loads(dispatch)
-                schedule_=gcp_download(target_bucket,rf"schedule.json")
-                schedule=json.loads(schedule_)
+                
                 carrier_list=map['carriers']
                 mill_info=map["mill_info"]
                       
@@ -738,7 +737,8 @@ if authentication_status:
 
 
                     with rls_tab4:  #####  SCHEDULE
-                        
+                        schedule_=gcp_download(target_bucket,rf"schedule.json")
+                        schedule=json.loads(schedule_)
                         display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==now.date()]
                         st.write(display_df)
                         liste=[]
