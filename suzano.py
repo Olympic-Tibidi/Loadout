@@ -1221,7 +1221,10 @@ if authentication_status:
                     schedule_frame["Loaded"]=0
                     for i in liste:
                         schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
-                     
+                    yeni=[]
+                    for i in schedule_frame.index:
+                        yeni.append(release_order_database[schedule_frame.loc[i,"Release Order"][schedule_frame.loc[i,"Sales Order"]]['unitized'])
+                    st.write(yeni)
                     schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
                     schedule_frame.loc["Total",["Scheduled","Loaded","Remaining"]]=schedule_frame[["Scheduled","Loaded","Remaining"]].sum()
                     schedule_frame=schedule_frame.fillna("")
