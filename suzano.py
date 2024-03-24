@@ -758,7 +758,7 @@ if authentication_status:
                         schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
                         schedule_frame=schedule_frame.fillna("")
                         a=st.data_editor(schedule_frame)
-                        a_=a_.iloc[:-1]
+                        a_=a.iloc[:-1]
                         a_=json.dumps(a_.T.to_dict())
                         
                         if st.button("UPDATE TABLE"):
