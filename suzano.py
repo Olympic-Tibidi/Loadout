@@ -552,18 +552,17 @@ if authentication_status:
                     with aud_col1:
                         
                         if compare_dict(suz_t,df_t):
-                            st.markdown("All Checks Complete !")
-                            st.markdown("Suzano Report and BOL Database Matches")       
+                            st.markdown("**:blue[All Checks Complete !]**")
+                            st.markdown("**:blue[Suzano Report and BOL Database Matches]**")       
                             st.write(f"{len(suz_frame)} Shipments")
                             st.balloons()
-                            #st.write(suz_t)
-                            #st.write(df_t)
+                           
 
                     with aud_col2:
                         
                         if compare_dict(rel_t,df_t):
-                            st.markdown("All Checks Complete !")
-                            st.markdown("Release Order Database and BOL Database Matches")       
+                            st.markdown("**:blue[All Checks Complete !]**")
+                            st.markdown("**:blue[Release Order Database and BOL Database Matches]**")       
                             st.write(f"{len(suz_frame)} Shipments")
                             st.balloons()
                             
