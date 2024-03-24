@@ -2427,7 +2427,7 @@ if authentication_status:
                 st.table(schedule_frame)
 
             
-            if loadout:
+            with loadout:
                 
                 menu_destinations={}
                 
