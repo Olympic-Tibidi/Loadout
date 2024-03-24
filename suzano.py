@@ -1224,9 +1224,9 @@ if authentication_status:
                     yeni=[]
                     for i in schedule_frame.index:
                         if i!="Containers":
-                            st.write(i)
                             yeni.append(release_order_database[schedule_frame.loc[i,"Release Order"]][schedule_frame.loc[i,"Sales Order"]]['unitized'])
-                    st.write(yeni)
+                    new_index=[f"{i}-{j} for i,j in zip(schedule_frame.index,yeni)]
+                    shcedule_frame.index=new_index
                     schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
                     schedule_frame.loc["Total",["Scheduled","Loaded","Remaining"]]=schedule_frame[["Scheduled","Loaded","Remaining"]].sum()
                     schedule_frame=schedule_frame.fillna("")
