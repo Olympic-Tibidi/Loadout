@@ -1226,6 +1226,8 @@ if authentication_status:
                         except:
                             pass
                     schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
+                    schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
+                    schedule_frame=schedule_frame.fillna("")
                     st.table(schedule_frame)
                 
                 with loadout:
