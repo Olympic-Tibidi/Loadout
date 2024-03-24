@@ -758,14 +758,15 @@ if authentication_status:
                         schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
                         schedule_frame=schedule_frame.fillna("")
                         a=st.data_editor(schedule_frame)
-                        
-                        
                         a_=json.dumps(a.T.to_dict())
+                        
                         if st.button("UPDATE TABLE"):
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"schedule.json")
                             blob.upload_from_string(a_)
+                            schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
+                            schedule_frame=schedule_frame.fillna("")
                             st.success(f"**UPDATED SCHEDULE**")   
 
 
