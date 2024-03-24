@@ -741,11 +741,25 @@ if authentication_status:
                         
                         display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==now.date()]
                         st.write(display_df)
-                        schedule_frame=pd.DataFrame(schedule)
+                        liste=[]
+                        for term in display_df.index:
+                            t=(display_df.loc[term,'release_order'],display_df.loc[term,'sales_order'],display_df.loc[term,'destination'])
+                            liste.append(t)
+                        
+                        schedule_frame=pd.DataFrame(schedule).T
+                        for i in liste:
+                            try:
+                                schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]=0
+                                schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
+                            except:
+                                pass
                         schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
                         schedule_frame.set_index("Destination",drop=True,inplace=True)
                         schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
                         schedule_frame=schedule_frame.fillna("")
+                        a=st.data_editor(schedule_frame)
+                        
+                        
                         a_=json.dumps(a.T.to_dict())
                         if st.button("UPDATE TABLE"):
                             storage_client = storage.Client()
