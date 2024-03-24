@@ -754,7 +754,7 @@ if authentication_status:
                             except:
                                 pass
                         schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
-                        schedule_frame.set_index("Destination",drop=True,inplace=True)
+                        #schedule_frame.set_index("Destination",drop=True,inplace=True)
                         schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
                         schedule_frame=schedule_frame.fillna("")
                         a=st.data_editor(schedule_frame)
