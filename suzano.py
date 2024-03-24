@@ -750,8 +750,8 @@ if authentication_status:
                         for i in liste:
                             schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
                      
-                        schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
-                        schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
+                        schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
+                        schedule_frame.loc["Total",["Scheduled","Loaded","Remaining"]]=schedule_frame[["Scheduled","Loaded","Remaining"]].sum()
                         schedule_frame=schedule_frame.fillna("")
                         a=st.data_editor(schedule_frame)
                         a_=a.iloc[:-1]
@@ -1221,11 +1221,11 @@ if authentication_status:
                     for i in liste:
                         schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
                      
-                    schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
-                    schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
+                    schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
+                    schedule_frame.loc["Total",["Scheduled","Loaded","Remaining"]]=schedule_frame[["Scheduled","Loaded","Remaining"]].sum()
                     schedule_frame=schedule_frame.fillna("")
                     schedule_frame["Loaded"]=schedule_frame["Loaded"].astype('Int64')
-                    schedule_frame["Left"]=schedule_frame["Left"].astype('Int64')
+                    schedule_frame["Remaining"]=schedule_frame["Remaining"].astype('Int64')
                     st.table(schedule_frame)
                 
                 with loadout:
@@ -2434,8 +2434,11 @@ if authentication_status:
                 schedule_frame["Loaded"]=0
                 for i in liste:
                     schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
-                schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
-                schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
+                schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
+                schedule_frame["Loaded"]=schedule_frame["Loaded"].astype('Int64')
+                schedule_frame["Remaining"]=schedule_frame["Remaining"].astype('Int64')
+                schedule_frame.loc["Total",["Scheduled","Loaded","Remaining"]]=schedule_frame[["Scheduled","Loaded","Remaining"]].sum()
+                
                 schedule_frame=schedule_frame.fillna("")
                 st.table(schedule_frame)
             
