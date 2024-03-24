@@ -746,7 +746,7 @@ if authentication_status:
                             t=(display_df.loc[term,'release_order'],display_df.loc[term,'sales_order'],display_df.loc[term,'destination'])
                             liste.append(t)
                         
-                        schedule_frame=pd.DataFrame(schedule).T
+                        schedule_frame=pd.DataFrame(schedule).T[:-1,:]
                         for i in liste:
                             try:
                                 schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]=0
