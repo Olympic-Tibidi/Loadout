@@ -555,8 +555,9 @@ if authentication_status:
                             st.markdown("All Checks Complete !")
                             st.markdown("Suzano Report and BOL Database Matches")       
                             st.write(f"{len(suz_frame)} Shipments")
-                            st.write(suz_t)
-                            st.write(df_t)
+                            st.balloons()
+                            #st.write(suz_t)
+                            #st.write(df_t)
 
                     with aud_col2:
                         
@@ -564,6 +565,7 @@ if authentication_status:
                             st.markdown("All Checks Complete !")
                             st.markdown("Release Order Database and BOL Database Matches")       
                             st.write(f"{len(suz_frame)} Shipments")
+                            st.balloons()
                             
                             
             with admin_tab2:   #### BILL OF LADINGS
