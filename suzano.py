@@ -755,8 +755,6 @@ if authentication_status:
                                 pass
                         schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
                         #schedule_frame.set_index("Destination",drop=True,inplace=True)
-                        schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
-                        schedule_frame=schedule_frame.fillna("")
                         a=st.data_editor(schedule_frame)
                         a_=json.dumps(a.T.to_dict())
                         
@@ -765,8 +763,6 @@ if authentication_status:
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"schedule.json")
                             blob.upload_from_string(a_)
-                            schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
-                            schedule_frame=schedule_frame.fillna("")
                             st.success(f"**UPDATED SCHEDULE**")   
 
 
