@@ -1224,6 +1224,7 @@ if authentication_status:
                     yeni=[]
                     for i in schedule_frame.index:
                         if i!="Container":
+                            st.write(i)
                             yeni.append(release_order_database[schedule_frame.loc[i,"Release Order"]][schedule_frame.loc[i,"Sales Order"]]['unitized'])
                     st.write(yeni)
                     schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
