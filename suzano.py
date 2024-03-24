@@ -767,6 +767,7 @@ if authentication_status:
                             blob = bucket.blob(rf"schedule.json")
                             blob.upload_from_string(a_)
                             st.success(f"**UPDATED SCHEDULE**")   
+                            st.rerun()
 
 
                         
