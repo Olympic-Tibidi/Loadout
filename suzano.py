@@ -755,9 +755,11 @@ if authentication_status:
                             except:
                                 pass
                         schedule_frame["Left"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
-                        #schedule_frame.set_index("Destination",drop=True,inplace=True)
+                        schedule_frame.loc["Total",["Scheduled","Loaded","Left"]]=schedule_frame[["Scheduled","Loaded","Left"]].sum()
+                        schedule_frame=schedule_frame.fillna("")
                         a=st.data_editor(schedule_frame)
-                        a_=json.dumps(a.T.to_dict())
+                        a_=a_.iloc[:-1]
+                        a_=json.dumps(a_.T.to_dict())
                         
                         if st.button("UPDATE TABLE"):
                             storage_client = storage.Client()
