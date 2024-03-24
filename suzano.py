@@ -553,7 +553,7 @@ if authentication_status:
                         
                         if compare_dict(suz_t,df_t):
                             st.markdown("**:blue[All Checks Complete !]**")
-                            st.markdown("**:blue[Suzano Report and BOL Database Matches]**")       
+                            st.markdown("**:blue[SUZANO REPORT match BILL OF LADINGS]**")       
                             st.write(f"{len(suz_frame)} Shipments")
                             st.balloons()
                            
@@ -562,7 +562,7 @@ if authentication_status:
                         
                         if compare_dict(rel_t,df_t):
                             st.markdown("**:blue[All Checks Complete !]**")
-                            st.markdown("**:blue[Release Order Database and BOL Database Matches]**")       
+                            st.markdown("**:blue[INVENTORY match BILL OF LADINGS]**")       
                             st.write(f"{len(suz_frame)} Shipments")
                             st.balloons()
                             
