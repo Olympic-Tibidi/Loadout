@@ -3515,7 +3515,7 @@ if authentication_status:
             status_frame.loc["Total"]=status_frame[["Total","Shipped","Remaining"]].sum()
             active_frame=active_frame_.copy()
             active_frame.loc["Total"]=active_frame[["Total","Shipped","Remaining"]].sum()
-            
+            st.subheader("ACTIVE RELEASE ORDERS")
             st.markdown(active_frame.to_html(render_links=True),unsafe_allow_html=True)
 
             
@@ -3544,7 +3544,7 @@ if authentication_status:
                               width=1300,
                               height=700,
                               xaxis=dict(tickangle=-90, type='category'))
-            st.subheader("ACTIVE RELEASE ORDERS")
+            
             st.plotly_chart(fig)
             
             
