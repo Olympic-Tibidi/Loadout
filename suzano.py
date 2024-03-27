@@ -3456,7 +3456,7 @@ if authentication_status:
             
             maintenance=True
             if maintenance:
-                st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
+                st.subheader("CURRENTLY UNDER MAINTENANCE, CHECK BACK LATER")
             else:
                 st.subheader("WEEKLY SHIPMENTS BY MILL (IN TONS)")
                 zf=inv_bill_of_ladings.copy()
