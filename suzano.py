@@ -262,7 +262,7 @@ def store_release_order_data(data,release_order_number,destination,po_number,sal
     # Convert the dictionary to JSON format
     json_data = json.dumps(data)
     return json_data
-
+#release_order_database,release_order_number,sales_order_item_add,vessel_add,batch_add,ocean_bill_of_lading_add,grade_add,dryness_add,carrier_code_add,unitized_add,quantity_add,shipped_add,remaining_add
 def add_release_order_data(data,release_order_number,sales_order_item,vessel,batch,ocean_bill_of_lading,grade,dryness,carrier_code,unitized,total,shipped,remaining):
        
     
@@ -705,7 +705,7 @@ if authentication_status:
                     if create_release_order:
                         
                         if add: 
-                            temp=add_release_order_data(release_order_database,release_order_number,destination_add,po_number_add,sales_order_item_add,vessel_add,batch_add,ocean_bill_of_lading_add,grade_add,dryness_add,carrier_code_add,unitized_add,quantity_add,shipped_add,remaining_add)
+                            temp=add_release_order_data(release_order_database,release_order_number,sales_order_item_add,vessel_add,batch_add,ocean_bill_of_lading_add,grade_add,dryness_add,carrier_code_add,unitized_add,quantity_add,shipped_add,remaining_add)
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
