@@ -637,8 +637,8 @@ if authentication_status:
                             filenames.append(filename)
                 
                     return filenames
-                today_uploaded_files = list_files_uploaded_today(target_bucket,"EDIS/")
-                st.write(list_files_in_subfolder(target_bucket, rf"EDIS/")[:10])
+                today_uploaded_files = list_files_uploaded_today(target_bucket,rf"EDIS/")
+                st.write(today_uploaded_files)
                 base=[]
 
 
