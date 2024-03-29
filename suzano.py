@@ -565,60 +565,6 @@ if authentication_status:
                             st.markdown("**:blue[INVENTORY match BILL OF LADINGS]**")       
                             st.write(f"{len(suz_frame)} Shipments")
                             st.balloons()
-                            
-                            
-            with admin_tab2:   #### BILL OF LADINGS
-                bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                admin_bill_of_ladings=json.loads(bill_data)
-                admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
-                admin_bill_of_ladings["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["issued"]]
-                
-                def convert_df(df):
-                    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-                    return df.to_csv().encode('utf-8')
-                use=True
-                if use:
-                    now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
-                    
-                    choose = st.radio(
-                                    "Select Today's Bill of Ladings or choose by Date or choose ALL",
-                                    ["DAILY", "ACCUMULATIVE", "FIND BY DATE"],key="wewas")
-                    if choose=="DAILY":
-                        display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==now.date()]
-                        st.dataframe(display_df)
-                        file_name=f'OLYMPIA_DAILY_BILL_OF_LADINGS-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
-                    elif choose=="FIND BY DATE":
-                        required_date=st.date_input("CHOOSE DATE",key="dssar")
-                        display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==required_date]
-                        st.dataframe(display_df)
-                        file_name=f'OLYMPIA_BILL_OF_LADINGS_FOR-{datetime.datetime.strftime(required_date,"%m-%d,%Y")}.csv'
-                    else:
-                        display_df=admin_bill_of_ladings
-                        st.write("DATA TOO LARGE, DOWNLOAD INSTEAD")
-                        file_name=f'OLYMPIA_ALL_BILL_OF_LADINGS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
-                    csv=convert_df(display_df)
-                    st.download_button(
-                        label="DOWNLOAD BILL OF LADINGS",
-                        data=csv,
-                        file_name=file_name,
-                        mime='text/csv')
-            with admin_tab3:
-                edi_files=list_files_in_subfolder(target_bucket, rf"EDIS/")
-                requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
-                
-                display_edi=st.toggle("DISPLAY EDI")
-                if display_edi:
-                    data=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}")
-                    st.text_area("EDI",data,height=400)                                
-               
-                st.download_button(
-                    label="DOWNLOAD EDI",
-                    data=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}"),
-                    file_name=f'{requested_edi_file}',
-                    mime='text/csv')
-               
-                
-                
                 edi_audit=st.toggle("AUDIT TODAYS EDIs AND REPORTS")
                 if edi_audit:
                     
@@ -751,7 +697,61 @@ if authentication_status:
                             st.markdown("**:red[Following EDI is Missing in Suzano Report]**")
                             st.write(more)
                         else:
-                            st.success("All EDIs and Suzano Report Entries are accounted for!! ")
+                            st.success("All EDIs and Suzano Report Entries are accounted for!! ")  
+                            
+            with admin_tab2:   #### BILL OF LADINGS
+                bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+                admin_bill_of_ladings=json.loads(bill_data)
+                admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
+                admin_bill_of_ladings["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["issued"]]
+                
+                def convert_df(df):
+                    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+                    return df.to_csv().encode('utf-8')
+                use=True
+                if use:
+                    now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
+                    
+                    choose = st.radio(
+                                    "Select Today's Bill of Ladings or choose by Date or choose ALL",
+                                    ["DAILY", "ACCUMULATIVE", "FIND BY DATE"],key="wewas")
+                    if choose=="DAILY":
+                        display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==now.date()]
+                        st.dataframe(display_df)
+                        file_name=f'OLYMPIA_DAILY_BILL_OF_LADINGS-{datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
+                    elif choose=="FIND BY DATE":
+                        required_date=st.date_input("CHOOSE DATE",key="dssar")
+                        display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==required_date]
+                        st.dataframe(display_df)
+                        file_name=f'OLYMPIA_BILL_OF_LADINGS_FOR-{datetime.datetime.strftime(required_date,"%m-%d,%Y")}.csv'
+                    else:
+                        display_df=admin_bill_of_ladings
+                        st.write("DATA TOO LARGE, DOWNLOAD INSTEAD")
+                        file_name=f'OLYMPIA_ALL_BILL_OF_LADINGS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
+                    csv=convert_df(display_df)
+                    st.download_button(
+                        label="DOWNLOAD BILL OF LADINGS",
+                        data=csv,
+                        file_name=file_name,
+                        mime='text/csv')
+            with admin_tab3:
+                edi_files=list_files_in_subfolder(target_bucket, rf"EDIS/")
+                requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
+                
+                display_edi=st.toggle("DISPLAY EDI")
+                if display_edi:
+                    data=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}")
+                    st.text_area("EDI",data,height=400)                                
+               
+                st.download_button(
+                    label="DOWNLOAD EDI",
+                    data=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}"),
+                    file_name=f'{requested_edi_file}',
+                    mime='text/csv')
+               
+                
+                
+                
                     
               
                   
