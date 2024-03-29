@@ -718,7 +718,7 @@ if authentication_status:
                 suz=json.loads(suz)
                 suz_frame=pd.DataFrame(suz).T
                 suz_frame["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suz_frame["Date Shipped"]]
-                suz_frame_daily=suz_frame[suz_frame.Date==datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).date()]
+                suz_frame_daily=suz_frame[suz_frame.Date==(datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).date()]
                 suz_frame_daily=suz_frame_daily[['Date Shipped', 'Vehicle', 'Shipment ID #', 'Release #', 'Carrier',
                               'Quantity', 'Metric Ton',]]
                 suz_frame_daily.set_index("Shipment ID #",drop=True,inplace=True)
