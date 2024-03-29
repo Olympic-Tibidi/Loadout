@@ -2305,7 +2305,7 @@ if authentication_status:
                     
                     with daily:
                         
-                        amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":370}
+                        amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":453}
                         inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LYSEFJORD-2308","LAGUNA-3142"])
                         kf=inv_bill_of_ladings.iloc[1:].copy()
                         kf['issued'] = pd.to_datetime(kf['issued'])
@@ -2358,7 +2358,7 @@ if authentication_status:
                          'GSSWJUV8556C': [6475.0,5],
                          'GSSWKIR6013D': [8350.0,2],
                          'GSSWKIR6013E': [850.0,2],
-                         'GSSWLAG3142E': [417.0,0],
+                         'GSSWLAG3142E': [453.0,0],
                          'GSSWLYS10628A': [1500.0,0],
                          'GSSWLYS10628B': [8500.0,0],}
                         def extract_qt(data,ro,bol):
