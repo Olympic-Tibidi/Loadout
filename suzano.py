@@ -638,7 +638,7 @@ if authentication_status:
                     
                         return filenames
                     today_uploaded_files = list_files_uploaded_today(target_bucket, "EDIS/")
-                    #st.write(today_uploaded_files)
+                    st.write(today_uploaded_files)
                     base=[]
     
     
