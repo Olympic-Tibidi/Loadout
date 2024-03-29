@@ -645,7 +645,8 @@ if authentication_status:
                         
                             return filenames
                         today_uploaded_files = list_files_uploaded_today(target_bucket,rf"EDIS/")
-                        st.markdown(f"**EDIs Uploaded Toady : {today_uploaded_files}**")
+                        st.markdown(f"**EDIs Uploaded Today : {today_uploaded_files}**")
+                        st.markdown(f"**# of EDIs Uploaded : {len(today_uploaded_files)}**")
                        
                         
                         base=[]
@@ -742,10 +743,10 @@ if authentication_status:
                         more=more[difference]
                         if more.shape[0]>0:
                             if guilty=="edis":
-                                st.markdown("Following Shipment from Suzano Report is Missing an EDI")
+                                st.markdown("**red:[Following Shipment from Suzano Report is Missing an EDI]**")
                                 st.write(more)
                             elif guilty=="suz_frame_daily":
-                                st.markdown("Following EDI is Missing in Suzano Report")
+                                st.markdown("**red:[Following EDI is Missing in Suzano Report]**")
                                 st.write(more)
                             else:
                                 st.success("All EDIs and Suzano Report Entries are accounted for!! ")
