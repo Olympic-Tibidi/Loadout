@@ -630,6 +630,7 @@ if authentication_status:
                     # Extract filenames uploaded today only
                     filenames = []
                     for blob in blobs:
+                        st.write(blob.updated.date())
                         # Check if blob's last modification date is today
                         if blob.updated.date() == today:
                             # Extract only the filenames without the folder path
