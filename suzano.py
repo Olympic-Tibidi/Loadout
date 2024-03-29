@@ -639,7 +639,7 @@ if authentication_status:
                     
                         return filenames
                     today_uploaded_files = list_files_uploaded_today(target_bucket,rf"EDIS/")
-                    st.write(today_uploaded_files)
+                    st.markdown(f"**EDIs Uploaded Toady : {today_uploaded_files}**")
                    
     
     
@@ -707,7 +707,7 @@ if authentication_status:
                                 assert line_tonnage==total_tonnage
                         base.append({'Date Shipped':datetime_obj, 'Vehicle':vehicle_id, 'Shipment ID #':bill_of_lading, 'Release #':release_order,
                          'Carrier':carrier_code, 'Quantity':unit_count, 'Metric Ton':total_tonnage/1000})
-                    st.write(base)
+                    #st.write(base)
                     
                     edis=pd.DataFrame(base)
                     edis=edis.sort_values(by="Date Shipped")
