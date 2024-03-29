@@ -729,16 +729,27 @@ if authentication_status:
                         diff=abs(len(edis)-len(suz_frame_daily))
                         if len(edis)<len(suz_frame_daily):
                             more=suz_frame_daily.copy()
+                            guilty="edis"
                             for i in range(diff):
                                 edis.loc[len(edis)]=None
                         else:
                             more=edis.copy()
+                            guilty="suz_frame_daily"
                     
                     
                     difference = (edis.index!=suz_frame_daily.index)
                     
                     more=more[difference]
-                    st.write(more)
+                    if more.shape[0]>0:
+                        if guilty=="edis":
+                            st.markdown("Following Shipment from Suzano Report is Missing an EDI")
+                            st.write(more)
+                        elif guilty=="suz_frame_daily":
+                            st.markdown("Following EDI is Missing in Suzano Report")
+                            st.write(more)
+                      
+                    st.write(edis)
+                    st.write(suz_frame_daily)
 
               
                   
