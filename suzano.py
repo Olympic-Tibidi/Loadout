@@ -624,7 +624,6 @@ if authentication_status:
                     
                         # Get the current date
                         today = (datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).date()
-                        st.write(today)
                         # Get the list of blobs in the specified folder
                         blobs = storage_client.list_blobs(bucket_name, prefix=folder_name)
                     
@@ -649,7 +648,7 @@ if authentication_status:
                 
                 
                 
-                for i in today_uploaded_files[:2]:
+                for i in today_uploaded_files:
                     
                     lines=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}").splitlines()
                     today_uploaded_files = list_files_uploaded_today(target_bucket, "EDIS/")
