@@ -623,7 +623,7 @@ if authentication_status:
                         storage_client = storage.Client()
                     
                         # Get the current date
-                        today = datetime.datetime.now().date()
+                        today = (datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).date()
                         st.write(today)
                         # Get the list of blobs in the specified folder
                         blobs = storage_client.list_blobs(bucket_name, prefix=folder_name)
@@ -631,7 +631,6 @@ if authentication_status:
                         # Extract filenames uploaded today only
                         filenames = []
                         for blob in blobs:
-                            st.write(blob.updated.date())
                             # Check if blob's last modification date is today
                             if blob.updated.date() == today:
                                 # Extract only the filenames without the folder path
