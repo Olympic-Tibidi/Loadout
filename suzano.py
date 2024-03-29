@@ -709,37 +709,37 @@ if authentication_status:
                     base.append({'Date Shipped':datetime_obj, 'Vehicle':vehicle_id, 'Shipment ID #':bill_of_lading, 'Release #':release_order,
                      'Carrier':carrier_code, 'Quantity':unit_count, 'Metric Ton':total_tonnage/1000})
                     st.write(base)
-                     base=[]
-                edis=pd.DataFrame(base)
-                edis=edis.sort_values(by="Date Shipped")
-                edis.set_index("Shipment ID #",drop=True,inplace=True)
-                
-                suz=gcp_download(target_bucket,rf"suzano_report.json")
-                suz=json.loads(suz)
-                suz_frame=pd.DataFrame(suz).T
-                suz_frame["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suz_frame["Date Shipped"]]
-                suz_frame_daily=suz_frame[suz_frame.Date==datetime.datetime.now().date()]
-                suz_frame_daily=suz_frame_daily[['Date Shipped', 'Vehicle', 'Shipment ID #', 'Release #', 'Carrier',
-                              'Quantity', 'Metric Ton',]]
-                suz_frame_daily.set_index("Shipment ID #",drop=True,inplace=True)
-                suz_frame_daily.loc["MF01799999"]={"Date Shipped":"2024-03-28 12:26:58","Vehicle":"3423C",
-                                                           "Shipment ID #":"MF01799420","Release #":"3172295",
-                                                       "Carrier":"123456","Quantity":14.0,"Metric Ton":28.0}
-                more=None
-                if len(edis)!=len(suz_frame_daily):
-                    diff=abs(len(edis)-len(suz_frame_daily))
-                    if len(edis)<len(suz_frame_daily):
-                        more=suz_frame_daily.copy()
-                        for i in range(diff):
-                            edis.loc[len(edis)]=None
-                    else:
-                        more=edis.copy()
-                
-                
-                difference = (edis.index!=suz_frame_daily.index)
-                
-                more=more[difference]
-                st.write(more)
+                    base=[]
+                    edis=pd.DataFrame(base)
+                    edis=edis.sort_values(by="Date Shipped")
+                    edis.set_index("Shipment ID #",drop=True,inplace=True)
+                    
+                    suz=gcp_download(target_bucket,rf"suzano_report.json")
+                    suz=json.loads(suz)
+                    suz_frame=pd.DataFrame(suz).T
+                    suz_frame["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suz_frame["Date Shipped"]]
+                    suz_frame_daily=suz_frame[suz_frame.Date==datetime.datetime.now().date()]
+                    suz_frame_daily=suz_frame_daily[['Date Shipped', 'Vehicle', 'Shipment ID #', 'Release #', 'Carrier',
+                                  'Quantity', 'Metric Ton',]]
+                    suz_frame_daily.set_index("Shipment ID #",drop=True,inplace=True)
+                    suz_frame_daily.loc["MF01799999"]={"Date Shipped":"2024-03-28 12:26:58","Vehicle":"3423C",
+                                                               "Shipment ID #":"MF01799420","Release #":"3172295",
+                                                           "Carrier":"123456","Quantity":14.0,"Metric Ton":28.0}
+                    more=None
+                    if len(edis)!=len(suz_frame_daily):
+                        diff=abs(len(edis)-len(suz_frame_daily))
+                        if len(edis)<len(suz_frame_daily):
+                            more=suz_frame_daily.copy()
+                            for i in range(diff):
+                                edis.loc[len(edis)]=None
+                        else:
+                            more=edis.copy()
+                    
+                    
+                    difference = (edis.index!=suz_frame_daily.index)
+                    
+                    more=more[difference]
+                    st.write(more)
 
               
                   
