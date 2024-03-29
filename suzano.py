@@ -645,8 +645,8 @@ if authentication_status:
                         
                             return filenames
                         today_uploaded_files = list_files_uploaded_today(target_bucket,rf"EDIS/")
-                        st.markdown(f"**EDIs Uploaded Today : {today_uploaded_files}**")
                         st.markdown(f"**# of EDIs Uploaded : {len(today_uploaded_files)}**")
+                        st.markdown(f"EDIs Uploaded Today : {today_uploaded_files}")
                        
                         
                         base=[]
