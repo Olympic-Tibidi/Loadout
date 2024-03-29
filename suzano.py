@@ -616,8 +616,12 @@ if authentication_status:
                     data=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}"),
                     file_name=f'{requested_edi_file}',
                     mime='text/csv')
+               
+                
+                
                 #if st.button("EDI AUDIT"):
                 with st.spinner("Wait for it"):
+                    guilty=None
                     def list_files_uploaded_today(bucket_name, folder_name):
                     # Initialize Google Cloud Storage client
                         storage_client = storage.Client()
@@ -747,10 +751,9 @@ if authentication_status:
                         elif guilty=="suz_frame_daily":
                             st.markdown("Following EDI is Missing in Suzano Report")
                             st.write(more)
-                      
-                    st.write(edis)
-                    st.write(suz_frame_daily)
-
+                        else:
+                            st.success("All EDIs and Suzano Report Entries are accounted for!! ")
+                    
               
                   
             
