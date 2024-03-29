@@ -638,108 +638,107 @@ if authentication_status:
                             time.sleep(0.001)
                     
                         return filenames
-                today_uploaded_files = list_files_uploaded_today(target_bucket,rf"EDIS/")
-                st.write(today_uploaded_files)
-               
-
-
-                               
-                # Filter out .txt files
-                
-                
-                base=[]
-                for i in today_uploaded_files:
+                    today_uploaded_files = list_files_uploaded_today(target_bucket,rf"EDIS/")
+                    st.write(today_uploaded_files)
+                   
+    
+    
+                                   
+                    # Filter out .txt files
                     
-                    lines=gcp_download(target_bucket, rf"EDIS/{requested_edi_file}").splitlines()
-                    today_uploaded_files = list_files_uploaded_today(target_bucket, "EDIS/")
-                    #st.write(today_uploaded_files)
                     
-                    # Step 2: Process the contents
-                    data = []
-                    count=1
-                    line_count=0
-                    dev_count=0
-                    line_tonnage=0
-                    unit_count=0
-                    for line in lines:
-                        if line.startswith("1HDR"):
-                            prefix, data = line.split(':') 
-                            assert prefix=="1HDR" , "Prefix does not match the expected value '1HDR'"
-                            date_str = data[:8]  # YYYYMMDD
-                            time_str = data[8:14]  # HHMMSS
-                            terminal_code = data[14:18]  # 4 letters
-                            datetime_obj = datetime.datetime.strptime(date_str + time_str, '%Y%m%d%H%M%S')
-                            line_count+=1
-                        elif line.startswith("2DTD"):
-                            prefix, data = line.split(':') 
-                            release_order = data[:10].strip() 
-                            sales_item = data[10:16].strip() 
-                            date=data[16:24].strip()
-                            date = datetime.datetime.strptime(date, '%Y%m%d').date()
-                            transport_type=data[24:26].strip()
-                            transport_sequential=data[26:30].strip()
-                            vehicle_id=data[30:50].strip()
-                            total_tonnage=int(data[50:66].strip())
-                            carrier_code=data[105:115].strip()
-                            bill_of_lading=data[115:165].strip()
-                            eta_date=data[165:].strip()
-                            eta_date = datetime.datetime.strptime(eta_date, '%Y%m%d').date()
-                            line_count+=1
-                        elif line.startswith("2DEV"):
-                            prefix, data = line.split(':')
-                            line_release_order=data[:10]
-                            line_sales_item=data[10:16].strip()
-                            line_date=data[16:24].strip()
-                            line_date = datetime.datetime.strptime(line_date, '%Y%m%d').date()
-                            transport_type=data[24:26].strip()
-                            lot_number=data[26:36].strip()
-                            line_weight=int(data[51:56].strip())
-                            line_unit_count=line_weight/2000
-                            line_tonnage+=line_weight
-                            unit_count+=line_unit_count
-                            dev_count+=1
-                            line_count+=1
-                
-                        elif line.startswith("9TRL"):
-                            prefix, data = line.split(':')
-                            edi_line_count=int(data[:4])
-                            line_count+=1
-                            assert edi_line_count==line_count,f"no, line_count is {line_count}"
-                            assert line_tonnage==total_tonnage
-                    base.append({'Date Shipped':datetime_obj, 'Vehicle':vehicle_id, 'Shipment ID #':bill_of_lading, 'Release #':release_order,
-                     'Carrier':carrier_code, 'Quantity':unit_count, 'Metric Ton':total_tonnage/1000})
-                st.write(base)
-                
-                edis=pd.DataFrame(base)
-                edis=edis.sort_values(by="Date Shipped")
-                edis.set_index("Shipment ID #",drop=True,inplace=True)
-                
-                suz=gcp_download(target_bucket,rf"suzano_report.json")
-                suz=json.loads(suz)
-                suz_frame=pd.DataFrame(suz).T
-                suz_frame["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suz_frame["Date Shipped"]]
-                suz_frame_daily=suz_frame[suz_frame.Date==(datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).date()]
-                suz_frame_daily=suz_frame_daily[['Date Shipped', 'Vehicle', 'Shipment ID #', 'Release #', 'Carrier',
-                              'Quantity', 'Metric Ton',]]
-                suz_frame_daily.set_index("Shipment ID #",drop=True,inplace=True)
-                suz_frame_daily.loc["MF01799999"]={"Date Shipped":"2024-03-28 12:26:58","Vehicle":"3423C",
-                                                           "Shipment ID #":"MF01799420","Release #":"3172295",
-                                                       "Carrier":"123456","Quantity":14.0,"Metric Ton":28.0}
-                more=None
-                if len(edis)!=len(suz_frame_daily):
-                    diff=abs(len(edis)-len(suz_frame_daily))
-                    if len(edis)<len(suz_frame_daily):
-                        more=suz_frame_daily.copy()
-                        for i in range(diff):
-                            edis.loc[len(edis)]=None
-                    else:
-                        more=edis.copy()
-                
-                
-                difference = (edis.index!=suz_frame_daily.index)
-                
-                more=more[difference]
-                st.write(more)
+                    base=[]
+                    for i in today_uploaded_files:
+                        
+                        lines=gcp_download(target_bucket, rf"EDIS/i").splitlines()
+                        today_uploaded_files = list_files_uploaded_today(target_bucket, "EDIS/")
+                        
+                        # Step 2: Process the contents
+                        data = []
+                        count=1
+                        line_count=0
+                        dev_count=0
+                        line_tonnage=0
+                        unit_count=0
+                        for line in lines:
+                            if line.startswith("1HDR"):
+                                prefix, data = line.split(':') 
+                                assert prefix=="1HDR" , "Prefix does not match the expected value '1HDR'"
+                                date_str = data[:8]  # YYYYMMDD
+                                time_str = data[8:14]  # HHMMSS
+                                terminal_code = data[14:18]  # 4 letters
+                                datetime_obj = datetime.datetime.strptime(date_str + time_str, '%Y%m%d%H%M%S')
+                                line_count+=1
+                            elif line.startswith("2DTD"):
+                                prefix, data = line.split(':') 
+                                release_order = data[:10].strip() 
+                                sales_item = data[10:16].strip() 
+                                date=data[16:24].strip()
+                                date = datetime.datetime.strptime(date, '%Y%m%d').date()
+                                transport_type=data[24:26].strip()
+                                transport_sequential=data[26:30].strip()
+                                vehicle_id=data[30:50].strip()
+                                total_tonnage=int(data[50:66].strip())
+                                carrier_code=data[105:115].strip()
+                                bill_of_lading=data[115:165].strip()
+                                eta_date=data[165:].strip()
+                                eta_date = datetime.datetime.strptime(eta_date, '%Y%m%d').date()
+                                line_count+=1
+                            elif line.startswith("2DEV"):
+                                prefix, data = line.split(':')
+                                line_release_order=data[:10]
+                                line_sales_item=data[10:16].strip()
+                                line_date=data[16:24].strip()
+                                line_date = datetime.datetime.strptime(line_date, '%Y%m%d').date()
+                                transport_type=data[24:26].strip()
+                                lot_number=data[26:36].strip()
+                                line_weight=int(data[51:56].strip())
+                                line_unit_count=line_weight/2000
+                                line_tonnage+=line_weight
+                                unit_count+=line_unit_count
+                                dev_count+=1
+                                line_count+=1
+                    
+                            elif line.startswith("9TRL"):
+                                prefix, data = line.split(':')
+                                edi_line_count=int(data[:4])
+                                line_count+=1
+                                assert edi_line_count==line_count,f"no, line_count is {line_count}"
+                                assert line_tonnage==total_tonnage
+                        base.append({'Date Shipped':datetime_obj, 'Vehicle':vehicle_id, 'Shipment ID #':bill_of_lading, 'Release #':release_order,
+                         'Carrier':carrier_code, 'Quantity':unit_count, 'Metric Ton':total_tonnage/1000})
+                    st.write(base)
+                    
+                    edis=pd.DataFrame(base)
+                    edis=edis.sort_values(by="Date Shipped")
+                    edis.set_index("Shipment ID #",drop=True,inplace=True)
+                    
+                    suz=gcp_download(target_bucket,rf"suzano_report.json")
+                    suz=json.loads(suz)
+                    suz_frame=pd.DataFrame(suz).T
+                    suz_frame["Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in suz_frame["Date Shipped"]]
+                    suz_frame_daily=suz_frame[suz_frame.Date==(datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).date()]
+                    suz_frame_daily=suz_frame_daily[['Date Shipped', 'Vehicle', 'Shipment ID #', 'Release #', 'Carrier',
+                                  'Quantity', 'Metric Ton',]]
+                    suz_frame_daily.set_index("Shipment ID #",drop=True,inplace=True)
+                    suz_frame_daily.loc["MF01799999"]={"Date Shipped":"2024-03-28 12:26:58","Vehicle":"3423C",
+                                                               "Shipment ID #":"MF01799420","Release #":"3172295",
+                                                           "Carrier":"123456","Quantity":14.0,"Metric Ton":28.0}
+                    more=None
+                    if len(edis)!=len(suz_frame_daily):
+                        diff=abs(len(edis)-len(suz_frame_daily))
+                        if len(edis)<len(suz_frame_daily):
+                            more=suz_frame_daily.copy()
+                            for i in range(diff):
+                                edis.loc[len(edis)]=None
+                        else:
+                            more=edis.copy()
+                    
+                    
+                    difference = (edis.index!=suz_frame_daily.index)
+                    
+                    more=more[difference]
+                    st.write(more)
 
               
                   
