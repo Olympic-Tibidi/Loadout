@@ -636,7 +636,7 @@ if authentication_status:
                             # Extract only the filenames without the folder path
                             filename = blob.name.split("/")[-1]
                             filenames.append(filename)
-                        time.sleep(0.1)
+                        time.sleep(0.01)
                 
                     return filenames
                 today_uploaded_files = list_files_uploaded_today(target_bucket,rf"EDIS/")
