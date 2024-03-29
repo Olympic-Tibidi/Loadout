@@ -743,10 +743,10 @@ if authentication_status:
                         more=more[difference]
                         if more.shape[0]>0:
                             if guilty=="edis":
-                                st.markdown("**red:[Following Shipment from Suzano Report is Missing an EDI]**")
+                                st.markdown("**:red[Following Shipment from Suzano Report is Missing an EDI]**")
                                 st.write(more)
                             elif guilty=="suz_frame_daily":
-                                st.markdown("**red:[Following EDI is Missing in Suzano Report]**")
+                                st.markdown("**:red[Following EDI is Missing in Suzano Report]**")
                                 st.write(more)
                             else:
                                 st.success("All EDIs and Suzano Report Entries are accounted for!! ")
