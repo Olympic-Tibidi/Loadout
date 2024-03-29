@@ -709,7 +709,7 @@ if authentication_status:
                     base.append({'Date Shipped':datetime_obj, 'Vehicle':vehicle_id, 'Shipment ID #':bill_of_lading, 'Release #':release_order,
                      'Carrier':carrier_code, 'Quantity':unit_count, 'Metric Ton':total_tonnage/1000})
                     st.write(base)
-                    base=[]
+                    
                     edis=pd.DataFrame(base)
                     edis=edis.sort_values(by="Date Shipped")
                     edis.set_index("Shipment ID #",drop=True,inplace=True)
