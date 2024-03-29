@@ -617,28 +617,29 @@ if authentication_status:
                     file_name=f'{requested_edi_file}',
                     mime='text/csv')
                 #if st.button("EDI AUDIT"):
-                def list_files_uploaded_today(bucket_name, folder_name):
+                with st.spinner("Wait for it"):
+                    def list_files_uploaded_today(bucket_name, folder_name):
                     # Initialize Google Cloud Storage client
-                    storage_client = storage.Client()
-                
-                    # Get the current date
-                    today = datetime.datetime.now().date()
-                
-                    # Get the list of blobs in the specified folder
-                    blobs = storage_client.list_blobs(bucket_name, prefix=folder_name)
-                
-                    # Extract filenames uploaded today only
-                    filenames = []
-                    for blob in blobs:
-                        st.write(blob.updated.date())
-                        # Check if blob's last modification date is today
-                        if blob.updated.date() == today:
-                            # Extract only the filenames without the folder path
-                            filename = blob.name.split("/")[-1]
-                            filenames.append(filename)
-                        time.sleep(0.01)
-                
-                    return filenames
+                        storage_client = storage.Client()
+                    
+                        # Get the current date
+                        today = datetime.datetime.now().date()
+                        st.write(today)
+                        # Get the list of blobs in the specified folder
+                        blobs = storage_client.list_blobs(bucket_name, prefix=folder_name)
+                    
+                        # Extract filenames uploaded today only
+                        filenames = []
+                        for blob in blobs:
+                            st.write(blob.updated.date())
+                            # Check if blob's last modification date is today
+                            if blob.updated.date() == today:
+                                # Extract only the filenames without the folder path
+                                filename = blob.name.split("/")[-1]
+                                filenames.append(filename)
+                            time.sleep(0.001)
+                    
+                        return filenames
                 today_uploaded_files = list_files_uploaded_today(target_bucket,rf"EDIS/")
                 st.write(today_uploaded_files)
                 base=[]
