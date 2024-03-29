@@ -650,8 +650,8 @@ if authentication_status:
                     base=[]
                     for i in today_uploaded_files:
                         
-                        lines=gcp_download(target_bucket, rf"EDIS/i").splitlines()
-                        today_uploaded_files = list_files_uploaded_today(target_bucket, "EDIS/")
+                        lines=gcp_download(target_bucket, rf"EDIS/{i}").splitlines()
+                        
                         
                         # Step 2: Process the contents
                         data = []
