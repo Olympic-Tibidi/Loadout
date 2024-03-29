@@ -722,9 +722,9 @@ if authentication_status:
                         suz_frame_daily=suz_frame_daily[['Date Shipped', 'Vehicle', 'Shipment ID #', 'Release #', 'Carrier',
                                       'Quantity', 'Metric Ton',]]
                         suz_frame_daily.set_index("Shipment ID #",drop=True,inplace=True)
-                        suz_frame_daily.loc["MF01799999"]={"Date Shipped":"2024-03-28 12:26:58","Vehicle":"3423C",
-                                                                   "Shipment ID #":"MF01799420","Release #":"3172295",
-                                                               "Carrier":"123456","Quantity":14.0,"Metric Ton":28.0}
+                        # suz_frame_daily.loc["MF01799999"]={"Date Shipped":"2024-03-28 12:26:58","Vehicle":"3423C",
+                        #                                            "Shipment ID #":"MF01799420","Release #":"3172295",
+                        #                                        "Carrier":"123456","Quantity":14.0,"Metric Ton":28.0}
                         more=None
                         if len(edis)!=len(suz_frame_daily):
                             diff=abs(len(edis)-len(suz_frame_daily))
