@@ -2592,37 +2592,39 @@ if authentication_status:
         
         if len(dispatched.keys())>0 and not no_dispatch:
             loadout,schedule=st.tabs(["LOADOUT","SCHEDULE"])
+            
             with schedule:
-                st.subheader("TODAYS ACTION/SCHEDULE")
-                now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
-                schedule_=gcp_download(target_bucket,rf"schedule.json")
-                schedule=json.loads(schedule_)
-                sch_bill_of_ladings=pd.DataFrame.from_dict(bill_of_ladings).T[1:]
-                sch_bill_of_ladings["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in sch_bill_of_ladings["issued"]]
-                display_df=sch_bill_of_ladings[sch_bill_of_ladings["St_Date"]==now.date()]
-                st.write(display_df)
-                liste=[]
-                for term in display_df.index:
-                    t=(display_df.loc[term,'release_order'],display_df.loc[term,'sales_order'],display_df.loc[term,'destination'])
-                    liste.append(t)
+                pass
+                # st.subheader("TODAYS ACTION/SCHEDULE")
+                # now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
+                # schedule_=gcp_download(target_bucket,rf"schedule.json")
+                # schedule=json.loads(schedule_)
+                # sch_bill_of_ladings=pd.DataFrame.from_dict(bill_of_ladings).T[1:]
+                # sch_bill_of_ladings["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in sch_bill_of_ladings["issued"]]
+                # display_df=sch_bill_of_ladings[sch_bill_of_ladings["St_Date"]==now.date()]
+                # st.write(display_df)
+                # liste=[]
+                # for term in display_df.index:
+                #     t=(display_df.loc[term,'release_order'],display_df.loc[term,'sales_order'],display_df.loc[term,'destination'])
+                #     liste.append(t)
                 
-                schedule_frame=pd.DataFrame(schedule).T
-                #schedule_frame=schedule_frame.iloc[:-1]
-                schedule_frame["Loaded"]=0
-                for i in liste:
-                    schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
-                yeni=[]
-                for i in schedule_frame.index:
-                    if i!="Containers":
-                        yeni.append(release_order_database[schedule_frame.loc[i,"Release Order"]][schedule_frame.loc[i,"Sales Order"]]['unitized'])
-                new_index=[f"{i}-{j}" for i,j in zip(schedule_frame.index,yeni)]
-                schedule_frame.index=new_index+["Containers"]
-                schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
-                schedule_frame.loc["Total",["Scheduled","Loaded","Remaining"]]=schedule_frame[["Scheduled","Loaded","Remaining"]].sum()
-                schedule_frame=schedule_frame.fillna("")
-                schedule_frame["Loaded"]=schedule_frame["Loaded"].astype('Int64')
-                schedule_frame["Remaining"]=schedule_frame["Remaining"].astype('Int64')
-                st.table(schedule_frame)
+                # schedule_frame=pd.DataFrame(schedule).T
+                # #schedule_frame=schedule_frame.iloc[:-1]
+                # schedule_frame["Loaded"]=0
+                # for i in liste:
+                #     schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
+                # yeni=[]
+                # for i in schedule_frame.index:
+                #     if i!="Containers":
+                #         yeni.append(release_order_database[schedule_frame.loc[i,"Release Order"]][schedule_frame.loc[i,"Sales Order"]]['unitized'])
+                # new_index=[f"{i}-{j}" for i,j in zip(schedule_frame.index,yeni)]
+                # schedule_frame.index=new_index+["Containers"]
+                # schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
+                # schedule_frame.loc["Total",["Scheduled","Loaded","Remaining"]]=schedule_frame[["Scheduled","Loaded","Remaining"]].sum()
+                # schedule_frame=schedule_frame.fillna("")
+                # schedule_frame["Loaded"]=schedule_frame["Loaded"].astype('Int64')
+                # schedule_frame["Remaining"]=schedule_frame["Remaining"].astype('Int64')
+                # st.table(schedule_frame)
             
             with loadout:
                 
