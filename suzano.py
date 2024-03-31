@@ -3632,7 +3632,7 @@ if authentication_status:
                             a,b,c=extract_qt(raw_ro,ro,k)
                             
                             final[k]["Allocated to ROs"]+=a
-                            final[k]["Shipped"]+=b
+                        final[k]["Shipped"]=inv_bill_of_ladings.groupby("ocean_bill_of_lading")[['quantity']].sum().loc[k,'quantity']
                             #final[k]["Remaining"]+=c
                         final[k]["Remaining in Warehouse"]=final[k]["Fit To Ship"]-final[k]["Shipped"]
                         final[k]["Remaining on ROs"]=final[k]["Allocated to ROs"]-final[k]["Shipped"]
