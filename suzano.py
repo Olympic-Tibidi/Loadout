@@ -1347,12 +1347,13 @@ if authentication_status:
             if len(dispatched.keys())>0 and not no_dispatch:
                 loadout,schedule=st.tabs(["LOADOUT","SCHEDULE"])
                 with schedule:
-                   
                     st.subheader("TODAYS ACTION/SCHEDULE")
                     now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
                     schedule=gcp_download(target_bucket,rf"schedule.json")
                     schedule=json.loads(schedule)
                     dfb=pd.DataFrame.from_dict(bill_of_ladings).T[1:]
+                    dfb["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in dfb["issued"]]
+                    dfb=dfb[dfb["St_Date"]==now.date()]
                     scheduled=[]
                     for rol in dispatched:
                         for sale in dispatched[rol]:
@@ -1366,8 +1367,6 @@ if authentication_status:
                                               "Prep":release_order_database[rol][sale]['unitized'],
                                               "Scheduled":previous,"Loaded":0,"Remaining":0})
                     scheduled=pd.DataFrame(scheduled)
-                    dfb["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in dfb["issued"]]
-                    dfb=dfb[dfb["St_Date"]==datetime.datetime.now().date()]
                     for i in scheduled.index:
                         rol=scheduled.loc[i,"Release Order"]
                         sale=scheduled.loc[i,"Sales Item"]
@@ -1379,6 +1378,8 @@ if authentication_status:
                     scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
                     for col in ["Scheduled", "Loaded", "Remaining"]:
                         scheduled[col] = pd.to_numeric(scheduled[col], errors='coerce').fillna(0).astype(int)
+                    scheduled.fillna("",inplace=True)
+                    st.dataframe(dfb)
                     st.table(scheduled)
                   
                 
