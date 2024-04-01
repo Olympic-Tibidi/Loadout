@@ -879,11 +879,15 @@ if authentication_status:
                         scheduled=[]
                         for rol in dispatch:
                             for sale in dispatch[rol]:
+                                try:
+                                    previous=schedule[dispatched[rol][sale]['destination']]["Scheduled"]
+                                except:
+                                    previous=0
                                 scheduled.append({"Destination":dispatch[rol][sale]['destination'],
                                                   "Release Order":rol,"Sales Item":sale,
                                                   "ISP":release_order_database[rol][sale]['grade'],
                                                   "Prep":release_order_database[rol][sale]['unitized'],
-                                                  "Scheduled":0,"Loaded":0,"Remaining":0})
+                                                  "Scheduled":previous,"Loaded":0,"Remaining":0})
                         scheduled=pd.DataFrame(scheduled)
                         dfb["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in dfb["issued"]]
                         dfb=dfb[dfb["St_Date"]==datetime.date(2024,3,29)]
@@ -893,6 +897,7 @@ if authentication_status:
                             yuk=dfb[(dfb['release_order']==rol)&(dfb['sales_order']==sale)].shape[0]
                             scheduled.loc[i,"Loaded"]=yuk
                         scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
+                        scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
                         scheduled.set_index('Destination',drop=True,inplace=True)
                         a=st.data_editor(scheduled)
                         a_=json.dumps(a.T.to_dict())
