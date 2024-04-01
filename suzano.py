@@ -734,6 +734,67 @@ if authentication_status:
                         data=csv,
                         file_name=file_name,
                         mime='text/csv')
+                    entry=st.selectbox("SELECT SHIPMENT TO CREATE THE EDI", [i for i in display_df.index])
+                    entry=display_df.loc[entry].to_dict()
+                    def make_edi(entry):
+                        loads={}
+                        for load in entry['loads']:
+                            load_=load[:-3]
+                            if load_ not in loads:
+                                loads[load_]=0
+                                loads[load_]=entry["loads"][load]
+                            else:
+                                loads[load_]+=entry["loads"][load]
+                        double_load=False
+                        terminal_bill_of_lading=entry["edi_no"].split(".")[0]
+                        a=datetime.datetime.strptime(entry["issued"], '%Y-%m-%d %H:%M:%S').strftime('%Y%m%d')#%H%M%S')
+                        b=datetime.datetime.strptime(entry["issued"], '%Y-%m-%d %H:%M:%S').strftime('%H%M%S')
+                        print(b)
+                        line1="1HDR:"+a+b+"OLYM"
+                        tsn="01" 
+                        tt="0001"
+                        # if double_load:
+                        #     line21="2DTD:"+entry["release_order"]+" "*(10-len(current_release_order))+"000"+current_sales_order+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(first_quantity*2000)+" "*(16-len(str(first_quantity*2000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+terminal_bill_of_lading+" "*(50-len(terminal_bill_of_lading))+c
+                        #     line22="2DTD:"+entry["release_order"]+" "*(10-len(next_release_order))+"000"+next_sales_order+a+tsn+tt+vehicle_id+" "*(20-len(vehicle_id))+str(second_quantity*2000)+" "*(16-len(str(second_quantity*2000)))+"USD"+" "*36+carrier_code+" "*(10-len(carrier_code))+terminal_bill_of_lading+" "*(50-len(terminal_bill_of_lading))+c
+                        line2="2DTD:"+entry["release_order"]+" "*(10-len(entry["release_order"]))+"000"+entry["sales_order"]+a+tsn+tt+entry["vehicle"]+" "*(20-len(entry["vehicle"]))+str(int(entry["quantity"]*2000))+" "*(16-len(str(int(entry["quantity"]*2000))))+"USD"+" "*36+entry["carrier_id"]+" "*(10-len(str(entry["quantity"])))+terminal_bill_of_lading+" "*(50-len(terminal_bill_of_lading))+a
+                    
+                        loadls=[]
+                        bale_loadls=[]
+                        if double_load:
+                            for i in first_textsplit:
+                                loadls.append("2DEV:"+current_release_order+" "*(10-len(current_release_order))+"000"+current_sales_order+a+tsn+i[:load_digit]+" "*(10-len(i[:load_digit]))+"0"*16+str(2000))
+                            for k in second_textsplit:
+                                loadls.append("2DEV:"+next_release_order+" "*(10-len(next_release_order))+"000"+next_sales_order+a+tsn+k[:load_digit]+" "*(10-len(k[:load_digit]))+"0"*16+str(2000))
+                        else:
+                            for k in loads:
+                    
+                                loadls.append("2DEV:"+entry["release_order"]+" "*(10-len(entry["release_order"]))+"000"+entry["sales_order"]+a+tsn+k+" "*(10-len(k))+"0"*(20-len(str(int(loads[k]*2000))))+str(int(loads[k]*2000)))
+                    
+                    
+                        if double_load:
+                            number_of_lines=len(first_textsplit)+len(second_textsplit)+4
+                        else:
+                            number_of_lines=len(loadls)+3
+                        end_initial="0"*(4-len(str(number_of_lines)))
+                        end=f"9TRL:{end_initial}{number_of_lines}"
+                    
+                        with open(f'{terminal_bill_of_lading}.txt', 'w') as f:
+                            f.write(line1)
+                            f.write('\n')
+                            if double_load:
+                                f.write(line21)
+                                f.write('\n')
+                                f.write(line22)
+                            else:
+                                f.write(line2)
+                            f.write('\n')
+                    
+                            for i in loadls:
+                    
+                                f.write(i)
+                                f.write('\n')
+                    
+                            f.write(end)
             with admin_tab3:
                 edi_files=list_files_in_subfolder(target_bucket, rf"EDIS/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
