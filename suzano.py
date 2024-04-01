@@ -873,8 +873,8 @@ if authentication_status:
 
 
                     with rls_tab4:  #####  SCHEDULE
-                        # dipatched=gcp_download(target_bucket,rf"dispatched.json")
-                        # dispatched=json.loads(dispatched)
+                        schedule=gcp_download(target_bucket,rf"schedule.json")
+                        schedule=json.loads(schedule)
                         dfb=pd.DataFrame.from_dict(json.loads(bill_data)).T[1:]
                         scheduled=[]
                         for rol in dispatch:
