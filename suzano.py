@@ -809,7 +809,7 @@ if authentication_status:
                                 label="DOWNLOAD EDI",
                                 data=file_content,
                                 file_name=file_name,
-                                mime='text/csv')
+                                mime='text/csv',key="53432")
             with admin_tab3:
                 edi_files=list_files_in_subfolder(target_bucket, rf"EDIS/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
