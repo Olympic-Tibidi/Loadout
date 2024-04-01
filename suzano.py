@@ -737,11 +737,10 @@ if authentication_status:
                             file_name=file_name,
                             mime='text/csv')
                     with bilo2:
-                        
                         if display_df.shape[0]>0:
-                            
                             entry=st.selectbox("SELECT SHIPMENT TO CREATE THE EDI", [i for i in display_df.index])
                             entry=display_df.loc[entry].to_dict()
+                            terminal_bill_of_lading=entry["edi_no"].split(".")[0]
                             def make_edi(entry):
                                 loads={}
                                 for load in entry['loads']:
@@ -755,7 +754,7 @@ if authentication_status:
                                 terminal_bill_of_lading=entry["edi_no"].split(".")[0]
                                 a=datetime.datetime.strptime(entry["issued"], '%Y-%m-%d %H:%M:%S').strftime('%Y%m%d')#%H%M%S')
                                 b=datetime.datetime.strptime(entry["issued"], '%Y-%m-%d %H:%M:%S').strftime('%H%M%S')
-                                print(b)
+                                
                                 line1="1HDR:"+a+b+"OLYM"
                                 tsn="01" 
                                 tt="0001"
@@ -801,10 +800,11 @@ if authentication_status:
                                         f.write('\n')
                             
                                     f.write(end)
-                            with open(f'{terminal_bill_of_lading}.txt', 'r') as f:
-                                file_content=f.read()
-                            file_name=f'{terminal_bill_of_lading}.txt'
-                                
+                                with open(f'{terminal_bill_of_lading}.txt', 'r') as f:
+                                    file_content=f.read()
+                                file_name=f'{terminal_bill_of_lading}.txt'
+                                return file_content,file_name
+                            file_content,file_name=make_edi(entry)
                             st.download_button(
                                 label="DOWNLOAD EDI",
                                 data=file_content,
