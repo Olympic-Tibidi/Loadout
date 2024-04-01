@@ -2637,6 +2637,7 @@ if authentication_status:
                 scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
                 for col in ["Scheduled", "Loaded", "Remaining"]:
                     scheduled[col] = pd.to_numeric(scheduled[col], errors='coerce').fillna(0).astype(int)
+                scheduled.fillna("",inplace=True)
                 st.table(scheduled)
             
             with loadout:
