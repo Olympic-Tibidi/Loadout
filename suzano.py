@@ -1374,8 +1374,10 @@ if authentication_status:
                         yuk=dfb[(dfb['release_order']==rol)&(dfb['sales_order']==sale)].shape[0]
                         scheduled.loc[i,"Loaded"]=yuk
                     scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
-                    scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
+                    for col in ["Scheduled", "Loaded", "Remaining"]:
+                        scheduled[col] = pd.to_numeric(scheduled[col], errors='coerce').fillna(0).astype(int)
                     scheduled.set_index('Destination',drop=True,inplace=True)
+                    scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
                     
                     st.table(scheduled)
                   
