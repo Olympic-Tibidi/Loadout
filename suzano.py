@@ -873,26 +873,27 @@ if authentication_status:
 
 
                     with rls_tab4:  #####  SCHEDULE
-                        schedule_=gcp_download(target_bucket,rf"schedule.json")
-                        schedule=json.loads(schedule_)
-                        display_df=admin_bill_of_ladings[admin_bill_of_ladings["St_Date"]==now.date()]
-                        #st.write(display_df)
-                        liste=[]
-                        for term in display_df.index:
-                            t=(display_df.loc[term,'release_order'],display_df.loc[term,'sales_order'],display_df.loc[term,'destination'])
-                            liste.append(t)
-                        
-                        schedule_frame=pd.DataFrame(schedule).T
-                        schedule_frame["Loaded"]=0
-                        for i in liste:
-                            schedule_frame.loc[(schedule_frame['Release Order']==i[0])&(schedule_frame['Sales Order']==i[1]),"Loaded"]+=1
-                     
-                        schedule_frame["Remaining"]=schedule_frame["Scheduled"]-schedule_frame["Loaded"]
-                        schedule_frame.loc["Total",["Scheduled","Loaded","Remaining"]]=schedule_frame[["Scheduled","Loaded","Remaining"]].sum()
-                        schedule_frame=schedule_frame.fillna("")
-                        a=st.data_editor(schedule_frame)
-                        a_=a.iloc[:-1]
-                        a_=json.dumps(a_.T.to_dict())
+                        # dipatched=gcp_download(target_bucket,rf"dispatched.json")
+                        # dispatched=json.loads(dispatched)
+                        dfb=json.loads(bill_data)
+                        scheduled=[]
+                        for rol in dispatch:
+                            for sale in dispatch[rol]:
+                                scheduled.append({"Destination":dispatch[rol][sale]['destination'],
+                                                  "Release Order":rol,"Sales Item":sale,
+                                                  "ISP":release_order_database[rol][sale]['grade'],
+                                                  "Prep":release_order_database[rol][sale]['unitized'],
+                                                  "Scheduled":0,"Loaded":0,"Remaining":0})
+                        scheduled=pd.DataFrame(scheduled)
+                        dfb=df.copy()
+                        dfb["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in dfb["issued"]]
+                        dfb=dfb[dfb["St_Date"]==datetime.date(2024,3,29)]
+                        for i in scheduled.index:
+                            rol=scheduled.loc[i,"Release Order"]
+                            sale=scheduled.loc[i,"Sales Item"]
+                            yuk=dfb[(dfb['release_order']==rol)&(dfb['sales_order']==sale)].shape[0]
+                            scheduled.loc[i,"Loaded"]=yuk
+                        scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
                         
                         if st.button("UPDATE TABLE"):
                             storage_client = storage.Client()
