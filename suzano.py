@@ -729,7 +729,7 @@ if authentication_status:
                         st.write("DATA TOO LARGE, DOWNLOAD INSTEAD")
                         file_name=f'OLYMPIA_ALL_BILL_OF_LADINGS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                     csv=convert_df(display_df)
-                    bilo1,bilo2,_=st.columns([2,2,6])
+                    bilo1,bilo2,_=st.columns([4,4,2])
                     with bilo1:
                         st.download_button(
                             label="DOWNLOAD BILL OF LADINGS",
