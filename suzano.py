@@ -893,7 +893,7 @@ if authentication_status:
                             yuk=dfb[(dfb['release_order']==rol)&(dfb['sales_order']==sale)].shape[0]
                             scheduled.loc[i,"Loaded"]=yuk
                         scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
-                        
+                        st.data_editor(scheduled)
                         if st.button("UPDATE TABLE"):
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
