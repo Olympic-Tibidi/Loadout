@@ -893,6 +893,7 @@ if authentication_status:
                             yuk=dfb[(dfb['release_order']==rol)&(dfb['sales_order']==sale)].shape[0]
                             scheduled.loc[i,"Loaded"]=yuk
                         scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
+                        scheduled.set_index('Destination',drop=True,inplace=True)
                         a=st.data_editor(scheduled)
                         a_=json.dumps(a.T.to_dict())
                         if st.button("UPDATE TABLE"):
