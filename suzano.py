@@ -900,7 +900,8 @@ if authentication_status:
                         scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
                         scheduled.set_index('Destination',drop=True,inplace=True)
                         a=st.data_editor(scheduled)
-                        a_=json.dumps(a.T.to_dict())
+                        a_=a.iloc[:-1]
+                        a_=json.dumps(a_.T.to_dict())
                         if st.button("UPDATE TABLE"):
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
