@@ -880,7 +880,7 @@ if authentication_status:
                         for rol in dispatch:
                             for sale in dispatch[rol]:
                                 try:
-                                    previous=schedule[dispatched[rol][sale]['destination']]["Scheduled"]
+                                    previous=schedule[dispatch[rol][sale]['destination']]["Scheduled"]
                                 except:
                                     previous=0
                                 scheduled.append({"Destination":dispatch[rol][sale]['destination'],
