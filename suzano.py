@@ -806,7 +806,7 @@ if authentication_status:
                                 return file_content,file_name
                             file_content,file_name=make_edi(entry)
                             st.download_button(
-                                label="DOWNLOAD EDI",
+                                label="CREATE EDI FOR THIS SHIPMENT",
                                 data=file_content,
                                 file_name=file_name,
                                 mime='text/csv',key="53432")
