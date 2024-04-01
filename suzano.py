@@ -1351,7 +1351,7 @@ if authentication_status:
                     st.subheader("TODAYS ACTION/SCHEDULE")
                     now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
                     schedule_=gcp_download(target_bucket,rf"schedule.json")
-                    scheduled=pd.DataFrame(json.loads(schedule_).T)
+                    scheduled=pd.DataFrame(json.loads(schedule_)).T
                     scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
                     st.dataframe(scheduled)
                     # sch_bill_of_ladings=pd.DataFrame.from_dict(bill_of_ladings).T[1:]
