@@ -1352,7 +1352,7 @@ if authentication_status:
                     now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
                     schedule=gcp_download(target_bucket,rf"schedule.json")
                     schedule=json.loads(schedule)
-                    dfb=pd.DataFrame.from_dict(json.loads(bill_of_ladings)).T[1:]
+                    dfb=pd.DataFrame.from_dict(bill_of_ladings).T[1:]
                     scheduled=[]
                     for rol in dispatched:
                         for sale in dispatched[rol]:
