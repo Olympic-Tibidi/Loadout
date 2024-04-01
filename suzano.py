@@ -1348,10 +1348,11 @@ if authentication_status:
                 loadout,schedule=st.tabs(["LOADOUT","SCHEDULE"])
                 with schedule:
                     pass
-                    # st.subheader("TODAYS ACTION/SCHEDULE")
-                    # now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
-                    # schedule_=gcp_download(target_bucket,rf"schedule.json")
-                    # schedule=json.loads(schedule_)
+                    st.subheader("TODAYS ACTION/SCHEDULE")
+                    now=datetime.datetime.now()-datetime.timedelta(hours=utc_difference)
+                    schedule_=gcp_download(target_bucket,rf"schedule.json")
+                    schedule=json.loads(schedule_)
+                    st.dataframe(pd.DataFrame(schedule))
                     # sch_bill_of_ladings=pd.DataFrame.from_dict(bill_of_ladings).T[1:]
                     # sch_bill_of_ladings["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in sch_bill_of_ladings["issued"]]
                     # display_df=sch_bill_of_ladings[sch_bill_of_ladings["St_Date"]==now.date()]
