@@ -3696,13 +3696,13 @@ if authentication_status:
                                     bols[ocean_bill_of_lading].append(key)
                     
                     inventory={'GSSWJUV8556A': [3500.0,1],
-                     'GSSWJUV8556B': [25.0,0],
-                     'GSSWJUV8556C': [6475.0,5],
-                     'GSSWKIR6013D': [8350.0,2],
-                     'GSSWKIR6013E': [850.0,2],
-                     'GSSWLAG3142E': [572.0,0],
-                     'GSSWLYS10628A': [1500.0,0],
-                     'GSSWLYS10628B': [8500.0,0],}
+                         'GSSWJUV8556B': [25.0,0],
+                         'GSSWJUV8556C': [6475.0,5],
+                         'GSSWKIR6013D': [8350.0,1],
+                         'GSSWKIR6013E': [850.0,1],
+                         'GSSWLAG3142E': [572.0,0],
+                         'GSSWLYS10628A': [1500.0,0],
+                         'GSSWLYS10628B': [8500.0,0],}
                     def extract_qt(data,ro,bol):
                         sales_group=["001","002","003","004","005"]
                         for item in data[ro]:
