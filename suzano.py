@@ -555,7 +555,6 @@ if authentication_status:
                             st.markdown("**:blue[All Checks Complete !]**")
                             st.markdown("**:blue[SUZANO REPORT match BILL OF LADINGS]**")       
                             st.write(f"{len(suz_frame)} Shipments")
-                            st.balloons()
                            
 
                     with aud_col2:
@@ -564,7 +563,6 @@ if authentication_status:
                             st.markdown("**:blue[All Checks Complete !]**")
                             st.markdown("**:blue[INVENTORY match BILL OF LADINGS]**")       
                             st.write(f"{len(suz_frame)} Shipments")
-                            st.balloons()
                 edi_audit=st.toggle("AUDIT TODAYS EDIs AND REPORTS")
                 if edi_audit:
                     
