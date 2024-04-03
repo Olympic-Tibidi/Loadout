@@ -911,10 +911,10 @@ if authentication_status:
                         quantity=st.number_input("Quantity of Units", min_value=1, max_value=5000, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
                         tonnage=2*quantity
                         carrier_code=st.selectbox("Carrier Code",[f"{key}-{item}" for key,item in carrier_list.items()])            
-               
+                    fsc_verified=st.checkbox("**VERIFY RELEASE ORDER STATEMENT MATCHES BATCH {batch} STATEMENT : FSC  CERTIFIED PRODUCTS< FSC MIX CREDIT SCS-COC-009938 **")
                     create_release_order=st.button("SUBMIT")
                     
-                    if create_release_order:
+                    if create_release_order and fsc_verified:
                         
                         if add: 
                             temp=add_release_order_data(release_order_database,release_order_number,sales_order_item_add,vessel_add,batch_add,ocean_bill_of_lading_add,grade_add,dryness_add,carrier_code_add,unitized_add,quantity_add,shipped_add,remaining_add)
