@@ -2445,7 +2445,7 @@ if authentication_status:
                          'GSSWJUV8556B': [25.0,0],
                          'GSSWJUV8556C': [6475.0,5],
                          'GSSWKIR6013D': [8350.0,1],
-                         'GSSWKIR6013E': [850.0,3],
+                         'GSSWKIR6013E': [850.0,1],
                          'GSSWLAG3142E': [572.0,0],
                          'GSSWLYS10628A': [1500.0,0],
                          'GSSWLYS10628B': [8500.0,0],}
