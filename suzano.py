@@ -969,7 +969,10 @@ if authentication_status:
                         dfb["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in dfb["issued"]]
                         dfb=dfb[dfb["St_Date"]==datetime.datetime.now().date()]
                         for i in scheduled.index:      #### find loads from bill of ladings
-                            scheduled.loc[i,"Scheduled"]=schedule[scheduled.loc[i,'Destination']]['Scheduled']
+                            try:
+                                scheduled.loc[i,"Scheduled"]=schedule[scheduled.loc[i,'Destination']]['Scheduled']
+                            except:
+                                scheduled.loc[i,"Scheduled"]=0
                             rol=scheduled.loc[i,"Release Order"]
                             sale=scheduled.loc[i,"Sales Item"]
                             try:
