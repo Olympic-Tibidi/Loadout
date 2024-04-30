@@ -980,6 +980,7 @@ if authentication_status:
                             except:
                                 yuk=0
                             scheduled.loc[i,"Loaded"]=yuk
+                        st.write(scheduled)
                         scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
                         scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
                         scheduled.set_index('Destination',drop=True,inplace=True)
