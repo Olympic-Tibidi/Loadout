@@ -1494,7 +1494,7 @@ if authentication_status:
                 
                     work_order_=st.selectbox("**SELECT RELEASE ORDER/SALES ORDER TO WORK**",liste,index=0 if st.session_state.work_order_ else 0) 
                     st.session_state.work_order_=work_order_
-                    if work_order:
+                    if work_order_!=0:
                         
                         work_order=work_order_.split(" ")[0]
                         order=["001","002","003","004","005","006"]
