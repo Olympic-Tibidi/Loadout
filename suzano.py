@@ -1459,16 +1459,23 @@ if authentication_status:
                         sale=scheduled.loc[i,"Sales Item"]
                         yuk=dfb[(dfb['release_order']==rol)&(dfb['sales_order']==sale)].shape[0]
                         scheduled.loc[i,"Loaded"]=yuk
-                    scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
                     
-                    scheduled.set_index('Destination',drop=True,inplace=True)
-                    scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
-                    for col in ["Scheduled", "Loaded", "Remaining"]:
-                        scheduled[col] = pd.to_numeric(scheduled[col], errors='coerce').fillna(0).astype(int)
-                    scheduled.fillna("",inplace=True)
-                    st.dataframe(dfb)
-                    st.table(scheduled)
-                  
+                    
+                    if len(scheduled)>0:
+                    
+                        scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
+                        
+                        scheduled.set_index('Destination',drop=True,inplace=True)
+                        scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
+                        for col in ["Scheduled", "Loaded", "Remaining"]:
+                            scheduled[col] = pd.to_numeric(scheduled[col], errors='coerce').fillna(0).astype(int)
+                        scheduled.fillna("",inplace=True)
+                        st.dataframe(dfb)
+                        st.table(scheduled)
+                    else:
+                        st.dataframe(dfb)
+                        st.write("Nothing Dispatched!")
+                      
                 
                 with loadout:
                     
@@ -2722,16 +2729,21 @@ if authentication_status:
                     sale=scheduled.loc[i,"Sales Item"]
                     yuk=dfb[(dfb['release_order']==rol)&(dfb['sales_order']==sale)].shape[0]
                     scheduled.loc[i,"Loaded"]=yuk
-                scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
                 
-                scheduled.set_index('Destination',drop=True,inplace=True)
-                scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
-                for col in ["Scheduled", "Loaded", "Remaining"]:
-                    scheduled[col] = pd.to_numeric(scheduled[col], errors='coerce').fillna(0).astype(int)
-                scheduled.fillna("",inplace=True)
-                st.dataframe(dfb)
-                st.table(scheduled)
-            
+                if len(scheduled)>0:
+                    
+                    scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
+                    
+                    scheduled.set_index('Destination',drop=True,inplace=True)
+                    scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
+                    for col in ["Scheduled", "Loaded", "Remaining"]:
+                        scheduled[col] = pd.to_numeric(scheduled[col], errors='coerce').fillna(0).astype(int)
+                    scheduled.fillna("",inplace=True)
+                    st.dataframe(dfb)
+                    st.table(scheduled)
+                else:
+                    st.dataframe(dfb)
+                    st.write("Nothing Dispatched!")
             with loadout:
                 
                 menu_destinations={}
