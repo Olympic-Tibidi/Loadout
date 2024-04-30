@@ -980,21 +980,23 @@ if authentication_status:
                             except:
                                 yuk=0
                             scheduled.loc[i,"Loaded"]=yuk
-                        st.write(scheduled)
-                        scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
-                        scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
-                        scheduled.set_index('Destination',drop=True,inplace=True)
-                        a=st.data_editor(scheduled)
-                        a_=a.iloc[:-1]
-                        a_=json.dumps(a_.T.to_dict())
-                        if st.button("UPDATE TABLE"):
-                            storage_client = storage.Client()
-                            bucket = storage_client.bucket(target_bucket)
-                            blob = bucket.blob(rf"schedule.json")
-                            blob.upload_from_string(a_)
-                            st.success(f"**UPDATED SCHEDULE**")   
-                            st.rerun()
-
+                        if len(scheduled)>0:
+                            
+                            scheduled["Remaining"]=scheduled["Scheduled"]-scheduled["Loaded"]
+                            scheduled.loc["Total",["Scheduled","Loaded","Remaining"]]=scheduled[["Scheduled","Loaded","Remaining"]].sum()
+                            scheduled.set_index('Destination',drop=True,inplace=True)
+                            a=st.data_editor(scheduled)
+                            a_=a.iloc[:-1]
+                            a_=json.dumps(a_.T.to_dict())
+                            if st.button("UPDATE TABLE"):
+                                storage_client = storage.Client()
+                                bucket = storage_client.bucket(target_bucket)
+                                blob = bucket.blob(rf"schedule.json")
+                                blob.upload_from_string(a_)
+                                st.success(f"**UPDATED SCHEDULE**")   
+                                st.rerun()
+                        else:
+                            st.write("Nothing Dispatched")
 
                         
                     with rls_tab1:
