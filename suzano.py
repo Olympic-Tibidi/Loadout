@@ -914,7 +914,7 @@ if authentication_status:
                     else:
                         fsc_verified=st.checkbox(f"**VERIFY RELEASE ORDER FSC CERTIFICATE CODE MATCHES BATCH {batch} STATEMENT : FSC  CERTIFIED PRODUCTS FSC MIX CREDIT SCS-COC-009938**",key="sdasa")
                     create_release_order=st.button("SUBMIT")
-                    
+                    fsc_verified=True
                     if create_release_order and fsc_verified:
                         
                         if add: 
