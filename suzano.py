@@ -909,10 +909,10 @@ if authentication_status:
                         quantity=st.number_input("Quantity of Units", min_value=1, max_value=5000, value=1, step=1,  key=None, help=None, on_change=None, disabled=False, label_visibility="visible")
                         tonnage=2*quantity
                         carrier_code=st.selectbox("Carrier Code",[f"{key}-{item}" for key,item in carrier_list.items()])            
-                    if edit:
-                        fsc_verified=st.checkbox(f"**VERIFY RELEASE ORDER FSC CERTIFICATE CODE MATCHES BATCH {batch_edit} STATEMENT : FSC  CERTIFIED PRODUCTS FSC MIX CREDIT SCS-COC-009938**",key="sasa")
-                    else:
-                        fsc_verified=st.checkbox(f"**VERIFY RELEASE ORDER FSC CERTIFICATE CODE MATCHES BATCH {batch} STATEMENT : FSC  CERTIFIED PRODUCTS FSC MIX CREDIT SCS-COC-009938**",key="sdasa")
+                    #if edit:
+                    #    fsc_verified=st.checkbox(f"**VERIFY RELEASE ORDER FSC CERTIFICATE CODE MATCHES BATCH {batch_edit} STATEMENT : FSC  CERTIFIED PRODUCTS FSC MIX CREDIT SCS-COC-009938**",key="sasa")
+                  #  else:
+                    #    fsc_verified=st.checkbox(f"**VERIFY RELEASE ORDER FSC CERTIFICATE CODE MATCHES BATCH {batch} STATEMENT : FSC  CERTIFIED PRODUCTS FSC MIX CREDIT SCS-COC-009938**",key="sdasa")
                     create_release_order=st.button("SUBMIT")
                     fsc_verified=True
                     if create_release_order and fsc_verified:
