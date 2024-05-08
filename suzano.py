@@ -3728,19 +3728,23 @@ if authentication_status:
                                     bols[ocean_bill_of_lading].append(key)
                     
                     inventory={'GSSWJUV8556A': [3500.0,0.5],
-                         'GSSWJUV8556B': [25.0,0],
-                         'GSSWJUV8556C': [6475.0,5.5],
-                         'GSSWKIR6013D': [8350.0,1],
-                         'GSSWKIR6013E': [850.0,1],
-                         'GSSWLAG3142E': [750.0,0],
-                         'GSSWLYS10628A': [1500.0,14],
-                         'GSSWLYS10628B': [8500.0,0],}
+                     'GSSWJUV8556B': [25.0,0],
+                     'GSSWJUV8556C': [6475.0,5.5],
+                     'GSSWKIR6013D': [8350.0,1],
+                     'GSSWKIR6013E': [850.0,1],
+                     'GSSWLAG3142E': [750.0,0],
+                     'GSSWLYS10628A': [1500.0,14],
+                     'GSSWLYS10628B': [8500.0,0],}
                     def extract_qt(data,ro,bol):
+                        totals=[0,0,0]
                         sales_group=["001","002","003","004","005"]
                         for item in data[ro]:
                             if item in sales_group:
                                 if data[ro][item]['ocean_bill_of_lading']==bol:
-                                    return data[ro][item]['total'],data[ro][item]['shipped'],data[ro][item]['remaining']
+                                    totals[0]+=data[ro][item]['total']
+                                    totals[1]+=data[ro][item]['shipped']
+                                    totals[2]+=data[ro][item]['remaining']
+                        return totals
                     final={}
                     for k in inventory.keys():
                         final[k]={"Total":0,"Damaged":0,"Fit To Ship":0,"Allocated to ROs":0,"Shipped":0,
@@ -3749,16 +3753,15 @@ if authentication_status:
                         final[k]["Total"]=inventory[k][0]
                         final[k]["Damaged"]=inventory[k][1]
                         final[k]["Fit To Ship"]=final[k]["Total"]-final[k]["Damaged"]   
-                        
-                        for ro in bols[k]:
-                            a,b,c=extract_qt(raw_ro,ro,k)
-                            
+                    
+                        for ro in set(bols[k]):
+                            a,b,c=extract_qt(raw_ro,ro,k)[0],extract_qt(raw_ro,ro,k)[1],extract_qt(raw_ro,ro,k)[2]
                             final[k]["Allocated to ROs"]+=a
-                        final[k]["Shipped"]=inv_bill_of_ladings.groupby("ocean_bill_of_lading")[['quantity']].sum().loc[k,'quantity']
-                            #final[k]["Remaining"]+=c
-                        final[k]["Remaining in Warehouse"]=final[k]["Fit To Ship"]-final[k]["Shipped"]
-                        final[k]["Remaining on ROs"]=final[k]["Allocated to ROs"]-final[k]["Shipped"]
-                        final[k]["Remaining After ROs"]=final[k]["Fit To Ship"]-final[k]["Allocated to ROs"]
+                            final[k]["Shipped"]=inv_bill_of_ladings.groupby("ocean_bill_of_lading")[['quantity']].sum().loc[k,'quantity']
+                            
+                            final[k]["Remaining in Warehouse"]=final[k]["Fit To Ship"]-final[k]["Shipped"]
+                            final[k]["Remaining on ROs"]=final[k]["Allocated to ROs"]-final[k]["Shipped"]
+                            final[k]["Remaining After ROs"]=final[k]["Fit To Ship"]-final[k]["Allocated to ROs"]
                     temp=pd.DataFrame(final).T
                     temp.loc["TOTAL"]=temp.sum(axis=0)
                     
@@ -3771,7 +3774,7 @@ if authentication_status:
                     st.dataframe(temp)
                     #with inv_col2:
                     st.subheader("By Ocean BOL,TONS")
-                    st.dataframe(tempo)               
+                    st.dataframe(tempo)                       
                 with unregistered:
                     alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
                     alien_vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"])
