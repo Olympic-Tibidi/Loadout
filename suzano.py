@@ -1193,7 +1193,8 @@ if authentication_status:
                       
                         
                         st.write(pd.DataFrame(completed_release_order_dest_map).T)
-                        to_reactivate=st.selectbox("SELECT RELEASE ORDER TO CHANGE FROM COMPLETE TO UNCOMPLETE",list(completed_release_order_dest_map.keys()),key="erfdaq")
+                        activate_list=[i.split("-")[0] for i in completed_release_order_dest_map.keys()]
+                        to_reactivate=st.selectbox("SELECT RELEASE ORDER TO CHANGE FROM COMPLETE TO UNCOMPLETE",activate_list,key="erfdaq")
                         
                     with rls_tab3:
                         
