@@ -1193,8 +1193,15 @@ if authentication_status:
                       
                         
                         st.write(pd.DataFrame(completed_release_order_dest_map).T)
-                        activate_list=[i.split("-")[0] for i in completed_release_order_dest_map.keys()]
+                        activate_list=list(set([i.split("-")[0] for i in completed_release_order_dest_map.keys()]))
                         to_reactivate=st.selectbox("SELECT RELEASE ORDER TO CHANGE FROM COMPLETE TO UNCOMPLETE",activate_list,key="erfdaq")
+                        with st.button("ACTIVATE RELEASE ORDER"):
+                            release_order_database[to_reactivate]['complete']=False
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket(target_bucket)
+                            blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
+                            blob.upload_from_string(json.dumps(release_order_database))
+                            st.success(f"Reactivated {to_reactivate} successfully!")
                         
                     with rls_tab3:
                         
