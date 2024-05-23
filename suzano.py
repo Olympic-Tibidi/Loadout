@@ -1002,7 +1002,7 @@ if authentication_status:
                     with rls_tab1:
                         
                         destinations_of_release_orders=[f"{i} to {release_order_database[i]['destination']}" for i in release_order_database if release_order_database[i]["complete"]!=True]
-                        if len(destination_of_release_orders)==0:
+                        if len(destinations_of_release_orders)==0:
                             st.markdown("**ALL RELEASE ORDERS COMPLETED, REACTIVATE A RELEASE ORDER OR ENTER NEW") 
                          ###       Dropdown menu
                         else:
