@@ -1193,7 +1193,8 @@ if authentication_status:
                       
                         
                         st.write(pd.DataFrame(completed_release_order_dest_map).T)
-                   
+                        to_reactivate=st.selectbox("SELECT RELEASE ORDER TO CHANGE FROM COMPLETE TO UNCOMPLETE",completed_release_order_dest_map.index,key="erfdaq")
+                        
                     with rls_tab3:
                         
                         mf_numbers=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
