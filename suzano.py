@@ -2425,8 +2425,8 @@ if authentication_status:
                     
                     with daily:
                         
-                        amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":453}
-                        inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LYSEFJORD-2308","LAGUNA-3142"])
+                        amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":453,"FRONTIER-55VC":9811}
+                        inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LYSEFJORD-2308","LAGUNA-3142","FRONTIER-55VC"])
                         kf=inv_bill_of_ladings.iloc[1:].copy()
                         kf['issued'] = pd.to_datetime(kf['issued'])
                         kf=kf[kf["vessel"]==inv_vessel]
@@ -2480,7 +2480,9 @@ if authentication_status:
                          'GSSWKIR6013E': [850.0,1],
                          'GSSWLAG3142E': [750.0,0],
                          'GSSWLYS10628A': [1500.0,14],
-                         'GSSWLYS10628B': [8500.0,0],}
+                         'GSSWLYS10628B': [8500.0,0],
+                         'SFCRIQIOLM555000': [842.0,0],
+                         'SFCRIQIOLM555001': [8969.0,0]}
                         def extract_qt(data,ro,bol):
                             totals=[0,0,0]
                             sales_group=["001","002","003","004","005"]
@@ -3690,8 +3692,8 @@ if authentication_status:
                 
                 with daily:
                     
-                    amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":453}
-                    inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LYSEFJORD-2308","LAGUNA-3142"])
+                    amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":453,"FRONTIER-55VC":9811}
+                    inv_vessel=st.selectbox("Select Vessel",["KIRKENES-2304","JUVENTAS-2308","LYSEFJORD-2308","LAGUNA-3142","FRONTIER-55VC"])
                     kf=inv_bill_of_ladings.iloc[1:].copy()
                     kf['issued'] = pd.to_datetime(kf['issued'])
                     kf=kf[kf["vessel"]==inv_vessel]
@@ -3739,13 +3741,15 @@ if authentication_status:
                                     bols[ocean_bill_of_lading].append(key)
                     
                     inventory={'GSSWJUV8556A': [3500.0,0.5],
-                     'GSSWJUV8556B': [25.0,0],
-                     'GSSWJUV8556C': [6475.0,5.5],
-                     'GSSWKIR6013D': [8350.0,1],
-                     'GSSWKIR6013E': [850.0,1],
-                     'GSSWLAG3142E': [750.0,0],
-                     'GSSWLYS10628A': [1500.0,14],
-                     'GSSWLYS10628B': [8500.0,0],}
+                         'GSSWJUV8556B': [25.0,0],
+                         'GSSWJUV8556C': [6475.0,5.5],
+                         'GSSWKIR6013D': [8350.0,1],
+                         'GSSWKIR6013E': [850.0,1],
+                         'GSSWLAG3142E': [750.0,0],
+                         'GSSWLYS10628A': [1500.0,14],
+                         'GSSWLYS10628B': [8500.0,0],
+                         'SFCRIQIOLM555000': [842.0,0],
+                         'SFCRIQIOLM555001': [8969.0,0]}
                     def extract_qt(data,ro,bol):
                         totals=[0,0,0]
                         sales_group=["001","002","003","004","005"]
