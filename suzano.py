@@ -3773,14 +3773,18 @@ if authentication_status:
                         final[k]["Damaged"]=inventory[k][1]
                         final[k]["Fit To Ship"]=final[k]["Total"]-final[k]["Damaged"]   
                     
-                        for ro in set(bols[k]):
-                            a,b,c=extract_qt(raw_ro,ro,k)[0],extract_qt(raw_ro,ro,k)[1],extract_qt(raw_ro,ro,k)[2]
-                            final[k]["Allocated to ROs"]+=a
-                            final[k]["Shipped"]=inv_bill_of_ladings.groupby("ocean_bill_of_lading")[['quantity']].sum().loc[k,'quantity']
-                            
-                            final[k]["Remaining in Warehouse"]=final[k]["Fit To Ship"]-final[k]["Shipped"]
-                            final[k]["Remaining on ROs"]=final[k]["Allocated to ROs"]-final[k]["Shipped"]
-                            final[k]["Remaining After ROs"]=final[k]["Fit To Ship"]-final[k]["Allocated to ROs"]
+                        if k in bols:
+                                
+                            for ro in set(bols[k]):
+                                a,b,c=extract_qt(raw_ro,ro,k)[0],extract_qt(raw_ro,ro,k)[1],extract_qt(raw_ro,ro,k)[2]
+                                final[k]["Allocated to ROs"]+=a
+                                final[k]["Shipped"]=inv_bill_of_ladings.groupby("ocean_bill_of_lading")[['quantity']].sum().loc[k,'quantity']
+                                
+                                final[k]["Remaining in Warehouse"]=final[k]["Fit To Ship"]-final[k]["Shipped"]
+                                final[k]["Remaining on ROs"]=final[k]["Allocated to ROs"]-final[k]["Shipped"]
+                                final[k]["Remaining After ROs"]=final[k]["Fit To Ship"]-final[k]["Allocated to ROs"]
+                        else:
+                            pass
                     temp=pd.DataFrame(final).T
                     temp.loc["TOTAL"]=temp.sum(axis=0)
                     
