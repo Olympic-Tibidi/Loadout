@@ -2530,7 +2530,7 @@ if authentication_status:
                         st.dataframe(tempo)               
                     with unregistered:
                         alien_units=json.loads(gcp_download(target_bucket,rf"alien_units.json"))
-                        alien_vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142"])
+                        alien_vessel=st.selectbox("SELECT VESSEL",["KIRKENES-2304","JUVENTAS-2308","LAGUNA-3142","LYSEFJORD-2308","FRONTIER-55VC])
                         alien_list=pd.DataFrame(alien_units[alien_vessel]).T
                         alien_list.reset_index(inplace=True)
                         alien_list.index=alien_list.index+1
