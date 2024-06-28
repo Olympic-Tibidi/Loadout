@@ -1203,14 +1203,14 @@ if authentication_status:
                             blob.upload_from_string(json.dumps(release_order_database))
                             st.success(f"Reactivated {to_reactivate} successfully!")
                         not_completed=[i for i in release_order_database if release_order_database[i]["complete"]==False]
-                        to_reactivate=st.selectbox("SELECT RELEASE ORDER TO CHANGE FROM NOT COMPLETE TO UNCOMPLETE",not_completed,key="erfsdaq")
+                        to_deactivate=st.selectbox("SELECT RELEASE ORDER TO CHANGE FROM NOT COMPLETE TO UNCOMPLETE",not_completed,key="erfsdaq")
                         if st.button("DE-ACTIVATE RELEASE ORDER",key="sdasa"):
-                            release_order_database[to_reactivate]['complete']=False
+                            release_order_database[to_reactivate]['complete']=True
                             storage_client = storage.Client()
                             bucket = storage_client.bucket(target_bucket)
                             blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
                             blob.upload_from_string(json.dumps(release_order_database))
-                            st.success(f"Reactivated {to_reactivate} successfully!")
+                            st.success(f"Reactivated {to_deactivate} successfully!")
                         
                     with rls_tab3:
                         
