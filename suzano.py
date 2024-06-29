@@ -2482,9 +2482,9 @@ if authentication_status:
                                             bols[ocean_bill_of_lading] = []
                                         bols[ocean_bill_of_lading].append(key)
                         
-                        inventory={'GSSWJUV8556A': [3500.0,0.5],
+                        inventory={'GSSWJUV8556A': [3500.0,1],
                          'GSSWJUV8556B': [25.0,0],
-                         'GSSWJUV8556C': [6475.0,5.5],
+                         'GSSWJUV8556C': [6475.0,6],
                          'GSSWKIR6013D': [8350.0,1],
                          'GSSWKIR6013E': [850.0,1],
                          'GSSWLAG3142E': [750.0,0],
