@@ -234,6 +234,22 @@ def list_files_in_subfolder(bucket_name, folder_name):
     filenames = [blob.name.split('/')[-1] for blob in blobs]
 
     return filenames
+
+def delete_file_from_gcs(target_bucket, file_path):
+    # Initialize the storage client
+    storage_client = storage.Client()
+
+    # Access the specified bucket
+    bucket = storage_client.bucket(target_bucket)
+
+    # Get the blob (file) reference
+    blob = bucket.blob(file_path)
+
+    # Delete the blob (file)
+    blob.delete()
+
+    print(f"File {file_path} deleted from {target_bucket}.")
+
 def store_release_order_data(data,release_order_number,destination,po_number,sales_order_item,vessel,batch,ocean_bill_of_lading,grade,dryness,carrier_code,unitized,total):
        
     # Create a dictionary to store the release order data
@@ -699,10 +715,14 @@ if authentication_status:
                             
             with admin_tab2:   #### BILL OF LADINGS
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                admin_bill_of_ladings=json.loads(bill_data)
-                admin_bill_of_ladings=pd.DataFrame.from_dict(admin_bill_of_ladings).T[1:]
-                admin_bill_of_ladings["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["issued"]]
                 
+                bill_data_reverse=json.loads(bill_data)
+                admin_bill_of_ladings=pd.DataFrame.from_dict(bill_data_reverse).T[1:]
+                admin_bill_of_ladings["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["issued"]]
+                release_order_database=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
+                release_order_database=json.loads(release_order_database)
+                suzano_report=gcp_download(target_bucket,rf"suzano_report.json")
+                suzano_report=json.loads(suzano_report)
                 def convert_df(df):
                     # IMPORTANT: Cache the conversion to prevent computation on every rerun
                     return df.to_csv().encode('utf-8')
@@ -727,7 +747,7 @@ if authentication_status:
                         st.write("DATA TOO LARGE, DOWNLOAD INSTEAD")
                         file_name=f'OLYMPIA_ALL_BILL_OF_LADINGS to {datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%m-%d,%Y")}.csv'
                     csv=convert_df(display_df)
-                    bilo1,bilo2,_=st.columns([4,4,2])
+                    bilo1,bilo2,bilo3=st.columns([3,3,3])
                     with bilo1:
                         st.download_button(
                             label="DOWNLOAD BILL OF LADINGS",
@@ -808,6 +828,61 @@ if authentication_status:
                                 data=file_content,
                                 file_name=file_name,
                                 mime='text/csv',key="53432")
+                    
+                    with bilo3:
+                        to_reverse=st.selectbox("SELECT SHIPMENT TO VOID", [i if len(display_df)>0 else None for i in display_df.index ])
+                        
+                        if st.button("VOID SHIPMENT"):
+                            
+                            if to_reverse!=None:
+                                to_reverse_data=display_df.loc[to_reverse].to_dict()
+                                ro_to_reverse=to_reverse_data['release_order']
+                                so_to_reverse=to_reverse_data['sales_order']
+                                qty_to_reverse=to_reverse_data['quantity']
+                            release_order_database[ro_to_reverse][so_to_reverse]['shipped']-=qty_to_reverse
+                            release_order_database[ro_to_reverse][so_to_reverse]['remaining']+=qty_to_reverse
+                            
+                            
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket(target_bucket)
+                            blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
+                            blob.upload_from_string(json.dumps(release_order_database))
+                            st.success(f"Release order {ro_to_reverse} updated with reversal!")
+
+                            del bill_data_reverse[to_reverse]
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket(target_bucket)
+                            blob = bucket.blob(rf"terminal_bill_of_ladings.json")
+                            blob.upload_from_string(json.dumps(bill_data_reverse))
+                            st.success(f"Terminal Bill of Ladings updated with reversal!")
+
+                            suz_index=next(key for key, value in suzano_report.items() if value['Shipment ID #'] == to_reverse)
+                            del suzano_report[suz_index]
+                            suzano_report = {i + 1: v for i, (k, v) in enumerate(suzano_report.items())}
+                            
+                            storage_client = storage.Client()
+                            bucket = storage_client.bucket(target_bucket)
+                            blob = bucket.blob(rf"suzano_report.json")
+                            blob.upload_from_string(json.dumps(suzano_report))
+                            st.success(f"Suzano Report updated with reversal!")
+
+                            if to_reverse[0]=="M":
+                                mf_numbers=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
+                                mf_numbers=json.loads(mf_numbers)
+                                mf_numbers[ro_to_reverse].append(to_reverse)
+                                storage_client = storage.Client()
+                                bucket = storage_client.bucket(target_bucket)
+                                blob = bucket.blob(rf"release_orders/mf_numbers.json")
+                                blob.upload_from_string(json.dumps(mf_numbers))
+                                st.success(f"MF Numbers entered back into RO {ro_to_reverse}!")
+                            try:
+                                delete_file_from_gcs(target_bucket, f'EDIS/{to_reverse}.txt')
+                                st.success(f"Deleted EDI {to_reverse}.txt!")
+                            except:
+                                st.write("NO Edis found for this shipment")
+
+                    
+            
             with admin_tab3:
                 edi_files=list_files_in_subfolder(target_bucket, rf"EDIS/")
                 requested_edi_file=st.selectbox("SELECT EDI",edi_files[1:])
