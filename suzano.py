@@ -885,7 +885,7 @@ if authentication_status:
                     to_print_loads=st.selectbox("SELECT SHIPMENT TO DISPLAY LOADS", [i if len(display_df)>0 else None for i in display_df.index ])
                             
                     if st.button("DISPLAY LOADS"):     
-                        st.write(display_df.loc[to_print_loads]['loads'].values().to_list())
+                        st.write([key for key in display_df.loc[to_print_loads]['loads'].values()])
 
                     
             
