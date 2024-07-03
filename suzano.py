@@ -715,7 +715,6 @@ if authentication_status:
                             
             with admin_tab2:   #### BILL OF LADINGS
                 bill_data=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
-                
                 bill_data_reverse=json.loads(bill_data)
                 admin_bill_of_ladings=pd.DataFrame.from_dict(bill_data_reverse).T[1:]
                 admin_bill_of_ladings["St_Date"]=[datetime.datetime.strptime(i,"%Y-%m-%d %H:%M:%S").date() for i in admin_bill_of_ladings["issued"]]
@@ -723,6 +722,11 @@ if authentication_status:
                 release_order_database=json.loads(release_order_database)
                 suzano_report=gcp_download(target_bucket,rf"suzano_report.json")
                 suzano_report=json.loads(suzano_report)
+                try:
+                    voided_shipments=gcp_download(target_bucket,rf"voided_shipments.json")
+                    voided_shipments=json.loads(voided_shipments)
+                except:
+                    voided_shipments={}
                 def convert_df(df):
                     # IMPORTANT: Cache the conversion to prevent computation on every rerun
                     return df.to_csv().encode('utf-8')
@@ -835,7 +839,8 @@ if authentication_status:
                             to_reverse=st.selectbox("SELECT SHIPMENT TO VOID", [i if len(display_df)>0 else None for i in display_df.index ])
                             
                             if st.button("VOID SHIPMENT"):
-                                
+                                voided_shipments[to_reverse]={}
+                                voided_shipments[to_reverse]=display_df.loc[to_reverse].to_dict()
                                 if to_reverse!=None:
                                     to_reverse_data=display_df.loc[to_reverse].to_dict()
                                     ro_to_reverse=to_reverse_data['release_order']
@@ -867,6 +872,13 @@ if authentication_status:
                                 blob = bucket.blob(rf"suzano_report.json")
                                 blob.upload_from_string(json.dumps(suzano_report))
                                 st.success(f"Suzano Report updated with reversal!")
+
+                                del voided_shipments[to_reverse]['St_Date']
+                                storage_client = storage.Client()
+                                bucket = storage_client.bucket(target_bucket)
+                                blob = bucket.blob(rf"voided_shipments.json")
+                                blob.upload_from_string(json.dumps(voided_shipments))
+                                st.success(f"Void recorded in voided shipments!")
     
                                 if to_reverse[0]=="M":
                                     mf_numbers=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
@@ -886,6 +898,10 @@ if authentication_status:
                             
                     if st.button("DISPLAY LOADS"):     
                         st.write([key for key in display_df.loc[to_print_loads]['loads']])
+
+                    if st.button("DISPLAY VOIDED SHIPMENTS"):     
+                        st.write(voided_shipments)
+
 
                     
             
