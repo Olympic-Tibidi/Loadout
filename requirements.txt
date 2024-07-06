@@ -18,3 +18,4 @@ reportlab
 pypdfium2
 streamlit_profiler
 google-cloud-documentai
+opencv-python-headless==4.5.2.52
