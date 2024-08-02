@@ -154,10 +154,10 @@ def gcp_download(bucket_name, source_file_name):
     blob = bucket.blob(source_file_name)
     data = blob.download_as_text()
     return data
-def gcp_download_new(bucket_name, source_file_name):
-    conn = st.connection('gcs', type=FilesConnection)
-    a = conn.read(f"{bucket_name}/{source_file_name}", ttl=600)
-    return a
+# def gcp_download_new(bucket_name, source_file_name):
+#     conn = st.connection('gcs', type=FilesConnection)
+#     a = conn.read(f"{bucket_name}/{source_file_name}", ttl=600)
+#     return a
 def gcp_download_x(bucket_name, source_file_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
@@ -3391,7 +3391,7 @@ if authentication_status:
         if select=="LOADOUT" :
         
 
-            map=gcp_download_new(target_bucket,rf"map.json")
+            map=gcp_download(target_bucket,rf"map.json")
             release_order_database=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
             release_order_database=json.loads(release_order_database)
             dispatched=gcp_download(target_bucket,rf"dispatched.json")
@@ -4735,7 +4735,7 @@ if authentication_status:
     ########################                                WAREHOUSE                            ####################
     
     elif username == 'warehouse':
-        map=gcp_download_new(target_bucket,rf"map.json")
+        map=gcp_download(target_bucket,rf"map.json")
         release_order_database=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
         release_order_database=json.loads(release_order_database)
         dispatched=gcp_download(target_bucket,rf"dispatched.json")
