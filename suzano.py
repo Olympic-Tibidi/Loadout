@@ -68,7 +68,6 @@ def get_storage_client():
     return storage_client
 project_id = "Newsuz"
 
-#gcp_service_account_info = st.secrets["gcs_connections"]
 
 
 st.set_page_config(layout="wide")
@@ -241,7 +240,8 @@ def list_cs_files(bucket_name):
     return file_list
 
 def list_cs_files_f(bucket_name, folder_name):
-    storage_client = storage.Client()
+   # storage_client = storage.Client()
+    storage_client = get_storage_client()
 
     # List all blobs in the bucket
     blobs = storage_client.list_blobs(bucket_name)
@@ -1464,7 +1464,8 @@ if authentication_status:
                                 mf_numbers[release_order_number_mf]+=input_mf_numbers
                                 mf_numbers[release_order_number_mf]=list(set(mf_numbers[release_order_number_mf]))
                                 mf_data=json.dumps(mf_numbers)
-                                storage_client = storage.Client()
+                                #storage_client = storage.Client()
+                                storage_client = get_storage_client()
                                 bucket = storage_client.bucket(target_bucket)
                                 blob = bucket.blob(rf"release_orders/mf_numbers.json")
                                 blob.upload_from_string(mf_data)
@@ -1474,7 +1475,8 @@ if authentication_status:
                                     if i in mf_numbers[release_order_number_mf]:
                                         mf_numbers[release_order_number_mf].remove(i)
                                 mf_data=json.dumps(mf_numbers)
-                                storage_client = storage.Client()
+                               # storage_client = storage.Client()
+                                storage_client = get_storage_client()
                                 bucket = storage_client.bucket(target_bucket)
                                 blob = bucket.blob(rf"release_orders/mf_numbers.json")
                                 blob.upload_from_string(mf_data)
