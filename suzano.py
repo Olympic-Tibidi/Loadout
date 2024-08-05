@@ -60,10 +60,12 @@ from google.oauth2 import service_account
 #credentials = service_account.Credentials.from_service_account_info(st.secrets["gcs_connections"])
 
 #client = documentai.DocumentProcessorServiceClient(credentials=credentials)
-credentials = service_account.Credentials.from_service_account_info(st.secrets["gcs_connections"])
+gcp_service_account_info = st.secrets["gcp_service_account"]
 
-client = documentai.DocumentProcessorServiceClient(credentials=credentials)
-
+def get_storage_client():
+    # Create a storage client using the credentials
+    storage_client = storage.Client.from_service_account_info(gcp_service_account_info)
+    return storage_client
 project_id = "Newsuz"
 
 #gcp_service_account_info = st.secrets["gcs_connections"]
@@ -156,7 +158,8 @@ def send_email_with_attachment(subject, body, sender, recipients, password, file
     print("Message sent!")
 
 def gcp_download(bucket_name, source_file_name):
-    storage_client = storage.Client()
+    #storage_client = storage.Client()
+    storage_client = get_storage_client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
     data = blob.download_as_text()
