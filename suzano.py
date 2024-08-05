@@ -62,7 +62,7 @@ from google.oauth2 import service_account
 #client = documentai.DocumentProcessorServiceClient(credentials=credentials)
 
 
-project_id = "newsuzano"
+project_id = "Newsuz"
 
 #gcp_service_account_info = st.secrets["gcs_connections"]
 
