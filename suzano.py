@@ -57,9 +57,9 @@ from google.oauth2 import service_account
 
 
 
-#credentials = service_account.Credentials.from_service_account_info(st.secrets["gcs_connections"])
+credentials = service_account.Credentials.from_service_account_info(st.secrets["gcs_connections"])
 
-#client = documentai.DocumentProcessorServiceClient(credentials=credentials)
+client = documentai.DocumentProcessorServiceClient(credentials=credentials)
 
 
 project_id = "Newsuz"
@@ -476,19 +476,19 @@ authenticator = stauth.Authenticate(
 
 name, authentication_status, username = authenticator.login(fields={'PORT OF OLYMPIA TOS LOGIN', 'main'})
 
-gcp_service_account_info = st.secrets["gcs_connections"]
+# gcp_service_account_info = st.secrets["gcs_connections"]
 
-def get_storage_client():
-    # Create a storage client using the credentials
-    storage_client = storage.Client.from_service_account_info(gcp_service_account_info)
-    return storage_client
+# def get_storage_client():
+#     # Create a storage client using the credentials
+#     storage_client = storage.Client.from_service_account_info(gcp_service_account_info)
+#     return storage_client
 
-def gcp_download(bucket_name, source_file_name):
-    storage_client = get_storage_client()
-    bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(source_file_name)
-    data = blob.download_as_text()
-    return data
+# def gcp_download(bucket_name, source_file_name):
+#     storage_client = get_storage_client()
+#     bucket = storage_client.bucket(bucket_name)
+#     blob = bucket.blob(source_file_name)
+#     data = blob.download_as_text()
+#     return data
 
 if authentication_status:
     authenticator.logout('Logout', 'main')
