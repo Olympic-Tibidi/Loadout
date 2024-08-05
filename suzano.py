@@ -169,14 +169,16 @@ def gcp_download(bucket_name, source_file_name):
 #     a = conn.read(f"{bucket_name}/{source_file_name}", ttl=600)
 #     return a
 def gcp_download_x(bucket_name, source_file_name):
-    storage_client = storage.Client()
+    #storage_client = storage.Client()
+    storage_client = get_storage_client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
     data = blob.download_as_bytes()
     return data
 
 def gcp_csv_to_df(bucket_name, source_file_name):
-    storage_client = storage.Client()
+    #storage_client = storage.Client()
+    storage_client = get_storage_client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_file_name)
     data = blob.download_as_bytes()
@@ -201,7 +203,8 @@ def download_model(bucket_name, source_blob_name, destination_file_name):
 
 
 def upload_cs_file(bucket_name, source_file_name, destination_file_name): 
-    storage_client = storage.Client()
+    #storage_client = storage.Client()
+    storage_client = get_storage_client()
 
     bucket = storage_client.bucket(bucket_name)
 
@@ -210,7 +213,8 @@ def upload_cs_file(bucket_name, source_file_name, destination_file_name):
     return True
     
 def upload_json_file(bucket_name, source_file_name, destination_file_name): 
-    storage_client = storage.Client()
+    #storage_client = storage.Client()
+    storage_client = get_storage_client()
 
     bucket = storage_client.bucket(bucket_name)
 
@@ -218,7 +222,8 @@ def upload_json_file(bucket_name, source_file_name, destination_file_name):
     blob.upload_from_filename(source_file_name,content_type="application/json")
     return True
 def upload_xl_file(bucket_name, uploaded_file, destination_blob_name):
-    storage_client = storage.Client()
+    #storage_client = storage.Client()
+    storage_client = get_storage_client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(destination_blob_name)
     uploaded_file.seek(0)
@@ -227,7 +232,8 @@ def upload_xl_file(bucket_name, uploaded_file, destination_blob_name):
     blob.upload_from_file(uploaded_file)
 
 def list_cs_files(bucket_name): 
-    storage_client = storage.Client()
+    #storage_client = storage.Client()
+    storage_client = get_storage_client()
 
     file_list = storage_client.list_blobs(bucket_name)
     file_list = [file.name for file in file_list]
@@ -246,7 +252,8 @@ def list_cs_files_f(bucket_name, folder_name):
     return folder_files
 
 def list_files_in_folder(bucket_name, folder_name):
-    storage_client = storage.Client()
+    #storage_client = storage.Client()
+    storage_client = get_storage_client()
     blobs = storage_client.list_blobs(bucket_name, prefix=folder_name)
 
     # Extract only the filenames without the folder path
@@ -255,7 +262,8 @@ def list_files_in_folder(bucket_name, folder_name):
     return filenames
 
 def list_files_in_subfolder(bucket_name, folder_name):
-    storage_client = storage.Client()
+    #storage_client = storage.Client()
+    storage_client = get_storage_client()
     blobs = storage_client.list_blobs(bucket_name, prefix=folder_name, delimiter='/')
 
     # Extract only the filenames without the folder path
