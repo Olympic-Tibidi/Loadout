@@ -1646,6 +1646,7 @@ if authentication_status:
         
 
             map=gcp_download(target_bucket,rf"map.json")
+            map=json.loads(map)
             release_order_database=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
             release_order_database=json.loads(release_order_database)
             dispatched=gcp_download(target_bucket,rf"dispatched.json")
