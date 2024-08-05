@@ -476,7 +476,7 @@ authenticator = stauth.Authenticate(
 
 name, authentication_status, username = authenticator.login(fields={'PORT OF OLYMPIA TOS LOGIN', 'main'})
 
-gcp_service_account_info = json.loads(st.secrets["gcp_service_account"])
+gcp_service_account_info = json.loads(st.secrets["gcs_connections"])
 
 def get_storage_client():
     # Create a storage client using the credentials
