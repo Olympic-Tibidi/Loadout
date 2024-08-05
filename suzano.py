@@ -61,23 +61,11 @@ from google.oauth2 import service_account
 
 #client = documentai.DocumentProcessorServiceClient(credentials=credentials)
 
-credentials = google.auth.credentials.with_scopes_if_required(credentials, bigquery.Client.SCOPE)
+
 project_id = "newsuzano"
-storage_client = storage.Client(project=project_id, credentials=credentials)
+
 #gcp_service_account_info = st.secrets["gcs_connections"]
 
-def get_storage_client():
-    # Create a storage client using the credentials
-    storage_client = storage.Client.from_service_account_info(gcp_service_account_info)
-    return storage_client
-
-def gcp_download(bucket_name, source_file_name):
-    #storage_client = get_storage_client()
-    storage_client=storage_client
-    bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(source_file_name)
-    data = blob.download_as_text()
-    return data
 
 st.set_page_config(layout="wide")
 
