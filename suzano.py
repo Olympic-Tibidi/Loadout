@@ -2141,7 +2141,8 @@ if authentication_status:
                                                         updated_bill=bill_mapping.copy()
                                                         updated_bill[vessel][x[:load_digit]]={"Batch":batch,"Ocean_bl":ocean_bill_of_lading}
                                                         updated_bill=json.dumps(updated_bill)
-                                                        storage_client = storage.Client()
+                                                        #storage_client = storage.Client()
+                                                        storage_client = get_storage_client()
                                                         bucket = storage_client.bucket(target_bucket)
                                                         blob = bucket.blob(rf"bill_mapping.json")
                                                         blob.upload_from_string(updated_bill)
@@ -2154,7 +2155,8 @@ if authentication_status:
                                                         alien_units[vessel][x]={"Ocean_Bill_Of_Lading":ocean_bill_of_lading,"Batch":batch,"Grade":grade,
                                                                                 "Date_Found":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y,%m-%d %H:%M:%S")}
                                                         alien_units=json.dumps(alien_units)
-                                                        storage_client = storage.Client()
+                                                        #storage_client = storage.Client()
+                                                        storage_client = get_storage_client()
                                                         bucket = storage_client.bucket(target_bucket)
                                                         blob = bucket.blob(rf"alien_units.json")
                                                         blob.upload_from_string(alien_units)
@@ -2201,7 +2203,8 @@ if authentication_status:
                                                         updated_bill=bill_mapping.copy()
                                                         updated_bill[vessel][x[:load_digit]]={"Batch":batch,"Ocean_bl":ocean_bill_of_lading}
                                                         updated_bill=json.dumps(updated_bill)
-                                                        storage_client = storage.Client()
+                                                        #storage_client = storage.Client()
+                                                        storage_client = get_storage_client()
                                                         bucket = storage_client.bucket(target_bucket)
                                                         blob = bucket.blob(rf"bill_mapping.json")
                                                         blob.upload_from_string(updated_bill)
@@ -2211,7 +2214,8 @@ if authentication_status:
                                                         alien_units[vessel][x]={"Ocean_Bill_Of_Lading":ocean_bill_of_lading,"Batch":batch,"Grade":grade,
                                                                                 "Date_Found":datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=utc_difference),"%Y,%m-%d %H:%M:%S")}
                                                         alien_units=json.dumps(alien_units)
-                                                        storage_client = storage.Client()
+                                                       # storage_client = storage.Client()
+                                                        storage_client = get_storage_client()
                                                         bucket = storage_client.bucket(target_bucket)
                                                         blob = bucket.blob(rf"alien_units.json")
                                                         blob.upload_from_string(alien_units)
@@ -2342,7 +2346,8 @@ if authentication_status:
                                                                                      "quantity":st.session_state.updated_quantity,"issued":f"{a_} {b_}","edi_no":edi_name,"loads":pure_loads} 
                                                         
                                     bill_of_ladings=json.dumps(bill_of_ladings)
-                                    storage_client = storage.Client()
+                                    #storage_client = storage.Client()
+                                    storage_client = get_storage_client()
                                     bucket = storage_client.bucket(target_bucket)
                                     blob = bucket.blob(rf"terminal_bill_of_ladings.json")
                                     blob.upload_from_string(bill_of_ladings)
@@ -2375,7 +2380,8 @@ if authentication_status:
                                                              "Warehouse":"OLYM","Vessel":vessel_suzano,"Voyage #":voyage_suzano,"Grade":wrap,"Quantity":quantity,
                                                              "Metric Ton": quantity*2, "ADMT":admt,"Mode of Transportation":transport_type}})
                                         suzano_report=json.dumps(suzano_report)
-                                        storage_client = storage.Client()
+                                        #storage_client = storage.Client()
+                                        storage_client = get_storage_client()
                                         bucket = storage_client.bucket(target_bucket)
                                         blob = bucket.blob(rf"suzano_report.json")
                                         blob.upload_from_string(suzano_report)
@@ -2406,7 +2412,8 @@ if authentication_status:
                                                 del dispatched[victim[0]]
                                         
                                         json_data = json.dumps(dispatched)
-                                        storage_client = storage.Client()
+                                        #storage_client = storage.Client()
+                                        storage_client = get_storage_client()
                                         bucket = storage_client.bucket(target_bucket)
                                         blob = bucket.blob(rf"dispatched.json")
                                         blob.upload_from_string(json_data)       
@@ -2421,7 +2428,8 @@ if authentication_status:
                                         release_order_database[current_release_order]['complete']=True
                                     
                                     json_data = json.dumps(release_order_database)
-                                    storage_client = storage.Client()
+                                    #storage_client = storage.Client()
+                                    storage_client = get_storage_client()
                                     bucket = storage_client.bucket(target_bucket)
                                     blob = bucket.blob(rf"release_orders/RELEASE_ORDERS.json")
                                     blob.upload_from_string(json_data)
@@ -2465,7 +2473,8 @@ if authentication_status:
                                     if load_mf_number_issued:
                                         mf_numbers_for_load[release_order_number].remove(load_mf_number)
                                         mf_numbers_for_load=json.dumps(mf_numbers_for_load)
-                                        storage_client = storage.Client()
+                                        #storage_client = storage.Client()
+                                        storage_client = get_storage_client()
                                         bucket = storage_client.bucket(target_bucket)
                                         blob = bucket.blob(rf"release_orders/mf_numbers.json")
                                         blob.upload_from_string(mf_numbers_for_load)
@@ -2494,7 +2503,8 @@ if authentication_status:
                                         except:
                                             pass
                                     alien_units=json.dumps(alien_units)
-                                    storage_client = storage.Client()
+                                    #storage_client = storage.Client()
+                                    storage_client = get_storage_client()
                                     bucket = storage_client.bucket(target_bucket)
                                     blob = bucket.blob(rf"alien_units.json")
                                     blob.upload_from_string(alien_units)   
@@ -2798,7 +2808,8 @@ if authentication_status:
                                 if st.button("SUBMIT CHANGE",key="t2ds"):
                                     map['bol_mapping'][bol_to_edit]['total']=total_edit
                                     map['bol_mapping'][bol_to_edit]['damaged']=damaged_edit
-                                    storage_client = storage.Client()
+                                    #storage_client = storage.Client()
+                                    storage_client = get_storage_client()
                                     bucket = storage_client.bucket(target_bucket)
                                     blob = bucket.blob(rf"map.json")
                                     blob.upload_from_string(json.dumps(map))
@@ -2807,7 +2818,8 @@ if authentication_status:
                                     user="admin"
                                     log_type="Warehouse Adjustment"
                                     inventory_log=log_inventory_change(bol_to_edit, total_edit, damaged_edit, user, log_type)
-                                    storage_client = storage.Client()
+                                    #storage_client = storage.Client()
+                                    storage_client = get_storage_client()
                                     bucket = storage_client.bucket(target_bucket)
                                     blob = bucket.blob(rf"inventory_log.json")
                                     blob.upload_from_string(json.dumps(inventory_log))
