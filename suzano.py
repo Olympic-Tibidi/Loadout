@@ -2922,9 +2922,9 @@ if authentication_status:
                
                 fig = go.Figure()
                 fig.add_trace(go.Bar(x=active_orders, y=active_frame["Total"], name='Total', marker_color='lightgray',
-                                     width=[bar_width]*len(active_orders)//2))
+                                     width=0.7))
                 fig.add_trace(go.Bar(x=active_orders, y=active_frame["Shipped"], name='Shipped', marker_color='blue',
-                                     width=[bar_width]*len(active_orders)//2, opacity=0.7))
+                                     width=0.7, opacity=0.7))
                 remaining_data = [remaining if remaining > 0 else None for remaining in active_frame_["Remaining"]]
                 fig.add_trace(go.Scatter(x=active_orders, y=remaining_data, mode='markers', name='Remaining', marker=dict(color='red', size=10)))
                 
