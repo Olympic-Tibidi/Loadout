@@ -2920,11 +2920,11 @@ if authentication_status:
                 destinations=[raw_ro[i]['destination'] for i in active_frame_.index]
                 active_orders=[str(i) for i in active_frame.index]
                
-                fig = go.Figure()
-                fig.add_trace(go.Bar(x=active_orders, y=active_frame["Total"], name='Total', marker_color='lightgray'))
-                fig.add_trace(go.Bar(x=active_orders, y=active_frame["Shipped"], name='Shipped', marker_color='blue', opacity=0.7))
-                remaining_data = [remaining if remaining > 0 else None for remaining in active_frame_["Remaining"]]
-                fig.add_trace(go.Scatt
+                # fig = go.Figure()
+                # fig.add_trace(go.Bar(x=active_orders, y=active_frame["Total"], name='Total', marker_color='lightgray'))
+                # fig.add_trace(go.Bar(x=active_orders, y=active_frame["Shipped"], name='Shipped', marker_color='blue', opacity=0.7))
+                # remaining_data = [remaining if remaining > 0 else None for remaining in active_frame_["Remaining"]]
+                # fig.add_trace(go.Scatt
                 
                 #annotations = [dict(x=release_order, y=total_quantity, text=destination, showarrow=True, arrowhead=4, ax=0, ay=-30) for release_order, total_quantity, destination in zip(active_orders, active_frame["Total"], destinations)]
                 #fig.update_layout(annotations=annotations)
@@ -2932,15 +2932,15 @@ if authentication_status:
                 # fig.add_annotation(x="3172296", y=800, text="destination",
                 #                        showarrow=True, arrowhead=4, ax=0, ay=-30)
                 
-                fig.update_layout(title='ACTIVE RELEASE ORDERS',
-                                  xaxis_title='Release Orders',
-                                  yaxis_title='Quantities',
-                                  barmode='overlay',
-                                  width=1300,
-                                  height=700,
-                                  xaxis=dict(tickangle=-90, type='category'))
+                # fig.update_layout(title='ACTIVE RELEASE ORDERS',
+                #                   xaxis_title='Release Orders',
+                #                   yaxis_title='Quantities',
+                #                   barmode='overlay',
+                #                   width=1300,
+                #                   height=700,
+                #                   xaxis=dict(tickangle=-90, type='category'))
                 
-                st.plotly_chart(fig)
+                # st.plotly_chart(fig)
                 
                 
                 duration=st.toggle("Duration Report")
