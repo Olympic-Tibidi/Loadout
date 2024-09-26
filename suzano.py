@@ -2324,6 +2324,7 @@ if authentication_status:
                                     error=f"**:red[{updated_quantity} units and {bale_updated_quantity} bales on this truck. Please check. You planned for {foreman_quantity} units and {foreman_bale_quantity} bales!]** "
                                     st.write(error)
                                 if proceed:
+                                    carrier_code_mf=f"{carrier_code.split('-')[1]}-{carrier_code.split('-')[0]}"
                                     carrier_code=carrier_code.split("-")[0]
                                     
                                     suzano_report=gcp_download(target_bucket,rf"suzano_report.json")
@@ -2485,7 +2486,7 @@ if authentication_status:
                                     time.sleep(0.1)                            
                                     success_container5.success(f"Uploaded EDI File",icon="✅")
                                     if load_mf_number_issued:
-                                        mf_numbers_for_load[release_order_number].remove(load_mf_number)
+                                        mf_numbers_for_load[release_order_number][carrier_code_mf].remove(load_mf_number)
                                         mf_numbers_for_load=json.dumps(mf_numbers_for_load)
                                         #storage_client = storage.Client()
                                         storage_client = get_storage_client()
@@ -3696,6 +3697,7 @@ if authentication_status:
                                 error=f"**:red[{updated_quantity} units and {bale_updated_quantity} bales on this truck. Please check. You planned for {foreman_quantity} units and {foreman_bale_quantity} bales!]** "
                                 st.write(error)
                             if proceed:
+                                carrier_code_mf=f"{carrier_code.split('-')[1]}-{carrier_code.split('-')[0]}"
                                 carrier_code=carrier_code.split("-")[0]
                                 
                                 suzano_report=gcp_download(target_bucket,rf"suzano_report.json")
@@ -3853,7 +3855,7 @@ if authentication_status:
                                 time.sleep(0.1)                            
                                 success_container5.success(f"Uploaded EDI File",icon="✅")
                                 if load_mf_number_issued:
-                                    mf_numbers_for_load[release_order_number].remove(load_mf_number)
+                                    mf_numbers_for_load[release_order_number][carrier_code_mf].remove(load_mf_number)
                                     mf_numbers_for_load=json.dumps(mf_numbers_for_load)
                                     storage_client = get_storage_client()
                                     bucket = storage_client.bucket(target_bucket)
