@@ -1457,16 +1457,20 @@ if authentication_status:
                             
                             release_order_number_mf=st.selectbox("SELECT RELEASE ORDER FOR SHIPMENT NUMBERS",destinations_of_release_orders,key="tatata")
                             release_order_number_mf=release_order_number_mf.split(" ")[0]
+                            carrier_mf=st.selectbox("SELECT CARRIER",[f"{j}-{i}" for i,j in map["carriers"].items()],key="tatpota")
                             input_mf_numbers=st.text_area("**ENTER SHIPMENT NUMBERS**",height=100,key="juy")
                             if input_mf_numbers is not None:
                                 input_mf_numbers = input_mf_numbers.splitlines()
-                                #input_mf_numbers=[i for i in input_mf_numbers if len(i)==10]####### CAREFUL THIS ASSUMES SAME DIGIT MF EACH TIME
-                           
+                                input_mf_numbers=[i for i in input_mf_numbers]####### CAREFUL THIS ASSUMES SAME DIGIT MF EACH TIME
+                            st.write(input_mf_numbers)
                             if st.button("SUBMIT MF NUMBERS",key="ioeru" ):
                                 if release_order_number_mf not in mf_numbers.keys():   
-                                    mf_numbers[release_order_number_mf]=[]
-                                mf_numbers[release_order_number_mf]+=input_mf_numbers
-                                mf_numbers[release_order_number_mf]=list(set(mf_numbers[release_order_number_mf]))
+                                    mf_numbers[release_order_number_mf]={}
+                                if carrier_mf not in mf_numbers[release_order_number_mf]:
+                                    #mf_numbers[release_order_number_mf]={}
+                                    mf_numbers[release_order_number_mf][carrier_mf]=[]
+                                mf_numbers[release_order_number_mf][carrier_mf]+=input_mf_numbers
+                                mf_numbers[release_order_number_mf][carrier_mf]=list(set(mf_numbers[release_order_number_mf][carrier_mf]))
                                 mf_data=json.dumps(mf_numbers)
                                 #storage_client = storage.Client()
                                 storage_client = get_storage_client()
@@ -1476,8 +1480,9 @@ if authentication_status:
                                 st.success(f"MF numbers entered to {release_order_number_mf} successfully!")
                             if st.button("REMOVE MF NUMBERS",key="ioerssu" ):
                                 for i in input_mf_numbers:
-                                    if i in mf_numbers[release_order_number_mf]:
-                                        mf_numbers[release_order_number_mf].remove(i)
+                                    for carrier in mf_numbers[release_order_number_mf]:
+                                        if i in mf_numbers[release_order_number_mf][carrier]:
+                                            mf_numbers[release_order_number_mf][carrier].remove(i)
                                 mf_data=json.dumps(mf_numbers)
                                # storage_client = storage.Client()
                                 storage_client = get_storage_client()
@@ -1867,15 +1872,20 @@ if authentication_status:
                                     carrier_code=st.selectbox("Carrier Code",[carrier_code,"310897-Ashley"],disabled=False,key=29)
                                 else:
                                     carrier_code=st.text_input("Carrier Code",carrier_code,disabled=True,key=9)
+                                
                                 if 'load_mf_number' not in st.session_state:
                                     st.session_state.load_mf_number = None
+                                    
                                 if release_order_number in mf_numbers_for_load.keys():
-                                    mf_liste=[i for i in mf_numbers_for_load[release_order_number]]
+                                    try:
+                                        mf_liste=[i for i in mf_numbers_for_load[release_order_number][f"{carrier_code.split('-')[1]}-{carrier_code.split('-')[0]}"]]
+                                    except:
+                                        mf_liste=[]
                                     if len(mf_liste)>0:
                                         try:
-                                            load_mf_number = st.selectbox("SHIPMENT NUMBER", mf_liste, disabled=False, key=14551, index=mf_liste.index(st.session_state.load_mf_number) if st.session_state.load_mf_number else 0)
+                                            load_mf_number = st.selectbox("MF NUMBER", mf_liste, disabled=False, key=14551, index=mf_liste.index(st.session_state.load_mf_number) if st.session_state.load_mf_number else 0)
                                         except:
-                                            load_mf_number = st.selectbox("SHIPMENT NUMBER", mf_liste, disabled=False, key=14551)
+                                            load_mf_number = st.selectbox("MF NUMBER", mf_liste, disabled=False, key=14551)
                                         mf=True
                                         load_mf_number_issued=True
                                         yes=True
@@ -1887,7 +1897,7 @@ if authentication_status:
                                         yes=False
                                         load_mf_number_issued=False  
                                 else:
-                                    st.write(f"**:red[ASK ADMIN TO PUT SHIPMENT NUMBERS]**")
+                                    st.write(f"**:red[ASK ADMIN TO PUT MF NUMBERS]**")
                                     mf=False
                                     yes=False
                                     load_mf_number_issued=False  
@@ -3222,22 +3232,27 @@ if authentication_status:
                             vehicle_id=st.text_input("**:blue[Vehicle ID]**",value="",key=7)
                             manual_bill=st.toggle("Toggle for Manual BOL")
                             if manual_bill:
-                                manual_bill_of_lading_number=st.textbox("ENTER BOL",key="eirufs")
+                                manual_bill_of_lading_number=st.text_input("ENTER BOL",key="eirufs")
                             mf=True
                             load_mf_number_issued=False
                             if destination=="CLEARWATER-Lewiston,ID":
                                 carrier_code=st.selectbox("Carrier Code",[carrier_code,"310897-Ashley"],disabled=False,key=29)
                             else:
                                 carrier_code=st.text_input("Carrier Code",carrier_code,disabled=True,key=9)
+                            
                             if 'load_mf_number' not in st.session_state:
-                                    st.session_state.load_mf_number = None
+                                st.session_state.load_mf_number = None
+                                
                             if release_order_number in mf_numbers_for_load.keys():
-                                mf_liste=[i for i in mf_numbers_for_load[release_order_number]]
+                                try:
+                                    mf_liste=[i for i in mf_numbers_for_load[release_order_number][f"{carrier_code.split('-')[1]}-{carrier_code.split('-')[0]}"]]
+                                except:
+                                    mf_liste=[]
                                 if len(mf_liste)>0:
                                     try:
-                                        load_mf_number = st.selectbox("SHIPMENT NUMBER", mf_liste, disabled=False, key=14551, index=mf_liste.index(st.session_state.load_mf_number) if st.session_state.load_mf_number else 0)
+                                        load_mf_number = st.selectbox("MF NUMBER", mf_liste, disabled=False, key=14551, index=mf_liste.index(st.session_state.load_mf_number) if st.session_state.load_mf_number else 0)
                                     except:
-                                        load_mf_number = st.selectbox("SHIPMENT NUMBER", mf_liste, disabled=False, key=14551)
+                                        load_mf_number = st.selectbox("MF NUMBER", mf_liste, disabled=False, key=14551)
                                     mf=True
                                     load_mf_number_issued=True
                                     yes=True
@@ -3249,10 +3264,10 @@ if authentication_status:
                                     yes=False
                                     load_mf_number_issued=False  
                             else:
-                                st.write(f"**:red[ASK ADMIN TO PUT SHIPMENT NUMBERS]**")
+                                st.write(f"**:red[ASK ADMIN TO PUT MF NUMBERS]**")
                                 mf=False
                                 yes=False
-                                load_mf_number_issued=False    
+                                load_mf_number_issued=False  
                                
                             foreman_quantity=st.number_input("**:blue[ENTER Quantity of Units]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=8)
                             foreman_bale_quantity=st.number_input("**:blue[ENTER Quantity of Bales]**", min_value=0, max_value=30, value=0, step=1, help=None, on_change=None, disabled=False, label_visibility="visible",key=123)
