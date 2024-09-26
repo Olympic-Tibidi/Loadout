@@ -1464,6 +1464,7 @@ if authentication_status:
                                 input_mf_numbers=[i for i in input_mf_numbers]####### CAREFUL THIS ASSUMES SAME DIGIT MF EACH TIME
                             st.write(input_mf_numbers)
                             if st.button("SUBMIT MF NUMBERS",key="ioeru" ):
+                                st.write(carrier_mf)
                                 if release_order_number_mf not in mf_numbers.keys():   
                                     mf_numbers[release_order_number_mf]={}
                                 if carrier_mf not in mf_numbers[release_order_number_mf]:
