@@ -2684,7 +2684,7 @@ if authentication_status:
                     
                     with daily:
                         
-                        amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":453,"FRONTIER-55VC":9811}
+                        amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":453,"FRONTIER-55VC":9811,"BEIJA_FLOR-88VC":11335}
                         inv_vessel=st.selectbox("Select Vessel",[i for i in map['batch_mapping']])
                         kf=inv_bill_of_ladings.iloc[1:].copy()
                         kf['issued'] = pd.to_datetime(kf['issued'])
@@ -4045,7 +4045,7 @@ if authentication_status:
                 
                 with daily:
                     
-                    amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":453,"FRONTIER-55VC":9811}
+                    amount_dict={"KIRKENES-2304":9200,"JUVENTAS-2308":10000,"LYSEFJORD-2308":10000,"LAGUNA-3142":453,"FRONTIER-55VC":9811,"BEIJA_FLOR-88VC":11335}
                     inv_vessel=st.selectbox("Select Vessel",[i for i in map['batch_mapping']])
                     kf=inv_bill_of_ladings.iloc[1:].copy()
                     kf['issued'] = pd.to_datetime(kf['issued'])
