@@ -708,7 +708,7 @@ if authentication_status:
                         guilty=None
                         def list_files_uploaded_today(bucket_name, folder_name):
                         # Initialize Google Cloud Storage client
-                            storage_client = storage.Client()
+                            storage_client = get_storage_client()
                         
                             # Get the current date
                             today = (datetime.datetime.now()-datetime.timedelta(hours=utc_difference)).date()
