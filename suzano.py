@@ -676,7 +676,7 @@ if authentication_status:
                                         st.markdown(f"**...Shipment {i} to {dfb.loc[i,'destination']} is in BOL but not Suzano Report**") 
                         return np.all(res_compare)
                
-                    suz_frame["Quantity"]=float(i) for i in suz_frame["Quantity"]]
+                    suz_frame["Quantity"]=[float(i) for i in suz_frame["Quantity"]]
                     suz_t=suz_frame.groupby("Ocean BOL#")["Quantity"].sum().to_dict()
                     df_t=dfb.groupby("ocean_bill_of_lading")["quantity"].sum().to_dict()
                     #corrections due to shipment MF01769573 and 1150344 on 12-15 between Kirkenes and Juventas mixed loads.
