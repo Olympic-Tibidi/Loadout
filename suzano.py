@@ -1588,7 +1588,7 @@ if authentication_status:
                                     if done:
                                         st.write(dict(matches))
                                 with cor2:
-                                    with st.button("UPLOAD SHIPMENTS TO SYSTEM",key="dsdsdads2"):
+                                    if st.button("UPLOAD SHIPMENTS TO SYSTEM",key="dsdsdads2"):
                                         for i in matches:
                                             release=matches[i]['release_order']
                                             carrier=matches[i]['transport']
