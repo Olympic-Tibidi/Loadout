@@ -1876,7 +1876,7 @@ if authentication_status:
                                     
                                 today_str=str(datetime.date.today())
                                 today_str=str(st.date_input("Shipment Date",datetime.datetime.today(),disabled=False,key="popdo3"))
-                                st_write(today_str)
+                                st.write(today_str)
                                 
                                 if 'load_mf_number' not in st.session_state:
                                     st.session_state.load_mf_number = None
