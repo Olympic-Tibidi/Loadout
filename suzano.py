@@ -1485,6 +1485,7 @@ if authentication_status:
                                     for carrier in mf_numbers[release_order_number_mf][mf_date_str]:
                                         if i in mf_numbers[release_order_number_mf][mf_date_str][carrier]:
                                             mf_numbers[release_order_number_mf][mf_date_str][carrier].remove(i)
+                                            st.success(f"MF numbers removed from {release_order_number_mf} successfully!")
                                 mf_data=json.dumps(mf_numbers)
                                # storage_client = storage.Client()
                                 storage_client = get_storage_client()
