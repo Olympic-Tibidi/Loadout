@@ -1599,13 +1599,13 @@ if authentication_status:
                                         if release not in mf_numbers:
                                             mf_numbers[release]={str(i):{}}
                                         mf_numbers[release][str(i)]={carrier:matches[i]['loads']}
-                                        mf_datam=json.dumps(mf_numbers)
+                                    mf_datam=json.dumps(mf_numbers)
                                         #storage_client = storage.Client()
-                                        storage_client = get_storage_client()
-                                        bucket = storage_client.bucket(target_bucket)
-                                        blob = bucket.blob(rf"release_orders/mf_numbers.json")
-                                        blob.upload_from_string(mf_datam)
-                                        st.success(f"MF numbers updated with schedule!")
+                                    storage_client = get_storage_client()
+                                    bucket = storage_client.bucket(target_bucket)
+                                    blob = bucket.blob(rf"release_orders/mf_numbers.json")
+                                    blob.upload_from_string(mf_datam)
+                                    st.success(f"MF numbers updated with schedule!")
                                 st.write(mf_numbers)
                 with release_order_tab3:  ### RELEASE ORDER STATUS
                     raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
