@@ -1873,7 +1873,7 @@ if authentication_status:
                                     carrier_code=st.selectbox("Carrier Code",[carrier_code,"310897-Ashley"],disabled=False,key=29)
                                 else:
                                     carrier_code=st.text_input("Carrier Code",carrier_code,disabled=True,key=9)
-                                 st.write(datetime.date.today())
+                                st.write(datetime.date.today())
                                 if 'load_mf_number' not in st.session_state:
                                     st.session_state.load_mf_number = None
                                     
