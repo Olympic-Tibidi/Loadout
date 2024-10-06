@@ -1496,6 +1496,7 @@ if authentication_status:
                                 st.table(pd.DataFrame(mf_numbers))
                         with mf2:
                             col11,col22,col33=st.columns([3,3,4])
+                            button=False
                             with col11:
                                 
                                 st.subheader("SELECT DATES TO UPLOAD")
@@ -1508,9 +1509,12 @@ if authentication_status:
                             
                             if suzano_shipment and kbx_shipment:
                                 st.success("Files uploaded")
-                                with st.button("PROCESS FILES"):
+                                button=True
+                            
+                            
+                                with st.button("PROCESS FILES",disabled=button):
 
-                                    
+                                
                                     done=False
                                     df=pd.read_csv(suzano_shipment)
                                     df=df[['Shipment ID', 'Release Order', 'Item',
