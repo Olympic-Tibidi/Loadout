@@ -1504,6 +1504,7 @@ if authentication_status:
                                             for key in mf_frame.loc[i, j]:
                                                 count+=len(mf_frame.loc[i, j][key])
                                             mf_frame.loc[i, j] = count
+                                mf_frame.sort_index(inplace=True)
                                 st.write(mf_frame)
                                     
                         
