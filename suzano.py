@@ -1513,6 +1513,7 @@ if authentication_status:
                                        'Dest', 'Dest.1', 'Dest.2', 'Dest.3', 'Dest.4', 'Movement', 'Drop',
                                        'Miles', 'Total', 'Total.1', 'Equip Nbr',  'Created', 'Created.1', 'Last Changed',
                                        'Last Changed.1']]
+                                st.write(df1)
                                 df1["Pickup"] = pd.to_datetime(df1["Pickup"]).dt.date
                                 df1.rename(columns={"Dest.1":"Destination City"},inplace=True)
                                 dates1=datetime.date(2024,10,7)
