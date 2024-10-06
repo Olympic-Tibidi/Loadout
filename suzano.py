@@ -1495,82 +1495,99 @@ if authentication_status:
                                     blob.upload_from_string(mf_data)
                                 st.table(pd.DataFrame(mf_numbers))
                         with mf2:
-                            suzano_shipment = st.file_uploader("Upload Suzano Shipment CSV", type="csv",key="dsds")
-                            kbx_shipment = st.file_uploader("Upload KBX Shipment CSV", type="csv",key="dsdfqa")
-                            if suzano_shipment and kbx_shipment:
-                                df=pd.read_csv(suzano_shipment)
-                                df=df[['Shipment ID', 'Release Order', 'Item',
-                                       'Start Time', 'Destination City',
-                                       'Destination Province Code', 'Weight', 'Unit Count', 
-                                       'Service Provider ID',  'Service Provider']]
-                                df['Release Order']=[i[10:] for i in df['Release Order']]
-                                df["Pickup"] = df["Start Time"].apply(lambda i: datetime.datetime.strptime(i, "%m/%d/%Y %I:%M %p").date())
-                                #df
+                            col11,col22=st.columns([5,5])
+                            with col11:
                                 
-                                df1=pd.read_csv(kbx_shipment,header=1)
-                                df1.drop(0,inplace=True)
-                                df1=df1[[ 'Load','SCAC','Pro', 
-                                       'Pickup', 'Orig', 'Delivery',
-                                       'Dest', 'Dest.1', 'Dest.2', 'Dest.3', 'Dest.4', 'Movement', 'Drop',
-                                       'Miles', 'Total', 'Total.1', 'Equip Nbr',  'Created', 'Created.1', 'Last Changed',
-                                       'Last Changed.1']]
-                                df1["Pickup"] = pd.to_datetime(df1["Pickup"]).dt.date
-                                df1.rename(columns={"Dest.1":"Destination City"},inplace=True)
-                                dates1=datetime.date(2024,10,7)
-                                dates2=datetime.date(2024,10,30)
-                                df=df[(df['Pickup']>=dates1)&(df['Pickup']<=dates2)].sort_values(by="Pickup")
-                                df1=df1[df1['Pickup']>=dates1].sort_values(by="Pickup")
-                                matches={}
-                                days_loads={}
-                                kbx_loads={}
-                                for i in sorted(df["Pickup"].unique()):
-                                    #print(i)
-                                    matches[str(i)]={}
-                                    days_loads[i]={}
-                                    kbx_loads[i]={}
+                                st.write("SELECT DATES TO UPLOAD")
+                                dates1=st.date_input("FROM",datetime.date.today(),key="r3wsd")
+                                dates2=st.date_input("FROM",datetime.date.today()+datetime.timedelta(days=30),key="rz3wsd")
+                            with col22:
+                                st.write("UPLOAD SHIPMENT CSV FILES")
+                                suzano_shipment = st.file_uploader("Upload Suzano Shipment CSV", type="csv",key="dsds")
+                                kbx_shipment = st.file_uploader("Upload KBX Shipment CSV", type="csv",key="dsdfqa")
+                            
+                            if suzano_shipment and kbx_shipment:
+                                st.success("Files uploaded)
+                                with st.button("PROCESS FILES"):
+
                                     
-                                    for dest in df[df["Pickup"]==i]["Destination City"].unique():
-                                        #print(dest)
+                                    done=False
+                                    df=pd.read_csv(suzano_shipment)
+                                    df=df[['Shipment ID', 'Release Order', 'Item',
+                                           'Start Time', 'Destination City',
+                                           'Destination Province Code', 'Weight', 'Unit Count', 
+                                           'Service Provider ID',  'Service Provider']]
+                                    df['Release Order']=[i[10:] for i in df['Release Order']]
+                                    df["Pickup"] = df["Start Time"].apply(lambda i: datetime.datetime.strptime(i, "%m/%d/%Y %I:%M %p").date())
+                                    #df
+                                    
+                                    df1=pd.read_csv(kbx_shipment,header=1)
+                                    df1.drop(0,inplace=True)
+                                    df1=df1[[ 'Load','SCAC','Pro', 
+                                           'Pickup', 'Orig', 'Delivery',
+                                           'Dest', 'Dest.1', 'Dest.2', 'Dest.3', 'Dest.4', 'Movement', 'Drop',
+                                           'Miles', 'Total', 'Total.1', 'Equip Nbr',  'Created', 'Created.1', 'Last Changed',
+                                           'Last Changed.1']]
+                                    df1["Pickup"] = pd.to_datetime(df1["Pickup"]).dt.date
+                                    df1.rename(columns={"Dest.1":"Destination City"},inplace=True)
+                                    
+                                    
+                                    
+                                    df=df[(df['Pickup']>=dates1)&(df['Pickup']<=dates2)].sort_values(by="Pickup")
+                                    df1=df1[df1['Pickup']>=dates1].sort_values(by="Pickup")
+                                    matches={}
+                                    days_loads={}
+                                    kbx_loads={}
+                                    for i in sorted(df["Pickup"].unique()):
+                                        #print(i)
+                                        matches[str(i)]={}
+                                        days_loads[i]={}
+                                        kbx_loads[i]={}
                                         
+                                        for dest in df[df["Pickup"]==i]["Destination City"].unique():
+                                            #print(dest)
                                             
-                                                                 
-                                        
-                                        suz=sorted(df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Shipment ID"])
-                                        
+                                                
+                                                                     
                                             
-                                        transport=df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Service Provider ID"].unique()[0]
-                                        if transport=="KBX":
-                                            transport="123456-KBX"
-                                        else:
-                                            transport=f"{str(transport[4:])}-{map_['carriers'][str(transport[4:])]}"
-                                        rel=df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Release Order"].unique()[0]
-                                        if dest not in ["HALSEY","CLATSKANIE"]:
-                                            matches[str(i)]["destination"]=dest
-                                            matches[str(i)]["release_order"]=rel
-                                            matches[str(i)]["transport"]=transport
-                                            matches[str(i)]["loads"]=suz
-                                        #print(rel)
-                                        
-                                        else:
-                                            kbx=sorted(df1.loc[(df1["Pickup"] == i) & (df1["Destination City"] == dest), "Load"])
-                                            days_loads[i][dest] =suz
-                                            kbx_loads[i][dest]=kbx
-                                        
-                                            mat=[f"{j}|{k}" for j,k in zip(kbx,suz)]
-                                            matches[str(i)]["destination"]=dest
-                                            matches[str(i)]["release_order"]=rel
-                                            matches[str(i)]["transport"]=transport
-                                            matches[str(i)]["loads"]=mat
-                                st.success("SHIPMENTS MATCHED AND LOADED!")
-                                st.write(dict(matches))
-                                with st.button("UPLOAD SHIPMENTS TO SYSTEM",key="dsdsdads2"):
-                                    for i in matches:
-                                        release=matches[i]['release_order']
-                                        carrier=matches[i]['transport']
-                                        if release not in mf_numbers:
-                                            mf_numbers[release]={str(i):{}}
-                                        mf_numbers[release][str(i)]={carrier:matches[i]['loads']}
-                                st.write(mf_numbers)
+                                            suz=sorted(df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Shipment ID"])
+                                            
+                                                
+                                            transport=df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Service Provider ID"].unique()[0]
+                                            if transport=="KBX":
+                                                transport="123456-KBX"
+                                            else:
+                                                transport=f"{str(transport[4:])}-{map_['carriers'][str(transport[4:])]}"
+                                            rel=df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Release Order"].unique()[0]
+                                            if dest not in ["HALSEY","CLATSKANIE"]:
+                                                matches[str(i)]["destination"]=dest
+                                                matches[str(i)]["release_order"]=rel
+                                                matches[str(i)]["transport"]=transport
+                                                matches[str(i)]["loads"]=suz
+                                            #print(rel)
+                                            
+                                            else:
+                                                kbx=sorted(df1.loc[(df1["Pickup"] == i) & (df1["Destination City"] == dest), "Load"])
+                                                days_loads[i][dest] =suz
+                                                kbx_loads[i][dest]=kbx
+                                            
+                                                mat=[f"{j}|{k}" for j,k in zip(kbx,suz)]
+                                                matches[str(i)]["destination"]=dest
+                                                matches[str(i)]["release_order"]=rel
+                                                matches[str(i)]["transport"]=transport
+                                                matches[str(i)]["loads"]=mat
+                                    done=True
+                                    st.success("SHIPMENTS MATCHED AND LOADED!")
+                                if done:
+                                    st.write(dict(matches))
+                                    with st.button("UPLOAD SHIPMENTS TO SYSTEM",key="dsdsdads2"):
+                                        for i in matches:
+                                            release=matches[i]['release_order']
+                                            carrier=matches[i]['transport']
+                                            if release not in mf_numbers:
+                                                mf_numbers[release]={str(i):{}}
+                                            mf_numbers[release][str(i)]={carrier:matches[i]['loads']}
+                                    st.write(mf_numbers)
                 with release_order_tab3:  ### RELEASE ORDER STATUS
                     raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                     raw_ro = json.loads(raw_ro)
