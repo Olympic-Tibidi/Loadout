@@ -1558,7 +1558,7 @@ if authentication_status:
                                         
                                             mat=[f"{j}|{k}" for j,k in zip(kbx,suz)]
                                             matches[str(i)]["destination"]=dest
-                                            matches[str(i)]["release_order"]=rel,transport]=suz
+                                            matches[str(i)]["release_order"]
                                             matches[str(i)]["transport"]=transport
                                             matches[str(i)]["loads"]=mat
                                 st.write(dict(matches))
