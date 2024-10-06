@@ -1510,12 +1510,12 @@ if authentication_status:
                             if suzano_shipment and kbx_shipment:
                                 st.success("Files uploaded")
                                 button=False
-                            
+                                done=False
+                            done=False
                             
                             if st.button("PROCESS FILES",disabled=button):
-
                             
-                                done=False
+                                
                                 df=pd.read_csv(suzano_shipment)
                                 df=df[['Shipment ID', 'Release Order', 'Item',
                                        'Start Time', 'Destination City',
