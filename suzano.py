@@ -1874,6 +1874,7 @@ if authentication_status:
                                 else:
                                     carrier_code=st.text_input("Carrier Code",carrier_code,disabled=True,key=9)
                                 today_str=str(datetime.date.today())
+                                today_str=st.date_input("Shipment Date",datetime.datetime.today(),disabled=False,key="popdo3")
                                 if 'load_mf_number' not in st.session_state:
                                     st.session_state.load_mf_number = None
                                     
