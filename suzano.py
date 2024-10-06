@@ -1883,7 +1883,7 @@ if authentication_status:
                                     
                                 if release_order_number in mf_numbers_for_load.keys():
                                     try:
-                                        mf_liste=[i for i in mf_numbers_for_load[release_order_number][today_str][f"{carrier_code.split('-')[1]}-{carrier_code.split('-')[0]}"]]
+                                        mf_liste=[i for i in mf_numbers_for_load[release_order_number][today_str][f"{carrier_code.split('-')[0]}-{carrier_code.split('-')[1]}"]]
                                     except:
                                         mf_liste=[]
                                     if len(mf_liste)>0:
