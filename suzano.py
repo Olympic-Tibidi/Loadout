@@ -1498,7 +1498,9 @@ if authentication_status:
                                 mf_frame.fillna(0,inplace=True)
                                 st.write(mf_frame)
                                 for i in mf_frame.index:
-                                    st.write(i)
+                                    for j in mf_frame:
+                                        mf_frame.loc[i, j] = len(mf_frame.loc[i, j]) if mf_frame.loc[i, j]!=0 else 0
+                                st.write(mf_frame)
                                     
                         
                         
