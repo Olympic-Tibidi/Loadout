@@ -1495,16 +1495,16 @@ if authentication_status:
                                     blob.upload_from_string(mf_data)
                                 st.table(pd.DataFrame(mf_numbers))
                         with mf2:
-                            col11,col22=st.columns([5,5])
+                            col11,col22,col33=st.columns([3,3,4])
                             with col11:
                                 
-                                st.write("SELECT DATES TO UPLOAD")
-                                dates1=st.date_input("FROM",datetime.date.today(),key="r3wsd")
-                                dates2=st.date_input("FROM",datetime.date.today()+datetime.timedelta(days=30),key="rz3wsd")
+                                st.subheader("SELECT DATES TO UPLOAD")
+                                dates1=st.date_input("FROM (INCLUSIVE)",datetime.date.today(),key="r3wsd")
+                                dates2=st.date_input("TO (INCLUSIVE)",datetime.date.today()+datetime.timedelta(days=30),key="rz3wsd")
                             with col22:
-                                st.write("UPLOAD SHIPMENT CSV FILES")
-                                suzano_shipment = st.file_uploader("Upload Suzano Shipment CSV", type="csv",key="dsds")
-                                kbx_shipment = st.file_uploader("Upload KBX Shipment CSV", type="csv",key="dsdfqa")
+                                st.subheader("UPLOAD SHIPMENT CSV FILES")
+                                suzano_shipment = st.file_uploader("Upload **SUZANO** Shipment CSV", type="csv",key="dsds")
+                                kbx_shipment = st.file_uploader("Upload **KBX** Shipment CSV", type="csv",key="dsdfqa")
                             
                             if suzano_shipment and kbx_shipment:
                                 st.success("Files uploaded")
