@@ -1493,7 +1493,7 @@ if authentication_status:
                                     bucket = storage_client.bucket(target_bucket)
                                     blob = bucket.blob(rf"release_orders/mf_numbers.json")
                                     blob.upload_from_string(mf_data)
-                                st.table(pd.DataFrame(mf_numbers))
+                                st.write(pd.DataFrame(mf_numbers))
                         with mf2:
                             col11,col22,col33=st.columns([3,3,4])
                             button=True
