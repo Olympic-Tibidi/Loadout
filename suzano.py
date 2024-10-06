@@ -1545,7 +1545,10 @@ if authentication_status:
                                             transport=f"{str(transport[4:])}-{map_['carriers'][str(transport[4:])]}"
                                         rel=df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Release Order"].unique()[0]
                                         if dest not in ["HALSEY","CLATSKANIE"]:
-                                            matches[str(i)][dest,rel,transport]=suz
+                                            matches[str(i)]["destination"]=dest
+                                            matches[str(i)]["release_order"]=rel,transport]=suz
+                                            matches[str(i)]["transport"]=transport
+                                            matches[str(i)]["loads"]=suz
                                         #print(rel)
                                         
                                         else:
@@ -1554,7 +1557,10 @@ if authentication_status:
                                             kbx_loads[i][dest]=kbx
                                         
                                             mat=[f"{j}|{k}" for j,k in zip(kbx,suz)]
-                                            matches[str(i)][dest,rel,transport]=mat
+                                            matches[str(i)]["destination"]=dest
+                                            matches[str(i)]["release_order"]=rel,transport]=suz
+                                            matches[str(i)]["transport"]=transport
+                                            matches[str(i)]["loads"]=mat
                                 st.write(dict(matches))
 
                 with release_order_tab3:  ### RELEASE ORDER STATUS
