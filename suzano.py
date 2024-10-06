@@ -1581,17 +1581,21 @@ if authentication_status:
                                             matches[str(i)]["transport"]=transport
                                             matches[str(i)]["loads"]=mat
                                 done=True
-                                st.success("SHIPMENTS MATCHED AND LOADED!")
-                            if done:
-                                st.write(dict(matches))
-                                with st.button("UPLOAD SHIPMENTS TO SYSTEM",key="dsdsdads2"):
-                                    for i in matches:
-                                        release=matches[i]['release_order']
-                                        carrier=matches[i]['transport']
-                                        if release not in mf_numbers:
-                                            mf_numbers[release]={str(i):{}}
-                                        mf_numbers[release][str(i)]={carrier:matches[i]['loads']}
-                                st.write(mf_numbers)
+                                cor1,cor2,cor3=st.columns([3,3,4])
+                                with cor1:
+                                    
+                                    st.success("SHIPMENTS MATCHED AND LOADED!")
+                                    if done:
+                                        st.write(dict(matches))
+                                with cor2:
+                                    with st.button("UPLOAD SHIPMENTS TO SYSTEM",key="dsdsdads2"):
+                                        for i in matches:
+                                            release=matches[i]['release_order']
+                                            carrier=matches[i]['transport']
+                                            if release not in mf_numbers:
+                                                mf_numbers[release]={str(i):{}}
+                                            mf_numbers[release][str(i)]={carrier:matches[i]['loads']}
+                                    st.write(mf_numbers)
                 with release_order_tab3:  ### RELEASE ORDER STATUS
                     raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                     raw_ro = json.loads(raw_ro)
