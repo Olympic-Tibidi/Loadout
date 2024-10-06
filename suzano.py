@@ -1526,7 +1526,7 @@ if authentication_status:
                                 kbx_loads={}
                                 for i in sorted(df["Pickup"].unique()):
                                     #print(i)
-                                    matches[i]={}
+                                    matches[str(i)]={}
                                     days_loads[i]={}
                                     kbx_loads[i]={}
                                     
