@@ -1507,7 +1507,7 @@ if authentication_status:
                                 df["Pickup"] = df["Start Time"].apply(lambda i: datetime.datetime.strptime(i, "%m/%d/%Y %I:%M %p").date())
                                 #df
                                 
-                                df1=pd.read_csv(kbx_shipment,header=1)
+                                df1=pd.read_csv(kbx_shipment,header=2)
                                 df1=df1[[ 'Load','SCAC','Pro', 
                                        'Pickup', 'Orig', 'Delivery',
                                        'Dest', 'Dest.1', 'Dest.2', 'Dest.3', 'Dest.4', 'Movement', 'Drop',
