@@ -1495,6 +1495,7 @@ if authentication_status:
                                     blob.upload_from_string(mf_data)
                                 #st.write(mf_numbers)
                                 mf_frame=pd.DataFrame(mf_numbers)
+                                mf_frame.fillna(0,inplace=True)
                                 st.write(mf_frame)
                                 for i in mf_frame.index:
                                     st.write(i)
