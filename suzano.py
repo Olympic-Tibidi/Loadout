@@ -1496,7 +1496,7 @@ if authentication_status:
                                 st.table(pd.DataFrame(mf_numbers))
                         with mf2:
                             col11,col22,col33=st.columns([3,3,4])
-                            button=False
+                            button=True
                             with col11:
                                 
                                 st.subheader("SELECT DATES TO UPLOAD")
@@ -1509,10 +1509,10 @@ if authentication_status:
                             
                             if suzano_shipment and kbx_shipment:
                                 st.success("Files uploaded")
-                                button=True
+                                button=False
                             
                             
-                            with st.button("PROCESS FILES",disabled=button):
+                            if st.button("PROCESS FILES",disabled=button):
 
                             
                                 done=False
