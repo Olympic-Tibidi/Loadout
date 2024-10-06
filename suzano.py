@@ -1507,7 +1507,7 @@ if authentication_status:
                                 kbx_shipment = st.file_uploader("Upload KBX Shipment CSV", type="csv",key="dsdfqa")
                             
                             if suzano_shipment and kbx_shipment:
-                                st.success("Files uploaded)
+                                st.success("Files uploaded")
                                 with st.button("PROCESS FILES"):
 
                                     
