@@ -1457,7 +1457,8 @@ if authentication_status:
                             
                             release_order_number_mf=st.selectbox("SELECT RELEASE ORDER FOR SHIPMENT NUMBERS",destinations_of_release_orders,key="tatata")
                             release_order_number_mf=release_order_number_mf.split(" ")[0]
-                            carrier_mf=st.selectbox("SELECT CARRIER",[f"{j}-{i}" for i,j in map["carriers"].items()],key="tatpota")
+                            mf_date_str=str(st.date_input("Shipment Date",datetime.datetime.today(),disabled=False,key="popddao3"))
+                            carrier_mf=st.selectbox("SELECT CARRIER",[f"{i}-{j}" for i,j in map["carriers"].items()],key="tatpota")
                             input_mf_numbers=st.text_area("**ENTER SHIPMENT NUMBERS**",height=100,key="juy")
                             if input_mf_numbers is not None:
                                 input_mf_numbers = input_mf_numbers.splitlines()
@@ -1470,8 +1471,8 @@ if authentication_status:
                                 if carrier_mf not in mf_numbers[release_order_number_mf]:
                                     #mf_numbers[release_order_number_mf]={}
                                     mf_numbers[release_order_number_mf][carrier_mf]=[]
-                                mf_numbers[release_order_number_mf][carrier_mf]+=input_mf_numbers
-                                mf_numbers[release_order_number_mf][carrier_mf]=list(set(mf_numbers[release_order_number_mf][carrier_mf]))
+                                mf_numbers[release_order_number_mf][mf_date_str][carrier_mf]+=input_mf_numbers
+                                mf_numbers[release_order_number_mf][mf_date_str][carrier_mf]=list(set(mf_numbers[release_order_number_mf][mf_date_str][carrier_mf]))
                                 mf_data=json.dumps(mf_numbers)
                                 #storage_client = storage.Client()
                                 storage_client = get_storage_client()
@@ -1481,16 +1482,16 @@ if authentication_status:
                                 st.success(f"MF numbers entered to {release_order_number_mf} successfully!")
                             if st.button("REMOVE MF NUMBERS",key="ioerssu" ):
                                 for i in input_mf_numbers:
-                                    for carrier in mf_numbers[release_order_number_mf]:
-                                        if i in mf_numbers[release_order_number_mf][carrier]:
-                                            mf_numbers[release_order_number_mf][carrier].remove(i)
+                                    for carrier in mf_numbers[release_order_number_mf][mf_date_str]:
+                                        if i in mf_numbers[release_order_number_mf][mf_date_str][carrier]:
+                                            mf_numbers[release_order_number_mf][mf_date_str][carrier].remove(i)
                                 mf_data=json.dumps(mf_numbers)
                                # storage_client = storage.Client()
                                 storage_client = get_storage_client()
                                 bucket = storage_client.bucket(target_bucket)
                                 blob = bucket.blob(rf"release_orders/mf_numbers.json")
                                 blob.upload_from_string(mf_data)
-                            st.write(mf_numbers)
+                            st.write(pd.DateFrame(mf_numbers))
                 with release_order_tab3:  ### RELEASE ORDER STATUS
                     raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                     raw_ro = json.loads(raw_ro)
