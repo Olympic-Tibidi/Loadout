@@ -1164,7 +1164,7 @@ if authentication_status:
                 with release_order_tab1:  ##   RELEASE ORDER DATABASE ##
                     
      
-                    rls_tab1,rls_tab2,rls_tab3,rls_tab4=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS","ENTER MF NUMBERS","SCHEDULE"])
+                    rls_tab1,rls_tab2,rls_tab3,rls_tab4=st.tabs(["ACTIVE RELEASE ORDERS","COMPLETED RELEASE ORDERS","SHIPMENT NUMBERS","SCHEDULE"])
 
 
 
@@ -1439,60 +1439,123 @@ if authentication_status:
                             st.success(f"Deactivated {to_deactivate} successfully!")
                         
                     with rls_tab3:
-                        
-                        mf_numbers=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
-                        mf_numbers=json.loads(mf_numbers)
-                        def check_home(ro):
-                            destination=release_order_database[ro]['destination']
-                            keys=[sale for sale in release_order_database[ro] if sale in ["001","002","003","004","005"]]
-                            remains=[release_order_database[ro][key]["remaining"] for key in keys]
-                            if sum(remains)==0:
-                                return False
-                            return f"{ro} to {destination}"
-                            
-                        destinations_of_release_orders=[check_home(i) for i in release_order_database if check_home(i) ]
-                        if len(destinations_of_release_orders)==0:
-                            st.warning("NO GP RELEASE ORDERS FOR THIS VESSEL")
-                        else:
-                            
-                            release_order_number_mf=st.selectbox("SELECT RELEASE ORDER FOR SHIPMENT NUMBERS",destinations_of_release_orders,key="tatata")
-                            release_order_number_mf=release_order_number_mf.split(" ")[0]
-                            mf_date_str=str(st.date_input("Shipment Date",datetime.datetime.today(),disabled=False,key="popddao3"))
-                            carrier_mf=st.selectbox("SELECT CARRIER",[f"{i}-{j}" for i,j in map["carriers"].items()],key="tatpota")
-                            input_mf_numbers=st.text_area("**ENTER SHIPMENT NUMBERS**",height=100,key="juy")
-                            if input_mf_numbers is not None:
-                                input_mf_numbers = input_mf_numbers.splitlines()
-                                input_mf_numbers=[i for i in input_mf_numbers]####### CAREFUL THIS ASSUMES SAME DIGIT MF EACH TIME
-                            st.write(input_mf_numbers)
-                            if st.button("SUBMIT MF NUMBERS",key="ioeru" ):
-                                st.write(carrier_mf)
-                                if release_order_number_mf not in mf_numbers.keys():   
-                                    mf_numbers[release_order_number_mf]={}
-                                if carrier_mf not in mf_numbers[release_order_number_mf]:
-                                    #mf_numbers[release_order_number_mf]={}
-                                    mf_numbers[release_order_number_mf][carrier_mf]=[]
-                                mf_numbers[release_order_number_mf][mf_date_str][carrier_mf]+=input_mf_numbers
-                                mf_numbers[release_order_number_mf][mf_date_str][carrier_mf]=list(set(mf_numbers[release_order_number_mf][mf_date_str][carrier_mf]))
-                                mf_data=json.dumps(mf_numbers)
-                                #storage_client = storage.Client()
-                                storage_client = get_storage_client()
-                                bucket = storage_client.bucket(target_bucket)
-                                blob = bucket.blob(rf"release_orders/mf_numbers.json")
-                                blob.upload_from_string(mf_data)
-                                st.success(f"MF numbers entered to {release_order_number_mf} successfully!")
-                            if st.button("REMOVE MF NUMBERS",key="ioerssu" ):
-                                for i in input_mf_numbers:
-                                    for carrier in mf_numbers[release_order_number_mf][mf_date_str]:
-                                        if i in mf_numbers[release_order_number_mf][mf_date_str][carrier]:
-                                            mf_numbers[release_order_number_mf][mf_date_str][carrier].remove(i)
-                                            st.success(f"MF numbers removed from {release_order_number_mf} successfully!")
-                                mf_data=json.dumps(mf_numbers)
-                               # storage_client = storage.Client()
-                                storage_client = get_storage_client()
-                                bucket = storage_client.bucket(target_bucket)
-                                blob = bucket.blob(rf"release_orders/mf_numbers.json")
-                                blob.upload_from_string(mf_data)
-                            st.table(pd.DataFrame(mf_numbers))
+
+                        mf1,mf2=st.tabs(["VIEW/EDIT MF NUMBERS","AUTO UPLOAD"])
+                        with mf1:
+                            mf_numbers=gcp_download(target_bucket,rf"release_orders/mf_numbers.json")
+                            mf_numbers=json.loads(mf_numbers)
+                            def check_home(ro):
+                                destination=release_order_database[ro]['destination']
+                                keys=[sale for sale in release_order_database[ro] if sale in ["001","002","003","004","005"]]
+                                remains=[release_order_database[ro][key]["remaining"] for key in keys]
+                                if sum(remains)==0:
+                                    return False
+                                return f"{ro} to {destination}"
+                                
+                            destinations_of_release_orders=[check_home(i) for i in release_order_database if check_home(i) ]
+                            if len(destinations_of_release_orders)==0:
+                                st.warning("NO GP RELEASE ORDERS FOR THIS VESSEL")
+                            else:
+                                
+                                release_order_number_mf=st.selectbox("SELECT RELEASE ORDER FOR SHIPMENT NUMBERS",destinations_of_release_orders,key="tatata")
+                                release_order_number_mf=release_order_number_mf.split(" ")[0]
+                                mf_date_str=str(st.date_input("Shipment Date",datetime.datetime.today(),disabled=False,key="popddao3"))
+                                carrier_mf=st.selectbox("SELECT CARRIER",[f"{i}-{j}" for i,j in map["carriers"].items()],key="tatpota")
+                                input_mf_numbers=st.text_area("**ENTER SHIPMENT NUMBERS**",height=100,key="juy")
+                                if input_mf_numbers is not None:
+                                    input_mf_numbers = input_mf_numbers.splitlines()
+                                    input_mf_numbers=[i for i in input_mf_numbers]####### CAREFUL THIS ASSUMES SAME DIGIT MF EACH TIME
+                                if st.button("SUBMIT SHIPMENT NUMBERS",key="ioeru" ):
+                                    st.write(carrier_mf)
+                                    if release_order_number_mf not in mf_numbers.keys():   
+                                        mf_numbers[release_order_number_mf]={}
+                                    if carrier_mf not in mf_numbers[release_order_number_mf]:
+                                        #mf_numbers[release_order_number_mf]={}
+                                        mf_numbers[release_order_number_mf][carrier_mf]=[]
+                                    mf_numbers[release_order_number_mf][mf_date_str][carrier_mf]+=input_mf_numbers
+                                    mf_numbers[release_order_number_mf][mf_date_str][carrier_mf]=list(set(mf_numbers[release_order_number_mf][mf_date_str][carrier_mf]))
+                                    mf_data=json.dumps(mf_numbers)
+                                    #storage_client = storage.Client()
+                                    storage_client = get_storage_client()
+                                    bucket = storage_client.bucket(target_bucket)
+                                    blob = bucket.blob(rf"release_orders/mf_numbers.json")
+                                    blob.upload_from_string(mf_data)
+                                    st.success(f"MF numbers entered to {release_order_number_mf} successfully!")
+                                if st.button("REMOVE SHIPMENT NUMBERS",key="ioerssu" ):
+                                    for i in input_mf_numbers:
+                                        for carrier in mf_numbers[release_order_number_mf][mf_date_str]:
+                                            if i in mf_numbers[release_order_number_mf][mf_date_str][carrier]:
+                                                mf_numbers[release_order_number_mf][mf_date_str][carrier].remove(i)
+                                                st.success(f"MF numbers removed from {release_order_number_mf} successfully!")
+                                    mf_data=json.dumps(mf_numbers)
+                                   # storage_client = storage.Client()
+                                    storage_client = get_storage_client()
+                                    bucket = storage_client.bucket(target_bucket)
+                                    blob = bucket.blob(rf"release_orders/mf_numbers.json")
+                                    blob.upload_from_string(mf_data)
+                                st.table(pd.DataFrame(mf_numbers))
+                        with mf2:
+                            suzano_shipment = st.file_uploader("Upload Suzano Shipment CSV", type="csv",key="dsds")
+                            kbx_shipment = st.file_uploader("Upload KBX Shipment CSV", type="csv",key="dsdfqa")
+                            if suzano_shipment and kbx_shipment:
+                                df=pd.read_csv(suzano_shipment)
+                                df=df[['Shipment ID', 'Release Order', 'Item',
+                                       'Start Time', 'Destination City',
+                                       'Destination Province Code', 'Weight', 'Unit Count', 
+                                       'Service Provider ID',  'Service Provider']]
+                                df['Release Order']=[i[10:] for i in df['Release Order']]
+                                df["Pickup"] = df["Start Time"].apply(lambda i: datetime.datetime.strptime(i, "%m/%d/%Y %I:%M %p").date())
+                                #df
+                                
+                                df1=pd.read_csv(kbx_shipment,header=1)
+                                df1=df1[[ 'Load','SCAC','Pro', 
+                                       'Pickup', 'Orig', 'Delivery',
+                                       'Dest', 'Dest.1', 'Dest.2', 'Dest.3', 'Dest.4', 'Movement', 'Drop',
+                                       'Miles', 'Total', 'Total.1', 'Equip Nbr',  'Created', 'Created.1', 'Last Changed',
+                                       'Last Changed.1']]
+                                df1["Pickup"] = pd.to_datetime(df1["Pickup"]).dt.date
+                                df1.rename(columns={"Dest.1":"Destination City"},inplace=True)
+                                dates1=datetime.date(2024,10,7)
+                                dates2=datetime.date(2024,10,30)
+                                df=df[(df['Pickup']>=dates1)&(df['Pickup']<=dates2)].sort_values(by="Pickup")
+                                df1=df1[df1['Pickup']>=dates1].sort_values(by="Pickup")
+                                matches={}
+                                days_loads={}
+                                kbx_loads={}
+                                for i in sorted(df["Pickup"].unique()):
+                                    #print(i)
+                                    matches[i]={}
+                                    days_loads[i]={}
+                                    kbx_loads[i]={}
+                                    
+                                    for dest in df[df["Pickup"]==i]["Destination City"].unique():
+                                        #print(dest)
+                                        
+                                            
+                                                                 
+                                        
+                                        suz=sorted(df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Shipment ID"])
+                                        
+                                            
+                                        transport=df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Service Provider ID"].unique()[0]
+                                        if transport=="KBX":
+                                            transport="123456-KBX"
+                                        else:
+                                            transport=f"{str(transport[4:])}-{map_['carriers'][str(transport[4:])]}"
+                                        rel=df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Release Order"].unique()[0]
+                                        if dest not in ["HALSEY","CLATSKANIE"]:
+                                            matches[i][dest,rel,transport]=suz
+                                        #print(rel)
+                                        
+                                        else:
+                                            kbx=sorted(df1.loc[(df1["Pickup"] == i) & (df1["Destination City"] == dest), "Load"])
+                                            days_loads[i][dest] =suz
+                                            kbx_loads[i][dest]=kbx
+                                        
+                                            mat=[f"{j}|{k}" for j,k in zip(kbx,suz)]
+                                            matches[i][dest,rel,transport]=mat
+                                st.write(matches)
+
                 with release_order_tab3:  ### RELEASE ORDER STATUS
                     raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
                     raw_ro = json.loads(raw_ro)
