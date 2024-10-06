@@ -1494,7 +1494,7 @@ if authentication_status:
                                     blob = bucket.blob(rf"release_orders/mf_numbers.json")
                                     blob.upload_from_string(mf_data)
                                 #st.write(mf_numbers)
-                                mf_frame=pd.DataFrame(mf_numbers).T
+                                mf_frame=pd.DataFrame(mf_numbers)
                                 st.write(mf_frame)
                                 for i in mf_frame.index:
                                     st.write(i)
