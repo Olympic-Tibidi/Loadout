@@ -1508,6 +1508,7 @@ if authentication_status:
                                 #df
                                 
                                 df1=pd.read_csv(kbx_shipment,header=1)
+                                df1.drop(0,inplace=True)
                                 df1=df1[[ 'Load','SCAC','Pro', 
                                        'Pickup', 'Orig', 'Delivery',
                                        'Dest', 'Dest.1', 'Dest.2', 'Dest.3', 'Dest.4', 'Movement', 'Drop',
