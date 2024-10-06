@@ -1873,7 +1873,7 @@ if authentication_status:
                                     carrier_code=st.selectbox("Carrier Code",[carrier_code,"310897-Ashley"],disabled=False,key=29)
                                 else:
                                     carrier_code=st.text_input("Carrier Code",carrier_code,disabled=True,key=9)
-                                
+                                 st.write(datetime.date.today())
                                 if 'load_mf_number' not in st.session_state:
                                     st.session_state.load_mf_number = None
                                     
@@ -1913,7 +1913,7 @@ if authentication_status:
                                      mf=True
                                      load_mf_number_issued=False
                                      carrier_code=st.text_input("Carrier Code",info[current_release_order][current_sales_order]["carrier_code"],disabled=True,key=19)
-                                     st.write(datetime.date.today())
+                                    
                                      if carrier_code=="123456-KBX":
                                        if release_order_number in mf_numbers_for_load.keys():
                                            mf_liste=[i for i in mf_numbers_for_load[release_order_number]]
