@@ -1499,7 +1499,11 @@ if authentication_status:
                                 st.write(mf_frame)
                                 for i in mf_frame.index:
                                     for j in mf_frame:
-                                        mf_frame.loc[i, j] = len(mf_frame.loc[i, j]) if mf_frame.loc[i, j]!=0 else 0
+                                        if mf_frame.loc[i, j]!=0:
+                                            count=0
+                                            for key in mf_frame.loc[i, j]:
+                                                count+=len(mf_frame.loc[i, j][key])
+                                            mf_frame.loc[i, j] = count
                                 st.write(mf_frame)
                                     
                         
