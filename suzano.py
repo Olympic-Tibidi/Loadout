@@ -1514,7 +1514,6 @@ if authentication_status:
                                        'Dest', 'Dest.1', 'Dest.2', 'Dest.3', 'Dest.4', 'Movement', 'Drop',
                                        'Miles', 'Total', 'Total.1', 'Equip Nbr',  'Created', 'Created.1', 'Last Changed',
                                        'Last Changed.1']]
-                                st.write(df1)
                                 df1["Pickup"] = pd.to_datetime(df1["Pickup"]).dt.date
                                 df1.rename(columns={"Dest.1":"Destination City"},inplace=True)
                                 dates1=datetime.date(2024,10,7)
@@ -1556,7 +1555,7 @@ if authentication_status:
                                         
                                             mat=[f"{j}|{k}" for j,k in zip(kbx,suz)]
                                             matches[str(i)][dest,rel,transport]=mat
-                                st.write(matches)
+                                st.write(dict(matches))
 
                 with release_order_tab3:  ### RELEASE ORDER STATUS
                     raw_ro=gcp_download(target_bucket,rf"release_orders/RELEASE_ORDERS.json")
