@@ -1546,7 +1546,7 @@ if authentication_status:
                                         rel=df.loc[(df["Pickup"] == i) & (df["Destination City"] == dest), "Release Order"].unique()[0]
                                         if dest not in ["HALSEY","CLATSKANIE"]:
                                             matches[str(i)]["destination"]=dest
-                                            matches[str(i)]["release_order"]=rel,transport]=suz
+                                            matches[str(i)]["release_order"]=rel
                                             matches[str(i)]["transport"]=transport
                                             matches[str(i)]["loads"]=suz
                                         #print(rel)
