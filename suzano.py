@@ -1581,6 +1581,8 @@ if authentication_status:
                                             matches[str(i)]["transport"]=transport
                                             matches[str(i)]["loads"]=mat
                                 done=True
+                                if matches not in st.session_state():
+                                    st.session_state.matches=matches
                                 st.success("SHIPMENTS MATCHED AND LOADED!")
                             cor1,cor2,cor3=st.columns([3,3,4])
                             with cor1:
@@ -1590,6 +1592,7 @@ if authentication_status:
                                     st.write(dict(matches))
                             with cor2:
                                 if st.button("UPLOAD SHIPMENTS TO SYSTEM",key="dsdsdads2"):
+                                    matches=st.session_state().matches
                                     for i in matches:
                                         release=matches[i]['release_order']
                                         carrier=matches[i]['transport']
