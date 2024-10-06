@@ -1874,9 +1874,7 @@ if authentication_status:
                                 else:
                                     carrier_code=st.text_input("Carrier Code",carrier_code,disabled=True,key=9)
                                     
-                                today_str=str(datetime.date.today())
                                 today_str=str(st.date_input("Shipment Date",datetime.datetime.today(),disabled=False,key="popdo3"))
-                                st.write(today_str)
                                 
                                 if 'load_mf_number' not in st.session_state:
                                     st.session_state.load_mf_number = None
@@ -3246,13 +3244,15 @@ if authentication_status:
                                 carrier_code=st.selectbox("Carrier Code",[carrier_code,"310897-Ashley"],disabled=False,key=29)
                             else:
                                 carrier_code=st.text_input("Carrier Code",carrier_code,disabled=True,key=9)
-                            
+                            today_str=str(st.date_input("Shipment Date",datetime.datetime.today(),disabled=False,key="popdo3"))
+                                
                             if 'load_mf_number' not in st.session_state:
                                 st.session_state.load_mf_number = None
                                 
                             if release_order_number in mf_numbers_for_load.keys():
                                 try:
-                                    mf_liste=[i for i in mf_numbers_for_load[release_order_number][f"{carrier_code.split('-')[1]}-{carrier_code.split('-')[0]}"]]
+                                    mf_liste=[i for i in mf_numbers_for_load[release_order_number][today_str][f"{carrier_code.split('-')[0]}-{carrier_code.split('-')[1]}"]]
+                                                          
                                 except:
                                     mf_liste=[]
                                 if len(mf_liste)>0:
