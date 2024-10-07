@@ -1615,11 +1615,13 @@ if authentication_status:
                                 if st.button("UPLOAD SHIPMENTS TO SYSTEM",key="dsdsdads2"):
                                     matches=st.session_state.matches
                                     for i in matches:
-                                        release=matches[i]['release_order']
-                                        carrier=matches[i]['transport']
-                                        if release not in mf_numbers:
-                                            mf_numbers[release]={str(i):{}}
-                                        mf_numbers[release][str(i)]={carrier:matches[i]['loads']}
+                                        for desti in i:
+                                            
+                                            release=matches[i][desti]['release_order']
+                                            carrier=matches[i][desti]['transport']
+                                            if release not in mf_numbers:
+                                                mf_numbers[release]={str(i):{}}
+                                            mf_numbers[release][str(i)]={carrier:matches[i]['loads']}
                                     mf_datam=json.dumps(mf_numbers)
                                         #storage_client = storage.Client()
                                     storage_client = get_storage_client()
