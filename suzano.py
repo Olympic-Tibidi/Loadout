@@ -1597,7 +1597,7 @@ if authentication_status:
                                             kbx_loads[i][dest]=kbx
                                         
                                             mat=[f"{j}|{k}" for j,k in zip(kbx,suz)]
-                                            matches[str(i)][[dest]={}
+                                            matches[str(i)][dest]={}
                                             matches[str(i)][dest]["release_order"]=rel
                                             matches[str(i)][dest]["transport"]=transport
                                             matches[str(i)][dest]["loads"]=mat
