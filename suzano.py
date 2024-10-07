@@ -1615,7 +1615,7 @@ if authentication_status:
                                 if st.button("UPLOAD SHIPMENTS TO SYSTEM",key="dsdsdads2"):
                                     matches=st.session_state.matches
                                     for i in matches:
-                                        for desti in i:
+                                        for desti in matches[i]:
                                             
                                             release=matches[i][desti]['release_order']
                                             carrier=matches[i][desti]['transport']
