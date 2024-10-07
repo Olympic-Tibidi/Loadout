@@ -1510,7 +1510,7 @@ if authentication_status:
                                                     count+=len(mf_frame.loc[i, j][key])
                                                 mf_frame.loc[i, j] = count
                                     mf_frame.sort_index(inplace=True)
-                                    st.dataframe(mf_frame,width=5)
+                                    st.dataframe(mf_frame,width=50)
                                     
                         
                         
