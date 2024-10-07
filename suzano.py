@@ -1457,8 +1457,8 @@ if authentication_status:
                                 st.warning("NO GP RELEASE ORDERS FOR THIS VESSEL")
                             else:
                                 
-                                release_order_number_mf=st.selectbox("SELECT RELEASE ORDER FOR SHIPMENT NUMBERS",destinations_of_release_orders,key="tatata")
-                                release_order_number_mf=release_order_number_mf.split(" ")[0]
+                                release_order_number_mf_=st.selectbox("SELECT RELEASE ORDER FOR SHIPMENT NUMBERS",destinations_of_release_orders,key="tatata")
+                                release_order_number_mf=release_order_number_mf_.split(" ")[0]
                                 mf_date_str=str(st.date_input("Shipment Date",datetime.datetime.today(),disabled=False,key="popddao3"))
                                 carrier_mf=st.selectbox("SELECT CARRIER",[f"{i}-{j}" for i,j in map["carriers"].items()],key="tatpota")
                                 input_mf_numbers=st.text_area("**ENTER SHIPMENT NUMBERS**",height=100,key="juy")
@@ -1494,9 +1494,13 @@ if authentication_status:
                                     blob = bucket.blob(rf"release_orders/mf_numbers.json")
                                     blob.upload_from_string(mf_data)
                                 #st.write(mf_numbers)
-                                mf_frame=pd.DataFrame(mf_numbers)
-                                mf_frame.fillna(0,inplace=True)
-                                st.write(mf_frame)
+                                mfcol1,mfcol2,mfcol3=st.columns([5,3,2])
+                                with mfcol1:
+                                    mf_frame=pd.DataFrame(mf_numbers)
+                                    mf_frame.fillna(0,inplace=True)
+                                    mf_frame.sort_index(inplace=True)
+                                    mf_frame.columns=[check_home(i) for i in mf_frame.columns]
+                                    st.write(mf_frame)
                                 for i in mf_frame.index:
                                     for j in mf_frame:
                                         if mf_frame.loc[i, j]!=0:
