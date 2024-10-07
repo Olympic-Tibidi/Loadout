@@ -1554,6 +1554,7 @@ if authentication_status:
                                        'Miles', 'Total', 'Total.1', 'Equip Nbr',  'Created', 'Created.1', 'Last Changed',
                                        'Last Changed.1']]
                                 df1["Pickup"] = pd.to_datetime(df1["Pickup"]).dt.date
+                                df1=df1[~df1["SCAC"].isna()]
                                 df1.rename(columns={"Dest.1":"Destination City"},inplace=True)
                                 
                                 
