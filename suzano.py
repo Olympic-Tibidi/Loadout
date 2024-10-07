@@ -1621,7 +1621,7 @@ if authentication_status:
                                             carrier=matches[i][desti]['transport']
                                             if release not in mf_numbers:
                                                 mf_numbers[release]={str(i):{}}
-                                            mf_numbers[release][str(i)]={carrier:matches[i]['loads']}
+                                            mf_numbers[release][str(i)]={carrier:matches[i][desti]['loads']}
                                     mf_datam=json.dumps(mf_numbers)
                                         #storage_client = storage.Client()
                                     storage_client = get_storage_client()
