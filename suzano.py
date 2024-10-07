@@ -1501,15 +1501,16 @@ if authentication_status:
                                     mf_frame.sort_index(inplace=True)
                                     mf_frame.columns=[check_home(i) for i in mf_frame.columns]
                                     st.write(mf_frame)
-                                for i in mf_frame.index:
-                                    for j in mf_frame:
-                                        if mf_frame.loc[i, j]!=0:
-                                            count=0
-                                            for key in mf_frame.loc[i, j]:
-                                                count+=len(mf_frame.loc[i, j][key])
-                                            mf_frame.loc[i, j] = count
-                                mf_frame.sort_index(inplace=True)
-                                st.write(mf_frame)
+                                with mfcol2:
+                                    for i in mf_frame.index:
+                                        for j in mf_frame:
+                                            if mf_frame.loc[i, j]!=0:
+                                                count=0
+                                                for key in mf_frame.loc[i, j]:
+                                                    count+=len(mf_frame.loc[i, j][key])
+                                                mf_frame.loc[i, j] = count
+                                    mf_frame.sort_index(inplace=True)
+                                    st.write(mf_frame)
                                     
                         
                         
