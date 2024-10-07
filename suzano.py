@@ -1494,13 +1494,13 @@ if authentication_status:
                                     blob = bucket.blob(rf"release_orders/mf_numbers.json")
                                     blob.upload_from_string(mf_data)
                                 #st.write(mf_numbers)
-                                mfcol1,mfcol2,mfcol3=st.columns([5,3,2])
+                                mfcol1,mfcol2,mfcol3=st.columns([4,4,1])
                                 with mfcol1:
                                     mf_frame=pd.DataFrame(mf_numbers)
                                     mf_frame.fillna(0,inplace=True)
                                     mf_frame.sort_index(inplace=True)
                                     mf_frame.columns=[check_home(i) for i in mf_frame.columns]
-                                    st.dataframe(mf_frame)
+                                    st.dataframe(mf_frame,width=5000)
                                 with mfcol2:
                                     for i in mf_frame.index:
                                         for j in mf_frame:
@@ -1510,7 +1510,7 @@ if authentication_status:
                                                     count+=len(mf_frame.loc[i, j][key])
                                                 mf_frame.loc[i, j] = count
                                     mf_frame.sort_index(inplace=True)
-                                    st.dataframe(mf_frame,width=500)
+                                    st.dataframe(mf_frame,width=5000)
                                     
                         
                         
