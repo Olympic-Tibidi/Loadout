@@ -3013,10 +3013,22 @@ if authentication_status:
                         
                       
             with mill_progress:
-
+                bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+                bill_of_ladings=json.loads(bill_of_ladings)
+                bill=pd.DataFrame(bill_of_ladings).T
                 suzano_shipment_=gcp_download(target_bucket,rf"release_orders/suzano_shipments.json")
                 suzano_shipment=json.loads(suzano_shipment_)
-                st.write(pd.DataFrame(suzano_shipment).T)
+                suzano_shipment=pd.DataFrame(suzano_shipment).T
+                for i in suzano_shipment.index:
+                    sh=suzano_shipment.loc[i,"Shipment ID"]
+                    #print(sh)
+                    if sh in bill["Shipment"].to_list():
+                        vehicle=bill.loc[bill["Shipment"]==sh,'vehicle'].values[0]
+                        bol=str(bill.loc[bill["Shipment"]==sh].index.values[0])
+                        suzano_shipment.loc[i,"Transit Status"]="COMPLETED"
+                        suzano_shipment.loc[i,"BOL"]=bol
+                        suzano_shipment.loc[i,"Vehicle ID"]=vehicle
+                st.write(suzano_shipment)
                 maintenance=False
                 if maintenance:
                     st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
