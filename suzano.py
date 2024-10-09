@@ -3013,7 +3013,10 @@ if authentication_status:
                         
                       
             with mill_progress:
-                
+
+                suzano_shipment_=gcp_download(target_bucket,rf"release_orders/suzano_shipments.json")
+                suzano_shipment=json.loads(suzano_shipment_)
+                st.write(pd.DataFrame(suzano_shipment).T)
                 maintenance=True
                 if maintenance:
                     st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
