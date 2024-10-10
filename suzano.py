@@ -3030,6 +3030,7 @@ if authentication_status:
                         mfs.append(i)
                 bill.insert(0,"Shipment",values)
                 bill.insert(1,"MF",mfs)
+                st.write(bill.columns)
                 
                 suzano_shipment_=gcp_download(target_bucket,rf"release_orders/suzano_shipments.json")
                 suzano_shipment=json.loads(suzano_shipment_)
