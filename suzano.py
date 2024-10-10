@@ -3035,15 +3035,27 @@ if authentication_status:
                 suzano_shipment_=gcp_download(target_bucket,rf"release_orders/suzano_shipments.json")
                 suzano_shipment=json.loads(suzano_shipment_)
                 suzano_shipment=pd.DataFrame(suzano_shipment).T
+
+                suzano_shipment["Shipment ID"]=suzano_shipment["Shipment ID"].astype("str")
+                bill["Shipment"]=bill["Shipment"].astype("str")
+
+                suzano_shipment.reset_index(drop=True,inplace=True)
                 for i in suzano_shipment.index:
                     sh=suzano_shipment.loc[i,"Shipment ID"]
                     #print(sh)
-                    if sh in bill["Shipment"].to_list():
+                    if sh in bill[~bill["Shipment"].isna()]["Shipment"].to_list():
                         vehicle=bill.loc[bill["Shipment"]==sh,'vehicle'].values[0]
                         bol=str(bill.loc[bill["Shipment"]==sh].index.values[0])
                         suzano_shipment.loc[i,"Transit Status"]="COMPLETED"
                         suzano_shipment.loc[i,"BOL"]=bol
                         suzano_shipment.loc[i,"Vehicle ID"]=vehicle
+                for rel,value in mf_numbers.items():
+                    for date in value:
+                        for carrier,liste in value[date].items():
+                            if len(liste)>0:
+                                for k in liste:
+                                    df.loc[df["Shipment ID"]==k.split("|")[1],"Transit Status"]="SCHEDULED"
+
                 st.write(suzano_shipment)
                 maintenance=False
                 if maintenance:
