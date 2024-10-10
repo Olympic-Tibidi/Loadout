@@ -3038,7 +3038,7 @@ if authentication_status:
 
                 suzano_shipment["Shipment ID"]=suzano_shipment["Shipment ID"].astype("str")
                 bill["Shipment"]=bill["Shipment"].astype("str")
-
+                suzano_shipment[suzano_shipment["Pickup"]>datetime.date(2024,9,24)]
                 suzano_shipment.reset_index(drop=True,inplace=True)
                 for i in suzano_shipment.index:
                     sh=suzano_shipment.loc[i,"Shipment ID"]
