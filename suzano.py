@@ -3013,9 +3013,24 @@ if authentication_status:
                         
                       
             with mill_progress:
+                
+                mf_numbers=json.loads(gcp_download(target_bucket,rf"release_orders/mf_numbers.json"))
+                
                 bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
                 bill_of_ladings=json.loads(bill_of_ladings)
                 bill=pd.DataFrame(bill_of_ladings).T
+                values=[]
+                mfs=[]
+                for i in bill.index:
+                    if len(i.split("|"))>1:
+                        values.append(i.split("|")[1])
+                        mfs.append(i.split("|")[0])
+                    else:
+                        values.append(None)
+                        mfs.append(i)
+                bill.insert(0,"Shipment",values)
+                bill.insert(1,"MF",mfs)
+                
                 suzano_shipment_=gcp_download(target_bucket,rf"release_orders/suzano_shipments.json")
                 suzano_shipment=json.loads(suzano_shipment_)
                 suzano_shipment=pd.DataFrame(suzano_shipment).T
