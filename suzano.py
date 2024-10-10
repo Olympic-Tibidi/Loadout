@@ -3054,11 +3054,14 @@ if authentication_status:
                     for date in value:
                         for carrier,liste in value[date].items():
                             if len(liste)>0:
-                                for k in liste:
-                                    suzano_shipment.loc[suzano_shipment["Shipment ID"]==k.split("|")[1],"Transit Status"]="SCHEDULED"
+                                try:
+                                    for k in liste:
+                                        suzano_shipment.loc[suzano_shipment["Shipment ID"]==k.split("|")[1],"Transit Status"]="SCHEDULED"
+                                except:
+                                    pass
 
                 st.write(suzano_shipment)
-                maintenance=False
+                maintenance=True
                 if maintenance:
                     st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
                 else:
