@@ -3061,7 +3061,7 @@ if authentication_status:
                                     pass
 
                 st.write(suzano_shipment)
-                maintenance=True
+                maintenance=False
                 if maintenance:
                     st.title("CURRENTLY IN MAINTENANCE, CHECK BACK LATER")
                 else:
