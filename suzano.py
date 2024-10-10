@@ -3054,7 +3054,7 @@ if authentication_status:
                         for carrier,liste in value[date].items():
                             if len(liste)>0:
                                 for k in liste:
-                                    df.loc[df["Shipment ID"]==k.split("|")[1],"Transit Status"]="SCHEDULED"
+                                    suzano_shipment.loc[suzano_shipment["Shipment ID"]==k.split("|")[1],"Transit Status"]="SCHEDULED"
 
                 st.write(suzano_shipment)
                 maintenance=False
