@@ -4446,7 +4446,54 @@ if authentication_status:
                                'Last Shipment', 'Duration', '# of Calendar Shipment Days',
                                'Utilized Calendar Shipment Days']
                         st.dataframe(temp_df)
+        with mill_progress:
+            
+            mf_numbers=json.loads(gcp_download(target_bucket,rf"release_orders/mf_numbers.json"))
+                
+            bill_of_ladings=gcp_download(target_bucket,rf"terminal_bill_of_ladings.json")
+            bill_of_ladings=json.loads(bill_of_ladings)
+            bill=pd.DataFrame(bill_of_ladings).T
+            values=[]
+            mfs=[]
+            for i in bill.index:
+                if len(i.split("|"))>1:
+                    values.append(i.split("|")[1])
+                    mfs.append(i.split("|")[0])
+                else:
+                    values.append(None)
+                    mfs.append(i)
+            bill.insert(0,"Shipment",values)
+            bill.insert(1,"MF",mfs)
+            
+            suzano_shipment_=gcp_download(target_bucket,rf"release_orders/suzano_shipments.json")
+            suzano_shipment=json.loads(suzano_shipment_)
+            suzano_shipment=pd.DataFrame(suzano_shipment).T
 
+            suzano_shipment["Shipment ID"]=suzano_shipment["Shipment ID"].astype("str")
+            bill["Shipment"]=bill["Shipment"].astype("str")
+            suzano_shipment["Pickup"]=pd.to_datetime(suzano_shipment["Pickup"])
+            suzano_shipment=suzano_shipment[suzano_shipment["Pickup"]>datetime.datetime(2024, 9, 24)]
+            suzano_shipment.reset_index(drop=True,inplace=True)
+            for i in suzano_shipment.index:
+                sh=suzano_shipment.loc[i,"Shipment ID"]
+                #print(sh)
+                if sh in bill[~bill["Shipment"].isna()]["Shipment"].to_list():
+                    vehicle=bill.loc[bill["Shipment"]==sh,'vehicle'].values[0]
+                    bol=str(bill.loc[bill["Shipment"]==sh].index.values[0])
+                    suzano_shipment.loc[i,"Transit Status"]="COMPLETED"
+                    suzano_shipment.loc[i,"BOL"]=bol
+                    suzano_shipment.loc[i,"Vehicle ID"]=vehicle
+            for rel,value in mf_numbers.items():
+                for date in value:
+                    for carrier,liste in value[date].items():
+                        if len(liste)>0:
+                            try:
+                                for k in liste:
+                                    suzano_shipment.loc[suzano_shipment["Shipment ID"]==k.split("|")[1],"Transit Status"]="SCHEDULED"
+                            except:
+                                pass
+
+            st.write(suzano_shipment)
 
 elif authentication_status == False:
     st.error('Username/password is incorrect')
