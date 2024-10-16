@@ -2442,7 +2442,7 @@ if authentication_status:
                         
                         
                         
-                        if yes and mf:
+                        if yes and mf and quantity>0:
                             
                             if st.button('**:blue[SUBMIT EDI]**'):
                              
@@ -3863,7 +3863,7 @@ if authentication_status:
                     
                     
                     
-                    if yes and mf:
+                    if yes and mf and quantity>0:
                         
                         if st.button('**:blue[SUBMIT EDI]**'):
                          
