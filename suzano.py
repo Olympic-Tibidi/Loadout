@@ -3027,7 +3027,7 @@ if authentication_status:
                         values.append(i.split("|")[1])
                         mfs.append(i.split("|")[0])
                     else:
-                        values.append(None)
+                        values.append(i)
                         mfs.append(i)
                 bill.insert(0,"Shipment",values)
                 bill.insert(1,"MF",mfs)
@@ -3056,7 +3056,10 @@ if authentication_status:
                             if len(liste)>0:
                                 try:
                                     for k in liste:
-                                        suzano_shipment.loc[suzano_shipment["Shipment ID"]==k.split("|")[1],"Transit Status"]="SCHEDULED"
+                                        try:
+                                            suzano_shipment.loc[suzano_shipment["Shipment ID"]==k.split("|")[1],"Transit Status"]="SCHEDULED"
+                                        except:
+                                            suzano_shipment.loc[suzano_shipment["Shipment ID"]==k,"Transit Status"]="SCHEDULED"
                                 except:
                                     pass
 
