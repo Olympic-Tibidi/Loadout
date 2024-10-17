@@ -1607,6 +1607,13 @@ if authentication_status:
                                 if matches not in st.session_state:
                                     st.session_state.matches=matches
                                 st.success("SHIPMENTS MATCHED AND LOADED!")
+                                if st.button("RECORD SUZANO LIST",disabled=button,key="sdsqawds2"):
+                                    suz_=json.dumps(df)
+                                    storage_client = get_storage_client()
+                                    bucket = storage_client.bucket(target_bucket)
+                                    blob = bucket.blob(rf"release_orders/suzano_shipments.json")
+                                    blob.upload_from_string(suz_)
+                                    st.success(f"Suzano list updated!")
                             cor1,cor2,cor3=st.columns([3,3,4])
                             with cor1:
                                 
